@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-//        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
