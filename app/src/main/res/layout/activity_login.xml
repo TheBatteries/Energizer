@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <TextView
-        android:id="@+id/tvSignUp"
+        android:id="@+id/tvLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="User Registration"
+        android:text="User Login"
         android:layout_above="@id/etEmail"
         android:layout_margin="15dp"
         android:textAlignment="center"/>
@@ -33,20 +33,21 @@
         android:inputType="textPassword"
         android:layout_margin="15dp"/>
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
-        android:text="Register"
+        android:text="Login"
         android:layout_margin="15dp"
         android:textAllCaps="false"/>
-
     <TextView
-        android:id="@+id/tvLogin"
+        android:id="@+id/tvSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Already have an account? Login"
-        android:layout_below="@id/btnRegister"
+        android:text="Don't have an account? Register"
+        android:layout_below="@id/btnLogin"
         android:textAlignment="center"/>
+
+
 
 </RelativeLayout>
