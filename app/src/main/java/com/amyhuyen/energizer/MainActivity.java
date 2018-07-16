@@ -14,6 +14,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,9 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView (R.id.etPassword) EditText etPassword;
     @BindView (R.id.btnRegister) Button btnRegister;
     @BindView (R.id.tvLogin) TextView tvLogin;
+    @BindView (R.id.etName) EditText etName;
+
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference firebaseData;
 
 
     @Override
@@ -38,18 +45,36 @@ public class MainActivity extends AppCompatActivity {
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseData = FirebaseDatabase.getInstance().getReference();
+
+
 
         // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
-        }
+//        if (firebaseAuth.getCurrentUser() != null){
+//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
         progressDialog = new ProgressDialog(this);
 
         // bind the views
         ButterKnife.bind(this);
+
+    }
+
+    private void addUserData() {
+        String name = etName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        // Database Hashmap
+        final HashMap<String, String> userDataMap = new HashMap<String, String>();
+        // Bind user data to HashMap
+        userDataMap.put("Name", name);
+        userDataMap.put("Email", email);
+        userDataMap.put("Password", password);
+        // Send Hash to DataBAse
+        firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
 
     }
 
@@ -80,11 +105,13 @@ public class MainActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (task.isSuccessful()){
                             Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            //addUserData();
                         } else{
                             Toast.makeText(MainActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+        addUserData();
     }
 
     // on click listener for register button
