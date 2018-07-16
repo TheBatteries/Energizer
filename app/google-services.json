@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "933796750322-rqciv37ifb9jkg4uej3kme7geqb4ioaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amyhuyen.energizer",
+            "certificate_hash": "c53f1de8385dce85d51303ffc5e9e5bdb04b0ef4"
+          }
+        },
+        {
           "client_id": "933796750322-dmp4n6d6uaiovfbbccl6aji7t4hah2fe.apps.googleusercontent.com",
           "client_type": 3
         }
