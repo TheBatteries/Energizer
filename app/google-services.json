@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "933796750322",
+    "firebase_url": "https://energizer-33c32.firebaseio.com",
+    "project_id": "energizer-33c32",
+    "storage_bucket": "energizer-33c32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933796750322:android:c8c8d048b5a04d95",
+        "android_client_info": {
+          "package_name": "com.amyhuyen.energizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933796750322-42anvl7dmq0u3uqjv749l1ovsqljaacu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amyhuyen.energizer",
+            "certificate_hash": "e011a203239bec19e78dd5f7c46b7af25102f848"
+          }
+        },
+        {
+          "client_id": "933796750322-dmp4n6d6uaiovfbbccl6aji7t4hah2fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL8-svrzR9y1W9Ydzlh7lhXdQ2hm-yYQ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933796750322-dmp4n6d6uaiovfbbccl6aji7t4hah2fe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
