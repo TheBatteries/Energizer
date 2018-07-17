@@ -72,8 +72,14 @@ public class OpportunityFeedFragment extends Fragment {
     public void getOpportunities(){
         // TODO FAKE OPPORTUNITIES (fix later)
         newOpportunities.clear();
-        newOpportunities.add(new Opportunity("Coding", "Coding for CodePath"));
-        newOpportunities.add(new Opportunity("Volunteering with children", "Teaching children how to read"));
+        newOpportunities.add(new Opportunity("Opp1", "description 1"));
+        newOpportunities.add(new Opportunity("Opp2", "description 2"));
+        newOpportunities.add(new Opportunity("Opp3", "description 3"));
+        newOpportunities.add(new Opportunity("Opp4", "description 4"));
+        newOpportunities.add(new Opportunity("Opp5", "description 5"));
+        newOpportunities.add(new Opportunity("Opp6", "description 6"));
+        newOpportunities.add(new Opportunity("Opp7", "description 7"));
+
         oppAdapter.clear();
         oppAdapter.addAll(newOpportunities);
         swipeContainer.setRefreshing(false);

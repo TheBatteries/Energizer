@@ -6,22 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".LandingActivity">
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textAlignment="center"
-        android:layout_margin="15dp"
-        android:text="Welcome"/>
 
-    <Button
-        android:id="@+id/btnLogout"
+    <FrameLayout
+        android:id = "@+id/flContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_margin="15dp"
-        android:layout_below="@id/tvWelcome"
-        android:textAllCaps="false"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    <!--<TextView-->
+        <!--android:id="@+id/tvWelcome"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:textAlignment="center"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:text="Welcome"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btnLogout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Logout"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:layout_below="@id/tvWelcome"-->
+        <!--android:textAllCaps="false"/>-->
 
 </RelativeLayout>

@@ -58,7 +58,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
         // TODO FIX THE NPO NAME
         holder.tvOppName.setText(opp.getName().toString());
-        holder.tvNpoName.setText("DEFAULT");
+        holder.tvNpoName.setText("NPO Name");
         holder.tvOppDesc.setText(opp.getDescription().toString());
     }
 
