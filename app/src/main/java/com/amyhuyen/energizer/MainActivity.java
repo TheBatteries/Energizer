@@ -66,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<String, String>();
         // Bind user data to HashMap
         userDataMap.put("Name", name);
         userDataMap.put("Email", email);
-        userDataMap.put("Password", password);
         // Send Hash to DataBAse
         firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
 
@@ -104,14 +102,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()){
+                            addUserData();
                             Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                            //addUserData();
+
                         } else{
                             Toast.makeText(MainActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-        addUserData();
+        //addUserData();
     }
 
     // on click listener for register button
