@@ -14,8 +14,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView (R.id.btnRegister) Button btnRegister;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
+    @BindView (R.id.etUserSkill) EditText etUserSkill;
 
 
     private ProgressDialog progressDialog;
@@ -63,9 +67,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void addSkill() {
+        final String skill = etUserSkill.getText().toString().trim();
+        // check if skill already exists in database
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+
+        skillsRef.orderByChild("Skill").equalTo(skill)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            // skill already exists in database
+                        } else {
+                            // add new skill to database
+                            // make skill into hash
+                            final HashMap<String, String> skillDataMap = new HashMap<String, String>();
+                            // bind skill to hashmap
+                            skillDataMap.put("Skill", skill);
+                            // send hashmap to database
+                            firebaseData.child("Skill").push().setValue(skillDataMap);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        // make a database reference
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<String, String>();
 
@@ -110,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                             // add user's data into the database
                             addUserData();
+                            addSkill();
                         } else{
                             Toast.makeText(MainActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
                         }
