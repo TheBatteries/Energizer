@@ -1,14 +1,24 @@
 package com.amyhuyen.energizer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -22,10 +32,16 @@ import android.widget.EditText;
 public class ProfileFragment extends Fragment {
 
 
+    //Firebase authorization
+    private FirebaseAuth firebaseAuth;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    @BindView(R.id.btnLogout)
+    Button btnLogout;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -35,8 +51,8 @@ public class ProfileFragment extends Fragment {
     //Adapter adapter;
     FragmentActivity listener;
 
-    public ProfileFragment() {// Required empty public constructor
-    }
+    public ProfileFragment() {
+    }// Required empty public constructor
 
     /**
      * Use this factory method to create a new instance of
@@ -56,14 +72,37 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
+
+        firebaseAuth = firebaseAuth.getInstance();
+        // bind the views
+        ButterKnife.bind(getActivity());
+
+        // on click listener for logout button
+    }
+
+    @OnClick(R.id.btnLogout)
+    public void onLogoutClick() {
+        // log user out
+        firebaseAuth.signOut();
+
+        // log the sign out
+        if (firebaseAuth.getCurrentUser() == null) {
+            Log.d("Logging Out", "User has successfully logged out");
+            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+        }
+
+        // intent to login activity
+        Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
+        startActivity(intent);
+        //finish();
     }
 
     @Override
@@ -96,7 +135,6 @@ public class ProfileFragment extends Fragment {
             this.listener = (LandingActivity) context;
         }
     }
-
 
     @Override
     public void onDetach() {
