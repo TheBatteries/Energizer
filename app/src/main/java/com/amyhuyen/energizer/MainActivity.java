@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -66,14 +66,16 @@ public class MainActivity extends AppCompatActivity {
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<String, String>();
+
         // Bind user data to HashMap
         userDataMap.put("Name", name);
         userDataMap.put("Email", email);
-        // Send Hash to DataBAse
-        firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
 
+        // Send Hash to DataBase and, when complete, fire intent to logout page
+        firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
     }
 
     private void registerUser(){
@@ -102,27 +104,31 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()){
-                            addUserData();
                             Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-
+                            // intent to the landing activity
+                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                            finish();
+                            startActivity(intent);
+                            // add user's data into the database
+                            addUserData();
                         } else{
                             Toast.makeText(MainActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-        //addUserData();
     }
 
     // on click listener for register button
     @OnClick (R.id.btnRegister)
     public void onRegisterClick(){
+        // register the user
         registerUser();
     }
 
     // on click listener for login button
     @OnClick (R.id.tvLogin)
     public void onLoginClick(){
-        // intent to login page
+        // intent to login activity
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         finish();
         startActivity(intent);
