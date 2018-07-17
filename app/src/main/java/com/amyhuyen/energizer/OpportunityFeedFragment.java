@@ -1,0 +1,82 @@
+package com.amyhuyen.energizer;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.amyhuyen.energizer.models.Opportunity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class OpportunityFeedFragment extends Fragment {
+
+    @BindView (R.id.rvOpps) RecyclerView rvOpps;
+    @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    List<Opportunity> opportunities;
+    List<Opportunity> newOpportunities;
+    OpportunityAdapter oppAdapter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_opportunity_feed, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        // bind the views
+        ButterKnife.bind(this, view);
+
+        // initialize the data source
+        opportunities = new ArrayList<>();
+        newOpportunities = new ArrayList<>();
+
+        // construct the adapter from this data source
+        oppAdapter = new OpportunityAdapter(opportunities, getActivity());
+
+        // recyclerview setup
+        rvOpps.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // set the adapter
+        rvOpps.setAdapter(oppAdapter);
+
+        // get the opportunities (for on launch)
+        getOpportunities();
+
+        // swipe refresh
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getOpportunities();
+            }
+        });
+
+        // configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    // method that gets the posts
+    public void getOpportunities(){
+        // TODO FAKE OPPORTUNITIES (fix later)
+        newOpportunities.clear();
+        newOpportunities.add(new Opportunity("Coding", "Coding for CodePath"));
+        newOpportunities.add(new Opportunity("Volunteering with children", "Teaching children how to read"));
+        oppAdapter.clear();
+        oppAdapter.addAll(newOpportunities);
+        swipeContainer.setRefreshing(false);
+
+    }
+}

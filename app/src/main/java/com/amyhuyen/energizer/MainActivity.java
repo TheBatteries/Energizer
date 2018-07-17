@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<String, String>();
 
