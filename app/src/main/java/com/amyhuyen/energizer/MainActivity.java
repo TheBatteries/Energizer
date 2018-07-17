@@ -66,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<String, String>();
 
         // Bind user data to HashMap
         userDataMap.put("Name", name);
         userDataMap.put("Email", email);
-        userDataMap.put("Password", password);
 
         // Send Hash to DataBase and, when complete, fire intent to logout page
         firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
