@@ -57,9 +57,9 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         final Opportunity opp = mOpportunities.get(position);
 
         // TODO FIX THE NPO NAME
-        holder.tvOppName.setText(opp.getName().toString());
+        holder.tvOppName.setText(opp.getName());
         holder.tvNpoName.setText("NPO Name");
-        holder.tvOppDesc.setText(opp.getDescription().toString());
+        holder.tvOppDesc.setText(opp.getDescription());
     }
 
     // getting the number of items

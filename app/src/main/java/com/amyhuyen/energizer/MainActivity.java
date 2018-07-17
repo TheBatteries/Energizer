@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
 
         // Database Hashmap
-        final HashMap<String, String> userDataMap = new HashMap<String, String>();
+        final HashMap<String, String> userDataMap = new HashMap<>();
 
         // Bind user data to HashMap
         userDataMap.put("Name", name);

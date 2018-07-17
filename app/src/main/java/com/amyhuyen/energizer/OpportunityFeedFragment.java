@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class OpportunityFeedFragment extends Fragment {
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
     OpportunityAdapter oppAdapter;
+    DatabaseReference firebaseDataOpp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +53,9 @@ public class OpportunityFeedFragment extends Fragment {
         // set the adapter
         rvOpps.setAdapter(oppAdapter);
 
+        // set up firebase database
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+
         // get the opportunities (for on launch)
         getOpportunities();
 
@@ -72,6 +78,7 @@ public class OpportunityFeedFragment extends Fragment {
     public void getOpportunities(){
         // TODO FAKE OPPORTUNITIES (fix later)
         newOpportunities.clear();
+
         newOpportunities.add(new Opportunity("Opp1", "description 1"));
         newOpportunities.add(new Opportunity("Opp2", "description 2"));
         newOpportunities.add(new Opportunity("Opp3", "description 3"));
@@ -79,6 +86,8 @@ public class OpportunityFeedFragment extends Fragment {
         newOpportunities.add(new Opportunity("Opp5", "description 5"));
         newOpportunities.add(new Opportunity("Opp6", "description 6"));
         newOpportunities.add(new Opportunity("Opp7", "description 7"));
+        newOpportunities.add(new Opportunity("Opp8", "description 8"));
+        newOpportunities.add(new Opportunity("Opp9", "description 9"));
 
         oppAdapter.clear();
         oppAdapter.addAll(newOpportunities);
