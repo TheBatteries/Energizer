@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
     private void addUserData() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        // make a database reference
+
         // Database Hashmap
-        final HashMap<String, String> userDataMap = new HashMap<String, String>();
+        final HashMap<String, String> userDataMap = new HashMap<>();
 
         // Bind user data to HashMap
         userDataMap.put("Name", name);
