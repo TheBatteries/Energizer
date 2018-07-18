@@ -41,6 +41,5 @@ public class LandingActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
         fragmentTransaction.commit();
-
     }
 }
