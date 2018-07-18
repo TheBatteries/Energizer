@@ -12,53 +12,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="User Registration"
-        android:layout_margin="15dp"
+        android:text="@string/user_registration"
+        android:layout_marginBottom = "15dp"
+        android:layout_marginTop="100dp"
         android:textAlignment="center"/>
 
-    <EditText
-        android:id="@+id/etName"
+    <TextView
+        android:id="@+id/tvMessage"
         android:layout_below="@id/tvSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:hint="Name"
-        android:layout_margin="15dp"/>
-
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:hint="Email"
-        android:layout_below="@id/etName"
-        android:inputType="textEmailAddress"
-        android:layout_margin="15dp"/>
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etEmail"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_margin="15dp"/>
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etPassword"
-        android:text="Register"
+        android:text="@string/register_message"
         android:layout_margin="15dp"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/btnVolunteer"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMessage"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/volunteer"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btnNonProfit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMessage"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:text="@string/non_profit"
         android:textAllCaps="false"/>
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Already have an account? Login"
-        android:layout_below="@id/btnRegister"
+        android:text="@string/login"
+        android:layout_below="@id/btnNonProfit"
+        android:layout_marginTop="20dp"
         android:textAlignment="center"/>
-
 
 
 </RelativeLayout>

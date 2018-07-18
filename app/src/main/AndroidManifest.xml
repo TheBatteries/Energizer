@@ -20,7 +20,9 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".LandingActivity" />
-        <activity android:name=".SetSkillsActivity"></activity>
+        <activity android:name=".SetSkillsActivity" />
+        <activity android:name=".VolRegActivity" />
+        <activity android:name=".NpoRegActivity"></activity>
     </application>
 
 </manifest>
