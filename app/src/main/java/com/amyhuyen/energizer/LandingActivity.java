@@ -2,10 +2,13 @@ package com.amyhuyen.energizer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +37,7 @@ public class LandingActivity extends AppCompatActivity {
         firebaseAuth = firebaseAuth.getInstance();
 
         // check to see if user is already logged in
-        if (firebaseAuth.getCurrentUser() == null){
+        if (firebaseAuth.getCurrentUser() == null) {
 
             // intent to login activity
             Intent intent = new Intent(this, LoginActivity.class);
@@ -45,23 +48,30 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         tvWelcome.setText("Welcome " + user.getEmail());
 
-
+        //define Fragments and fragment manager
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
+        final Fragment profileFragment = new ProfileFragment();
+        final Fragment opportunityFeedFragFragment = new OpportunityFeedFragment();
 
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
-//        fragmentTransaction.commit(); //Amy's feed frag stuff TODO - move this somewhere else
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-        // Fragment setup
-        // Begin the transaction
-        FragmentTransaction ft = fragmentManager.beginTransaction(); //had this
-        //add new fragment to our frame layout fl_profile
-        ft.add(R.id.flContainer, new ProfileFragment());
-        // Complete the changes added above
-        ft.commit();
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.ic_action_profile:
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+                        return true;
+                    case R.id.ic_action_feed:
+                        fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFragFragment).commit();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
-
-
 }

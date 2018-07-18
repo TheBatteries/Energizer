@@ -29,7 +29,4 @@
         android:layout_margin="15dp"
         android:text="Welcome"/>
 
-
-
-
 </RelativeLayout>

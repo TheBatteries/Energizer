@@ -116,9 +116,6 @@ public class ProfileFragment extends Fragment {
         //finish(); TODO - why couldn't I call finish here?
   }
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
