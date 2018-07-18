@@ -63,13 +63,13 @@ public class OpportunityFeedFragment extends Fragment {
         rvOpps.setAdapter(oppAdapter);
 
         // get the opportunities (for on launch)
-        getOpportunities();
+        fetchOpportunities();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getOpportunities();
+                fetchOpportunities();
             }
         });
 
@@ -80,17 +80,9 @@ public class OpportunityFeedFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    // method that gets the posts
-    public void getOpportunities(){
-        // TODO FIX FAKE OPPORTUNITIES
-        Log.d("Area1", "here");
-
-        getData();
-
-    }
 
     // method to get data from firebase
-    private void getData(){
+    private void fetchOpportunities(){
         final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
 
         firebaseDataOpp.addValueEventListener(new ValueEventListener() {
