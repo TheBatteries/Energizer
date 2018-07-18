@@ -118,8 +118,7 @@ public class ProfileFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = currentFirebaseUser.getUid();
-
-        //How do I get the unique volunteer id number just under Volunteer?
+        Log.i("Profile Framgent", "getDisplayName: " + userId);
 
         //TODO - change second child to ID of user
         mDatabase.child("User").child("Volunteer").child("UserID").child(userId).addValueEventListener(new ValueEventListener() {
