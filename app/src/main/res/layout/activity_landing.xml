@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".LandingActivity">
 
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/menu_bottom_navegation" />
 
     <FrameLayout
         android:id = "@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
+
 
     <!--<TextView-->
         <!--android:id="@+id/tvWelcome"-->
@@ -22,13 +29,14 @@
         <!--android:layout_margin="15dp"-->
         <!--android:text="Welcome"/>-->
 
-    <!--<Button-->
-        <!--android:id="@+id/btnLogout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Logout"-->
-        <!--android:layout_margin="15dp"-->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_margin="15dp"
+        android:textAllCaps="false"/>
         <!--android:layout_below="@id/tvWelcome"-->
-        <!--android:textAllCaps="false"/>-->
+
 
 </RelativeLayout>
