@@ -9,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LandingActivity extends AppCompatActivity {
+import butterknife.ButterKnife;
 
-    // the views
-//    @BindView (R.id.btnLogout) Button btnLogout;
-//    @BindView (R.id.tvWelcome) TextView tvWelcome;
+public class LandingActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
@@ -23,7 +21,7 @@ public class LandingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landing);
 
         // bind the views
-//        ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
         firebaseAuth = firebaseAuth.getInstance();
 
@@ -36,10 +34,6 @@ public class LandingActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-//        FirebaseUser user = firebaseAuth.getCurrentUser();
-//        tvWelcome.setText("Welcome " + user.getEmail());
-
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
@@ -47,24 +41,5 @@ public class LandingActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
         fragmentTransaction.commit();
-
     }
-
-    // on click listener for logout button
-//    @OnClick (R.id.btnLogout)
-//    public void onLogoutClick(){
-//        // log user out
-//        firebaseAuth.signOut();
-//
-//        // log the sign out
-//        if (firebaseAuth.getCurrentUser() == null){
-//            Log.d("Logging Out", "User has successfully logged out");
-//            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // intent to login activitt
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        finish();
-//        startActivity(intent);
-//    }
 }

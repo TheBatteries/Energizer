@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-//         check if user already is logged in (if so, launch landing activity)
+        // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
             finish();
