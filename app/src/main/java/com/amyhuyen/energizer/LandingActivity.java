@@ -21,7 +21,7 @@ import butterknife.OnClick;
 public class LandingActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.btnLogout) Button btnLogout;
+    @BindView (R.id.btnLogout) Button btnLogout; //TODO - move logout button to profile fragment
     @BindView (R.id.tvWelcome) TextView tvWelcome;
 
     private FirebaseAuth firebaseAuth;
@@ -61,7 +61,7 @@ public class LandingActivity extends AppCompatActivity {
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //add new fragment to our frame layout fl_profile
-        ft.add(R.id.fl_profile, new ProfileFragment());
+        ft.add(R.id.flContainer, new ProfileFragment());
         // Complete the changes added above
         ft.commit();
     }

@@ -136,6 +136,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
                 tv_name.setText("Name: " + name);//set the textview to have that String
+                //TODO null pointer here
             }
 
             @Override
