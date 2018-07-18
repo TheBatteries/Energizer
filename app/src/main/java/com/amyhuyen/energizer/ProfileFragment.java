@@ -18,14 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import butterknife.OnClick;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,19 +33,18 @@ import butterknife.OnClick;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-
-////////////////////////TODO - fix app crash. tv_name is null////////////////////
+//TODO change all findViewByIds and OnClick listeners to butterknife style and call finish() as marked
 
 public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
     }// Required empty public constructor
 
-
     //TODO - create a user
 
     //Firebase authorization
     private FirebaseAuth firebaseAuth;
+    FirebaseUser currentFirebaseUser;
 
     //Database for setting text according to User fields
     private DatabaseReference mDatabase;
@@ -56,10 +53,6 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    //bind and create views
-   // @BindView(R.id.btnLogout) Button btnLogout;
-//    @BindView(R.id.tv_name) TextView tv_name; //tried moving these into onVIewCreated
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -99,7 +92,70 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
-   @OnClick(R.id.btnLogout)
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //findViewById lookups
+        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
+        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
+//        @BindView(R.id.tv_name) TextView tv_name; DOESN'T WORK
+
+        // bind the views
+        //ButterKnife.bind(getActivity());
+
+        //instantiate objects
+        firebaseAuth = firebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentFirebaseUser.getUid();
+
+        //How do I get the unique volunteer id number just under Volunteer?
+
+        //TODO - change second child to ID of user
+        mDatabase.child("User").child("Volunteer").child("UserID").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
+                tv_name.setText("Name: " + name);//set the textview to have that String
+                //null pointer here IF i use butterknife
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("ProfileFragment", "Failed to read name from DB.");
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseAuth.signOut();
+
+                // log the sign out
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Log.d("Logging Out", "User has successfully logged out");
+                    Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+                }
+
+                //Intent
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                //finish(); TODO - why can't I call finish here?
+            }
+        });
+
+        //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
+        /*@OnClick(R.id.btnLogout)
     public void onLogoutClick() {
         // log user out
         firebaseAuth.signOut();
@@ -114,47 +170,7 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
         startActivity(intent);
         //finish(); TODO - why couldn't I call finish here?
-  }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        //findViewById lookups
-//        @BindView(R.id.tv_name) TextView tv_name; DOESN'T WORK
-        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
-        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
-
-
-        //instantiate objects
-        firebaseAuth = firebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        //user = new User();
-
-        // bind the views
-        //ButterKnife.bind(getActivity());
-
-        //TODO - change second child to ID of user
-        mDatabase.child("User").child("Volunteer").child("-LH_aEbSGvET2wYATfhB").child("Name").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
-                tv_name.setText("Name: " + name);//set the textview to have that String
-                //null pointer here IF i use butterknife
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("ProfileFragment", "Failed to read name from DB.");
-            }
-        });
+    }*/
     }
 
 
@@ -178,7 +194,6 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 
 }
 

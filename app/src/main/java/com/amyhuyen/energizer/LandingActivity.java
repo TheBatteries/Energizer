@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 public class LandingActivity extends AppCompatActivity {
 
     // the views
-//    @BindView (R.id.btnLogout) Button btnLogout; //TODO - move logout button to profile fragment
     @BindView(R.id.tvWelcome)
     TextView tvWelcome;
 
@@ -50,7 +49,6 @@ public class LandingActivity extends AppCompatActivity {
 
         //define Fragments and fragment manager
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         final Fragment profileFragment = new ProfileFragment();
         final Fragment opportunityFeedFragFragment = new OpportunityFeedFragment();
 
