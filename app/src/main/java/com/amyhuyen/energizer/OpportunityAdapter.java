@@ -53,7 +53,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     // bind the values based on the position of the element
     @Override
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
-        // get the data according to hte posiiton
+        // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
 
         // TODO FIX THE NPO NAME
