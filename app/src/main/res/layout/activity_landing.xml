@@ -29,14 +29,7 @@
         android:layout_margin="15dp"
         android:text="Welcome"/>
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_margin="15dp"
-        android:textAllCaps="false"/>
-        <!--android:layout_below="@id/tvWelcome"-->
+
 
 
 </RelativeLayout>

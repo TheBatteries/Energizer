@@ -6,23 +6,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class LandingActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.btnLogout) Button btnLogout; //TODO - move logout button to profile fragment
-    @BindView (R.id.tvWelcome) TextView tvWelcome;
+//    @BindView (R.id.btnLogout) Button btnLogout; //TODO - move logout button to profile fragment
+    @BindView(R.id.tvWelcome)
+    TextView tvWelcome;
 
     private FirebaseAuth firebaseAuth;
 
@@ -53,34 +50,18 @@ public class LandingActivity extends AppCompatActivity {
 
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
-        fragmentTransaction.commit();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+//        fragmentTransaction.commit(); //Amy's feed frag stuff TODO - move this somewhere else
 
         // Fragment setup
         // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = fragmentManager.beginTransaction(); //had this
         //add new fragment to our frame layout fl_profile
         ft.add(R.id.flContainer, new ProfileFragment());
         // Complete the changes added above
         ft.commit();
     }
 
-    // on click listener for logout button
-    @OnClick (R.id.btnLogout)
-    public void onLogoutClick(){
-        // log user out
-        firebaseAuth.signOut();
 
-        // log the sign out
-        if (firebaseAuth.getCurrentUser() == null){
-            Log.d("Logging Out", "User has successfully logged out");
-            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-        }
-
-        // intent to login activitt
-        Intent intent = new Intent(this, LoginActivity.class);
-        finish();
-        startActivity(intent);
-    }
 }

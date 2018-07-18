@@ -24,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -60,9 +58,8 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     //bind and create views
-    @BindView(R.id.btnLogout)
-    Button btnLogout;
-    @BindView(R.id.tv_name) TextView tv_name;
+   // @BindView(R.id.btnLogout) Button btnLogout;
+//    @BindView(R.id.tv_name) TextView tv_name; //tried moving these into onVIewCreated
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,6 +69,17 @@ public class ProfileFragment extends Fragment {
     //Adapter adapter;
     FragmentActivity listener;
 
+
+    //fires 1st, before creation of fragment or any views
+    // The onAttach method is called when the Fragment instance is associated with an Activity.
+    // This does not mean the Activity is fully initialized.
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof LandingActivity) {
+            this.listener = (LandingActivity) context;
+        }
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -91,7 +99,7 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
-    @OnClick(R.id.btnLogout)
+   @OnClick(R.id.btnLogout)
     public void onLogoutClick() {
         // log user out
         firebaseAuth.signOut();
@@ -106,21 +114,27 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
         startActivity(intent);
         //finish(); TODO - why couldn't I call finish here?
-    }
+  }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
-        //View view = inflater.inflacte(activity, layout, false);
-        //try Butterknife.bind(getActivity, view)
-        //return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //findViewById lookups
+//        @BindView(R.id.tv_name) TextView tv_name; DOESN'T WORK
+        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
+        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
+
 
         //instantiate objects
         firebaseAuth = firebaseAuth.getInstance();
@@ -128,7 +142,7 @@ public class ProfileFragment extends Fragment {
         //user = new User();
 
         // bind the views
-        ButterKnife.bind(getActivity());
+        //ButterKnife.bind(getActivity());
 
         //TODO - change second child to ID of user
         mDatabase.child("User").child("Volunteer").child("-LH_aEbSGvET2wYATfhB").child("Name").addValueEventListener(new ValueEventListener() {
@@ -136,7 +150,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
                 tv_name.setText("Name: " + name);//set the textview to have that String
-                //TODO null pointer here
+                //null pointer here IF i use butterknife
             }
 
             @Override
@@ -146,23 +160,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-   /*// TODO: Rename method, update argument and hook method into UI event
-   public void onButtonPressed(Uri uri) {
-       if (mListener != null) {
-           mListener.onFragmentInteraction(uri);
-       }
-   }*/
-
-    //fires 1st, before creation of fragment or any views
-    // The onAttach method is called when the Fragment instance is associated with an Activity.
-    // This does not mean the Activity is fully initialized.
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof LandingActivity) {
-            this.listener = (LandingActivity) context;
-        }
-    }
 
     @Override
     public void onDetach() {
@@ -184,5 +181,7 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
 
