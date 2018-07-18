@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
     FirebaseUser currentFirebaseUser;
 
     //Database for setting text according to User fields
-    private DatabaseReference mDatabase;
+    private DatabaseReference mUserDBRef;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -115,13 +115,33 @@ public class ProfileFragment extends Fragment {
 
         //instantiate objects
         firebaseAuth = firebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //TODO - evenutally you will need profile for Volunteer and Profile for NPO (hence change the text based on the DB)
+        //reference to Users on DB
+        mUserDBRef = FirebaseDatabase.getInstance().getReference("User");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = currentFirebaseUser.getUid();
-        Log.i("Profile Framgent", "getDisplayName: " + userId);
+        mUserDBRef.orderByChild(userId);
 
         //TODO - change second child to ID of user
-        mDatabase.child("User").child("Volunteer").child("UserID").child(userId).addValueEventListener(new ValueEventListener() {
+
+
+//        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+//        if (!skill1.isEmpty()){
+//            userSkills.add(skill1);
+//        }
+//        if (!skill2.isEmpty()){
+//            userSkills.add(skill2);
+//        }
+//        if (!skill3.isEmpty()){
+//            userSkills.add(skill3);
+//        }
+//        for (int i = 0; i < userSkills.size() ; i++){
+//            final int index = i;
+//            skillsRef.orderByChild("Skill").equalTo(userSkills.get(index))
+//
+
+        mUserDBRef.child("Volunteer").child("UserID").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
