@@ -47,12 +47,27 @@ public class SetSkillsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///                                                           addSkills()                                                                //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                                                                                                                       //
+    //   a method that takes the skills that the current user inputs and adds them to the data base if they are not already current skills   //
+    //   if the skill already exists then the skill is not repeated within the database                                                      //
+    //   the method also links the user's unique UID to the list of all users that have the given skill                                      //
+    //   and links the unique ID of the skill to the list of skills that the signed in user possesses                                        //
+    //                                                                                                                                       //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     private void addSkills() {
+        // create a new arraylist that will be used to hold all the skills that the user inputs
         userSkills = new ArrayList<String>();
+        // set all the skills that the user inputs to strings
         final String skill1 = userSkill1.getText().toString().trim();
         final String skill2 = userSkill2.getText().toString().trim();
         final String skill3 = userSkill3.getText().toString().trim();
+        // store the database reference to "Skill" as a shortcut
         final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        // only add the skills to the array list if the user actually put in skills -- if the user left them blank, we do not want them in the list
         if (!skill1.isEmpty()){
             userSkills.add(skill1);
         }
@@ -62,13 +77,16 @@ public class SetSkillsActivity extends AppCompatActivity {
         if (!skill3.isEmpty()){
             userSkills.add(skill3);
         }
+        // index through the arraylist to add the skills to the database and link them with the current user
         for (int i = 0; i < userSkills.size() ; i++){
+            // we need to bind our index to a final integer in order to link it to the database
             final int index = i;
+            // we now go through all the skills already in the database to see if the skill that the user input is already there or not
             skillsRef.orderByChild("Skill").equalTo(userSkills.get(index))
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                            // if the skill is already in the database then we continue through the if statement
                             if (dataSnapshot.exists()){
                                 // skill already exists in database
                                 // create hashmap for UserID
@@ -78,14 +96,17 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 // push the hashmap to the preexisting database skill
                                 firebaseData.child("UsersPerSkill").child(userSkills.get(index)).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database
+                                // we now set another listener for the exact skill in the database to find its specific id
                                 firebaseData.child("Skill").orderByChild("Skill").equalTo(userSkills.get(index)).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        // since we did a .equalTo() search, this for loop only has one element
                                         for (DataSnapshot child: dataSnapshot.getChildren()) {
+                                            // we grab the id from the skill and link it to the string skillId
                                             String skillId = child.getKey();
                                             // Create the skillID hashmap
                                             final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
-                                            // link bind skillID to the hashmap
+                                            // bind skillID to the hashmap
                                             skillIdDataMap.put("SkillID", skillId);
                                             // push the hashmap to the User's specific skill database
                                             firebaseData.child("SkillsPerUser").child(userId).push().setValue(skillIdDataMap);
@@ -97,10 +118,11 @@ public class SetSkillsActivity extends AppCompatActivity {
 
                                     }
                                 });
-
+                            // if the skill that the user input is not already in the database then we run through the else case
                             } else {
                                 // adding new skill to database
                                 // make skill into hash
+                                // create a new HashMap
                                 final HashMap<String, String> skillDataMap = new HashMap<String, String>();
                                 // bind skill to hashmap
                                 skillDataMap.put("Skill", userSkills.get(index));
@@ -113,10 +135,13 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 // create a new item within the database that links the user to this new skill
                                 firebaseData.child("UsersPerSkill").child(userSkills.get(index)).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database
+                                // we now set another listener for the exact skill in the database to find its specific id
                                 firebaseData.child("Skill").orderByChild("Skill").equalTo(userSkills.get(index)).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        // since we did a .equalTo() search, this for loop only has one element
                                         for (DataSnapshot child: dataSnapshot.getChildren()) {
+                                            // we grab the id from the skill and link it to the string skillId
                                             String skillId = child.getKey();
                                             // Create the skillID hashmap
                                             final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
