@@ -37,9 +37,10 @@ public class LandingActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
+        final Fragment commitFrag = new CommitFragment();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.replace(R.id.flContainer, commitFrag);
         fragmentTransaction.commit();
     }
 }
