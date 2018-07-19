@@ -1,19 +1,25 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,6 +46,9 @@ public class OpportunityFeedFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
+        // set up firebase database
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+
         // initialize the data source
         opportunities = new ArrayList<>();
         newOpportunities = new ArrayList<>();
@@ -53,17 +62,14 @@ public class OpportunityFeedFragment extends Fragment {
         // set the adapter
         rvOpps.setAdapter(oppAdapter);
 
-        // set up firebase database
-        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
-
         // get the opportunities (for on launch)
-        getOpportunities();
+        fetchOpportunities();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getOpportunities();
+                fetchOpportunities();
             }
         });
 
@@ -74,24 +80,35 @@ public class OpportunityFeedFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    // method that gets the posts
-    public void getOpportunities(){
-        // TODO FAKE OPPORTUNITIES (fix later)
-        newOpportunities.clear();
 
-        newOpportunities.add(new Opportunity("Opp1", "description 1"));
-        newOpportunities.add(new Opportunity("Opp2", "description 2"));
-        newOpportunities.add(new Opportunity("Opp3", "description 3"));
-        newOpportunities.add(new Opportunity("Opp4", "description 4"));
-        newOpportunities.add(new Opportunity("Opp5", "description 5"));
-        newOpportunities.add(new Opportunity("Opp6", "description 6"));
-        newOpportunities.add(new Opportunity("Opp7", "description 7"));
-        newOpportunities.add(new Opportunity("Opp8", "description 8"));
-        newOpportunities.add(new Opportunity("Opp9", "description 9"));
+    // method to get data from firebase
+    private void fetchOpportunities(){
+        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
 
-        oppAdapter.clear();
-        oppAdapter.addAll(newOpportunities);
-        swipeContainer.setRefreshing(false);
+        firebaseDataOpp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                newOpportunities.clear();
+                mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
 
+                // iterate through mapping and create and add opportunities
+                for (String oppId: mapping.keySet()) {
+                    Opportunity newOpp = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"), oppId);
+                    newOpportunities.add(newOpp);
+                }
+
+                oppAdapter.clear();
+                oppAdapter.addAll(newOpportunities);
+
+                // stop the refreshing
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("getData", databaseError.toString());
+            }
+        });
     }
+
 }

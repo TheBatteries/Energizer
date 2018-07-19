@@ -1,7 +1,10 @@
 package com.amyhuyen.energizer;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -26,7 +31,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         context = activity;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         // the views
         public @BindView (R.id.tvOppName) TextView tvOppName;
@@ -37,6 +42,34 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
             super(itemView);
             // bind the views
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        // on click listener for individual opportunities; click launches details fragment
+        @Override
+        public void onClick(View view) {
+            // get the item position
+            int position = getAdapterPosition();
+            // make sure the position is valid
+            if (position != RecyclerView.NO_POSITION) {
+                // get the opportunity at that position
+                Opportunity opportunity = mOpportunities.get(position);
+
+                // create a bundle to hold the opportunity for transfer to details fragment
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Opportunity", Parcels.wrap(opportunity));
+
+
+                // switch the fragments and wrap the opportunity in a bundle
+                FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                OpportunitiesDetailFragment oppDetailFrag = new OpportunitiesDetailFragment();
+                oppDetailFrag.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.flContainer, oppDetailFrag);
+                fragmentTransaction.addToBackStack(null).commit();
+            }
         }
     }
 
@@ -53,10 +86,10 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     // bind the values based on the position of the element
     @Override
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
-        // get the data according to hte posiiton
+        // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
 
-        // TODO FIX THE NPO NAME
+        // TODO fix NPO name
         // populate the views
         holder.tvOppName.setText(opp.getName());
         holder.tvNpoName.setText("NPO Name");

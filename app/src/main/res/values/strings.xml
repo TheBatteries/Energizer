@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">Energizer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_registration">User Registration</string>
+    <string name="register_message">I am a...</string>
+    <string name="volunteer">Volunteer</string>
+    <string name="non_profit">Non-profit</string>
+    <string name="login">Already have an account? Login</string>
+    <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="volunteer_registration">Volunteer Registration</string>
+    <string name="non_profit_registration">Non-profit Registration</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="age">Age</string>
+    <string name="phone">Phone</string>
     <string name="your_profile">Your user profile</string>
 </resources>
