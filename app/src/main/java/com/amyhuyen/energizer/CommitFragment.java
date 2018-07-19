@@ -30,10 +30,8 @@ import butterknife.ButterKnife;
 public class CommitFragment extends Fragment {
 
     // the views
-    @BindView(R.id.rvOpps)
-    RecyclerView rvOpps;
-    @BindView (R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvOpps) RecyclerView rvOpps;
+    @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
     List<String> oppIdList;
