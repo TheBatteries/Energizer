@@ -12,11 +12,13 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    @BindView (R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,27 +40,40 @@ public class LandingActivity extends AppCompatActivity {
         }
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment profileFragment = new ProfileFragment();
+        final Fragment profileFrag = new ProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
         final Fragment commitFrag = new CommitFragment();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        // handle the initial fragment transaction
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.commit();
 
+
+        // handle the bottom navigation bar switching
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+
+                // define all the possible fragment transactions
                 switch (item.getItemId()) {
+                    case R.id.ic_action_commits:
+                        selectedFragment = commitFrag;
+                        break;
                     case R.id.ic_action_profile:
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
-                        return true;
+                        selectedFragment = profileFrag;
+                        break;
                     case R.id.ic_action_feed:
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag).commit();
-                        return true;
-                    default:
-                        return false;
+                        selectedFragment = opportunityFeedFrag;
+                        break;
                 }
+
+                // handle the fragment transaction
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, selectedFragment);
+                fragmentTransaction.commit();
+                return true;
             }
         });
     }

@@ -100,7 +100,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     @Override
     public int getItemCount(){ return mOpportunities.size();}
 
-    // clean all elements of the recycler
+    // clear all elements in the recycler
     public void clear(){
         mOpportunities.clear();
         notifyDataSetChanged();

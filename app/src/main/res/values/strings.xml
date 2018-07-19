@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Energizer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_registration">User Registration</string>
     <string name="register_message">I am a...</string>
     <string name="volunteer">Volunteer</string>
@@ -18,4 +16,7 @@
     <string name="age">Age</string>
     <string name="phone">Phone</string>
     <string name="your_profile">Your user profile</string>
+    <string name="opportunities">Opportunities</string>
+    <string name="my_commitments">My Commits</string>
+    <string name="profile">Profile</string>
 </resources>

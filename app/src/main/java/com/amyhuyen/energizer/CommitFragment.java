@@ -97,6 +97,7 @@ public class CommitFragment extends Fragment {
         dataOppPerUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                oppIdList.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()){
                     final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
                     for (String intermediateId : myOppMapping.keySet()){
@@ -125,6 +126,7 @@ public class CommitFragment extends Fragment {
         dataOpp.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                newOpportunities.clear();
                 final HashMap<String, HashMap<String,String>> allOpps = (HashMap<String, HashMap<String,String>>) dataSnapshot.getValue();
 
                 // iterate through the oppIds and turn them back into opportunities
