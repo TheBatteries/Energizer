@@ -93,7 +93,6 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,91 +115,23 @@ public class ProfileFragment extends Fragment {
         //instantiate objects
         firebaseAuth = firebaseAuth.getInstance();
 
-        //TODO - evenutally you will need profile for Volunteer and Profile for NPO (hence change the text based on the DB)
+        //TODO - evenutally you will need profile for Volunteer and Profile for NPO (hence change the text based on the DB). Come back fill in TextViews once you have user class.
         //reference to Users on DB
         mDBRef = FirebaseDatabase.getInstance().getReference();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseData = FirebaseDatabase.getInstance().getReference();
 
         String userId = currentFirebaseUser.getUid();
-        //mDBRef.orderByChild(userId);
 
-        //TODO - change second child to ID of user
-        ////////////Aaron's:
-//
-//        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        firebaseData = FirebaseDatabase.getInstance().getReference();
-//        userId = currentFirebaseUser.getUid();
-//
-//
-//        // bind the views
-//        ButterKnife.bind(this);
-//    }
-//
-//    private void addSkills() {
-//        userSkills = new ArrayList<String>();
-//        final String skill1 = userSkill1.getText().toString().trim();
-//        final String skill2 = userSkill2.getText().toString().trim();
-//        final String skill3 = userSkill3.getText().toString().trim();
-//        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
-//        if (!skill1.isEmpty()){
-//            userSkills.add(skill1);
-//        }
-//        if (!skill2.isEmpty()){
-//            userSkills.add(skill2);
-//        }
-//        if (!skill3.isEmpty()){
-//            userSkills.add(skill3);
-//        }
-//        for (int i = 0; i < userSkills.size() ; i++){
-//            final int index = i;
-//            skillsRef.orderByChild("Skill").equalTo(userSkills.get(index))
-//                    .addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                            if (dataSnapshot.exists()){
-//                                // skill already exists in database
-//                                // create hashmap for UserID
-//                                final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-//                                // put UserID into the hashmap
-//                                userIdDataMap.put("UserID", userId);
-//                                // push the hashmap to the preexisting database skill
-//                                firebaseData.child("UsersPerSkill").child(userSkills.get(index)).push().setValue(userIdDataMap);
-//                                // get the skill object ID from the database
-//                                firebaseData.child("Skill").orderByChild("Skill").equalTo(userSkills.get(index)).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                        for (DataSnapshot child: dataSnapshot.getChildren()) {
-//   ///////////////                          String skillId = child.getKey();
-//                                            // Create the skillID hashmap
-//                                            final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
-//                                            // link bind skillID to the hashmap
-//                                            skillIdDataMap.put("SkillID", skillId);
-//                                            // push the hashmap to the User's specific skill database
-//                                            firebaseData.child("SkillsPerUser").child(userId).push().setValue(skillIdDataMap);
-//                                        }
-//                                    }
-
-        mDBRef.child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
+        mDBRef.child("User").child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //mUserDBRef.orderByChild("Volunteer");
-                //dataSnapshot.getChildren();
-                String volunteerID = dataSnapshot.getKey();
-                String name = dataSnapshot.getValue().toString(); //get the String for User's name -- need to get the ID for the specific Volunteer
-                tv_name.setText("Name: " + name);//set the textview to have that String
-                //null pointer here IF i use butterknife
 
                 //////////////////experimenting:
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    String volunteerID = child.getKey();
-                    String name = firebaseData.child(volunteerID).child("Name").getValue().toString();
-
-                }
-
-
-
+                String volunteerID = dataSnapshot.getKey();
+//                    String name = mDBRef.child("User").child("Volunteer").child(volunteerID).child("Name").toString();
+                String name = "User's Name.";
+                tv_name.setText("Name: " + name);//set the textview to have that String
+                //null pointer here IF i use butterknife
             }
 
             @Override
