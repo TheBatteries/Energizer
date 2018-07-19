@@ -78,6 +78,7 @@ public class VolRegActivity extends AppCompatActivity {
         userDataMap.put("Name", name);
         userDataMap.put("Age", age);
         userDataMap.put("Phone", phone);
+        userDataMap.put("UserType", "volunteer");
 
         // Send Hash to DataBase and, when complete, fire intent to logout page
         firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);

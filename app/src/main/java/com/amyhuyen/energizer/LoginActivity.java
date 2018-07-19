@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
                             // intent to landing activity
-                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), VolunteerLandingActivity.class);
                             finish();
                             startActivity(intent);
 

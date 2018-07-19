@@ -72,8 +72,8 @@ public class NpoProfileFragment extends Fragment {
         @Override
         public void onAttach(Context context) {
             super.onAttach(context);
-            if (context instanceof LandingActivity) {
-                this.listener = (LandingActivity) context;
+            if (context instanceof VolunteerLandingActivity) {
+                this.listener = (VolunteerLandingActivity) context;
             }
         }
 

@@ -61,7 +61,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
 
                 // switch the fragments and wrap the opportunity in a bundle
-                FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((VolunteerLandingActivity) context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 OpportunitiesDetailFragment oppDetailFrag = new OpportunitiesDetailFragment();

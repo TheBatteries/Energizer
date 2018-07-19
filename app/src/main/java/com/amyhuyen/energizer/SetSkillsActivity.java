@@ -174,7 +174,7 @@ public class SetSkillsActivity extends AppCompatActivity {
     public void onRegisterClick(){
         // register the user
         addSkills();
-        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+        Intent intent = new Intent(getApplicationContext(), VolunteerLandingActivity.class);
         finish();
         startActivity(intent);
     }
