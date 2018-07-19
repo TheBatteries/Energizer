@@ -6,11 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".LandingActivity">
 
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/menu_bottom_navegation" />
 
     <FrameLayout
         android:id = "@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textAlignment="center"
+        android:layout_margin="15dp"
+        android:text="Welcome"/>
 
 </RelativeLayout>
