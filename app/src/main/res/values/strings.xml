@@ -17,5 +17,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="age">Age</string>
     <string name="phone">Phone</string>
-    <string name="your_profile">Your user profile</string>
+    <string name="your_npo_profile">Your npo profile</string>
+    <string name="your_volunteer_profile">Your volunteer profile</string>
 </resources>

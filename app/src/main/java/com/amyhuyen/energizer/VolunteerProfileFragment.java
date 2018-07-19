@@ -28,16 +28,16 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
+ * {@link VolunteerProfileFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
+ * Use the {@link VolunteerProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 //TODO change all findViewByIds and OnClick listeners to butterknife style and call finish() as marked
 
-public class ProfileFragment extends Fragment {
+public class VolunteerProfileFragment extends Fragment {
 
-    public ProfileFragment() {
+    public VolunteerProfileFragment() {
     }// Required empty public constructor
 
     //TODO - create a user
@@ -83,8 +83,8 @@ public class ProfileFragment extends Fragment {
      * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static VolunteerProfileFragment newInstance(String param1, String param2) {
+        VolunteerProfileFragment fragment = new VolunteerProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_profile_volunteer, container, false);
     }
 
     @Override
@@ -106,6 +106,8 @@ public class ProfileFragment extends Fragment {
 
         //findViewById lookups
         final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
+        //final TextView tv_email = (TextView) view.findViewById(R.id.tv_email); //WORKS
+
         Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
 //        @BindView(R.id.tv_name) TextView tv_name; DOESN'T WORK
 
@@ -119,18 +121,20 @@ public class ProfileFragment extends Fragment {
         //reference to Users on DB
         mDBRef = FirebaseDatabase.getInstance().getReference();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String userId = currentFirebaseUser.getUid();
 
-        String userId = currentFirebaseUser.getUid();
+        //check to see
 
-        mDBRef.child("User").child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
+        mDBRef.child("User").child("Volunteer").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //////////////////experimenting:
-                String volunteerID = dataSnapshot.getKey();
-//                    String name = mDBRef.child("User").child("Volunteer").child(volunteerID).child("Name").toString();
-                String name = "User's Name.";
-                tv_name.setText("Name: " + name);//set the textview to have that String
+                //TODO - should work once Ids are flipped in DB
+//                String name = mDBRef.child("User").child("Volunteer").child(userId).child("Name").toString();
+//                tv_name.setText("Name: " + name);//set the textview to have that String
+//
+//                String email = mDBRef.child("User").child("NPO").child(userId).child("Email").toString();
+
                 //null pointer here IF i use butterknife
             }
 
@@ -198,6 +202,5 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }
 

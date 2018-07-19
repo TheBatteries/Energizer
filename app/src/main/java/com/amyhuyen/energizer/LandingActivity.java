@@ -8,15 +8,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
+
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentFirebaseUser;
+    private DatabaseReference mDBUserRef;
+    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +37,13 @@ public class LandingActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
+        //get info on current user
         firebaseAuth = firebaseAuth.getInstance();
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
         // check to see if user is already logged in
-        if (firebaseAuth.getCurrentUser() == null){
+        if (firebaseAuth.getCurrentUser() == null) {
 
             // intent to login activity
             Intent intent = new Intent(this, LoginActivity.class);
@@ -37,8 +51,10 @@ public class LandingActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        //instantiate fragments
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment profileFragment = new ProfileFragment();
+        final Fragment volunteerProfileFragment = new VolunteerProfileFragment();
+        final Fragment npoProfileFragment = new NpoProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -48,11 +64,22 @@ public class LandingActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.ic_action_profile:
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
-                        return true;
+
+                        //check to see whether current user is NPO or Volunteer
+
+                        if ((getUserType()).equals("NPO")) {
+
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.flContainer, npoProfileFragment).commit(); //use NPOProfileFragment
+                            return true;
+                        } else {
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.flContainer, volunteerProfileFragment).commit(); //user volunteerProfileFragment
+                            return true;
+                        }
                     case R.id.ic_action_feed:
-                        fragmentTransaction = fragmentManager.beginTransaction();
+                        //TODO - add if else to check Volunteer or NPO, and take them to respective feed
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag).commit();
                         return true;
                     default:
@@ -62,21 +89,20 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 
-    // on click listener for logout button
-//    @OnClick (R.id.btnLogout)
-//    public void onLogoutClick(){
-//        // log user out
-//        firebaseAuth.signOut();
-//
-//        // log the sign out
-//        if (firebaseAuth.getCurrentUser() == null){
-//            Log.d("Logging Out", "User has successfully logged out");
-//            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // intent to login activitt
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        finish();
-//        startActivity(intent);
-//    }
+    public String getUserType() {
+        final String pushID = mDBUserRef.push().getKey();
+
+        mDBUserRef.child(pushID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //not entering...because data not changed?
+               userType = dataSnapshot.getValue().toString();
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("LandingActivity", "Failed to get user type");
+                    userType = "failed to get user Type";
+                }
+        });
+        return userType;
+    }
 }
