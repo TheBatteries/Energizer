@@ -40,6 +40,7 @@ public class LandingActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment profileFragment = new ProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
+        final Fragment commitFrag = new CommitFragment();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -61,22 +62,4 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
-
-    // on click listener for logout button
-//    @OnClick (R.id.btnLogout)
-//    public void onLogoutClick(){
-//        // log user out
-//        firebaseAuth.signOut();
-//
-//        // log the sign out
-//        if (firebaseAuth.getCurrentUser() == null){
-//            Log.d("Logging Out", "User has successfully logged out");
-//            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // intent to login activitt
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        finish();
-//        startActivity(intent);
-//    }
 }

@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class OpportunityFeedFragment extends Fragment {
 
+    // the views
     @BindView (R.id.rvOpps) RecyclerView rvOpps;
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
@@ -97,6 +98,7 @@ public class OpportunityFeedFragment extends Fragment {
                     newOpportunities.add(newOpp);
                 }
 
+                // clear the adapter and add newly fetched opportunities
                 oppAdapter.clear();
                 oppAdapter.addAll(newOpportunities);
 
@@ -106,7 +108,7 @@ public class OpportunityFeedFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("getData", databaseError.toString());
+                Log.e("fetchOpportunities", databaseError.toString());
             }
         });
     }
