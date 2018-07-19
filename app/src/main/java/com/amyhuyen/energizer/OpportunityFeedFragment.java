@@ -93,7 +93,7 @@ public class OpportunityFeedFragment extends Fragment {
 
                 // iterate through mapping and create and add opportunities
                 for (String oppId: mapping.keySet()) {
-                    Opportunity newOpp = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"));
+                    Opportunity newOpp = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"), oppId);
                     newOpportunities.add(newOpp);
                 }
 
