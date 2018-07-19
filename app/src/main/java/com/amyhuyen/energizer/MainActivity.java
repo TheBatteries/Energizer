@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.tvLogin)
     public void onLoginClick(){
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        finish();
         startActivity(intent);
     }
 }

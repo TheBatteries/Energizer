@@ -68,7 +68,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 oppDetailFrag.setArguments(bundle);
 
                 fragmentTransaction.replace(R.id.flContainer, oppDetailFrag);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         }
     }
