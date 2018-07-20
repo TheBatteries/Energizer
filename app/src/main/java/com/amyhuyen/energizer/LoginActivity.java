@@ -17,11 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private FirebaseUser currentFirebaseUser;
     private DatabaseReference mDBUserRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+        currentFirebaseUser = firebaseAuth.getCurrentUser();
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
@@ -103,33 +103,37 @@ public class LoginActivity extends AppCompatActivity {
     // on click listener for login button
     @OnClick (R.id.btnLogin)
     public void onLoginClick(){
-        getUserType()
+        User user = new User (currentFirebaseUser, mDBUserRef);
+        user.getUserType();
+        Log.i("LoginActivity", "user name: " + user.getName());
+        Log.i("LoginActivity", "user type: " + user.getUserType());
+        Log.i("LoginActivity", "user email: " + user.getEmail());
         userLogin();
     }
 
     // on click listener for signup button
     @OnClick (R.id.tvSignUp)
     public void onSignUpClick(){
-        // intent to signup activity
+        // intent to signup activitys
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
     }
 
-    public String getUserType() {
-        String userType;
-        mDBUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                String userType = user.getUserType();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LoginActivity", "Failed to get user type.");
-            }
-        });
-        return userType;
-    }
+//    public String getUserType() {
+//        String userType;
+//        mDBUserRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                String userType = user.getUserType();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("LoginActivity", "Failed to get user type.");
+//            }
+//        });
+//        return userType;
+//    }
 }

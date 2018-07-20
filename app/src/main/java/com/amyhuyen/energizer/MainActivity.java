@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btnNonProfit) Button btnNonProfit;
     @BindView(R.id.btnVolunteer) Button btnVolunteer;
 
-
-
     private FirebaseAuth firebaseAuth;
     private CallbackManager mCallbackManager;
     private LoginButton loginButton;
