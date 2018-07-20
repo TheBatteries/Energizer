@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -31,15 +33,19 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.etEmail) EditText etEmail;
-    @BindView (R.id.etPassword) EditText etPassword;
-    @BindView (R.id.btnLogin) Button btnLogin;
-    @BindView (R.id.tvSignUp) TextView tvSignUp;
+    @BindView(R.id.etEmail)
+    EditText etEmail;
+    @BindView(R.id.etPassword)
+    EditText etPassword;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
+    @BindView(R.id.tvSignUp)
+    TextView tvSignUp;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
-    private DatabaseReference mDBUserRef;
+    private DatabaseReference mDbNPORef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+        mDbNPORef = FirebaseDatabase.getInstance().getReference().child("User").child("NPO");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 //        // check if user already is logged in (if so, launch landing activity)
 //        if (firebaseAuth.getCurrentUser() != null){
-            //check user type here
+        //check user type here
 //            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
 //            finish();
 //            startActivity(intent);
@@ -64,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    private void userLogin(){
+    private void userLogin() {
 
         //ADD method for deciding usertype
 
@@ -72,12 +78,12 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         // checking if email and password are empty
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             // email is empty
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             // password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
@@ -92,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
                             // intent to landing activity
@@ -101,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                             startActivity(intent);
 
-                        } else{
+                        } else {
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -109,48 +115,42 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // on click listener for login button
-    @OnClick (R.id.btnLogin)
-    public void onLoginClick(){
+    @OnClick(R.id.btnLogin)
+    public void onLoginClick() {
+        getUserType();
         userLogin();
     }
 
     // on click listener for signup button
-    @OnClick (R.id.tvSignUp)
-    public void onSignUpClick(){
+    @OnClick(R.id.tvSignUp)
+    public void onSignUpClick() {
         // intent to signup activity
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
     }
 
+
     public String getUserType() {
         String userType;
         final String userId = currentFirebaseUser.getUid();
         final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-
-        mDBUserRef.addValueEventListener(new ValueEventListener() {
+        mDbNPORef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //TODO - most of this is pulled from elsewhere
-
                 mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
-
-                // iterate through mapping and create and add opportunities
-                for (String UserID: mapping.keySet()) {
-                    String UserType = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"), oppId);
-                    //not pointing to what I want, but similar logic
+                if (mapping.containsKey(userId)) {
+                    userType = "NPO";
+                } else {
+                    userType = "Volunteer";
                 }
-
             }
-
-        //get the list of Volunteers
-        //check to see if any element in VolunteersList matches the userId
-        //if yes, return volunteer. else, return NPO
-
-
-
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("LoginActivity", "Error getting user type");
+            }
+        });
         return userType;
     }
 }
+
