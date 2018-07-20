@@ -45,9 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
+        //had firebaseAuth and currentFIrebaseUser instantiated here
         firebaseAuth = FirebaseAuth.getInstance();
+
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-        currentFirebaseUser = firebaseAuth.getCurrentUser();
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
@@ -59,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-
     private void userLogin(){
+
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -88,6 +89,13 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
+
+                            User user = new User(firebaseAuth, mDBUserRef);
+                            user.getUserType();
+                            Log.i("LoginActivity", "user name: " + user.getName());
+                            Log.i("LoginActivity", "user type: " + user.getUserType());
+                            Log.i("LoginActivity", "user email: " + user.getEmail());
+
                             // intent to landing activity
                             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                             finish();
@@ -98,23 +106,24 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        //currentFirebaseUser = firebaseAuth.getCurrentUser();
+
+        //User user = new User (currentFirebaseUser, mDBUserRef);
+
     }
 
     // on click listener for login button
     @OnClick (R.id.btnLogin)
     public void onLoginClick(){
-        User user = new User (currentFirebaseUser, mDBUserRef);
-        user.getUserType();
-        Log.i("LoginActivity", "user name: " + user.getName());
-        Log.i("LoginActivity", "user type: " + user.getUserType());
-        Log.i("LoginActivity", "user email: " + user.getEmail());
         userLogin();
+
     }
 
     // on click listener for signup button
     @OnClick (R.id.tvSignUp)
     public void onSignUpClick(){
-        // intent to signup activitys
+        // intent to signup activities
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
