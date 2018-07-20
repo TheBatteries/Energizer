@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VolRegActivity extends AppCompatActivity {
+    //https://energizer-33c32.firebaseapp.com/__/auth/handler
 
     // the views
     @BindView (R.id.etEmail) EditText etEmail;
@@ -36,20 +39,27 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.btnRegister) Button btnRegister;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
+    //@BindView (R.id.login_button) LoginButton loginButton;
 
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseData;
     private String userId;
+    private CallbackManager callbackManager;
+    private LoginButton loginButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vol_reg);
+        loginButton = findViewById(R.id.login_button);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
+        callbackManager = CallbackManager.Factory.create();
+        //loginButton.setReadPermissions(Arrays.asList("email"));
+
 
 
 //        // check if user already is logged in (if so, launch landing activity)
@@ -66,6 +76,12 @@ public class VolRegActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private void addUserData(String email, String name, String age, String phone) {
 
@@ -80,7 +96,7 @@ public class VolRegActivity extends AppCompatActivity {
         userDataMap.put("Phone", phone);
 
         // Send Hash to DataBase and, when complete, fire intent to logout page
-        firebaseData.child("User").child("Volunteer").push().setValue(userDataMap);
+        firebaseData.child("User").child("Volunteer").child(userId).setValue(userDataMap);
     }
 
     private void registerUser(){
@@ -131,6 +147,7 @@ public class VolRegActivity extends AppCompatActivity {
         }
     }
 
+
     // on click listener for register button
     @OnClick(R.id.btnRegister)
     public void onRegisterClick(){
@@ -145,4 +162,6 @@ public class VolRegActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
+
+
 }

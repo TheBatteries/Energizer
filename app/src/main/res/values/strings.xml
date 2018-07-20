@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Energizer</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_registration">User Registration</string>
     <string name="register_message">I am a...</string>
     <string name="volunteer">Volunteer</string>
@@ -19,4 +21,6 @@
     <string name="opportunities">Opportunities</string>
     <string name="my_commitments">My Commits</string>
     <string name="profile">Profile</string>
+    <string name="facebook_app_id">1830237923699201</string>
+    <string name="fb_login_protocol_scheme">fb1830237923699201</string>
 </resources>
