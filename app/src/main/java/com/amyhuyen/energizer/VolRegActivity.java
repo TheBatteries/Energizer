@@ -62,12 +62,12 @@ public class VolRegActivity extends AppCompatActivity {
 
 
 
-//        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -105,7 +105,7 @@ public class VolRegActivity extends AppCompatActivity {
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String age = etAge.getText().toString().trim();
-        final String phone = etAge.getText().toString().trim();
+        final String phone = etPhone.getText().toString().trim();
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
                 TextUtils.isEmpty(age)|| TextUtils.isEmpty(phone)){
