@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
-    private DatabaseReference mDbNPORef;
+    // private DatabaseReference mDbNPORef;
+    private DatabaseReference mDBUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mDbNPORef = FirebaseDatabase.getInstance().getReference().child("User").child("NPO");
+        //mDbNPORef = FirebaseDatabase.getInstance().getReference().child("User").child("NPO");
+        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 //        // check if user already is logged in (if so, launch landing activity)
@@ -130,27 +130,46 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public String getUserType() {
         String userType;
-        final String userId = currentFirebaseUser.getUid();
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-        mDbNPORef.addValueEventListener(new ValueEventListener() {
+        mDBUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
-                if (mapping.containsKey(userId)) {
-                    userType = "NPO";
-                } else {
-                    userType = "Volunteer";
-                }
+                User user = dataSnapshot.getValue(User.class);
+                String userType = user.getUserType();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LoginActivity", "Error getting user type");
+                Log.d("LoginActivity", "Failed to get user type.");
             }
         });
         return userType;
     }
 }
+
+
+////May not need this if I can do it inside user class
+//    public String getUserType() {
+//        String userType;
+//        final String userId = currentFirebaseUser.getUid();
+//        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
+//        mDbNPORef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
+//                if (mapping.containsKey(userId)) {
+//                    userType = "NPO";
+//                } else {
+//                    userType = "Volunteer";
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("LoginActivity", "Error getting user type");
+//            }
+//        });
+//        return userType;
+//    }
+
 
