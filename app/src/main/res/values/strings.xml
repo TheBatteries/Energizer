@@ -18,4 +18,9 @@
     <string name="age">Age</string>
     <string name="phone">Phone</string>
     <string name="your_profile">Your user profile</string>
+    <string name="opportunities">Opportunities</string>
+    <string name="my_commitments">My Commits</string>
+    <string name="profile">Profile</string>
+    <string name="facebook_app_id">1830237923699201</string>
+    <string name="fb_login_protocol_scheme">fb1830237923699201</string>
 </resources>

@@ -41,15 +41,16 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-//        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
     }
+
 
     private void userLogin(){
         String email = etEmail.getText().toString().trim();
