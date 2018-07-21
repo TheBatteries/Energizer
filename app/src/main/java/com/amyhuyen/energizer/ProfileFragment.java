@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +41,8 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
     }// Required empty public constructor
 
-    //TODO - create a user
+    //Our User
+    User user;
 
     //Firebase authorization
     private FirebaseAuth firebaseAuth;
@@ -48,15 +50,12 @@ public class ProfileFragment extends Fragment {
 
     //Database for setting text according to User fields
     private DatabaseReference mDBRef;
+    private DatabaseReference mDBUserRef;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
     //Adapter adapter;
@@ -107,17 +106,18 @@ public class ProfileFragment extends Fragment {
         //findViewById lookups
         final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
         Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
-//        @BindView(R.id.tv_name) TextView tv_name; DOESN'T WORK
+//        @BindView(R.id.tv_name) TextView tv_name; //DOESN'T WORK
 
         // bind the views
         //ButterKnife.bind(getActivity());
 
         //instantiate objects
         firebaseAuth = firebaseAuth.getInstance();
+        user = new User (firebaseAuth, mDBUserRef);
 
-        //TODO - evenutally you will need profile for Volunteer and Profile for NPO (hence change the text based on the DB). Come back fill in TextViews once you have user class.
         //reference to Users on DB
         mDBRef = FirebaseDatabase.getInstance().getReference();
+        mDBUserRef = FirebaseDatabase.getInstance().getReference();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String userId = currentFirebaseUser.getUid();
@@ -126,9 +126,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //////////////////experimenting:
-                String volunteerID = dataSnapshot.getKey();
-//                    String name = mDBRef.child("User").child("Volunteer").child(volunteerID).child("Name").toString();
                 String name = "User's Name.";
                 tv_name.setText("Name: " + name);//set the textview to have that String
                 //null pointer here IF i use butterknife
