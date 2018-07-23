@@ -19,8 +19,6 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +41,6 @@ public class ProfileFragment extends Fragment {
     //Firebase authorization
     private FirebaseAuth firebaseAuth;
     FirebaseUser currentFirebaseUser;
-    private DatabaseReference mDBUserRef;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,7 +101,6 @@ public class ProfileFragment extends Fragment {
         //ButterKnife.bind(getActivity());
 
         //instantiate objects
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
 

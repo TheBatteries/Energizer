@@ -29,9 +29,7 @@ public class LandingActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDBUserRef;
     private FirebaseUser currentFirebaseUser;
-//    private String userID;
-//    private String userType;
-//    private User user;
+    private User user;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -46,7 +44,6 @@ public class LandingActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-//        userID = currentFirebaseUser.getUid();
 
         mDBUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,7 +62,6 @@ public class LandingActivity extends AppCompatActivity {
         //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
 //        Bundle userBundle = new Bundle();
 //        userBundle.putSerializable("User Object", Parcels.wrap(user));
-
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment profileFrag = new ProfileFragment();

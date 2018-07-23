@@ -28,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.parceler.Parcels;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -137,26 +139,21 @@ public class VolRegActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(VolRegActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
 
-                                    // intent to the landing activity
-                                    Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    finish();
-                                    startActivity(intent);
-
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
                                     addUserData(age, email, name, phone, userID, userType);
 
                                     User user = new User(age, email, name, phone, userID, userType);
-                                    Log.i("VolRegActivity", "age:" + user.getAge());
-                                    Log.i("VolRegActivity", "email:" + user.getEmail());
-                                    Log.i("VolRegActivity", "name:" + user.getName());
-                                    Log.i("VolRegActivity", "phone:" + user.getPhone());
-                                    Log.i("VolRegActivity", "userID:" + user.getUserID());
-                                    Log.i("VolRegActivity", "userType:" + user.getUserType());
 
 
                                     firebaseData.child("User").child(userID).setValue(user);
+
+                                    // intent to the landing activity
+                                    Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
+                                    intent.putExtra("UserObject", Parcels.wrap(user));
+                                    startActivity(intent);
+                                    finish();
 
                                 } else {
                                     Toast.makeText(VolRegActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
