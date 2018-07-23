@@ -29,9 +29,9 @@ public class LandingActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDBUserRef;
     private FirebaseUser currentFirebaseUser;
-    private String userID;
-    private String userType;
-    private User user;
+//    private String userID;
+//    private String userType;
+//    private User user;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -46,50 +46,20 @@ public class LandingActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-        userID = currentFirebaseUser.getUid();
+//        userID = currentFirebaseUser.getUid();
 
-
-        ValueEventListener userListener = new ValueEventListener() {
+        mDBUserRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                Log.i("LandingActivity", "user name: " + user.getName());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("LandingActivity", "unable to load User");
             }
-        };
-        mDBUserRef.addValueEventListener(userListener);
-
-        ///////////////this got type of User with old User class structure
-//        //search through volunteer list and see if current userID is in that list. If yes, current user is VOl. else, current user is NPO.
-//        mDBUserRef.child("Volunteer").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                // bind the views
-//
-//                userID = currentFirebaseUser.getUid();
-//                mapping.putAll((HashMap<String, HashMap<String, String>>)dataSnapshot.getValue());
-//                if(mapping.containsKey(userID))
-//
-//                {
-//                    userType = "Volunteer";
-//                    user = new User(firebaseAuth, mDBUserRef, userType);
-//
-//                } else
-//
-//                {
-//                    userType = "NPO";
-//                    user = new User(firebaseAuth, mDBUserRef, userType);
-//                }
-//                Log.i("LandingActivity", userType);
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d(this.getClass().toString(), "Falied to get datasnapshot");
-//            }
-//        });
+        });
 
         //TODO - START HERE - pass User object to profile frgament -- might need an IF to also pass it to subclass fragments?
         //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)

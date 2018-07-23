@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,15 +59,15 @@ public class LoginActivity extends AppCompatActivity {
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
         // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null) {
-//            Log.i("LoginActivity", "user name: " + user.getName());
-//            Log.i("LoginActivity", "user type: " + user.getUserType());
-//            Log.i("LoginActivity", "user email: " + user.getEmail());
-//
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        if (firebaseAuth.getCurrentUser() != null) {
+            Log.i("LoginActivity", "user name: " + user.getName());
+            Log.i("LoginActivity", "user type: " + user.getUserType());
+            Log.i("LoginActivity", "user email: " + user.getEmail());
+
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
     }
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                             // intent to landing activity
                             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                             startActivity(intent);
-//        finish();
+                            finish();
                         } else
 
                         {
@@ -127,24 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-
 }
 
-
-//    public String getUserType() {
-//        String userType;
-//        mDBUserRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                String userType = user.getUserType();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("LoginActivity", "Failed to get user type.");
-//            }
-//        });
-//        return userType;
-//    }
 

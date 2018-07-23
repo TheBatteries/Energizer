@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,12 +71,12 @@ public class VolRegActivity extends AppCompatActivity {
         //loginButton.setReadPermissions(Arrays.asList("email"));
 
 
-//        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -89,26 +92,24 @@ public class VolRegActivity extends AppCompatActivity {
     }
 
 
-//    private void addUserData(String age, String email, String name, String phone, String userID, String userType) {
-//        userID = firebaseAuth.getCurrentUser().getUid();
-//
-//
-//        //OLD DB STRUCTURE -  adding new user
-////        // Database Hashmap
-////        final HashMap<String, String> userDataMap = new HashMap<>();
-////
-////        // Bind user data to HashMap
-////        userDataMap.put("UserID", userId);
-////        userDataMap.put("Email", email);
-////        userDataMap.put("Name", name);
-////        userDataMap.put("Age", age);
-////        userDataMap.put("Phone", phone);
-////
-////        // Send Hash to DataBase and, when complete, fire intent to logout page
-////        firebaseData.child("User").child("Volunteer").child(userId).setValue(userDataMap);
-//
-//
-//    }
+    private void addUserData(String age, String email, String name, String phone, String UserID, String userType) {
+        userID = firebaseAuth.getCurrentUser().getUid();
+
+
+        // Database Hashmap
+        final HashMap<String, String> userDataMap = new HashMap<>();
+
+        // Bind user data to HashMap
+        userDataMap.put("Email", email);
+        userDataMap.put("Name", name);
+        userDataMap.put("Age", age);
+        userDataMap.put("Phone", phone);
+        userDataMap.put("UserID", userID);
+        userDataMap.put("UserType", userType);
+
+        // Send Hash to DataBase and, when complete, fire intent to logout page
+        firebaseData.child("User").child(userID).setValue(userDataMap);
+    }
 
     private void registerUser() {
         final String name = etName.getText().toString().trim();
@@ -116,7 +117,7 @@ public class VolRegActivity extends AppCompatActivity {
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String age = etAge.getText().toString().trim();
-        final String phone = etAge.getText().toString().trim();
+        final String phone = etPhone.getText().toString().trim();
         final String userType = "Volunteer";
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
@@ -140,15 +141,22 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    finish();
+                                   // finish();
                                     startActivity(intent);
 
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    //addUserData(age, email, name, phone, userID, userType);
+                                    addUserData(age, email, name, phone, userID, userType);
 
                                     User user = new User(age, email, name, phone, userID, userType);
+                                    Log.i("VolRegActivity", "age:" + user.getAge());
+                                    Log.i("VolRegActivity", "email:" + user.getEmail());
+                                    Log.i("VolRegActivity", "name:" + user.getName());
+                                    Log.i("VolRegActivity", "phone:" + user.getPhone());
+                                    Log.i("VolRegActivity", "userID:" + user.getUserID());
+                                    Log.i("VolRegActivity", "userType:" + user.getUserType());
+
 
                                     firebaseData.child("User").child(userID).setValue(user);
 
