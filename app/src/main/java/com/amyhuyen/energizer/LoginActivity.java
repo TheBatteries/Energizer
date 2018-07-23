@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,15 +27,22 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.etEmail) EditText etEmail;
-    @BindView (R.id.etPassword) EditText etPassword;
-    @BindView (R.id.btnLogin) Button btnLogin;
-    @BindView (R.id.tvSignUp) TextView tvSignUp;
+    @BindView(R.id.etEmail)
+    EditText etEmail;
+    @BindView(R.id.etPassword)
+    EditText etPassword;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
+    @BindView(R.id.tvSignUp)
+    TextView tvSignUp;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
     private DatabaseReference mDBUserRef;
+    private String userType;
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,33 +51,35 @@ public class LoginActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
-        //had firebaseAuth and currentFIrebaseUser instantiated here
         firebaseAuth = FirebaseAuth.getInstance();
-
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
         // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
-        }
+//        if (firebaseAuth.getCurrentUser() != null) {
+//            Log.i("LoginActivity", "user name: " + user.getName());
+//            Log.i("LoginActivity", "user type: " + user.getUserType());
+//            Log.i("LoginActivity", "user email: " + user.getEmail());
+//
+//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
         progressDialog = new ProgressDialog(this);
     }
 
-    private void userLogin(){
+    private void userLogin() {
 
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
         // checking if email and password are empty
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             // email is empty
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             // password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
@@ -81,53 +89,44 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logging in. Please Wait...");
         progressDialog.show();
 
+
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
+                            progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
-
-
-                            User user = new User(firebaseAuth, mDBUserRef);
-                            user.getUserType();
-                            Log.i("LoginActivity", "user name: " + user.getName());
-                            Log.i("LoginActivity", "user type: " + user.getUserType());
-                            Log.i("LoginActivity", "user email: " + user.getEmail());
-
                             // intent to landing activity
                             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            finish();
                             startActivity(intent);
+//        finish();
+                        } else
 
-                        } else{
+                        {
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-        //currentFirebaseUser = firebaseAuth.getCurrentUser();
-
-        //User user = new User (currentFirebaseUser, mDBUserRef);
-
     }
 
     // on click listener for login button
-    @OnClick (R.id.btnLogin)
-    public void onLoginClick(){
+    @OnClick(R.id.btnLogin)
+    public void onLoginClick() {
         userLogin();
-
     }
 
     // on click listener for signup button
-    @OnClick (R.id.tvSignUp)
-    public void onSignUpClick(){
+    @OnClick(R.id.tvSignUp)
+    public void onSignUpClick() {
         // intent to signup activities
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
     }
+
+}
+
 
 //    public String getUserType() {
 //        String userType;
@@ -145,4 +144,4 @@ public class LoginActivity extends AppCompatActivity {
 //        });
 //        return userType;
 //    }
-}
+

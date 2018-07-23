@@ -17,8 +17,8 @@
         android:layout_height="33dp"
         android:layout_margin="25dp"
         android:ems="10"
-        android:hint="Name"
-        android:text="" />
+        android:hint="Name"/>
+        <!--android:text="" />-->
 
     <Button
         android:id="@+id/btnLogout"

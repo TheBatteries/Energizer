@@ -1,6 +1,5 @@
 package com.amyhuyen.energizer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,9 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,26 +27,65 @@ import butterknife.ButterKnife;
 public class LandingActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    @BindView (R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
+    private DatabaseReference mDBUserRef;
+    private FirebaseUser currentFirebaseUser;
+    private String userID;
+    private String userType;
+    private User user;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-
-        // bind the views
         ButterKnife.bind(this);
 
-        firebaseAuth = firebaseAuth.getInstance();
 
-        // check to see if user is already logged in
-        if (firebaseAuth.getCurrentUser() == null){
+//        // check to see if user is already logged in
+//        if (firebaseAuth.getCurrentUser() == null){
+//
+//            // intent to login activity
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
-            // intent to login activity
-            Intent intent = new Intent(this, LoginActivity.class);
-            finish();
-            startActivity(intent);
-        }
+        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentFirebaseUser = firebaseAuth.getCurrentUser();
+        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+
+
+        mDBUserRef.child("Volunteer").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // bind the views
+
+                userID = currentFirebaseUser.getUid();
+
+
+                mapping.putAll((HashMap<String, HashMap<String, String>>)dataSnapshot.getValue());
+                if(mapping.containsKey(userID))
+
+                {
+                    userType = "Volunteer";
+                    user = new User(firebaseAuth, mDBUserRef, userType);
+
+                } else
+
+                {
+                    userType = "NPO";
+                    user = new User(firebaseAuth, mDBUserRef, userType);
+                }
+                Log.i("LandingActivity", userType);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(this.getClass().toString(), "Falied to get datasnapshot");
+            }
+        });
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment profileFrag = new ProfileFragment();
@@ -78,3 +126,4 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 }
+

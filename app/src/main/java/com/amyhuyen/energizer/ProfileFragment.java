@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -20,11 +19,8 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,9 +43,6 @@ public class ProfileFragment extends Fragment {
     //Firebase authorization
     private FirebaseAuth firebaseAuth;
     FirebaseUser currentFirebaseUser;
-
-    //Database for setting text according to User fields
-    private DatabaseReference mDBRef;
     private DatabaseReference mDBUserRef;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -95,7 +88,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -112,30 +104,32 @@ public class ProfileFragment extends Fragment {
         //ButterKnife.bind(getActivity());
 
         //instantiate objects
-        firebaseAuth = firebaseAuth.getInstance();
-        user = new User (firebaseAuth, mDBUserRef);
-
-        //reference to Users on DB
-        mDBRef = FirebaseDatabase.getInstance().getReference();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference();
+        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+//        user = new User(firebaseAuth, mDBUserRef);
 
-        String userId = currentFirebaseUser.getUid();
+//        String name = user.getName();
+//        tv_name.setText(name);
+//                //null pointer here IF i use butterknife
 
-        mDBRef.child("User").child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                String name = "User's Name.";
-                tv_name.setText("Name: " + name);//set the textview to have that String
-                //null pointer here IF i use butterknife
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("ProfileFragment", "Failed to read name from DB.");
-            }
-        });
+//        String userId = currentFirebaseUser.getUid();
+//
+//        mDBRef.child("User").child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                String name = "User's Name.";
+//                tv_name.setText("Name: " + name);//set the textview to have that String
+//                //null pointer here IF i use butterknife
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("ProfileFragment", "Failed to read name from DB.");
+//            }
+//        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
