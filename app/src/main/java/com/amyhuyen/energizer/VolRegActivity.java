@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +14,11 @@ import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,7 +45,7 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.btnRegister) Button btnRegister;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
-    //@BindView (R.id.login_button) LoginButton loginButton;
+    @BindView (R.id.etLocation) EditText etLocation;
 
 
     private ProgressDialog progressDialog;
@@ -48,6 +54,9 @@ public class VolRegActivity extends AppCompatActivity {
     private String userId;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private String latLong;
+    private String city;
 
 
     @Override
@@ -62,12 +71,12 @@ public class VolRegActivity extends AppCompatActivity {
 
 
 
-//        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            finish();
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -76,48 +85,47 @@ public class VolRegActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
     private void addUserData(String email, String name, String age, String phone) {
 
         // Database Hashmap
         final HashMap<String, String> userDataMap = new HashMap<>();
 
         // Bind user data to HashMap
-        userDataMap.put("UserID", userId);
+        userDataMap.put("UserType", "Volunteer");
         userDataMap.put("Email", email);
         userDataMap.put("Name", name);
         userDataMap.put("Age", age);
         userDataMap.put("Phone", phone);
+        userDataMap.put("LatLong", latLong);
+        userDataMap.put("City", city);
 
         // Send Hash to DataBase and, when complete, fire intent to logout page
-        firebaseData.child("User").child("Volunteer").child(userId).setValue(userDataMap);
+        firebaseData.child("User").child(userId).setValue(userDataMap);
     }
 
     private void registerUser(){
+
+        // access information from edit text
         final String name = etName.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String age = etAge.getText().toString().trim();
-        final String phone = etAge.getText().toString().trim();
+        final String phone = etPhone.getText().toString().trim();
 
+        // make toast if fields are not all populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
                 TextUtils.isEmpty(age)|| TextUtils.isEmpty(phone)){
             Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
         } else {
-
+            // proceed to registering user if passwords match
             if (password.equals(confirmPassword)) {
 
                 // if required fields are not empty, register user
                 progressDialog.setMessage("Registering User...");
                 progressDialog.show();
 
+                // user authentication
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -142,11 +150,17 @@ public class VolRegActivity extends AppCompatActivity {
                             }
                         });
             } else {
+                // if passwords don't match, alert user using toast
                 Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    // on click listener for location edit text
+    @OnClick (R.id.etLocation)
+    public void onLocationClick(){
+        callPlaceAutocompleteActivityIntent();
+    }
 
     // on click listener for register button
     @OnClick(R.id.btnRegister)
@@ -163,5 +177,44 @@ public class VolRegActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // launches google place autocomplete widget
+    private void callPlaceAutocompleteActivityIntent() {
+        try{
+            // launches intent to the google place autocomplete widget
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch(GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            // get the location and log it
+            Place place = PlaceAutocomplete.getPlace(this, data);
+            Log.i("Location Success", "Place " + place.getName());
+            etLocation.setText(place.getName());
+
+            // extract location data
+            city = place.getName().toString();
+            latLong = place.getLatLng().toString().replace("lat/lng: ", "");
+
+        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+            // log the error
+            Status status = PlaceAutocomplete.getStatus(this, data);
+            Log.e ("Location Error", status.getStatusMessage());
+
+        } else if (resultCode == RESULT_CANCELED) {
+            // log the error
+            Log.e ("Location Cancelled", "The user has cancelled the operation");
+        } else {
+            // onActivityResult for Facebook Login
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 }

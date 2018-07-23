@@ -6,33 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SetSkillsActivity">
 
-    <EditText
-        android:id="@+id/etSkill1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@id/tvSkill"
-        android:hint="Enter Skill"
-         />
-
-    <EditText
-        android:id="@+id/etSkill2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@id/etSkill1"
-        android:hint="Enter Skill"
-         />
-
-    <EditText
-        android:id="@+id/etSkill3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@id/etSkill2"
-        android:hint="Enter Skill"
-         />
-
     <TextView
         android:id="@+id/tvSkill"
         android:layout_width="wrap_content"
@@ -40,7 +13,37 @@
         android:layout_margin="15dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:text="Enter your skills below" />
+        android:text="@string/skills_message" />
+
+    <EditText
+        android:id="@+id/etSkill1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_below="@id/tvSkill"
+        android:hint="@string/enter_skill" />
+
+    <EditText
+        android:id="@+id/etSkill2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/etSkill1"
+        android:hint="@string/enter_skill" />
+
+    <EditText
+        android:id="@+id/etSkill3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/etSkill2"
+        android:hint="@string/enter_skill" />
 
     <Button
         android:id="@+id/setSkills"
@@ -49,5 +52,6 @@
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Go To Feed"/>
+        android:text="@string/go_to_feed"
+        android:textAllCaps="false"/>
 </RelativeLayout>
