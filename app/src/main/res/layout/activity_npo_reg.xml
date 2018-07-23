@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:text="@string/non_profit_registration"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -90,7 +90,7 @@
         android:inputType="phone" />
 
     <EditText
-        android:id="@+id/etLocation"
+        android:id="@+id/etLocationNPO"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -108,7 +108,7 @@
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etPhone"
+        android:layout_below="@id/etLocationNPO"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"

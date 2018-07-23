@@ -14,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
+import com.facebook.CallbackManager;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.facebook.CallbackManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,8 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +48,7 @@ public class NpoRegActivity extends AppCompatActivity {
     @BindView (R.id.tvLogin)
     TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
-    @BindView (R.id.etLocation) EditText etLocation;
+    @BindView (R.id.etLocationNPO) EditText etLocationNPO;
 
 
     private ProgressDialog progressDialog;
@@ -60,8 +60,6 @@ public class NpoRegActivity extends AppCompatActivity {
     private String city;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +67,6 @@ public class NpoRegActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();
-
-
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
@@ -84,27 +80,6 @@ public class NpoRegActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
-    }
-
-    private void addUserData(String age, String email, String name, String phone, String UserID, String userType) {
-        userID = firebaseAuth.getCurrentUser().getUid();
-
-
-        // Database Hashmap
-        final HashMap<String, String> userDataMap = new HashMap<>();
-
-        // Bind user data to HashMap
-        userDataMap.put("Email", email);
-        userDataMap.put("Name", name);
-        userDataMap.put("Age", age);
-        userDataMap.put("Phone", phone);
-        userDataMap.put("UserID", userID);
-        userDataMap.put("UserType", userType);
-        userDataMap.put("LatLong", latLong);
-        userDataMap.put("City", city);
-
-        // Send Hash to DataBase and, when complete, fire intent to logout page
-        firebaseData.child("User").child(userID).setValue(userDataMap);
     }
 
     private void registerUser() {
@@ -140,11 +115,7 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    addUserData(age, email, name, phone, userID, userType);
-
                                     User user = new User(age, email, name, phone, userID, userType);
-
-
                                     firebaseData.child("User").child(userID).setValue(user);
 
                                     // intent to the landing activity
@@ -172,7 +143,7 @@ public class NpoRegActivity extends AppCompatActivity {
             // get the location and log it
             Place place = PlaceAutocomplete.getPlace(this, data);
             Log.i("Location Success", "Place " + place.getName());
-            etLocation.setText(place.getName());
+            etLocationNPO.setText(place.getName());
 
             // extract location data
             city = place.getName().toString();
@@ -192,11 +163,30 @@ public class NpoRegActivity extends AppCompatActivity {
         }
     }
 
+    // launches google place autocomplete widget
+    private void callPlaceAutocompleteActivityIntent() {
+        try{
+            // launches intent to the google place autocomplete widget
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch(GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     // on click listener for register button
     @OnClick(R.id.btnRegister)
     public void onRegisterClick(){
         // register the user
         registerUser();
+    }
+
+    // on click listener for location edit text
+    @OnClick (R.id.etLocationNPO)
+    public void onLocationClick(){
+        callPlaceAutocompleteActivityIntent();
     }
 
     // on click listener for login text

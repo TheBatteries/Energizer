@@ -30,8 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -72,8 +70,6 @@ public class VolRegActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         //loginButton.setReadPermissions(Arrays.asList("email"));
 
-
-
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
@@ -85,28 +81,6 @@ public class VolRegActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
-
-    }
-
-    private void addUserData(String age, String email, String name, String phone, String UserID, String userType) {
-        userID = firebaseAuth.getCurrentUser().getUid();
-
-
-        // Database Hashmap
-        final HashMap<String, String> userDataMap = new HashMap<>();
-
-        // Bind user data to HashMap
-        userDataMap.put("Email", email);
-        userDataMap.put("Name", name);
-        userDataMap.put("Age", age);
-        userDataMap.put("Phone", phone);
-        userDataMap.put("UserID", userID);
-        userDataMap.put("UserType", userType);
-        userDataMap.put("LatLong", latLong);
-        userDataMap.put("City", city);
-
-        // Send Hash to DataBase and, when complete, fire intent to logout page
-        firebaseData.child("User").child(userID).setValue(userDataMap);
     }
 
     private void registerUser() {
@@ -142,11 +116,7 @@ public class VolRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    addUserData(age, email, name, phone, userID, userType);
-
                                     User user = new User(age, email, name, phone, userID, userType);
-
-
                                     firebaseData.child("User").child(userID).setValue(user);
 
                                     // intent to the landing activity
