@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +32,6 @@ public class SetSkillsActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private ArrayList<String> userSkills;
     private String userId;
-
 
 
     @Override
@@ -115,7 +115,8 @@ public class SetSkillsActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                        // log the error
+                                        Log.e("Existing Skill", databaseError.toString());
                                     }
                                 });
                             // if the skill that the user input is not already in the database then we run through the else case
@@ -154,25 +155,26 @@ public class SetSkillsActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                        // log the error
+                                        Log.e("New Skill", databaseError.toString());
                                     }
                                 });
                         }
-                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // log the error
+                        Log.e("Adding Skills", databaseError.toString());
+                    }
+            });
         }
     }
-    //
 
     // on click listener for register button
     @OnClick(R.id.setSkills)
     public void onRegisterClick(){
-        // register the user
+        // register the user and go to landing activity
         addSkills();
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
         finish();

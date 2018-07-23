@@ -17,6 +17,7 @@ public class User {
 
     public User (String age, String email, String name, String phone, String userID, String userType) {
         this.age = age;
+        this.name = name;
         this.email = email;
         this.phone = phone;
         this.userID = userID;

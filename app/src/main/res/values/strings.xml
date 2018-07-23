@@ -23,4 +23,9 @@
     <string name="profile">Profile</string>
     <string name="facebook_app_id">1830237923699201</string>
     <string name="fb_login_protocol_scheme">fb1830237923699201</string>
+    <string name="skills_message">Enter your skills below</string>
+    <string name="enter_skill">Enter Skill</string>
+    <string name="location_message">Enter Your Preferred Volunteer City Below</string>
+    <string name="go_to_feed">Go To Feed</string>
+    <string name="enter_city">Enter Preferred Volunteer City</string>
 </resources>
