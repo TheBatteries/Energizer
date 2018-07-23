@@ -107,29 +107,10 @@ public class ProfileFragment extends Fragment {
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
-//        user = new User(firebaseAuth, mDBUserRef);
 
 //        String name = user.getName();
 //        tv_name.setText(name);
 //                //null pointer here IF i use butterknife
-
-
-//        String userId = currentFirebaseUser.getUid();
-//
-//        mDBRef.child("User").child("Volunteer").child("UserID").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                String name = "User's Name.";
-//                tv_name.setText("Name: " + name);//set the textview to have that String
-//                //null pointer here IF i use butterknife
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("ProfileFragment", "Failed to read name from DB.");
-//            }
-//        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override

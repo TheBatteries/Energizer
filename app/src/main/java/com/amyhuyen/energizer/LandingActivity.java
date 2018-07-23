@@ -42,50 +42,60 @@ public class LandingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landing);
         ButterKnife.bind(this);
 
-
-//        // check to see if user is already logged in
-//        if (firebaseAuth.getCurrentUser() == null){
-//
-//            // intent to login activity
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
-
         final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+        userID = currentFirebaseUser.getUid();
 
 
-        mDBUserRef.child("Volunteer").addListenerForSingleValueEvent(new ValueEventListener() {
+        ValueEventListener userListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // bind the views
-
-                userID = currentFirebaseUser.getUid();
-
-
-                mapping.putAll((HashMap<String, HashMap<String, String>>)dataSnapshot.getValue());
-                if(mapping.containsKey(userID))
-
-                {
-                    userType = "Volunteer";
-                    user = new User(firebaseAuth, mDBUserRef, userType);
-
-                } else
-
-                {
-                    userType = "NPO";
-                    user = new User(firebaseAuth, mDBUserRef, userType);
-                }
-                Log.i("LandingActivity", userType);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(this.getClass().toString(), "Falied to get datasnapshot");
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("LandingActivity", "unable to load User");
             }
-        });
+        };
+        mDBUserRef.addValueEventListener(userListener);
+
+        ///////////////this got type of User with old User class structure
+//        //search through volunteer list and see if current userID is in that list. If yes, current user is VOl. else, current user is NPO.
+//        mDBUserRef.child("Volunteer").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // bind the views
+//
+//                userID = currentFirebaseUser.getUid();
+//                mapping.putAll((HashMap<String, HashMap<String, String>>)dataSnapshot.getValue());
+//                if(mapping.containsKey(userID))
+//
+//                {
+//                    userType = "Volunteer";
+//                    user = new User(firebaseAuth, mDBUserRef, userType);
+//
+//                } else
+//
+//                {
+//                    userType = "NPO";
+//                    user = new User(firebaseAuth, mDBUserRef, userType);
+//                }
+//                Log.i("LandingActivity", userType);
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d(this.getClass().toString(), "Falied to get datasnapshot");
+//            }
+//        });
+
+        //TODO - START HERE - pass User object to profile frgament -- might need an IF to also pass it to subclass fragments?
+        //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
+//        Bundle userBundle = new Bundle();
+//        userBundle.putSerializable("User Object", Parcels.wrap(user));
+
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment profileFrag = new ProfileFragment();

@@ -26,6 +26,9 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
 
+
+    //TODO - when registering user, use setValue
+
     // the views
     @BindView(R.id.etEmail)
     EditText etEmail;
