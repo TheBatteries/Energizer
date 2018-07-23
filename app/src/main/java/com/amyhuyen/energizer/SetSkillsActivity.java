@@ -7,11 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,12 +28,10 @@ public class SetSkillsActivity extends AppCompatActivity {
     @BindView (R.id.etSkill1) EditText userSkill1;
     @BindView (R.id.etSkill2) EditText userSkill2;
     @BindView (R.id.etSkill3) EditText userSkill3;
-    @BindView (R.id.etLocation) EditText etLocation;
 
     private DatabaseReference firebaseData;
     private ArrayList<String> userSkills;
     private String userId;
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
     @Override
@@ -177,11 +170,6 @@ public class SetSkillsActivity extends AppCompatActivity {
             });
         }
     }
-    // on click listener for location edit text
-    @OnClick (R.id.etLocation)
-    public void onLocationClick(){
-        callPlaceAutocompleteActivityIntent();
-    }
 
     // on click listener for register button
     @OnClick(R.id.setSkills)
@@ -192,43 +180,4 @@ public class SetSkillsActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-
-    // launches google place autocomplete widget
-    private void callPlaceAutocompleteActivityIntent() {
-        try{
-            // launches intent to the google place autocomplete widget
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch(GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // actions for after the location activity completes
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            // get the location and log it
-            Place place = PlaceAutocomplete.getPlace(this, data);
-            Log.i("Location Success", "Place " + place.getName());
-            etLocation.setText(place.getName());
-
-            // extract location data and put the information into firebase
-            HashMap<String, String> locationData = new HashMap<>();
-            locationData.put("LatLong", place.getLatLng().toString());
-
-        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-            // log the error
-            Status status = PlaceAutocomplete.getStatus(this, data);
-            Log.e ("Location Error", status.getStatusMessage());
-
-        } else if (resultCode == RESULT_CANCELED) {
-            // log the error
-            Log.e ("Location Cancelled", "The user has cancelled the operation");
-        }
-    }
-
-
 }
