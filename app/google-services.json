@@ -31,13 +31,21 @@
           }
         },
         {
+          "client_id": "933796750322-3bhr3ud8sj3815f3gs2v1390n2m67d2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amyhuyen.energizer",
+            "certificate_hash": "4db17ac8b2d7f2423a626923f303b79844a00c9c"
+          }
+        },
+        {
           "client_id": "933796750322-dmp4n6d6uaiovfbbccl6aji7t4hah2fe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBL8-svrzR9y1W9Ydzlh7lhXdQ2hm-yYQ8"
+          "current_key": "AIzaSyBA8c8SpH5OmOE9QE5Kg3tenUsOZ6bopDU"
         }
       ],
       "services": {

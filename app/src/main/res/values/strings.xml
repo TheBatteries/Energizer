@@ -28,4 +28,6 @@
     <string name="location_message">Enter Your Preferred Volunteer City Below</string>
     <string name="go_to_feed">Go To Feed</string>
     <string name="enter_city">Enter Preferred Volunteer City</string>
+    <string name="add_opportunity">Add Opportunity</string>
+    <string name="opportunity_name">Opportunity Name</string>
 </resources>

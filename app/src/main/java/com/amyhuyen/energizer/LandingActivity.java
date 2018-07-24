@@ -67,6 +67,7 @@ public class LandingActivity extends AppCompatActivity {
         final Fragment profileFrag = new ProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
         final Fragment commitFrag = new CommitFragment();
+        final Fragment addOppFrag = new AddOpportunityFragment();
 
         // handle the initial fragment transaction
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
