@@ -8,25 +8,27 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="584dp"
-        android:text="@string/your_profile" />
+        android:layout_height="wrap_content"
+        android:text="@string/your_profile"
+        android:layout_margin="10dp"
+        android:layout_below="@id/tv_name"/>
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="215dp"
-        android:layout_height="33dp"
-        android:layout_margin="25dp"
-        android:ems="10"
-        android:hint="Name"/>
-        <!--android:text="" />-->
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Name"/>
+
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="121dp"
+        android:layout_marginBottom="15dp"
         android:text="Logout"
         android:textAllCaps="false" />
 </RelativeLayout>

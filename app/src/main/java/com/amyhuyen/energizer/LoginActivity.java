@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         {
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
