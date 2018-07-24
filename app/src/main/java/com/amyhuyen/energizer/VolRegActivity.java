@@ -126,6 +126,7 @@ public class VolRegActivity extends AppCompatActivity {
                                     finish();
 
                                 } else {
+                                    Log.e("error", task.getException().toString());
                                     Toast.makeText(VolRegActivity.this, "Could not register, please try again", Toast.LENGTH_SHORT).show();
                                 }
                             }

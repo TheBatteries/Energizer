@@ -7,10 +7,6 @@ public class Opportunity {
     String name;
     String description;
     String oppId;
-//    private DatabaseReference firebaseDataOpp;
-
-    //TODO ADD OPPORTUNITY ID AND UPDATE GETTERS
-    //TODO move addOpportunities method elsewhere (in NPO part)
 
     public Opportunity(){}
 
@@ -29,18 +25,8 @@ public class Opportunity {
     }
 
     // the accessor for the opportunity description
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
-//    public void addOpportunity(String name, String description){
-//        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
-//        final HashMap<String, String> userDataMap = new HashMap<>();
-//        userDataMap.put("Name", name);
-//        userDataMap.put("Description", description);
-//
-//        // get the key for the opportunity
-//        oppId = firebaseDataOpp.push().getKey();
-//        firebaseDataOpp.child(oppId).setValue(userDataMap);
-//    }
+    // the accessor for the opportunity id
+    public String getOppId() { return oppId; }
 }
