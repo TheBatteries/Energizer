@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,18 +28,11 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-    //TODO - when registering user, use setValue
-
     // the views
-    @BindView(R.id.etEmail)
-    EditText etEmail;
-    @BindView(R.id.etPassword)
-    EditText etPassword;
-    @BindView(R.id.btnLogin)
-    Button btnLogin;
-    @BindView(R.id.tvSignUp)
-    TextView tvSignUp;
+    @BindView (R.id.etEmail) EditText etEmail;
+    @BindView (R.id.etPassword) EditText etPassword;
+    @BindView (R.id.btnLogin) Button btnLogin;
+    @BindView (R.id.tvSignUp) TextView tvSignUp;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -98,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logging in. Please Wait...");
         progressDialog.show();
 
-
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -106,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+
                             // intent to landing activity
                             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                             intent.putExtra("UserObject", Parcels.wrap(user));
                             startActivity(intent);
                             finish();
-                        } else
-
-                        {
+                        } else{
+                            Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
@@ -136,5 +127,3 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-
