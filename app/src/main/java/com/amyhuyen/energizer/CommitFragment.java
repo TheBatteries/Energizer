@@ -100,9 +100,7 @@ public class CommitFragment extends Fragment {
                 oppIdList.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()){
                     final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
-                    for (String intermediateId : myOppMapping.keySet()){
-                        oppIdList.add(myOppMapping.get("OppID"));
-                    }
+                    oppIdList.add(myOppMapping.get("OppID"));
                 }
 
                 // find the opportunities associated with those oppIds and add them to newOpportunities
@@ -118,22 +116,25 @@ public class CommitFragment extends Fragment {
 
     // method that takes all the oppIds in oppIdList, finds the associated Opportunities, and adds them to newOpportunities
     public void oppFromOppId(){
-
         // get the firebase reference
         dataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
 
-        // get the datasnapshot
         dataOpp.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 newOpportunities.clear();
-                final HashMap<String, HashMap<String,String>> allOpps = (HashMap<String, HashMap<String,String>>) dataSnapshot.getValue();
 
-                // iterate through the oppIds and turn them back into opportunities
-                for (String oppId : oppIdList){
-                    Opportunity myOpp = new Opportunity(allOpps.get(oppId).get("Name"), allOpps.get(oppId).get("Description"), oppId);
-                    newOpportunities.add(myOpp);
+                // get all of the children at this level
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                // iterate through children to get each opportunity and add it to newOpportunities
+                for (DataSnapshot child : children) {
+                    Opportunity newOpp = child.getValue(Opportunity.class);
+                    if (oppIdList.contains(newOpp.getOppId())) {
+                        newOpportunities.add(newOpp);
+                    }
                 }
+
 
                 // clear the adapter and add newly fetched opportunities
                 oppAdapter.clear();

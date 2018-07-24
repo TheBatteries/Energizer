@@ -19,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -84,17 +83,17 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method to get data from firebase
     private void fetchOpportunities(){
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-
         firebaseDataOpp.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 newOpportunities.clear();
-                mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
 
-                // iterate through mapping and create and add opportunities
-                for (String oppId: mapping.keySet()) {
-                    Opportunity newOpp = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"), oppId);
+                // get all of the children at this level
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                // iterate through children to get each opportunity and add it to newOpportunities
+                for (DataSnapshot child : children) {
+                    Opportunity newOpp = child.getValue(Opportunity.class);
                     newOpportunities.add(newOpp);
                 }
 
