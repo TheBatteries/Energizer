@@ -180,7 +180,6 @@ public class SetSkillsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
         User user = intent.getParcelableExtra("UserObject");
         intent.putExtra("UserObject", user);
-        startActivityForResult(intent, RequestCodes.LANDING);
         finish();
     }
 }

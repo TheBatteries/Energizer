@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -45,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
+    private String userID;
     private DatabaseReference mDBUserRef;
-    private String userType;
     private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +62,32 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
+
+
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null) {
-            user = new User();
 
-            Log.i("LoginActivity", "user name: " + user.getName());
-            Log.i("LoginActivity", "user type: " + user.getUserType());
-            Log.i("LoginActivity", "user email: " + user.getEmail());
+            currentFirebaseUser = firebaseAuth.getCurrentUser();
+            userID = currentFirebaseUser.getUid();
+            //TODO - not sure how to handle passing a user object when user is aldready logged in.
 
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            intent.putExtra("UserObject", Parcels.wrap(user));
+            mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            finish();
-            startActivity(intent);
+                    User user = dataSnapshot.getValue(User.class);
+                    Log.i("LandingActivity", "user name: " + user.getName());
+                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.putExtra("UserObject", Parcels.wrap(user));
+                    finish();
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("LandingActivity", "unable to load User");
+                }
+            });
         }
 
         progressDialog = new ProgressDialog(this);
@@ -112,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else
-
                         {
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                         }
