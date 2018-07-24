@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,8 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);if (getArguments() != null) {
-
+            user = getActivity().getIntent().getParcelableExtra("UserObject"); //tried moving this to VOlProfileFrag subclass
+            Log.i("VolProfileFragment", "UserObject name:" + user.getName());
         }
     }
 
@@ -37,8 +39,7 @@ public class VolProfileFragment extends ProfileFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_vol_profile, container, false);
 
-        user = getActivity().getIntent().getParcelableExtra("UserObject"); //tried moving this to VOlProfileFrag subclass
-        //try using textview and setting text to user.getName()
+
     }
 
     @Override

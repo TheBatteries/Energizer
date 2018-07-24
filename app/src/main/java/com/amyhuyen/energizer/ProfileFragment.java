@@ -89,8 +89,8 @@ public abstract class ProfileFragment extends Fragment {
         ButterKnife.bind(getActivity());
 
         //set textview text
-        tv_name.setText(user.getName());
-        tv_email.setText(user.getEmail());
+//        tv_name.setText(user.getName());
+//        tv_email.setText(user.getEmail());
 
     }
 
