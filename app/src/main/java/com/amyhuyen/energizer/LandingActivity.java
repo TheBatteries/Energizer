@@ -36,6 +36,7 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         ButterKnife.bind(this);
@@ -62,7 +63,7 @@ public class LandingActivity extends AppCompatActivity {
         //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final ProfileFragment volProfileFragment = new VolProfileFragment();
+        final VolProfileFragment volProfileFragment = new VolProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
         final Fragment commitFrag = new CommitFragment();
         final Fragment addOppFrag = new AddOpportunityFragment();
