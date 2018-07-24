@@ -12,12 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 //TODO change all findViewByIds and OnClick listeners to butterknife style and call finish() as marked
 
-public class ProfileFragment extends Fragment {
+public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
@@ -42,8 +46,13 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    //views
+    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.btn_logout)
+    ImageButton btn_logout;
+    @BindView(R.id.tv_email) TextView tv_email;
+
     private OnFragmentInteractionListener mListener;
-    //Adapter adapter;
     FragmentActivity listener;
 
 
@@ -58,25 +67,6 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,56 +77,42 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        //will I have access to this in the subclasses of profile fragment?
         user = getActivity().getIntent().getParcelableExtra("UserObject");
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //findViewById lookups
-        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
-        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
-//        @BindView(R.id.tv_name) TextView tv_name; //DOESN'T WORK
-
         // bind the views
-        //ButterKnife.bind(getActivity());
+        ButterKnife.bind(getActivity());
 
-
+        //set textview text
         tv_name.setText(user.getName());
-//                //null pointer here IF i use butterknife
+        tv_email.setText(user.getEmail());
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.signOut();
+    }
 
-                // log the sign out
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Log.d("Logging Out", "User has successfully logged out");
-                    Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-                }
+    //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
 
-                //Intent
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                //finish(); TODO - why can't I call finish here?
-            }
-        });
+    public abstract void drawSkills();
 
-        //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
-//        @OnClick(R.id.btnLogout)
-//    public void onLogoutClick() {
-//        // log user out
-//        firebaseAuth.signOut();
-//
-//        // log the sign out
-//        if (firebaseAuth.getCurrentUser() == null) {
-//            Log.d("Logging Out", "User has successfully logged out");
-//            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // intent to login activity
-//        Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
-//        startActivity(intent);
-//        //finish(); TODO - why couldn't I call finish here?
-//    }
+    public abstract void drawCauseAreas();
+
+    //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
+    @OnClick(R.id.btn_logout)
+    public void onLogoutClick() {
+        // log user out
+        firebaseAuth.signOut();
+
+        // log the sign out
+        if (firebaseAuth.getCurrentUser() == null) {
+            Log.d("Logging Out", "User has successfully logged out");
+            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+        }
+
+        // intent to login activity
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        listener.finish(); //TODO - why couldn't I call finish here?
     }
 
 
@@ -162,4 +138,24 @@ public class ProfileFragment extends Fragment {
     }
 
 }
+
+
+    //        btnLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                firebaseAuth.signOut();
+//
+//                // log the sign out
+//                if (firebaseAuth.getCurrentUser() == null) {
+//                    Log.d("Logging Out", "User has successfully logged out");
+//                    Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                //Intent
+//                Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                startActivity(intent);
+//                //finish(); TODO - why can't I call finish here?
+//            }
+//        });
+
 
