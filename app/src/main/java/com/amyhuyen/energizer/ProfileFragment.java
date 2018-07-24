@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.parceler.Parcels;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,7 +81,8 @@ public abstract class ProfileFragment extends Fragment {
 
 
         //will I have access to this in the subclasses of profile fragment?
-        user = getActivity().getIntent().getParcelableExtra("UserObject");
+//        user = getActivity().getIntent().getParcelableExtra("UserObject"); //tried moving this to VOlProfileFrag subclass
+        //TODO - START HERE - getting null user object reference here
         firebaseAuth = FirebaseAuth.getInstance();
 
         // bind the views

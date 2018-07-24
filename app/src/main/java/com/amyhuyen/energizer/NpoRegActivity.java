@@ -69,11 +69,11 @@ public class NpoRegActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        if (firebaseAuth.getCurrentUser() != null){
+//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
 
         progressDialog = new ProgressDialog(this);
 

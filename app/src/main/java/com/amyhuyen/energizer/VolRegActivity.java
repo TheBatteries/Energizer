@@ -70,7 +70,7 @@ public class VolRegActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         //loginButton.setReadPermissions(Arrays.asList("email"));
 
-        // check if user already is logged in (if so, launch landing activity)
+//         check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
             finish();

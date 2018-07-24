@@ -60,20 +60,12 @@ public class LandingActivity extends AppCompatActivity {
 
         //TODO - START HERE - pass User object to profile frgament -- might need an IF to also pass it to subclass fragments?
         //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
-//        Bundle userBundle = new Bundle();
-//        userBundle.putSerializable("User Object", Parcels.wrap(user));
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment profileFrag = new ProfileFragment();
+        final ProfileFragment volProfileFragment = new VolProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
         final Fragment commitFrag = new CommitFragment();
         final Fragment addOppFrag = new AddOpportunityFragment();
-
-        // handle the initial fragment transaction
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
-        fragmentTransaction.commit();
-
 
         // handle the bottom navigation bar switching
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -87,11 +79,13 @@ public class LandingActivity extends AppCompatActivity {
                         selectedFragment = commitFrag;
                         break;
                     case R.id.ic_action_profile:
-                        selectedFragment = profileFrag;
+                        selectedFragment = volProfileFragment;
                         break;
                     case R.id.ic_action_feed:
                         selectedFragment = opportunityFeedFrag;
                         break;
+                    default:
+                        selectedFragment = volProfileFragment;
                 }
 
                 // handle the fragment transaction
@@ -102,7 +96,6 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

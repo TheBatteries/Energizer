@@ -57,10 +57,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null) {
-            user = new User();
 
             currentFirebaseUser = firebaseAuth.getCurrentUser();
             userID = currentFirebaseUser.getUid();
+
             //TODO - not sure how to handle passing a user object when user is aldready logged in.
 
             mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
