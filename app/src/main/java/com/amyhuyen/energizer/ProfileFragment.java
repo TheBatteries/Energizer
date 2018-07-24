@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,15 +31,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
 
-    public ProfileFragment() {
-    }// Required empty public constructor
-
-    //Our User
+    FirebaseAuth firebaseAuth;
     User user;
 
-    //Firebase authorization
-    private FirebaseAuth firebaseAuth;
-    FirebaseUser currentFirebaseUser;
+    public ProfileFragment() {
+    }// Required empty public constructor
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,20 +87,19 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        user = getActivity().getIntent().getParcelableExtra("UserObject");
+        firebaseAuth = FirebaseAuth.getInstance();
+
         //findViewById lookups
-        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name); //WORKS
+        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
         Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
 //        @BindView(R.id.tv_name) TextView tv_name; //DOESN'T WORK
 
         // bind the views
         //ButterKnife.bind(getActivity());
 
-        //instantiate objects
-        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseAuth = FirebaseAuth.getInstance();
 
-//        String name = user.getName();
-//        tv_name.setText(name);
+        tv_name.setText(user.getName());
 //                //null pointer here IF i use butterknife
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -127,22 +121,22 @@ public class ProfileFragment extends Fragment {
         });
 
         //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
-        /*@OnClick(R.id.btnLogout)
-    public void onLogoutClick() {
-        // log user out
-        firebaseAuth.signOut();
-
-        // log the sign out
-        if (firebaseAuth.getCurrentUser() == null) {
-            Log.d("Logging Out", "User has successfully logged out");
-            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-        }
-
-        // intent to login activity
-        Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
-        startActivity(intent);
-        //finish(); TODO - why couldn't I call finish here?
-    }*/
+//        @OnClick(R.id.btnLogout)
+//    public void onLogoutClick() {
+//        // log user out
+//        firebaseAuth.signOut();
+//
+//        // log the sign out
+//        if (firebaseAuth.getCurrentUser() == null) {
+//            Log.d("Logging Out", "User has successfully logged out");
+//            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+//        }
+//
+//        // intent to login activity
+//        Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
+//        startActivity(intent);
+//        //finish(); TODO - why couldn't I call finish here?
+//    }
     }
 
 

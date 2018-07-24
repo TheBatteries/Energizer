@@ -1,8 +1,10 @@
 package com.amyhuyen.energizer.models;
 
 
+import java.io.Serializable;
+
 @org.parceler.Parcel
-public class User {
+public class User implements Serializable {
 
     //user fields
     String age;

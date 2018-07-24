@@ -119,7 +119,7 @@ public class VolRegActivity extends AppCompatActivity {
                                     User user = new User(age, email, name, phone, userID, userType);
                                     firebaseData.child("User").child(userID).setValue(user);
 
-                                    // intent to the landing activity
+                                    // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
                                     intent.putExtra("UserObject", Parcels.wrap(user));
                                     startActivity(intent);
