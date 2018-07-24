@@ -1,27 +1,31 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OpportunityFeedFragment extends Fragment {
-
-   // TODO - uncomment fetchOpportunities once opportunities class is done
 
     // the views
     @BindView (R.id.rvOpps) RecyclerView rvOpps;
@@ -59,16 +63,16 @@ public class OpportunityFeedFragment extends Fragment {
         // set the adapter
         rvOpps.setAdapter(oppAdapter);
 
-//        // get the opportunities (for on launch)
-//        fetchOpportunities();
-//
-//        // swipe refresh
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                fetchOpportunities();
-//            }
-//        });
+        // get the opportunities (for on launch)
+        fetchOpportunities();
+
+        // swipe refresh
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchOpportunities();
+            }
+        });
 
         // configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -79,34 +83,34 @@ public class OpportunityFeedFragment extends Fragment {
 
 
     // method to get data from firebase
-//    private void fetchOpportunities(){
-//        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-//
-//        firebaseDataOpp.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                newOpportunities.clear();
-//                mapping.putAll((HashMap<String, HashMap<String, String>>) dataSnapshot.getValue());
-//
-//                // iterate through mapping and create and add opportunities
-//                for (String oppId: mapping.keySet()) {
-//                    Opportunity newOpp = new Opportunity(mapping.get(oppId).get("Name"), mapping.get(oppId).get("Description"), oppId);
-//                    newOpportunities.add(newOpp);
-//                }
-//
-//                // clear the adapter and add newly fetched opportunities
-//                oppAdapter.clear();
-//                oppAdapter.addAll(newOpportunities);
-//
-//                // stop the refreshing
-//                swipeContainer.setRefreshing(false);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("fetchOpportunities", databaseError.toString());
-//            }
-//        });
-//    }
+    private void fetchOpportunities(){
+        firebaseDataOpp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                newOpportunities.clear();
+
+                // get all of the children at this level
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                // iterate through children to get each opportunity and add it to newOpportunities
+                for (DataSnapshot child : children) {
+                    Opportunity newOpp = child.getValue(Opportunity.class);
+                    newOpportunities.add(newOpp);
+                }
+
+                // clear the adapter and add newly fetched opportunities
+                oppAdapter.clear();
+                oppAdapter.addAll(newOpportunities);
+
+                // stop the refreshing
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("fetchOpportunities", databaseError.toString());
+            }
+        });
+    }
 
 }
