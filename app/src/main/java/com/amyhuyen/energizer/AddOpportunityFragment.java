@@ -3,6 +3,7 @@ package com.amyhuyen.energizer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddOpportunityFragment extends Fragment {
+public class AddOpportunityFragment extends Fragment{
 
     // the views
     @BindView (R.id.etOppName) EditText etOppname;
     @BindView (R.id.etOppDescription) EditText etOppDescriotion;
     @BindView (R.id.btnAddOpp) Button btnAddOpp;
+    @BindView (R.id.etStartTime) EditText etStartTime;
     DatabaseReference firebaseDataOpp;
 
 
@@ -58,5 +60,12 @@ public class AddOpportunityFragment extends Fragment {
         Opportunity newOpp = new Opportunity(name, description, oppId);
         firebaseDataOpp.child(oppId).setValue(newOpp);
 
+    }
+
+    // on click listener for start time edit text
+    @OnClick (R.id.etStartTime)
+    public void onStartTimeClick(){
+        DialogFragment timePicker = new TimePickerFragment();
+        timePicker.show(getActivity().getSupportFragmentManager(), "Start Time Picker");
     }
 }

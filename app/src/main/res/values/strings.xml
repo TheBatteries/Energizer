@@ -35,4 +35,5 @@
     <string name="organization_phone_number">Organization Phone Number</string>
     <string name="organization_address">Organization Address</string>
     <string name="non_profit_description">Non-profit Description</string>
+    <string name="opportunity_start_time">Opportunity Start Time</string>
 </resources>
