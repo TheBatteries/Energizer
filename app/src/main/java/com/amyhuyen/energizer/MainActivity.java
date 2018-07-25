@@ -94,9 +94,22 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+            dataUserRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String UserType = dataSnapshot.getValue(String.class);
+                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.putExtra("UserType", UserType);
+                    finish();
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("Persisting User Main", databaseError.toString());
+                }
+            });
         }
 
         try {
@@ -128,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(getApplicationContext(), FacebookUserDetailsActivity.class);
-                    finish();
-                    startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), FacebookUserDetailsActivity.class);
+//                    finish();
+//                    startActivity(intent);
                 }
             }
 

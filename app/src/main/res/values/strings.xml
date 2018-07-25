@@ -30,4 +30,9 @@
     <string name="enter_city">Enter Preferred Volunteer City</string>
     <string name="add_opportunity">Add Opportunity</string>
     <string name="opportunity_name">Opportunity Name</string>
+    <string name="organization_name">Organization Name</string>
+    <string name="organization_email">Organization Email</string>
+    <string name="organization_phone_number">Organization Phone Number</string>
+    <string name="organization_address">Organization Address</string>
+    <string name="non_profit_description">Non-profit Description</string>
 </resources>
