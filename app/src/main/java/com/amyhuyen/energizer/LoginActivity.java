@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,10 +41,14 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDBUserRef;
     private String userType;
     private User user;
+    private static final String TAG = "FACELOG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
 
         // bind the views
         ButterKnife.bind(this);
@@ -68,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
     }
+
 
     private void userLogin() {
 
@@ -106,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else{
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
