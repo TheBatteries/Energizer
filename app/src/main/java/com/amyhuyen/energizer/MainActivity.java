@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User")
+                    .child(firebaseAuth.getCurrentUser().getUid()).child("userType");
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

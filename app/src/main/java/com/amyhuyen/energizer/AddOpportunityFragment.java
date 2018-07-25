@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.amyhuyen.energizer.models.Opportunity;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,10 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etEndDate) EditText etEndDate;
     @BindView (R.id.etEndTime) EditText etEndTime;
     DatabaseReference firebaseDataOpp;
+    Date dateStart;
+    Date dateEnd;
+    Date timeStart;
+    Date timeEnd;
 
 
     @Override
@@ -59,13 +64,36 @@ public class AddOpportunityFragment extends Fragment{
         final String endDate = etEndDate.getText().toString().trim();
         final String endTime = etEndTime.getText().toString().trim();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
 
-        // create an instance of the opportunity class based on this information
-        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
-        final String oppId = firebaseDataOpp.push().getKey();
-
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
-        firebaseDataOpp.child(oppId).setValue(newOpp);
+//        // convert strings back to dates
+//        try {
+//            dateStart = dateFormat.parse(startDate);
+//            dateEnd = dateFormat.parse(endDate);
+//            timeStart = timeFormat.parse(startTime);
+//            timeEnd = timeFormat.parse(endTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // check that dates and times are valid
+//        if (dateStart.after(dateEnd)){
+//            // alert user if end date is before start date
+//            Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
+//        } else {
+//            // alert user if end time is before start time or equal to start time
+//            if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
+//                Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
+//            } else {
+//                // create an instance of the opportunity class based on this information
+//                firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+//                final String oppId = firebaseDataOpp.push().getKey();
+//
+//                Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
+//                firebaseDataOpp.child(oppId).setValue(newOpp);
+//            }
+//        }
 
     }
 
