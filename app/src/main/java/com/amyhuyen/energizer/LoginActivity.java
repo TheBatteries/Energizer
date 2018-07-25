@@ -81,10 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // display successful login message
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
-                            // intent to landing activity
+                            // find user type then launch intent to landing activity
                             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
                             dataUserRef.addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -102,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                         } else{
+                            progressDialog.dismiss();
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                         }

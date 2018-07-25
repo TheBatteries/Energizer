@@ -62,13 +62,6 @@ public class NpoRegActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
         progressDialog = new ProgressDialog(this);
 
         // bind the views
@@ -77,6 +70,8 @@ public class NpoRegActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+
+        // access the text in the fields
         final String name = etName.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
@@ -93,7 +88,7 @@ public class NpoRegActivity extends AppCompatActivity {
             // proceed to registering user if passwords match
             if (password.equals(confirmPassword)) {
 
-                // if required fields are not empty, register user
+                // display register user message
                 progressDialog.setMessage("Registering User...");
                 progressDialog.show();
 
@@ -125,7 +120,7 @@ public class NpoRegActivity extends AppCompatActivity {
                             }
                         });
             } else {
-                // if passwords don't match, alert user using toast
+                // if passwords don't match, alert user
                 Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             }
         }
@@ -141,7 +136,7 @@ public class NpoRegActivity extends AppCompatActivity {
             etLocationNPO.setText(place.getAddress().toString());
 
             // extract location data
-            address = place.getName().toString();
+            address = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

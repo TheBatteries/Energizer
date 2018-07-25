@@ -70,13 +70,6 @@ public class VolRegActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         //loginButton.setReadPermissions(Arrays.asList("email"));
 
-        // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
-
         progressDialog = new ProgressDialog(this);
 
         // bind the views
@@ -183,7 +176,7 @@ public class VolRegActivity extends AppCompatActivity {
             etLocation.setText(place.getAddress().toString());
 
             // extract location data
-            city = place.getName().toString();
+            city = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

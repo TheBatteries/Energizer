@@ -9,36 +9,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+
+        // bind the views
         ButterKnife.bind(this);
 
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        //TODO - START HERE - pass User object to profile frgament -- might need an IF to also pass it to subclass fragments?
-        //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
-//        Bundle userBundle = new Bundle();
-//        userBundle.putSerializable("User Object", Parcels.wrap(user));
-
+        // get the user type info from the intent
         final String UserType = getIntent().getStringExtra("UserType");
 
+        // prepare for fragment manipulation
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment profileFrag = new ProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
@@ -51,7 +40,7 @@ public class LandingActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
-        // check user type and hide icons
+        // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
         } else {
