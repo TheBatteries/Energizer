@@ -2,6 +2,7 @@ package com.amyhuyen.energizer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -244,7 +245,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         User user = intent.getParcelableExtra("UserObject");
-        intent.putExtra("UserObject", user);
+        intent.putExtra("UserObject", (Parcelable) user);
         startActivityForResult(intent, RequestCodes.LANDING);
         finish();
     }

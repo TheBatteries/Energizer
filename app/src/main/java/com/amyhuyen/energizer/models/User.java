@@ -2,9 +2,11 @@ package com.amyhuyen.energizer.models;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
+
 @Parcel
 public class User {
-import java.io.Serializable;
+
 
 @org.parceler.Parcel
 public class User implements Serializable {
