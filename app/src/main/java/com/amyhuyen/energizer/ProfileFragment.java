@@ -76,6 +76,21 @@ public abstract class ProfileFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        //unpack the bundle with the user object
+        user = this.getArguments().getParcelable("UserObject");
+        Log.i("ProfileFragment", "User name: " + user.getName());
+        Log.i("ProfileFragment", "User email: " + user.getEmail());
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,14 +98,9 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-//        user = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("UserObject"));
-//        Log.i("ProfileFragment", "UserObject name: " + user.getName());
-
         //set textview text
-//        tv_name.setText("Name: " + user.getName());
-//        tv_email.setText("Email: " + user.getEmail());
-        //these are null in certain paths of logging in
-
+        tv_name.setText( "Name: " + user.getName());
+        tv_email.setText("Email: " + user.getEmail());
     }
 
     //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
@@ -99,7 +109,6 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawCauseAreas();
 
-    //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
         // log user out

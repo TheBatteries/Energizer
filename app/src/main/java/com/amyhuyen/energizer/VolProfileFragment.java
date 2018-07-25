@@ -1,10 +1,6 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.User;
@@ -27,24 +23,8 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);if (getArguments() != null) {
-            //user = getArguments().getSerializable("UserObject");
-//            Log.i("VolProfileFragment", "user name: "+ user.getName());
 
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        //unpack the bundle with the user object
-        user = this.getArguments().getParcelable("UserObject");
-        Log.i("ProfileFragment", "User name: " + user.getName());
-        Log.i("ProfileFragment", "User email: " + user.getEmail());
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-
     }
 
     @Override
