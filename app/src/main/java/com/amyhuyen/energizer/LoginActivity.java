@@ -24,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,26 +52,6 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null) {
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
-            dataUserRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String UserType = dataSnapshot.getValue(String.class);
-                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    intent.putExtra("UserType", UserType);
-                    finish();
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("Persisting User Main", databaseError.toString());
-                }
-            });
-        }
 
         progressDialog = new ProgressDialog(this);
     }
@@ -107,10 +85,22 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
                             // intent to landing activity
-                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            intent.putExtra("UserObject", Parcels.wrap(user));
-                            startActivity(intent);
-                            finish();
+                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+                            dataUserRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String UserType = dataSnapshot.getValue(String.class);
+                                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                                    intent.putExtra("UserType", UserType);
+                                    finish();
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.e("Login User", databaseError.toString());
+                                }
+                            });
                         } else{
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();

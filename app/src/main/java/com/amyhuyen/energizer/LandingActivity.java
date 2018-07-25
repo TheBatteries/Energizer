@@ -21,7 +21,6 @@ public class LandingActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
-    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
