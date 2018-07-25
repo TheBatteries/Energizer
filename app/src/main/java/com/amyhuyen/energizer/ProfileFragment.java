@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -112,6 +113,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 firebaseAuth.signOut();
+                LoginManager.getInstance().logOut();
 
                 // log the sign out
                 if (firebaseAuth.getCurrentUser() == null) {
