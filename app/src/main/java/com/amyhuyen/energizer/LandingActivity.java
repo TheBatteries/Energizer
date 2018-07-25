@@ -14,7 +14,8 @@ import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
-    @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,10 @@ public class LandingActivity extends AppCompatActivity {
                         break;
                     case R.id.ic_middle:
                         if (UserType.equals("Volunteer")) {
-                            selectedFragment = addOppFrag;
-                        } else {
                             selectedFragment = commitFrag;
+                        } else {
+                            selectedFragment = addOppFrag;
                         }
-                        selectedFragment=commitFrag;
                         break;
                     case R.id.ic_right:
                         selectedFragment = profileFrag;
