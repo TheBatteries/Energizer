@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -242,7 +243,9 @@ public class SetSkillsActivity extends AppCompatActivity {
         intent.putExtra("UserType", userType);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        User user = intent.getParcelableExtra("UserObject");
+        intent.putExtra("UserObject", user);
+        startActivityForResult(intent, RequestCodes.LANDING);
         finish();
-        startActivity(intent);
     }
 }

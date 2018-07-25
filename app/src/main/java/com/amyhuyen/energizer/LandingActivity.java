@@ -79,5 +79,8 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }
 

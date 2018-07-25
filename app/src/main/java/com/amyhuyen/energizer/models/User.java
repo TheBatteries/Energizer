@@ -4,6 +4,10 @@ import org.parceler.Parcel;
 
 @Parcel
 public class User {
+import java.io.Serializable;
+
+@org.parceler.Parcel
+public class User implements Serializable {
 
     // user fields
     String email;

@@ -112,7 +112,7 @@ public class VolRegActivity extends AppCompatActivity {
                                     Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age);
                                     firebaseData.child("User").child(userID).setValue(volunteer);
 
-                                    // intent to the landing activity
+                                    // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
                                     intent.putExtra("UserObject", Parcels.wrap(volunteer));
                                     intent.putExtra("UserType", volunteer.getUserType());
