@@ -8,9 +8,10 @@ public class Opportunity {
     String description;
     String oppId;
 
-    public Opportunity(){}
+    public Opportunity() {
+    }
 
-    public Opportunity(String name, String description, String oppId){
+    public Opportunity(String name, String description, String oppId) {
 
         // assign values to the new instance of opportunity
         this.name = name;
@@ -25,8 +26,12 @@ public class Opportunity {
     }
 
     // the accessor for the opportunity description
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
     // the accessor for the opportunity id
-    public String getOppId() { return oppId; }
+    public String getOppId() {
+        return oppId;
+    }
 }

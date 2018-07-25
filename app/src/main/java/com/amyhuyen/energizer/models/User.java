@@ -66,7 +66,6 @@ public class User implements Parcelable { //was implements Serializable
         return userType;
     }
 
-
     // Parcelling part
     public User(Parcel in){
         this.age = in.readString();
