@@ -50,18 +50,16 @@ public abstract class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     //views
-    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
     @BindView(R.id.btn_logout)
     ImageButton btn_logout;
-    @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.tv_email)
+    TextView tv_email;
 
     private OnFragmentInteractionListener mListener;
     FragmentActivity listener;
 
-
-    //fires 1st, before creation of fragment or any views
-    // The onAttach method is called when the Fragment instance is associated with an Activity.
-    // This does not mean the Activity is fully initialized.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -73,8 +71,8 @@ public abstract class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);if (getArguments() != null) {
-
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
         }
     }
 
@@ -82,27 +80,22 @@ public abstract class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // bind the views
+        ButterKnife.bind(this, view);
 
-        //will I have access to this in the subclasses of profile fragment?
-//        user = getActivity().getIntent().getParcelableExtra("UserObject"); //tried moving this to VOlProfileFrag subclass
-        //TODO - START HERE - getting null user object reference here
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        user = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("UserObject")); //...getActivity() would give me LandingActivity...but the intent with the user object was defined in SetSkills
+        user = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("UserObject"));
         Log.i("ProfileFragment", "UserObject name: " + user.getName());
 
-        // bind the views
-        ButterKnife.bind(getActivity());
-
         //set textview text
-//        tv_name.setText(user.getName());
-//        tv_email.setText(user.getEmail());
+        tv_name.setText(user.getName());
+        tv_email.setText(user.getEmail());
 
     }
 
@@ -116,6 +109,7 @@ public abstract class ProfileFragment extends Fragment {
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
         // log user out
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
 
         // log the sign out
@@ -155,7 +149,7 @@ public abstract class ProfileFragment extends Fragment {
 }
 
 
-    //        btnLogout.setOnClickListener(new View.OnClickListener() {
+//        btnLogout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                firebaseAuth.signOut();

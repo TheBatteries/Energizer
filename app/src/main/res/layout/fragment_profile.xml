@@ -30,21 +30,22 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="21dp"
+        android:layout_toRightOf="@id/profile_pic"
         android:layout_marginTop="57dp"
         android:ems="10"
+        android:text=""
         android:hint="Name" />
 
     <TextView
         android:id="@+id/tv_email"
         android:layout_width="215dp"
         android:layout_height="33dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_below="@id/tv_name"
-        android:layout_marginEnd="21dp"
-        android:layout_marginTop="57dp"
+        android:layout_alignStart="@+id/tv_name"
+        android:layout_marginTop="102dp"
         android:ems="10"
-        android:hint="email@do-good.org" />
+        android:text=""
+        android:hint="email" />
 
     <!--<Button-->
         <!--android:id="@+id/btnLogout"-->
@@ -63,6 +64,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="13dp"
         android:layout_marginTop="50dp"
+        android:text=""
         android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
 
     <TextView
@@ -70,8 +72,10 @@
         android:layout_width="371dp"
         android:layout_height="81dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="91dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="156dp"
+        android:layout_margin="15dp"
+        android:text=""
         android:hint="Cause Area" />
 
     <TextView
@@ -80,7 +84,8 @@
         android:layout_height="54dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="0dp"
+        android:layout_margin="15dp"
+        android:text=""
         android:hint="Skills" />
 </RelativeLayout>
 

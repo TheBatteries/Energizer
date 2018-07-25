@@ -59,9 +59,6 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
 
-        //TODO - START HERE - pass User object to profile frgament -- might need an IF to also pass it to subclass fragments?
-        //TODO -pass user from activity to profile fragment (eveuntually I think it will be passed to profile fragment subclass)
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final VolProfileFragment volProfileFragment = new VolProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
