@@ -52,7 +52,7 @@ public class LandingActivity extends AppCompatActivity {
         mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                user = dataSnapshot.getValue(User.class);
                 Log.i("LandingActivity", "user name: " + user.getName());
                 //this works!
             }
@@ -91,6 +91,9 @@ public class LandingActivity extends AppCompatActivity {
                 }
 
                 //put user object in bundle to pass to
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("UserObject", user);
+                selectedFragment.setArguments(bundle);
 
                 // handle the fragment transaction
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

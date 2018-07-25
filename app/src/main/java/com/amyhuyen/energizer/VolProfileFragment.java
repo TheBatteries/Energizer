@@ -28,7 +28,7 @@ public class VolProfileFragment extends ProfileFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);if (getArguments() != null) {
             //user = getArguments().getSerializable("UserObject");
-            Log.i("VolProfileFragment", "user name: "+ user.getName());
+//            Log.i("VolProfileFragment", "user name: "+ user.getName());
 
         }
     }
@@ -36,6 +36,12 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //unpack the bundle with the user object
+        user = this.getArguments().getParcelable("UserObject");
+        Log.i("ProfileFragment", "User name: " + user.getName());
+        Log.i("ProfileFragment", "User email: " + user.getEmail());
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
