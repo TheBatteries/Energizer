@@ -18,10 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.parceler.Parcels;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,21 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null) {
-            user = new User();
-
-            Log.i("LoginActivity", "user name: " + user.getName());
-            Log.i("LoginActivity", "user type: " + user.getUserType());
-            Log.i("LoginActivity", "user email: " + user.getEmail());
-
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            intent.putExtra("UserObject", Parcels.wrap(user));
-
-            finish();
-            startActivity(intent);
-        }
-
         progressDialog = new ProgressDialog(this);
     }
 
@@ -85,8 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             // email is empty
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
-        }
-        if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             // password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
@@ -101,15 +86,29 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // display successful login message
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
-                            // intent to landing activity
-                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            intent.putExtra("UserObject", Parcels.wrap(user));
-                            startActivity(intent);
-                            finish();
+                            // find user type then launch intent to landing activity
+                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+                            dataUserRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String UserType = dataSnapshot.getValue(String.class);
+                                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                                    intent.putExtra("UserType", UserType);
+                                    finish();
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.e("Login User", databaseError.toString());
+                                }
+                            });
                         } else{
+                            progressDialog.dismiss();
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
@@ -125,9 +124,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // on click listener for signup button
-    @OnClick(R.id.tvSignUp)
-    public void onSignUpClick() {
-        // intent to signup activities
+    @OnClick (R.id.tvSignUp)
+    public void onSignUpClick(){
+        // intent to signup activity
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
