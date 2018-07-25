@@ -98,6 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                                     String UserType = dataSnapshot.getValue(String.class);
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                                     intent.putExtra("UserType", UserType);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();
                                     startActivity(intent);
                                 }

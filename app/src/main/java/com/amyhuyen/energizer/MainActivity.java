@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                     String UserType = dataSnapshot.getValue(String.class);
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                     intent.putExtra("UserType", UserType);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
                 }
@@ -136,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     //Toast.makeText(this, "You are signed up", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
                 } else {
