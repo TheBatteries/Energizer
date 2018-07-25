@@ -141,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(getApplicationContext(), FacebookUserDetailsActivity.class);
-                    finish();
-                    startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), FacebookUserDetailsActivity.class);
+//                    finish();
+//                    startActivity(intent);
                 }
             }
 
