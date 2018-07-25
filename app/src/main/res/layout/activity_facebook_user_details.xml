@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FacebookUserDetailsActivity">
+
+    <EditText
+        android:id="@+id/etEmailFB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="Preferred Email"
+        android:layout_margin="30dp"
+        android:layout_alignParentTop="true"/>
+
+    <EditText
+        android:id="@+id/etPhoneFB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="Phone"
+        android:layout_below="@id/etEmailFB"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"/>
+
+    <EditText
+        android:id="@+id/etAgeFB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Age"
+        android:layout_below="@id/etPhoneFB"
+        android:layout_margin="30dp"/>
+
+    <Button
+        android:id="@+id/btnSetData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Info"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"/>
+</RelativeLayout>
