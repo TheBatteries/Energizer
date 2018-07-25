@@ -72,20 +72,17 @@
         android:layout_width="371dp"
         android:layout_height="81dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="156dp"
-        android:layout_margin="15dp"
-        android:text=""
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="123dp"
         android:hint="Cause Area" />
 
     <TextView
         android:id="@+id/tv_skills"
         android:layout_width="371dp"
-        android:layout_height="54dp"
+        android:layout_height="69dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="15dp"
-        android:text=""
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
         android:hint="Skills" />
 </RelativeLayout>
 

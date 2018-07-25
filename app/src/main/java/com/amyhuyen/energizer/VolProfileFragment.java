@@ -1,15 +1,12 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
-
-import com.amyhuyen.energizer.models.User;
 
 import butterknife.BindView;
 
 public class VolProfileFragment extends ProfileFragment {
-
-    User user;
 
     //views
     @BindView(R.id.tv_skills) TextView tv_skills;
@@ -19,13 +16,14 @@ public class VolProfileFragment extends ProfileFragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);if (getArguments() != null) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        }
+        drawCauseAreas();
+        drawSkills();
     }
+
 
     @Override
     public void drawCauseAreas() {
@@ -38,5 +36,4 @@ public class VolProfileFragment extends ProfileFragment {
         String skills = "Skills placeholder"; //TODO - get list of skills
         tv_skills.setText(skills);
     }
-
 }
