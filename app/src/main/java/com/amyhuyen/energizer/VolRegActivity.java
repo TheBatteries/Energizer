@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -71,11 +71,11 @@ public class VolRegActivity extends AppCompatActivity {
         //loginButton.setReadPermissions(Arrays.asList("email"));
 
         // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
-        }
+//        if (firebaseAuth.getCurrentUser() != null){
+//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -116,12 +116,13 @@ public class VolRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    User user = new User(age, email, name, phone, userID, userType);
-                                    firebaseData.child("User").child(userID).setValue(user);
+                                    Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age);
+                                    firebaseData.child("User").child(userID).setValue(volunteer);
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(user));
+                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
+                                    intent.putExtra("UserType", volunteer.getUserType());
                                     startActivity(intent);
                                     finish();
 
@@ -178,8 +179,8 @@ public class VolRegActivity extends AppCompatActivity {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             // get the location and log it
             Place place = PlaceAutocomplete.getPlace(this, data);
-            Log.i("Location Success", "Place " + place.getName());
-            etLocation.setText(place.getName());
+            Log.i("Location Success", "Place " + place.getAddress().toString());
+            etLocation.setText(place.getAddress().toString());
 
             // extract location data
             city = place.getName().toString();

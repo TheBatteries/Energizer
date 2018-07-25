@@ -18,7 +18,6 @@ public class Opportunity {
         this.oppId = oppId;
     }
 
-
     // the accessor for opportunity name
     public String getName() {
         return name;
