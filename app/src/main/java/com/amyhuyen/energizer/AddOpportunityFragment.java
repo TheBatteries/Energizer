@@ -25,6 +25,10 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etOppName) EditText etOppname;
     @BindView (R.id.etOppDescription) EditText etOppDescriotion;
     @BindView (R.id.btnAddOpp) Button btnAddOpp;
+    @BindView (R.id.etStartDate) EditText etStartDate;
+    @BindView (R.id.etStartTime) EditText etStartTime;
+    @BindView (R.id.etEndDate) EditText etEndDate;
+    @BindView (R.id.etEndTime) EditText etEndTime;
     DatabaseReference firebaseDataOpp;
 
 
@@ -50,13 +54,17 @@ public class AddOpportunityFragment extends Fragment{
         // get the contents of the edit texts
         final String name = etOppname.getText().toString().trim();
         final String description = etOppDescriotion.getText().toString().trim();
+        final String startDate = etStartDate.getText().toString().trim();
+        final String startTime = etStartTime.getText().toString().trim();
+        final String endDate = etEndDate.getText().toString().trim();
+        final String endTime = etEndTime.getText().toString().trim();
 
 
         // create an instance of the opportunity class based on this information
         firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
         final String oppId = firebaseDataOpp.push().getKey();
 
-        Opportunity newOpp = new Opportunity(name, description, oppId);
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
         firebaseDataOpp.child(oppId).setValue(newOpp);
 
     }

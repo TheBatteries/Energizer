@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -26,14 +27,18 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-        String date = String.valueOf(month) + "-" + String.valueOf(day) + "-" + String.valueOf(year);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        String strDate = simpleDateFormat.format(calendar.getTime());
 
         if (getTag().equals("Start Date Picker")){
             EditText etStartDate = getActivity().findViewById(R.id.etStartDate);
-            etStartDate.setText(date);
+            etStartDate.setText(strDate);
         } else if (getTag().equals("End Date Picker")){
             EditText etEndDate = getActivity().findViewById(R.id.etEndDate);
-            etEndDate.setText(date);
+            etEndDate.setText(strDate);
         }
     }
 }
