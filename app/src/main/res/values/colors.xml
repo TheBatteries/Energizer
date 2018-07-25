@@ -5,6 +5,7 @@
     <color name="colorAccent">#FFCCBC</color>
     <color name="colorSecondaryDark">#CB9B8C</color>
     <color name="colorSecondaryLight">#FFFFEE</color>
+    <color name="theme_grey">#F5F5F6</color>
     <color name="action_bar_semi_transparent_white">#bfffffff</color>
     <color name="action_bar_transparent_background">#20000000</color>
     <color name="action_bar_transparent_background_pressed_state">#30000000</color>
