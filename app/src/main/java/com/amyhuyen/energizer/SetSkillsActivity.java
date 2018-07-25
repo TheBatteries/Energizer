@@ -177,8 +177,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         // register the user and go to landing activity
         addSkills();
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-        //User user = intent.getParcelableExtra("UserObject");
-        //intent.putExtra("UserObject", user);
+        startActivity(intent);
         finish();
     }
 }

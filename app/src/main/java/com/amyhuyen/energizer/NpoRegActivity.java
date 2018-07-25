@@ -28,8 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -69,11 +67,11 @@ public class NpoRegActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         // check if user already is logged in (if so, launch landing activity)
-//        if (firebaseAuth.getCurrentUser() != null){
-//            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -120,7 +118,6 @@ public class NpoRegActivity extends AppCompatActivity {
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(user));
                                     startActivity(intent);
                                     finish();
 

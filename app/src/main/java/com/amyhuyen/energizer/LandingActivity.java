@@ -87,7 +87,8 @@ public class LandingActivity extends AppCompatActivity {
                         selectedFragment = opportunityFeedFrag;
                         break;
                     default:
-                        selectedFragment = volProfileFragment;
+                        selectedFragment = commitFrag;
+                        break;
                 }
 
                 //put user object in bundle to pass to

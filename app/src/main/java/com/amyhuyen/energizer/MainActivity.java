@@ -108,11 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                        User user = dataSnapshot.getValue(User.class);
-//                        Log.i("LandingActivity", "user name: " + user.getName());
                         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-//                        intent.putExtra("UserObject", Parcels.wrap(user));
                         finish();
                         startActivity(intent);
                     }

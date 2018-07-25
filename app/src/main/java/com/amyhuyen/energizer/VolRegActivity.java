@@ -119,7 +119,6 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    //intent.putExtra("UserObject", Parcels.wrap(user));
                                     startActivity(intent);
                                     finish();
 
