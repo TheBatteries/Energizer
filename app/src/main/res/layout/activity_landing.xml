@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/theme_grey"
     tools:context=".LandingActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blur_mask_tint_color"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navegation" />
+        android:background="@color/colorAccent"
+        android:layout_alignParentBottom="true"/>
 
     <FrameLayout
         android:id = "@+id/flContainer"
