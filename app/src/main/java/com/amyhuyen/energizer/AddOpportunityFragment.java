@@ -25,7 +25,6 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etOppName) EditText etOppname;
     @BindView (R.id.etOppDescription) EditText etOppDescriotion;
     @BindView (R.id.btnAddOpp) Button btnAddOpp;
-    @BindView (R.id.etStartTime) EditText etStartTime;
     DatabaseReference firebaseDataOpp;
 
 
@@ -74,5 +73,20 @@ public class AddOpportunityFragment extends Fragment{
     public void onEndTimeClick(){
         DialogFragment timeEndPicker = new TimePickerFragment();
         timeEndPicker.show(getActivity().getSupportFragmentManager(), "End Time Picker");
+    }
+
+    // on click listener for start date edit text
+    @OnClick (R.id.etStartDate)
+    public void onStartDateClick(){
+        DialogFragment dateStartPicker = new DatePickerFragment();
+        dateStartPicker.show(getActivity().getSupportFragmentManager(), "Start Date Picker");
+
+    }
+
+    // on click listener for end date edit text
+    @OnClick (R.id.etEndDate)
+    public void onEndDateClick(){
+        DialogFragment dateEndPicker = new DatePickerFragment();
+        dateEndPicker.show(getActivity().getSupportFragmentManager(), "End Date Picker");
     }
 }

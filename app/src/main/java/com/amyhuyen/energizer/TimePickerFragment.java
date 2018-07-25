@@ -25,21 +25,32 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    // when the time is chosen by the user, fill the edit text
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        // note that hourOfDay ranges from 0-24
-        // when the time is chosen by the user, fill the edit text
-        String amPm = (hourOfDay < 12) ? "AM" : "PM";
-        int hour = 12;
-        if (hourOfDay != 12 && hourOfDay != 0) {
-            hour = hourOfDay % 12;
-        }
-
-        if (getTag().equals("Start Time Picker")){
-            EditText etStartTime = (EditText) getActivity().findViewById(R.id.etStartTime);
-            etStartTime.setText("Starts:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+        // display time for military time users
+        if (DateFormat.is24HourFormat(getActivity())) {
+            if (getTag().equals("Start Time Picker")){
+                EditText etStartTime = (EditText) getActivity().findViewById(R.id.etStartTime);
+                etStartTime.setText("Starts:  " + String.valueOf(hourOfDay) + String.valueOf(minute));
+            } else if (getTag().equals("End Time Picker")){
+                EditText etEndTime = (EditText) getActivity().findViewById(R.id.etEndTime);
+                etEndTime.setText("Ends:  " + String.valueOf(hourOfDay) + String.valueOf(minute));
+            }
         } else {
-            EditText etEndTime = (EditText) getActivity().findViewById(R.id.etEndTime);
-            etEndTime.setText("Ends:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+            // display time for non-military time users; hourOfDay comes back in 24-hour form, show AM-PM form
+            String amPm = (hourOfDay < 12) ? "AM" : "PM";
+            int hour = 12;
+            if (hourOfDay != 12 && hourOfDay != 0) {
+                hour = hourOfDay % 12;
+            }
+
+            if (getTag().equals("Start Time Picker")) {
+                EditText etStartTime = (EditText) getActivity().findViewById(R.id.etStartTime);
+                etStartTime.setText("Starts:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+            } else if (getTag().equals("End Time Picker")) {
+                EditText etEndTime = (EditText) getActivity().findViewById(R.id.etEndTime);
+                etEndTime.setText("Ends:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+            }
         }
 
     }
