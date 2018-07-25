@@ -90,12 +90,13 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        user = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("UserObject"));
-        Log.i("ProfileFragment", "UserObject name: " + user.getName());
+//        user = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("UserObject"));
+//        Log.i("ProfileFragment", "UserObject name: " + user.getName());
 
         //set textview text
-        tv_name.setText(user.getName());
-        tv_email.setText(user.getEmail());
+        tv_name.setText("Name: " + user.getName());
+        tv_email.setText("Email: " + user.getEmail());
+        //these are null in certain paths of logging in
 
     }
 
@@ -124,7 +125,6 @@ public abstract class ProfileFragment extends Fragment {
         listener.finish(); //TODO - why couldn't I call finish here?
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -147,24 +147,5 @@ public abstract class ProfileFragment extends Fragment {
     }
 
 }
-
-
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                firebaseAuth.signOut();
-//
-//                // log the sign out
-//                if (firebaseAuth.getCurrentUser() == null) {
-//                    Log.d("Logging Out", "User has successfully logged out");
-//                    Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                //Intent
-//                Intent intent = new Intent(getActivity(), LoginActivity.class);
-//                startActivity(intent);
-//                //finish(); TODO - why can't I call finish here?
-//            }
-//        });
 
 

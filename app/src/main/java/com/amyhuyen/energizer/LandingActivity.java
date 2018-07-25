@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.parceler.Parcels;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -30,6 +32,7 @@ public class LandingActivity extends AppCompatActivity {
     private DatabaseReference mDBUserRef;
     private FirebaseUser currentFirebaseUser;
     private User user;
+    private User passedUser;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -58,6 +61,11 @@ public class LandingActivity extends AppCompatActivity {
                 Log.d("LandingActivity", "unable to load User");
             }
         });
+
+        //this User object is null
+        passedUser = Parcels.unwrap(this.getIntent().getParcelableExtra("UserObject"));
+        Log.i("LandingActivity", "Passed user object " + passedUser.getName() + " made it to landing");
+
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final VolProfileFragment volProfileFragment = new VolProfileFragment();
