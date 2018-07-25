@@ -65,7 +65,14 @@ public class AddOpportunityFragment extends Fragment{
     // on click listener for start time edit text
     @OnClick (R.id.etStartTime)
     public void onStartTimeClick(){
-        DialogFragment timePicker = new TimePickerFragment();
-        timePicker.show(getActivity().getSupportFragmentManager(), "Start Time Picker");
+        DialogFragment timeStartPicker = new TimePickerFragment();
+        timeStartPicker.show(getActivity().getSupportFragmentManager(), "Start Time Picker");
+    }
+
+    // on click listener for end time edit text
+    @OnClick (R.id.etEndTime)
+    public void onEndTimeClick(){
+        DialogFragment timeEndPicker = new TimePickerFragment();
+        timeEndPicker.show(getActivity().getSupportFragmentManager(), "End Time Picker");
     }
 }

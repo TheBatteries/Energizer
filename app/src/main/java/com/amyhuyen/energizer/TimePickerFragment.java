@@ -33,7 +33,14 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         if (hourOfDay != 12 && hourOfDay != 0) {
             hour = hourOfDay % 12;
         }
-        EditText etStartTime = (EditText)getActivity().findViewById(R.id.etStartTime);
-        etStartTime.setText(String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+
+        if (getTag().equals("Start Time Picker")){
+            EditText etStartTime = (EditText) getActivity().findViewById(R.id.etStartTime);
+            etStartTime.setText("Starts:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+        } else {
+            EditText etEndTime = (EditText) getActivity().findViewById(R.id.etEndTime);
+            etEndTime.setText("Ends:  " + String.valueOf(hour) + ":" + String.valueOf(minute) + amPm);
+        }
+
     }
 }
