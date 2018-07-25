@@ -1,31 +1,29 @@
 package com.amyhuyen.energizer.models;
 
+import org.parceler.Parcel;
 
-@org.parceler.Parcel
+@Parcel
 public class User {
 
-    //user fields
-    String age;
+    // user fields
     String email;
     String name;
     String phone;
     String userID;
     String userType;
+    String latLong;
+    String address;
 
-    public User () {
-    }
+    public User () { }
 
-    public User (String age, String email, String name, String phone, String userID, String userType) {
-        this.age = age;
+    public User (String email, String name, String phone, String userID, String userType, String latLong, String address) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.userID = userID;
         this.userType = userType;
-    }
-
-    public String getAge() {
-        return age;
+        this.latLong = latLong;
+        this.address = address;
     }
 
     public String getName() {
@@ -47,4 +45,8 @@ public class User {
     public String getUserType() {
         return userType;
     }
+
+    public String getLatLong() { return latLong; }
+
+    public String getAddress() { return address; }
 }
