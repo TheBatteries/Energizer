@@ -1,10 +1,11 @@
 package com.amyhuyen.energizer.models;
 
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 @org.parceler.Parcel
-public class User implements Serializable {
+public class User implements Parcelable { //was implements Serializable
 
     //user fields
     String age;
@@ -48,5 +49,15 @@ public class User implements Serializable {
 
     public String getUserType() {
         return userType;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }

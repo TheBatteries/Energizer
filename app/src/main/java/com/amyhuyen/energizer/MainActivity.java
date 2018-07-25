@@ -11,7 +11,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,8 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.parceler.Parcels;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -106,16 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 currentFirebaseUser = firebaseAuth.getCurrentUser();
                 userID = currentFirebaseUser.getUid();
 
-                //TODO - not sure how to handle passing a user object when user is aldready logged in.
-
+                //TODO - not sure how to handle passing a user object when user is already logged in.
+                //Do we even need a user object here?
                 mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        User user = dataSnapshot.getValue(User.class);
-                        Log.i("LandingActivity", "user name: " + user.getName());
+//                        User user = dataSnapshot.getValue(User.class);
+//                        Log.i("LandingActivity", "user name: " + user.getName());
                         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                        intent.putExtra("UserObject", Parcels.wrap(user));
+//                        intent.putExtra("UserObject", Parcels.wrap(user));
                         finish();
                         startActivity(intent);
                     }

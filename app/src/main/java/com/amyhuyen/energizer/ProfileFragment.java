@@ -94,8 +94,8 @@ public abstract class ProfileFragment extends Fragment {
 //        Log.i("ProfileFragment", "UserObject name: " + user.getName());
 
         //set textview text
-        tv_name.setText("Name: " + user.getName());
-        tv_email.setText("Email: " + user.getEmail());
+//        tv_name.setText("Name: " + user.getName());
+//        tv_email.setText("Email: " + user.getEmail());
         //these are null in certain paths of logging in
 
     }

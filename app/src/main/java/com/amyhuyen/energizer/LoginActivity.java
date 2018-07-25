@@ -24,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,10 +65,10 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    User user = dataSnapshot.getValue(User.class);
-                    Log.i("LandingActivity", "user name: " + user.getName());
+                    //User user = dataSnapshot.getValue(User.class);
+                   // Log.i("LandingActivity", "user name: " + user.getName());
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    intent.putExtra("UserObject", Parcels.wrap(user));
+//                    // intent.putExtra("UserObject", Parcels.wrap(user));
                     finish();
                     startActivity(intent);
                 }
@@ -116,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             // intent to landing activity
                             Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            intent.putExtra("UserObject", Parcels.wrap(user));
+                            // intent.putExtra("UserObject", Parcels.wrap(user));
                             startActivity(intent);
                             finish();
                         } else{

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -178,8 +177,8 @@ public class SetSkillsActivity extends AppCompatActivity {
         // register the user and go to landing activity
         addSkills();
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-        User user = intent.getParcelableExtra("UserObject");
-        intent.putExtra("UserObject", user);
+        //User user = intent.getParcelableExtra("UserObject");
+        //intent.putExtra("UserObject", user);
         finish();
     }
 }

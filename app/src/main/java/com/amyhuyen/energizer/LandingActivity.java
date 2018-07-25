@@ -19,8 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcels;
-
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -33,6 +31,7 @@ public class LandingActivity extends AppCompatActivity {
     private FirebaseUser currentFirebaseUser;
     private User user;
     private User passedUser;
+    private String userID;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -47,13 +46,15 @@ public class LandingActivity extends AppCompatActivity {
         final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
+        userID = currentFirebaseUser.getUid();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
-        mDBUserRef.addValueEventListener(new ValueEventListener() {
+        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 Log.i("LandingActivity", "user name: " + user.getName());
+                //this works!
             }
 
             @Override
@@ -61,11 +62,6 @@ public class LandingActivity extends AppCompatActivity {
                 Log.d("LandingActivity", "unable to load User");
             }
         });
-
-        //this User object is null
-        passedUser = Parcels.unwrap(this.getIntent().getParcelableExtra("UserObject"));
-        Log.i("LandingActivity", "Passed user object " + passedUser.getName() + " made it to landing");
-
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final VolProfileFragment volProfileFragment = new VolProfileFragment();
@@ -94,6 +90,8 @@ public class LandingActivity extends AppCompatActivity {
                         selectedFragment = volProfileFragment;
                 }
 
+                //put user object in bundle to pass to
+
                 // handle the fragment transaction
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, selectedFragment);
@@ -102,7 +100,5 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
 

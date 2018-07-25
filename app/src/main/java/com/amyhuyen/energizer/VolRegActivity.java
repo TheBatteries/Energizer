@@ -28,8 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -121,7 +119,7 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(user));
+                                    //intent.putExtra("UserObject", Parcels.wrap(user));
                                     startActivity(intent);
                                     finish();
 
