@@ -2,11 +2,15 @@ package com.amyhuyen.energizer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
+import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -15,8 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,27 +32,77 @@ import butterknife.OnClick;
 public class SetSkillsActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.etSkill1) EditText userSkill1;
-    @BindView (R.id.etSkill2) EditText userSkill2;
-    @BindView (R.id.etSkill3) EditText userSkill3;
+    //@BindView (R.id.etSkill1) EditText userSkill1;
+    //@BindView (R.id.etSkill2) EditText userSkill2;
+    //@BindView (R.id.etSkill3) EditText userSkill3;
+    @BindView(R.id.actvSkill1) AutoCompleteTextView userSkill1;
+    @BindView(R.id.actvSkill2) AutoCompleteTextView userSkill2;
+    @BindView(R.id.actvSkill3) AutoCompleteTextView userSkill3;
 
     private DatabaseReference firebaseData;
     private ArrayList<String> userSkills;
     private String userId;
+    private Volunteer volunteer;
+    private String userType;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_skills);
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         userId = currentFirebaseUser.getUid();
+        final ArrayList<String> skillsList = new ArrayList<String>();
 
 
         // bind the views
         ButterKnife.bind(this);
+
+        // autofill for the TextViews
+        skillsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // create an ArrayList to hold the skills -- and add the skills to it through "collectSkillName"
+                ArrayList<String> skills = collectSkillName((Map<String,Object>) dataSnapshot.getValue());
+                // connect the TextViews to ArrayAdapters that hold the list of skills
+                userSkill1.setAdapter(newAdapter(skills));
+                userSkill2.setAdapter(newAdapter(skills));
+                userSkill3.setAdapter(newAdapter(skills));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
     }
+
+    // makes an ArrayAdapter -- made so that ArrayAdapters can be made within onDataChange() methods
+    private ArrayAdapter<String> newAdapter(ArrayList<String> list){
+        final ArrayAdapter<String> afAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
+        return afAdapter;
+    }
+
+    // retrieve skill name when in a "Skill" DataSnapShot
+    private ArrayList<String> collectSkillName(Map<String, Object> skill){
+        // create an ArrayList that will hold the names of each skill within the database
+        ArrayList<String> skills = new ArrayList<String>();
+        // run a for loop that goes into the DataSnapShot and retrieves the name of the skill
+        for (Map.Entry<String, Object> entry : skill.entrySet()){
+            // gets the name of the skill
+            Map singleSkill = (Map) entry.getValue();
+            // adds that skill name to the ArrayList
+            skills.add((String) singleSkill.get("Skill"));
+        }
+        return skills;
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///                                                           addSkills()                                                                //
@@ -171,13 +228,23 @@ public class SetSkillsActivity extends AppCompatActivity {
         }
     }
 
+
     // on click listener for register button
     @OnClick(R.id.setSkills)
     public void onRegisterClick(){
         // register the user and go to landing activity
         addSkills();
+
+        // get intent information from previous activity
+        Volunteer volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
+        String userType = getIntent().getStringExtra("UserType");
+
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-        startActivity(intent);
+        intent.putExtra("UserObject", Parcels.wrap(volunteer));
+        intent.putExtra("UserType", userType);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
+        startActivity(intent);
     }
 }

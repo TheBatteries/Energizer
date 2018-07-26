@@ -26,7 +26,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -47,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private String userID;
     private DatabaseReference mDBUserRef;
     private LoginButton loginButton;
-    private static final String EMAIL = "email";
     private static final String TAG = "FACELOG";
+    private DatabaseReference firebaseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         firebaseAuth = FirebaseAuth.getInstance();
-        //loginButton = findViewById(R.id.login_button);
+        firebaseData = FirebaseDatabase.getInstance().getReference();
 
 
 
@@ -93,11 +97,25 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+            dataUserRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String UserType = dataSnapshot.getValue(String.class);
+                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.putExtra("UserType", UserType);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
+                }
 
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("Persisting User Main", databaseError.toString());
+                }
+            });
+        }
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -115,21 +133,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null){
-            updateUI();
-        }
-    }
+    private void updateUI(FirebaseUser user) {
+        final String userId = user.getUid();
+        firebaseData.child("User").child(userId).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    //Toast.makeText(this, "You are signed up", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
+                } else {
+                    //Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
 
-    private void updateUI() {
-        Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-        finish();
-        startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), FacebookUserDetailsActivity.class);
+//                    finish();
+//                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // log the error
+                Log.e("New Skill", databaseError.toString());
+            }
+        });
+
     }
 
     @Override
@@ -152,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateUI();
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

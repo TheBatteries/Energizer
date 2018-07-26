@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private String userID;
     private DatabaseReference mDBUserRef;
     private User user;
+    private static final String TAG = "FACELOG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,31 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null) {
-
-            currentFirebaseUser = firebaseAuth.getCurrentUser();
-            userID = currentFirebaseUser.getUid();
-
-            //TODO - not sure how to handle passing a user object when user is aldready logged in.
-
-            mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    finish();
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("LandingActivity", "unable to load User");
-                }
-            });
-        }
-
         progressDialog = new ProgressDialog(this);
     }
+
 
     private void userLogin() {
 
@@ -89,8 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             // email is empty
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
-        }
-        if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             // password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
@@ -105,16 +84,35 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // display successful login message
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
-                            // intent to landing activity
-                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            startActivity(intent);
-                            finish();
+
+                            // find user type then launch intent to landing activity
+                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+                            dataUserRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String UserType = dataSnapshot.getValue(String.class);
+                                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                                    intent.putExtra("UserType", UserType);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.e("Login User", databaseError.toString());
+                                }
+                            });
                         } else{
+                            progressDialog.dismiss();
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
@@ -127,9 +125,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // on click listener for signup button
-    @OnClick(R.id.tvSignUp)
-    public void onSignUpClick() {
-        // intent to signup activities
+    @OnClick (R.id.tvSignUp)
+    public void onSignUpClick(){
+        // intent to signup activity
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);

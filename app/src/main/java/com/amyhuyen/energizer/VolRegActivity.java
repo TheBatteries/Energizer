@@ -12,9 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -27,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.etAge) EditText etAge;
     @BindView (R.id.etPhone) EditText etPhone;
     @BindView (R.id.btnRegister) Button btnRegister;
+    @BindView (R.id.btnAddImage) Button btnAddImage;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocation) EditText etLocation;
@@ -52,7 +54,6 @@ public class VolRegActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private String userID;
     private CallbackManager callbackManager;
-    private LoginButton loginButton;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String latLong;
     private String city;
@@ -62,18 +63,10 @@ public class VolRegActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vol_reg);
-        loginButton = findViewById(R.id.login_button);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();
         //loginButton.setReadPermissions(Arrays.asList("email"));
-
-//         check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-            finish();
-            startActivity(intent);
-        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -114,11 +107,15 @@ public class VolRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    User user = new User(age, email, name, phone, userID, userType);
-                                    firebaseData.child("User").child(userID).setValue(user);
+                                    Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age);
+                                    firebaseData.child("User").child(userID).setValue(volunteer);
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
+                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
+                                    intent.putExtra("UserType", volunteer.getUserType());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                     finish();
 
@@ -175,11 +172,11 @@ public class VolRegActivity extends AppCompatActivity {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             // get the location and log it
             Place place = PlaceAutocomplete.getPlace(this, data);
-            Log.i("Location Success", "Place " + place.getName());
-            etLocation.setText(place.getName());
+            Log.i("Location Success", "Place " + place.getAddress().toString());
+            etLocation.setText(place.getAddress().toString());
 
             // extract location data
-            city = place.getName().toString();
+            city = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

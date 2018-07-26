@@ -12,23 +12,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import org.parceler.Parcel;
 
-//Do I have to implement parcelabe here?
-
-
+@Parcel
 public class Volunteer extends User {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentFirebaseUser;
     private String userID;
     private DatabaseReference mDBRef;
+    String age;
 
+    public Volunteer() { }
 
-    public Volunteer() {
+    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
+        super(email, name, phone, userID, userType, latLong, address);
+        this.age = age;
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
         userID = currentFirebaseUser.getUid();
         mDBRef = FirebaseDatabase.getInstance().getReference();
+    }
+
+    public String getAge() {
+        return age;
     }
 
     public ArrayList<String> getVolSkills() {
@@ -79,5 +86,4 @@ public class Volunteer extends User {
         //how can I force the return statement to wait for all of the searching through lists to be completed?
         return skillsList; //this won't work here-- but for now}
     }
-
 }
