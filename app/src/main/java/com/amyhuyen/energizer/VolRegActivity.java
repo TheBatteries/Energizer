@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Volunteer;
 import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -27,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.etAge) EditText etAge;
     @BindView (R.id.etPhone) EditText etPhone;
     @BindView (R.id.btnRegister) Button btnRegister;
+    @BindView (R.id.btnAddImage) Button btnAddImage;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocation) EditText etLocation;
@@ -52,7 +54,6 @@ public class VolRegActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private String userID;
     private CallbackManager callbackManager;
-    private LoginButton loginButton;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String latLong;
     private String city;
@@ -62,7 +63,6 @@ public class VolRegActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vol_reg);
-        loginButton = findViewById(R.id.login_button);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();
@@ -112,7 +112,10 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
+                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
                                     intent.putExtra("UserType", volunteer.getUserType());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                     finish();
 

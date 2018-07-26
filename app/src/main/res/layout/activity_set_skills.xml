@@ -16,35 +16,7 @@
         android:layout_alignParentTop="true"
         android:text="@string/skills_message" />
 
-    <EditText
-        android:id="@+id/etSkill1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@id/tvSkill"
-        android:hint="@string/enter_skill" />
 
-    <EditText
-        android:id="@+id/etSkill2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/etSkill1"
-        android:hint="@string/enter_skill" />
-
-    <EditText
-        android:id="@+id/etSkill3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/etSkill2"
-        android:hint="@string/enter_skill" />
 
     <Button
         android:id="@+id/setSkills"
@@ -55,4 +27,38 @@
         android:layout_centerHorizontal="true"
         android:text="@string/go_to_feed"
         android:textAllCaps="false"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/actvSkill1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tvSkill"
+        android:hint="@string/enter_skill" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actvSkill2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/actvSkill1"
+        android:hint="@string/enter_skill" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actvSkill3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/actvSkill2"
+        android:hint="@string/enter_skill" />
+
 </RelativeLayout>

@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
+
     private void userLogin() {
 
         String email = etEmail.getText().toString().trim();
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
+
                             // find user type then launch intent to landing activity
                             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
                             dataUserRef.addValueEventListener(new ValueEventListener() {
@@ -95,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                                     String UserType = dataSnapshot.getValue(String.class);
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                                     intent.putExtra("UserType", UserType);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();
                                     startActivity(intent);
                                 }
@@ -108,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });

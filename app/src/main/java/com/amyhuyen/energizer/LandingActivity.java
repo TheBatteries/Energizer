@@ -54,6 +54,7 @@ public class LandingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 Log.i("LandingActivity", "user name: " + user.getName());
+                //this works!
             }
 
             @Override

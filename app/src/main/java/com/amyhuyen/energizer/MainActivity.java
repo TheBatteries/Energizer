@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private FirebaseUser currentFirebaseUser;
     private String userID;
+    private DatabaseReference mDBUserRef;
     private LoginButton loginButton;
-    private static final String EMAIL = "email";
     private static final String TAG = "FACELOG";
     private DatabaseReference firebaseData;
 
@@ -98,14 +98,15 @@ public class MainActivity extends AppCompatActivity {
         // check if user already is logged in (if so, launch landing activity)
         // create and pass current user object
         if (firebaseAuth.getCurrentUser() != null){
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User")
-                    .child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String UserType = dataSnapshot.getValue(String.class);
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                     intent.putExtra("UserType", UserType);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
                 }
@@ -141,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     //Toast.makeText(this, "You are signed up", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
                 } else {
@@ -193,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
+
     // on click listener for volunteer button
     @OnClick(R.id.btnVolunteer)
     public void onVolunteerClick(){
@@ -216,4 +221,6 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
+
 }
