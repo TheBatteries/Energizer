@@ -103,7 +103,7 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, city, description);
+                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
                                     firebaseData.child("User").child(userID).setValue(nonprofit);
 
                                     // intent to the landing activity
@@ -134,7 +134,7 @@ public class NpoRegActivity extends AppCompatActivity {
             etLocationNPO.setText(place.getAddress().toString());
 
             // extract location data
-            city = place.getAddress().toString();
+            address = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
