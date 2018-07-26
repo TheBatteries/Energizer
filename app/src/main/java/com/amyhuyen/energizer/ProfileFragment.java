@@ -36,7 +36,6 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
 
-   // private OnFragmentInteractionListener mListener;
     FragmentActivity listener;
 
     @Override
@@ -102,11 +101,5 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish(); //TODO - why couldn't I call finish here?
     }
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
 }
 
