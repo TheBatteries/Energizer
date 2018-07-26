@@ -35,6 +35,14 @@ public class LandingActivity extends AppCompatActivity {
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
+    // fragment variables
+    public FragmentManager fragmentManager;
+    public FragmentTransaction fragmentTransaction;
+    public Fragment volProfileFragment;
+    public Fragment opportunityFeedFrag;
+    public Fragment commitFrag;
+    public Fragment addOppFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +75,14 @@ public class LandingActivity extends AppCompatActivity {
         final String UserType = getIntent().getStringExtra("UserType");
 
         // prepare for fragment manipulation
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final VolProfileFragment volProfileFragment = new VolProfileFragment();
-        final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
-        final Fragment commitFrag = new CommitFragment();
-        final Fragment addOppFrag = new AddOpportunityFragment();
+        fragmentManager = getSupportFragmentManager();
+        volProfileFragment = new VolProfileFragment();
+        opportunityFeedFrag = new OpportunityFeedFragment();
+        commitFrag = new CommitFragment();
+        addOppFrag = new AddOpportunityFragment();
 
         // handle the initial fragment transaction
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
         fragmentTransaction.commit();
 
@@ -114,7 +122,7 @@ public class LandingActivity extends AppCompatActivity {
                 selectedFragment.setArguments(bundle);
 
                 // handle the fragment transaction
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, selectedFragment);
                 fragmentTransaction.commit();
                 return true;
