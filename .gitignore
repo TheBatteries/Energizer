@@ -67,5 +67,5 @@ values/secrets.xml
 *.DS_Store
 
 # Secret file
-#*secrets.xml
+*secrets.xml
 
