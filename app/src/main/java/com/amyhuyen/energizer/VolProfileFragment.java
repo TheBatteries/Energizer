@@ -39,9 +39,8 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void drawSkills() {
         String volSkills = volunteer.getVolSkills().toString();
-        String skills = "Skills placeholder"; //TODO - get list of skills
         tv_skills.setText(volSkills);
-        Log.i("Volunteer", volSkills);
+        Log.i("VolProfileFragment", "getVolSkills(): " + volSkills);
 
     }
 }

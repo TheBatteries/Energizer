@@ -37,9 +37,8 @@ public class Volunteer extends User {
      * Get list of volunteer's skills
      */
     public ArrayList<String> getVolSkills() {
-        final ArrayList<String> skillsList = new ArrayList<>();
-        final ArrayList<String> skillIDlist = new ArrayList<>();
 
+        final ArrayList<String> skillIDlist = new ArrayList<>();
         final FirebaseUser currentFirebaseUser;
         final String userID;
         final DatabaseReference mDBRef;
@@ -62,43 +61,46 @@ public class Volunteer extends User {
                     Log.i("VolunteerClass", "skillIDList " + skillIDlist.toString());
                 }
 
-              // if (dataSnapshot.exists()) {  //can't execute this until we have the skillIDlist
-                if (skillIDlist != null)
-                    mDBRef.child("Skill").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot skillID : dataSnapshot.getChildren()) {
-                                for (int i = 0; i < skillsList.size(); i++) {
-                                    if (skillID.toString().equals(skillIDlist.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
-                                        String wordSkill = skillID.child("Skill").getValue().toString();
-                                        Log.i("Volunteer", "wordSkill being added: " + wordSkill);
-                                        skillsList.add(wordSkill);
-                                        Log.i("Volunteer", "skillsList: " + skillsList.toString());
-
-                                    }
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.d("Volunteer", "Unable to get snapshots of skills");
-                        }
-                    });
-                }
-
-                //Gives list of "Skill, Skill, Skill"
-//                for (String skillID : skillIDlist) {
-//                    skillsList.add(mDBRef.child("Skill").child(skillID).child("Skill").getKey().toString()); //find the text equivalent of Skill and put it in the skills list
-//                    Log.i("VolunteerClass", "SkillsLIst: " + skillsList.toString());
-
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("Volunteer", "unable to load skillPushID datasnapshot");
             }
-            //how can I force the return statement to wait for all of the searching through lists to be completed?
         });
-        return skillsList; //this won't work here-- but for now}
+        final ArrayList<String> skillsList = getSkillList(skillIDlist); //how can I force the return statement to wait for all of the searching through lists to be completed?
+        return skillsList;
+    }
+
+    /**helper method for getVolSkills
+     * @param skillIDlist is a list of the skillIDs
+     * @return skillsList, a list of the skills in word form*/
+    public ArrayList<String> getSkillList(ArrayList<String> skillIDlist) {
+        final ArrayList<String> skillIDList = skillIDlist;  //compiler wanted skillIDlist to be final. Why?
+
+        DatabaseReference mDBRef = FirebaseDatabase.getInstance().getReference();
+        final ArrayList<String> skillsList = new ArrayList<>();
+
+        mDBRef.child("Skill").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot skillID : dataSnapshot.getChildren()) {
+                    for (int i = 0; i < skillIDList.size(); i++) {    //search through all skillIDs under skills
+                        if (skillID.getKey().equals(skillIDList.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
+                            String wordSkill = skillID.child("Skill").getValue().toString();
+                            Log.i("Volunteer", "wordSkill being added: " + wordSkill);
+                            skillsList.add(wordSkill);
+                            Log.i("Volunteer", "skillsList: " + skillsList.toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Volunteer", "Unable to get snapshots of skills");
+            }
+        });
+        return skillsList;
     }
 }
