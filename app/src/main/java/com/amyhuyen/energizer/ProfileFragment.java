@@ -4,9 +4,7 @@ package com.amyhuyen.energizer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -19,8 +17,6 @@ import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +36,6 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
 
-    private OnFragmentInteractionListener mListener;
     FragmentActivity listener;
 
     @Override
@@ -110,7 +105,6 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
 }

@@ -5,14 +5,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.Opportunity;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,6 +40,8 @@ public class AddOpportunityFragment extends Fragment{
     Date dateEnd;
     Date timeStart;
     Date timeEnd;
+    Date dateOne;
+    Date dateTwo;
 
 
     @Override
@@ -54,47 +61,59 @@ public class AddOpportunityFragment extends Fragment{
 
     // on click listener for add opportunity button
     @OnClick (R.id.btnAddOpp)
-    public void onAddOppClick(){
+    public void onAddOppClick() {
 
         // get the contents of the edit texts
-        final String name = etOppname.getText().toString().trim();
-        final String description = etOppDescriotion.getText().toString().trim();
-        final String startDate = etStartDate.getText().toString().trim();
-        final String startTime = etStartTime.getText().toString().trim();
-        final String endDate = etEndDate.getText().toString().trim();
-        final String endTime = etEndTime.getText().toString().trim();
+        String name = etOppname.getText().toString().trim();
+        String description = etOppDescriotion.getText().toString().trim();
+        String startDate = etStartDate.getText().toString().trim();
+        String startTime = etStartTime.getText().toString().trim();
+        String endDate = etEndDate.getText().toString().trim();
+        String endTime = etEndTime.getText().toString().trim();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        // check that all fields are populated
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
+                TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime)) {
+            Toast.makeText(getActivity(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
+        } else {
+            // remove prefixes on start and end times/dates
+            startDate = startDate.replace("Start Date:  ", "");
+            endDate = endDate.replace("End Date:  ", "");
+            startTime = startTime.replace("Start Time:  ", "");
+            endTime = endTime.replace("End Time:  ", "");
 
-//        // convert strings back to dates
-//        try {
-//            dateStart = dateFormat.parse(startDate);
-//            dateEnd = dateFormat.parse(endDate);
-//            timeStart = timeFormat.parse(startTime);
-//            timeEnd = timeFormat.parse(endTime);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // check that dates and times are valid
-//        if (dateStart.after(dateEnd)){
-//            // alert user if end date is before start date
-//            Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
-//        } else {
-//            // alert user if end time is before start time or equal to start time
-//            if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
-//                Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
-//            } else {
-//                // create an instance of the opportunity class based on this information
-//                firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
-//                final String oppId = firebaseDataOpp.push().getKey();
-//
-//                Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
-//                firebaseDataOpp.child(oppId).setValue(newOpp);
-//            }
-//        }
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
 
+            // convert strings to dates
+            try {
+                dateStart = dateFormat.parse(startDate);
+                dateEnd = dateFormat.parse(endDate);
+                timeStart = timeFormat.parse(startTime);
+                timeEnd = timeFormat.parse(endTime);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // check that dates and times are valid
+            if (dateStart.after(dateEnd)) {
+                // alert user if end date is before start date
+                Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
+            } else {
+                // alert user if end time is before start time or equal to start time
+                if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
+                    Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
+                } else {
+                    // create an instance of the opportunity class based on this information
+                    firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+                    final String oppId = firebaseDataOpp.push().getKey();
+
+                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
+                    firebaseDataOpp.child(oppId).setValue(newOpp);
+                }
+            }
+        }
     }
 
     // on click listener for start time edit text
