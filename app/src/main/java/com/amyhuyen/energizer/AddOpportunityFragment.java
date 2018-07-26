@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,6 +42,7 @@ public class AddOpportunityFragment extends Fragment{
     Date dateEnd;
     Date timeStart;
     Date timeEnd;
+    String npoId;
 
 
     @Override
@@ -56,6 +58,10 @@ public class AddOpportunityFragment extends Fragment{
 
         // bind the views
         ButterKnife.bind(this, view);
+
+        // get the NPO ID
+        npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     }
 
     // on click listener for add opportunity button
@@ -108,7 +114,7 @@ public class AddOpportunityFragment extends Fragment{
                     firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
                     final String oppId = firebaseDataOpp.push().getKey();
 
-                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
+                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId);
                     firebaseDataOpp.child(oppId).setValue(newOpp);
 
                     // alert user of success
@@ -122,10 +128,9 @@ public class AddOpportunityFragment extends Fragment{
                     etEndDate.setText("");
                     etEndTime.setText("");
 
-                    // switch to my opportunity fragment
+                    // switch to my opportunity fragment and reflect change in bottom navigation view
                     LandingActivity landing = (LandingActivity) getActivity();
                     landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
-
                     FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
                     Fragment opportunityFeedFrag = new OpportunityFeedFragment();
                     fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);

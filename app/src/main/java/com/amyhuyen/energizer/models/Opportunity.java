@@ -11,10 +11,12 @@ public class Opportunity {
     String startTime;
     String endDate;
     String endTime;
+    String npoId;
 
     public Opportunity(){}
 
-    public Opportunity(String name, String description, String oppId, String startDate, String startTime, String endDate, String endTime) {
+    public Opportunity(String name, String description, String oppId, String startDate,
+                       String startTime, String endDate, String endTime, String npoId) {
         this.name = name;
         this.description = description;
         this.oppId = oppId;
@@ -22,6 +24,7 @@ public class Opportunity {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        this.npoId = npoId;
     }
 
     // the accessor for opportunity name
@@ -42,4 +45,6 @@ public class Opportunity {
     public String getEndDate() { return endDate; }
 
     public String getEndTime() { return endTime; }
+
+    public String getNpoId() { return npoId; }
 }
