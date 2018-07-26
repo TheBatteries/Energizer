@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ import butterknife.OnClick;
 public class AddOpportunityFragment extends Fragment{
 
     // the views
-    @BindView (R.id.etOppName) EditText etOppname;
+    @BindView (R.id.etOppName) EditText etOppName;
     @BindView (R.id.etOppDescription) EditText etOppDescriotion;
     @BindView (R.id.btnAddOpp) Button btnAddOpp;
     @BindView (R.id.etStartDate) EditText etStartDate;
@@ -40,8 +41,6 @@ public class AddOpportunityFragment extends Fragment{
     Date dateEnd;
     Date timeStart;
     Date timeEnd;
-    Date dateOne;
-    Date dateTwo;
 
 
     @Override
@@ -64,7 +63,7 @@ public class AddOpportunityFragment extends Fragment{
     public void onAddOppClick() {
 
         // get the contents of the edit texts
-        String name = etOppname.getText().toString().trim();
+        String name = etOppName.getText().toString().trim();
         String description = etOppDescriotion.getText().toString().trim();
         String startDate = etStartDate.getText().toString().trim();
         String startTime = etStartTime.getText().toString().trim();
@@ -111,6 +110,27 @@ public class AddOpportunityFragment extends Fragment{
 
                     Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime);
                     firebaseDataOpp.child(oppId).setValue(newOpp);
+
+                    // alert user of success
+                    Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
+
+                    // clear the fields
+                    etOppName.setText("");
+                    etOppDescriotion.setText("");
+                    etStartDate.setText("");
+                    etStartTime.setText("");
+                    etEndDate.setText("");
+                    etEndTime.setText("");
+
+                    // switch to my opportunity fragment
+                    LandingActivity landing = (LandingActivity) getActivity();
+                    landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
+
+                    FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+                    Fragment opportunityFeedFrag = new OpportunityFeedFragment();
+                    fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+                    fragmentTransaction.addToBackStack(null).commit();
+
                 }
             }
         }
