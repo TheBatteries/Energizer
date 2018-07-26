@@ -39,12 +39,24 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etEndTime) EditText etEndTime;
     @BindView (R.id.etOppLocation) EditText etOppLocation;
 
+    // date variables
     DatabaseReference firebaseDataOpp;
     Date dateStart;
     Date dateEnd;
     Date timeStart;
     Date timeEnd;
+
+    // text variables
+    String name;
+    String description;
+    String startDate;
+    String startTime;
+    String endDate;
+    String endTime;
+    String address;
     String npoId;
+
+    LandingActivity landing;
 
 
     @Override
@@ -71,13 +83,13 @@ public class AddOpportunityFragment extends Fragment{
     public void onAddOppClick() {
 
         // get the contents of the edit texts
-        String name = etOppName.getText().toString().trim();
-        String description = etOppDescription.getText().toString().trim();
-        String startDate = etStartDate.getText().toString().trim();
-        String startTime = etStartTime.getText().toString().trim();
-        String endDate = etEndDate.getText().toString().trim();
-        String endTime = etEndTime.getText().toString().trim();
-        String address = etOppLocation.getText().toString().trim();
+        name = etOppName.getText().toString().trim();
+        description = etOppDescription.getText().toString().trim();
+        startDate = etStartDate.getText().toString().trim();
+        startTime = etStartTime.getText().toString().trim();
+        endDate = etEndDate.getText().toString().trim();
+        endTime = etEndTime.getText().toString().trim();
+        address = etOppLocation.getText().toString().trim();
 
         // check that all fields are populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
@@ -113,35 +125,9 @@ public class AddOpportunityFragment extends Fragment{
                 if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
                     Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
                 } else {
-                    // create an instance of the opportunity class based on this information
-                    firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
-                    final String oppId = firebaseDataOpp.push().getKey();
-
-                    LandingActivity landing = (LandingActivity) getActivity();
-
-                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId,
-                            landing.address, landing.latLong);
-                    firebaseDataOpp.child(oppId).setValue(newOpp);
-
-                    // alert user of success
-                    Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
-
-                    // clear the fields
-                    etOppName.setText("");
-                    etOppDescription.setText("");
-                    etStartDate.setText("");
-                    etStartTime.setText("");
-                    etEndDate.setText("");
-                    etEndTime.setText("");
-                    etOppLocation.setText("");
-
-                    // switch to my opportunity fragment and reflect change in bottom navigation view
-                    landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
-                    FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-                    Fragment opportunityFeedFrag = new OpportunityFeedFragment();
-                    fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
-                    fragmentTransaction.addToBackStack(null).commit();
-
+                    addOpp();
+                    clear();
+                    switchFrag();
                 }
             }
         }
@@ -180,5 +166,42 @@ public class AddOpportunityFragment extends Fragment{
     @OnClick (R.id.etOppLocation)
     public void onOppLocationClick(){
         AutocompletUtils.callPlaceAutocompleteActivityIntent(getActivity());
+    }
+
+    // add opportunity to firebase;
+    public void addOpp(){
+        // create an instance of the opportunity class based on this information
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+        final String oppId = firebaseDataOpp.push().getKey();
+
+        landing = (LandingActivity) getActivity();
+
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId,
+                landing.address, landing.latLong);
+        firebaseDataOpp.child(oppId).setValue(newOpp);
+
+        // alert user of success
+        Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
+    }
+
+    // switch fragments method
+    public void switchFrag(){
+        // switch to my opportunity fragment and reflect change in bottom navigation view
+        landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
+        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        Fragment opportunityFeedFrag = new OpportunityFeedFragment();
+        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.addToBackStack(null).commit();
+    }
+
+    // clear fields method
+    public void clear(){
+        etOppName.setText("");
+        etOppDescription.setText("");
+        etStartDate.setText("");
+        etStartTime.setText("");
+        etEndDate.setText("");
+        etEndTime.setText("");
+        etOppLocation.setText("");
     }
 }
