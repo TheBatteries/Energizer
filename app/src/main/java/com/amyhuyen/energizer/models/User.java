@@ -1,18 +1,15 @@
 package com.amyhuyen.energizer.models;
 
-
-import android.os.Parcel;
 import android.os.Parcelable;
-
-
-///////Start here - implementing parcelable
+import android.os.Parcel;
 
 @org.parceler.Parcel
-public class User implements Parcelable { //was implements Serializable
+public class User implements Parcelable{
+
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public User createFromParcel(Parcel in) {
-            return new User(email, name, phone, userID, userType, latLong, city);
+        public User createFromParcel(android.os.Parcel in) {
+            return new User();
         }
 
         @Override
@@ -21,29 +18,25 @@ public class User implements Parcelable { //was implements Serializable
         }
     };
 
-    //user fields
-    String age;
+    // user fields
     String email;
     String name;
     String phone;
     String userID;
     String userType;
+    String latLong;
+    String address;
 
-    public User(String email, String name, String phone, String userID, String userType, String latLong, String city) {
-    }
+    public User () { }
 
-    public User(String age, String email, String name, String phone, String userID, String userType) {
-        this.age = age;
+    public User (String email, String name, String phone, String userID, String userType, String latLong, String address) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.userID = userID;
         this.userType = userType;
-    }
-
-
-    public String getAge() {
-        return age;
+        this.latLong = latLong;
+        this.address = address;
     }
 
     public String getName() {
@@ -66,9 +59,13 @@ public class User implements Parcelable { //was implements Serializable
         return userType;
     }
 
+    public String getLatLong() { return latLong; }
+
+    public String getAddress() { return address; }
+
+
     // Parcelling part
-    public User(){
-        this.age = in.readString();
+    public User(Parcel in){
         this.name = in.readString();
         this.email =  in.readString();
         this.phone =  in.readString();
@@ -83,7 +80,6 @@ public class User implements Parcelable { //was implements Serializable
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.age);
         dest.writeString(this.name);
         dest.writeString(this.email);
         dest.writeString(this.phone);
@@ -94,7 +90,6 @@ public class User implements Parcelable { //was implements Serializable
     @Override
     public String toString() {
         return "User{" +
-                "age='" + age + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
@@ -102,5 +97,4 @@ public class User implements Parcelable { //was implements Serializable
                 ", userType='" + userType + '\'' +
                 '}';
     }
-
 }

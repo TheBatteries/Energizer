@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         // check if user already is logged in (if so, launch landing activity)
-//        create and pass current user object
+        // create and pass current user object
         if (firebaseAuth.getCurrentUser() != null){
             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
             dataUserRef.addValueEventListener(new ValueEventListener() {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Log.e("Persisting User Main", databaseError.toString());
                 }
             });
         }

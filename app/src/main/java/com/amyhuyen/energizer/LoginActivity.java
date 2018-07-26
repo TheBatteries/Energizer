@@ -49,36 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
         // bind the views
         ButterKnife.bind(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null) {
-
-            currentFirebaseUser = firebaseAuth.getCurrentUser();
-            userID = currentFirebaseUser.getUid();
-
-            //TODO - not sure how to handle passing a user object when user is aldready logged in.
-
-            mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    finish();
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("LandingActivity", "unable to load User");
-                }
-            });
-        }
 
         progressDialog = new ProgressDialog(this);
     }
@@ -113,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
 
+
                             // find user type then launch intent to landing activity
                             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
                             dataUserRef.addValueEventListener(new ValueEventListener() {
@@ -132,10 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.e("Login User", databaseError.toString());
                                 }
                             });
-                            // intent to landing activity
-                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                            startActivity(intent);
-                            finish();
                         } else{
                             progressDialog.dismiss();
                             Log.e("error", task.getException().toString());

@@ -244,9 +244,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         intent.putExtra("UserType", userType);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        User user = intent.getParcelableExtra("UserObject");
-        intent.putExtra("UserObject", (Parcelable) user);
-        startActivityForResult(intent, RequestCodes.LANDING);
         finish();
+        startActivity(intent);
     }
 }
