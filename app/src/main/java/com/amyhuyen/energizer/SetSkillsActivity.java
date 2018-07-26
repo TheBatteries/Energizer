@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.amyhuyen.energizer.models.Volunteer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +35,8 @@ public class SetSkillsActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private ArrayList<String> userSkills;
     private String userId;
+    private Volunteer volunteer;
+    private String userType;
 
 
     @Override
@@ -176,8 +181,15 @@ public class SetSkillsActivity extends AppCompatActivity {
     public void onRegisterClick(){
         // register the user and go to landing activity
         addSkills();
+
+        // get intent information from previous activity
+        Volunteer volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
+        String userType = getIntent().getStringExtra("UserType");
+
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-        startActivity(intent);
+        intent.putExtra("UserObject", Parcels.wrap(volunteer));
+        intent.putExtra("UserType", userType);
         finish();
+        startActivity(intent);
     }
 }

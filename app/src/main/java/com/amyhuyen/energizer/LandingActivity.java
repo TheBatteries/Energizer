@@ -37,10 +37,10 @@ public class LandingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+
+        // bind the views
         ButterKnife.bind(this);
 
         final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
@@ -54,7 +54,6 @@ public class LandingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 Log.i("LandingActivity", "user name: " + user.getName());
-                //this works!
             }
 
             @Override
@@ -63,11 +62,27 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
 
+        // get the user type info from the intent
+        final String UserType = getIntent().getStringExtra("UserType");
+
+        // prepare for fragment manipulation
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final VolProfileFragment volProfileFragment = new VolProfileFragment();
         final Fragment opportunityFeedFrag = new OpportunityFeedFragment();
         final Fragment commitFrag = new CommitFragment();
         final Fragment addOppFrag = new AddOpportunityFragment();
+
+        // handle the initial fragment transaction
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.commit();
+
+        // check user type and inflate menu accordingly
+        if (UserType.equals("Volunteer")) {
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
+        } else {
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
+        }
 
         // handle the bottom navigation bar switching
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,17 +92,18 @@ public class LandingActivity extends AppCompatActivity {
 
                 // define all the possible fragment transactions
                 switch (item.getItemId()) {
-                    case R.id.ic_action_commits:
-                        selectedFragment = commitFrag;
-                        break;
-                    case R.id.ic_action_profile:
-                        selectedFragment = volProfileFragment;
-                        break;
-                    case R.id.ic_action_feed:
+                    case R.id.ic_left:
                         selectedFragment = opportunityFeedFrag;
                         break;
-                    default:
-                        selectedFragment = commitFrag;
+                    case R.id.ic_middle:
+                        if (UserType.equals("Volunteer")) {
+                            selectedFragment = commitFrag;
+                        } else {
+                            selectedFragment = addOppFrag;
+                        }
+                        break;
+                    case R.id.ic_right:
+                        selectedFragment = volProfileFragment;
                         break;
                 }
 
