@@ -181,7 +181,6 @@ public class AddOpportunityFragment extends Fragment{
         // add as an opportunity and as opportunitiesPerNpo
         Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, landing.address, landing.latLong);
         firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
-
         HashMap<String, String> oppIdMap = new HashMap<>();
         oppIdMap.put("OppID", oppId);
         firebaseDataOpp.child("OpportunitiesPerNPO").child(npoId).child(intermediateId).setValue(oppIdMap);

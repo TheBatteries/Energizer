@@ -22,6 +22,8 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.tvOppName) TextView tvOppName;
     @BindView (R.id.tvOppDesc) TextView tvOppDesc;
     @BindView (R.id.tvNpoName) TextView tvNpoName;
+    @BindView (R.id.tvOppTime) TextView tvOppTime;
+    @BindView (R.id.tvOppAddress) TextView tvOppAddress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,5 +47,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvOppName.setText(opportunity.getName());
         tvOppDesc.setText(opportunity.getDescription());
         tvNpoName.setText("NPO Name");
+        tvOppTime.setText(opportunity.getStartDate() + " " + opportunity.getStartTime() + " - " + opportunity.getEndDate() + " " + opportunity.getEndTime());
+        tvOppAddress.setText(opportunity.getAddress());
     }
 }

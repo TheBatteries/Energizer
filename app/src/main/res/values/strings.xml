@@ -40,4 +40,8 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="opportunity_address">Opportunity Address</string>
+    <string name="opportunity_description">Opportunity Description</string>
+    <string name="time">Time</string>
+    <string name="address">Address</string>
+    <string name="non_profit_name">Non-profit Name.</string>
 </resources>
