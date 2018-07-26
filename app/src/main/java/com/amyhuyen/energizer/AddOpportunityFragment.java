@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.AutocompleteUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,6 +57,7 @@ public class AddOpportunityFragment extends Fragment{
     String endTime;
     String address;
     String npoId;
+    String npoName;
 
     LandingActivity landing;
 
@@ -74,8 +76,9 @@ public class AddOpportunityFragment extends Fragment{
         // bind the views
         ButterKnife.bind(this, view);
 
-        // get the NPO ID
+        // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        npoName = ((LandingActivity) getActivity()).UserName;
 
     }
 
@@ -166,7 +169,7 @@ public class AddOpportunityFragment extends Fragment{
     // on click listener for opportunity location edit text
     @OnClick (R.id.etOppLocation)
     public void onOppLocationClick(){
-        AutocompletUtils.callPlaceAutocompleteActivityIntent(getActivity());
+        AutocompleteUtils.callPlaceAutocompleteActivityIntent(getActivity());
     }
 
     // add opportunity to firebase;
@@ -179,7 +182,7 @@ public class AddOpportunityFragment extends Fragment{
         landing = (LandingActivity) getActivity();
 
         // add as an opportunity and as opportunitiesPerNpo
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, landing.address, landing.latLong);
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong);
         firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
         HashMap<String, String> oppIdMap = new HashMap<>();
         oppIdMap.put("OppID", oppId);

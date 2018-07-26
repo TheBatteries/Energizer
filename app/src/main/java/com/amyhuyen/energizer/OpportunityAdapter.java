@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.OppDisplayUtils;
 
 import org.parceler.Parcels;
 
@@ -90,12 +91,11 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
-        final String time = formatTime(opp);
+        final String time = OppDisplayUtils.formatTime(opp);
 
-        // TODO fix NPO name
         // populate the views
         holder.tvOppName.setText(opp.getName());
-        holder.tvNpoName.setText("NPO Name");
+        holder.tvNpoName.setText(opp.getNpoName());
         holder.tvOppDesc.setText(opp.getDescription());
         holder.tvOppTime.setText(time);
         holder.tvOppAddress.setText(opp.getAddress());
@@ -115,14 +115,5 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public void addAll(List<Opportunity> list){
         mOpportunities.addAll(list);
         notifyDataSetChanged();
-    }
-
-    // method to format the start/end date/time from an opportunity
-    public String formatTime(Opportunity opp){
-        if (opp.getStartDate().equals(opp.getEndDate())) {
-            return opp.getStartDate() + " " + opp.getStartTime() + " - " + opp.getEndTime();
-        } else {
-            return opp.getStartDate() + " " + opp.getStartTime() + " - " + opp.getEndDate() + " " + opp.getEndTime();
-        }
     }
 }

@@ -43,5 +43,5 @@
     <string name="opportunity_description">Opportunity Description</string>
     <string name="time">Time</string>
     <string name="address">Address</string>
-    <string name="non_profit_name">Non-profit Name.</string>
+    <string name="non_profit_name">Non-profit Name</string>
 </resources>

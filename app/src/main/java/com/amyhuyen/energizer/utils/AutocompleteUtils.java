@@ -1,4 +1,4 @@
-package com.amyhuyen.energizer;
+package com.amyhuyen.energizer.utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
-public class AutocompletUtils {
+public class AutocompleteUtils {
 
     // launches google place autocomplete widget
     public static void callPlaceAutocompleteActivityIntent(Activity activity) {
