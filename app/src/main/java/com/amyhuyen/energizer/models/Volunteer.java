@@ -21,7 +21,8 @@ public class Volunteer extends User {
 
     String age;
 
-    public Volunteer() { }
+    public Volunteer() {
+    }
 
     public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
         super(email, name, phone, userID, userType, latLong, address);
@@ -32,6 +33,9 @@ public class Volunteer extends User {
         return age;
     }
 
+    /**
+     * Get list of volunteer's skills
+     */
     public ArrayList<String> getVolSkills() {
         final ArrayList<String> skillsList = new ArrayList<>();
         final ArrayList<String> skillPushIDlist = new ArrayList<>();
@@ -52,40 +56,49 @@ public class Volunteer extends User {
             //for each skillsPushID, get the skillID and add it to the skillIDlist
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 //add the skillsPushID to the list skillPushIDlist
                 for (DataSnapshot child : dataSnapshot.getChildren()) { //TODO - start with this method. I think you have one too many for loops
-                    //skillPushIDlist.add(dataSnapshot.getValue().toString()); //don't think we actually need this list
-                    mDBRef.child("SkillsPerUser").child(userID).child(child.toString()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            skillIDlist.add(dataSnapshot.toString()); //after getting skillID, add it to skillIDlist
-                            // Log.i("Volunteer", skillIDlist.toString());
-
-                            for (String skillID : skillIDlist) {
-                                skillsList.add(mDBRef.child("Skill").child(skillID).child("Skill").toString()); //find the text equivalent of Skill and put it in the skills list
-                                Log.i("VolunteerClass", skillsList.toString());
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.d("Volunteer", "Unable to get skillID");
-                        }
-                    });
+                    Log.i("VolunteerClass", "child.child(SkillID).getValue(): " + child.child("SkillID").getValue());
+                    skillIDlist.add(child.child("SkillID").getValue().toString());
+                    Log.i("VolunteerClass", "skillIDList " + skillIDlist.toString());
                 }
 
-                //go through skillPushIDList, get child, add it to skillIDList
+                mDBRef.child("Skill").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot skillID : dataSnapshot.getChildren()) {
+                            for(int i = 0; i < skillsList.size(); i++) {
+                                if (skillID.toString().equals(skillIDlist.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
+                                    String wordSkill = skillID.child("Skill").getValue().toString();
+                                    Log.i("Volunteer", "wordSkill being added: " + wordSkill);
+                                    skillsList.add(wordSkill);
+                                    Log.i("Volunteer", "skillsList: " + skillsList.toString());
 
-                //should be able to reuse some code from SetSkillsActivity
-                //return skillsList;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("Volunteer", "Unable to get snapshots of skills");
+                    }
+                });
+                for (String skillID : skillIDlist) {
+                    skillsList.add(mDBRef.child("Skill").child(skillID).child("Skill").getKey().toString()); //find the text equivalent of Skill and put it in the skills list
+                    Log.i("VolunteerClass", "SkillsLIst: " + skillsList.toString());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Volunteer", "unable to load skillPushIDs");
+                Log.d("Volunteer", "unable to load skillPushID datasnapshot");
             }
+
+
+            //how can I force the return statement to wait for all of the searching through lists to be completed?
         });
-        //how can I force the return statement to wait for all of the searching through lists to be completed?
         return skillsList; //this won't work here-- but for now}
     }
 }
