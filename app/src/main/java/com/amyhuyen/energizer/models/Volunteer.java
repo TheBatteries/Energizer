@@ -24,7 +24,6 @@ public class Volunteer extends User {
     private DatabaseReference mDBRef;
 
 
-
     public Volunteer() {
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
@@ -41,17 +40,29 @@ public class Volunteer extends User {
 
         mDBRef.child("SkillsPerUser").child(userID).addValueEventListener(new ValueEventListener() {
 
+            //for each skillsPushID, get the skillID and add it to the skillIDlist
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 //add the skillsPushID to the list skillPushIDlist
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    skillPushIDlist.add(dataSnapshot.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) { //TODO - start with this method. I think you have one too many for loops
+                    //skillPushIDlist.add(dataSnapshot.getValue().toString()); //don't think we actually need this list
+                    mDBRef.child("SkillsPerUser").child(userID).child(child.toString()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            skillIDlist.add(dataSnapshot.toString()); //after getting skillID, add it to skillIDlist
+                            // Log.i("Volunteer", skillIDlist.toString());
 
+                            for (String skillID : skillIDlist) {
+                                skillsList.add(mDBRef.child("Skill").child(skillID).child("Skill").toString()); //find the text equivalent of Skill and put it in the skills list
+                                Log.i("VolunteerClass", skillsList.toString());
+                            }
+                        }
 
-
-
-
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("Volunteer", "Unable to get skillID");
+                        }
+                    });
                 }
 
                 //go through skillPushIDList, get child, add it to skillIDList
@@ -62,14 +73,11 @@ public class Volunteer extends User {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LandingActivity", "unable to load User");
+                Log.d("Volunteer", "unable to load skillPushIDs");
             }
         });
-
-
-        return skillsList; //this won't work here-- but for now
-
-
+        //how can I force the return statement to wait for all of the searching through lists to be completed?
+        return skillsList; //this won't work here-- but for now}
     }
 
 }
