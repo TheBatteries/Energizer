@@ -60,3 +60,5 @@ local.properties
 
 # PDT-specific
 .buildpathvalues/secrets.xml
+/Users/acfoley/Desktop/Energizer/Energizer/app/src/main/res/values/secrets.xml
+values/secrets.xml

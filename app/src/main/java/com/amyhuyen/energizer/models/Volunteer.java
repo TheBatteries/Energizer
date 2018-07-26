@@ -18,10 +18,7 @@ import java.util.ArrayList;
 @Parcel
 public class Volunteer extends User {
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentFirebaseUser;
-    private String userID;
-    private DatabaseReference mDBRef;
+
     String age;
 
     public Volunteer() { }
@@ -29,10 +26,6 @@ public class Volunteer extends User {
     public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
         super(email, name, phone, userID, userType, latLong, address);
         this.age = age;
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentFirebaseUser = firebaseAuth.getCurrentUser();
-        userID = currentFirebaseUser.getUid();
-        mDBRef = FirebaseDatabase.getInstance().getReference();
     }
 
     public String getAge() {
@@ -44,6 +37,14 @@ public class Volunteer extends User {
         final ArrayList<String> skillPushIDlist = new ArrayList<>();
         final ArrayList<String> skillIDlist = new ArrayList<>();
         final String skillPushID;
+
+        final FirebaseUser currentFirebaseUser;
+        final String userID;
+        final DatabaseReference mDBRef;
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userID = currentFirebaseUser.getUid();
+        mDBRef = FirebaseDatabase.getInstance().getReference();
 
 
         mDBRef.child("SkillsPerUser").child(userID).addValueEventListener(new ValueEventListener() {
