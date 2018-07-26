@@ -6,19 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.User;
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.parceler.Parcels;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 //TODO change all findViewByIds and OnClick listeners to butterknife style and call finish() as marked
 
-public class ProfileFragment extends Fragment {
+public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
@@ -43,14 +49,17 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    //views
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.btn_logout)
+    ImageButton btn_logout;
+    @BindView(R.id.tv_email)
+    TextView tv_email;
+
     private OnFragmentInteractionListener mListener;
-    //Adapter adapter;
     FragmentActivity listener;
 
-
-    //fires 1st, before creation of fragment or any views
-    // The onAttach method is called when the Fragment instance is associated with an Activity.
-    // This does not mean the Activity is fully initialized.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -59,88 +68,64 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+        }
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //unpack the bundle with the user object
+        user = this.getArguments().getParcelable("UserObject");
+        Log.i("ProfileFragment", "User name: " + user.getName());
+        Log.i("ProfileFragment", "User email: " + user.getEmail());
+
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        user = getActivity().getIntent().getParcelableExtra("UserObject");
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        //findViewById lookups
-        final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
-        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
-//        @BindView(R.id.tv_name) TextView tv_name; //DOESN'T WORK
-
         // bind the views
-        //ButterKnife.bind(getActivity());
+        ButterKnife.bind(this, view);
 
-
-        tv_name.setText(user.getName());
-//                //null pointer here IF i use butterknife
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.signOut();
-                LoginManager.getInstance().logOut();
-
-                // log the sign out
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Log.d("Logging Out", "User has successfully logged out");
-                    Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-                }
-
-                //Intent
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                //finish(); TODO - why can't I call finish here?
-            }
-        });
-
-        //equivalent to btnLogout.setOnClickListener with butterknife (may need to go outside of onViewCreated)
-//        @OnClick(R.id.btnLogout)
-//    public void onLogoutClick() {
-//        // log user out
-//        firebaseAuth.signOut();
-//
-//        // log the sign out
-//        if (firebaseAuth.getCurrentUser() == null) {
-//            Log.d("Logging Out", "User has successfully logged out");
-//            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        // intent to login activity
-//        Intent intent = new Intent(getActivity(), LoginActivity.class); //getActivity() gets LandingActivity?
-//        startActivity(intent);
-//        //finish(); TODO - why couldn't I call finish here?
-//    }
+        //set textview text
+        tv_name.setText( "Name: " + user.getName());
+        tv_email.setText("Email: " + user.getEmail());
     }
 
+    //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
+
+    public abstract void drawSkills();
+
+    public abstract void drawCauseAreas();
+
+    @OnClick(R.id.btn_logout)
+    public void onLogoutClick() {
+        // log user out
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+
+        // log the sign out
+        if (firebaseAuth.getCurrentUser() == null) {
+            Log.d("Logging Out", "User has successfully logged out");
+            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+        }
+
+        // intent to login activity
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        listener.finish(); //TODO - why couldn't I call finish here?
+    }
 
     @Override
     public void onDetach() {
@@ -164,4 +149,5 @@ public class ProfileFragment extends Fragment {
     }
 
 }
+
 

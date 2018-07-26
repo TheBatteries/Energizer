@@ -39,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
+    private String userID;
     private DatabaseReference mDBUserRef;
-    private String userType;
     private User user;
     private static final String TAG = "FACELOG";
 
@@ -56,6 +56,29 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null) {
+
+            currentFirebaseUser = firebaseAuth.getCurrentUser();
+            userID = currentFirebaseUser.getUid();
+
+            //TODO - not sure how to handle passing a user object when user is aldready logged in.
+
+            mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                    finish();
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("LandingActivity", "unable to load User");
+                }
+            });
+        }
 
         progressDialog = new ProgressDialog(this);
     }
@@ -109,6 +132,10 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.e("Login User", databaseError.toString());
                                 }
                             });
+                            // intent to landing activity
+                            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else{
                             progressDialog.dismiss();
                             Log.e("error", task.getException().toString());

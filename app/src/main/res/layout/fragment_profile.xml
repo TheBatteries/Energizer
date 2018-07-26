@@ -1,35 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileFragment"
     android:layout_marginBottom="?android:attr/actionBarSize">
 
+
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="584dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/your_profile" />
+
+    <ImageButton
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/your_profile"
-        android:layout_margin="10dp"
-        android:layout_below="@id/tv_name"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_logout" />
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Name"/>
+        android:layout_width="215dp"
+        android:layout_height="33dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="21dp"
+        android:layout_toRightOf="@id/profile_pic"
+        android:layout_marginTop="57dp"
+        android:ems="10"
+        android:text=""
+        android:hint="Name" />
 
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="215dp"
+        android:layout_height="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/tv_name"
+        android:layout_marginTop="102dp"
+        android:ems="10"
+        android:text=""
+        android:hint="email" />
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <!--<Button-->
+        <!--android:id="@+id/btnLogout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:text="Logout"-->
+        <!--android:textAllCaps="false" />-->
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="129dp"
+        android:layout_height="147dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="50dp"
+        android:text=""
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+    <TextView
+        android:id="@+id/tv_cause_area"
+        android:layout_width="371dp"
+        android:layout_height="81dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:text="Logout"
-        android:textAllCaps="false" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="123dp"
+        android:hint="Cause Area" />
+
+    <TextView
+        android:id="@+id/tv_skills"
+        android:layout_width="371dp"
+        android:layout_height="69dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:hint="Skills" />
 </RelativeLayout>
 

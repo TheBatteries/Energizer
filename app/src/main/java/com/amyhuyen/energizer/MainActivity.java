@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private CallbackManager mCallbackManager;
+    private FirebaseUser currentFirebaseUser;
+    private String userID;
+    private DatabaseReference mDBUserRef;
     private LoginButton loginButton;
     private static final String TAG = "FACELOG";
     private DatabaseReference firebaseData;
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         // check if user already is logged in (if so, launch landing activity)
+//        create and pass current user object
         if (firebaseAuth.getCurrentUser() != null){
             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
             dataUserRef.addValueEventListener(new ValueEventListener() {
@@ -106,6 +110,20 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     startActivity(intent);
                 }
+
+                mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+                currentFirebaseUser = firebaseAuth.getCurrentUser();
+                userID = currentFirebaseUser.getUid();
+
+                //TODO - not sure how to handle passing a user object when user is already logged in.
+                //Do we even need a user object here?
+                mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+                        finish();
+                        startActivity(intent);
+                    }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {

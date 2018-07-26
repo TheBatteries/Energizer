@@ -13,7 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.models.User;
+import com.facebook.CallbackManager;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -27,8 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,13 +35,16 @@ import butterknife.OnClick;
 public class NpoRegActivity extends AppCompatActivity {
 
     // the views
-    @BindView (R.id.etEmail) EditText etEmail;
+    @BindView(R.id.etEmail)
+    EditText etEmail;
     @BindView (R.id.etPassword) EditText etPassword;
     @BindView (R.id.etConfirmPassword) EditText etConfirmPassword;
-    @BindView (R.id.etNpoDescription) EditText etNpoDescription;
+    @BindView (R.id.etAge) EditText etAge;
     @BindView (R.id.etPhone) EditText etPhone;
-    @BindView (R.id.btnRegister) Button btnRegister;
-    @BindView (R.id.tvLogin) TextView tvLogin;
+    @BindView (R.id.btnRegister)
+    Button btnRegister;
+    @BindView (R.id.tvLogin)
+    TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocationNPO) EditText etLocationNPO;
 
@@ -50,9 +52,10 @@ public class NpoRegActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseData;
+    private CallbackManager callbackManager;
     private String userID;
     private String latLong;
-    private String address;
+    private String city;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
@@ -61,6 +64,14 @@ public class NpoRegActivity extends AppCompatActivity {
         setContentView(R.layout.activity_npo_reg);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
+        callbackManager = CallbackManager.Factory.create();
+
+        // check if user already is logged in (if so, launch landing activity)
+        if (firebaseAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -70,25 +81,23 @@ public class NpoRegActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-
-        // access the text in the fields
         final String name = etName.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
-        final String description = etNpoDescription.getText().toString().trim();
+        final String age = etAge.getText().toString().trim();
         final String phone = etPhone.getText().toString().trim();
         final String userType = "NPO";
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
-                TextUtils.isEmpty(description)|| TextUtils.isEmpty(phone)){
+                TextUtils.isEmpty(age)|| TextUtils.isEmpty(phone)){
             Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
         } else {
             // proceed to registering user if passwords match
             if (password.equals(confirmPassword)) {
 
-                // display register user message
+                // if required fields are not empty, register user
                 progressDialog.setMessage("Registering User...");
                 progressDialog.show();
 
@@ -104,13 +113,11 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
-                                    firebaseData.child("User").child(userID).setValue(nonprofit);
+                                    User user = new User(age, email, name, phone, userID, userType);
+                                    firebaseData.child("User").child(userID).setValue(user);
 
                                     // intent to the landing activity
-                                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(nonprofit));
-                                    intent.putExtra("UserType", nonprofit.getUserType());
+                                    Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
                                     startActivity(intent);
                                     finish();
 
@@ -120,7 +127,7 @@ public class NpoRegActivity extends AppCompatActivity {
                             }
                         });
             } else {
-                // if passwords don't match, alert user
+                // if passwords don't match, alert user using toast
                 Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             }
         }
@@ -132,11 +139,11 @@ public class NpoRegActivity extends AppCompatActivity {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             // get the location and log it
             Place place = PlaceAutocomplete.getPlace(this, data);
-            Log.i("Location Success", "Place " + place.getAddress().toString());
-            etLocationNPO.setText(place.getAddress().toString());
+            Log.i("Location Success", "Place " + place.getName());
+            etLocationNPO.setText(place.getName());
 
             // extract location data
-            address = place.getAddress().toString();
+            city = place.getName().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -147,6 +154,9 @@ public class NpoRegActivity extends AppCompatActivity {
         } else if (resultCode == RESULT_CANCELED) {
             // log the error
             Log.e ("Location Cancelled", "The user has cancelled the operation");
+        } else {
+            // onActivityResult for Facebook Login
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
