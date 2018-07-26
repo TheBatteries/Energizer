@@ -169,11 +169,11 @@ public class VolRegActivity extends AppCompatActivity {
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             // log the error
             Status status = PlaceAutocomplete.getStatus(this, data);
-            Log.e ("Location Error", status.getStatusMessage());
+            Log.e ("Location Error Reg", status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // log the error
-                Log.e("Location Cancelled", "The user has cancelled the operation");
+                Log.e("Location Cancelled Reg", "The user has cancelled the operation");
             }
 
         } else {

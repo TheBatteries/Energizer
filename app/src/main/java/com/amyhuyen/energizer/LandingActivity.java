@@ -141,6 +141,7 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 
+    // handle onActivityResult for addOppFragg
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -161,11 +162,11 @@ public class LandingActivity extends AppCompatActivity {
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 // log the error
                 Status status = PlaceAutocomplete.getStatus(this, data);
-                Log.e("Location Error", status.getStatusMessage());
+                Log.e("Location Error Opp", status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // log the error
-                Log.e("Location Cancelled", "The user has cancelled the operation");
+                Log.e("Location Cancelled Opp", "The user has cancelled the operation");
             }
 
         }
