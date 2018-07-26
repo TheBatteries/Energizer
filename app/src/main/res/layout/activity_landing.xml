@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/theme_grey"
     tools:context=".LandingActivity">
+    <FrameLayout
+        android:id = "@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation">
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -14,10 +20,5 @@
         android:background="@color/colorAccent"
         android:layout_alignParentBottom="true"/>
 
-    <FrameLayout
-        android:id = "@+id/flContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
 
 </RelativeLayout>

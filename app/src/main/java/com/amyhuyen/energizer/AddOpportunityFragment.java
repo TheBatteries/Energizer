@@ -31,12 +31,14 @@ public class AddOpportunityFragment extends Fragment{
 
     // the views
     @BindView (R.id.etOppName) EditText etOppName;
-    @BindView (R.id.etOppDescription) EditText etOppDescriotion;
+    @BindView (R.id.etOppDescription) EditText etOppDescription;
     @BindView (R.id.btnAddOpp) Button btnAddOpp;
     @BindView (R.id.etStartDate) EditText etStartDate;
     @BindView (R.id.etStartTime) EditText etStartTime;
     @BindView (R.id.etEndDate) EditText etEndDate;
     @BindView (R.id.etEndTime) EditText etEndTime;
+    @BindView (R.id.etOppLocation) EditText etOppLocation;
+
     DatabaseReference firebaseDataOpp;
     Date dateStart;
     Date dateEnd;
@@ -70,15 +72,16 @@ public class AddOpportunityFragment extends Fragment{
 
         // get the contents of the edit texts
         String name = etOppName.getText().toString().trim();
-        String description = etOppDescriotion.getText().toString().trim();
+        String description = etOppDescription.getText().toString().trim();
         String startDate = etStartDate.getText().toString().trim();
         String startTime = etStartTime.getText().toString().trim();
         String endDate = etEndDate.getText().toString().trim();
         String endTime = etEndTime.getText().toString().trim();
+        String address = etOppLocation.getText().toString().trim();
 
         // check that all fields are populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
-                TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime)) {
+                TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime) || TextUtils.isEmpty(address)){
             Toast.makeText(getActivity(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
         } else {
             // remove prefixes on start and end times/dates
@@ -114,7 +117,10 @@ public class AddOpportunityFragment extends Fragment{
                     firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
                     final String oppId = firebaseDataOpp.push().getKey();
 
-                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId);
+                    LandingActivity landing = (LandingActivity) getActivity();
+
+                    Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId,
+                            landing.address, landing.latLong);
                     firebaseDataOpp.child(oppId).setValue(newOpp);
 
                     // alert user of success
@@ -122,14 +128,14 @@ public class AddOpportunityFragment extends Fragment{
 
                     // clear the fields
                     etOppName.setText("");
-                    etOppDescriotion.setText("");
+                    etOppDescription.setText("");
                     etStartDate.setText("");
                     etStartTime.setText("");
                     etEndDate.setText("");
                     etEndTime.setText("");
+                    etOppLocation.setText("");
 
                     // switch to my opportunity fragment and reflect change in bottom navigation view
-                    LandingActivity landing = (LandingActivity) getActivity();
                     landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
                     FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
                     Fragment opportunityFeedFrag = new OpportunityFeedFragment();
@@ -168,5 +174,11 @@ public class AddOpportunityFragment extends Fragment{
     public void onEndDateClick(){
         DialogFragment dateEndPicker = new DatePickerFragment();
         dateEndPicker.show(getActivity().getSupportFragmentManager(), "End Date Picker");
+    }
+
+    // on click listener for opportunity location edit text
+    @OnClick (R.id.etOppLocation)
+    public void onOppLocationClick(){
+        AutocompletUtils.callPlaceAutocompleteActivityIntent(getActivity());
     }
 }
