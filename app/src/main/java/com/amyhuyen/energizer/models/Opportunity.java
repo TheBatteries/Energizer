@@ -12,6 +12,7 @@ public class Opportunity {
     String endDate;
     String endTime;
     String npoId;
+    String npoName;
     String address;
     String latLong;
 
@@ -19,7 +20,7 @@ public class Opportunity {
 
     public Opportunity(String name, String description, String oppId, String startDate,
                        String startTime, String endDate, String endTime, String npoId,
-                       String address, String latLong) {
+                       String npoName, String address, String latLong) {
         this.name = name;
         this.description = description;
         this.oppId = oppId;
@@ -28,6 +29,7 @@ public class Opportunity {
         this.endDate = endDate;
         this.endTime = endTime;
         this.npoId = npoId;
+        this.npoName = npoName;
         this.address = address;
         this.latLong = latLong;
     }
@@ -52,6 +54,8 @@ public class Opportunity {
     public String getEndTime() { return endTime; }
 
     public String getNpoId() { return npoId; }
+
+    public String getNpoName() { return npoName; }
 
     public String getAddress() { return address; }
 

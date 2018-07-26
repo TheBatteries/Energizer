@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,13 +98,16 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String UserType = dataSnapshot.getValue(String.class);
+                    HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
+                    String UserName = userMapping.get("name");
+                    String UserType = userMapping.get("userType");
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                     intent.putExtra("UserType", UserType);
+                    intent.putExtra("UserName", UserName);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();

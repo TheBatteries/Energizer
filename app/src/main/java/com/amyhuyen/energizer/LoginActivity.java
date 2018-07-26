@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -90,13 +92,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             // find user type then launch intent to landing activity
-                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid()).child("userType");
+                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
                             dataUserRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    String UserType = dataSnapshot.getValue(String.class);
+                                    HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
+                                    String UserType = userMapping.get("userType");
+                                    String UserName = userMapping.get("name");
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                                     intent.putExtra("UserType", UserType);
+                                    intent.putExtra("UserName", UserName);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();

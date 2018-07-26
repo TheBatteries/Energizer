@@ -54,6 +54,9 @@ public class LandingActivity extends AppCompatActivity {
     public Fragment commitFrag;
     public Fragment addOppFrag;
 
+    public String UserType;
+    public String UserName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +85,9 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
 
-        // get the user type info from the intent
-        final String UserType = getIntent().getStringExtra("UserType");
+        // get the user type  and name info from the intent
+        UserType = getIntent().getStringExtra("UserType");
+        UserName = getIntent().getStringExtra("UserName");
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();

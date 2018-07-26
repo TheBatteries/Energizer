@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.utils.AutocompleteUtils;
 import com.facebook.CallbackManager;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -24,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,8 +109,8 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
                                     intent.putExtra("UserType", volunteer.getUserType());
+                                    intent.putExtra("UserName", volunteer.getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
@@ -133,7 +132,7 @@ public class VolRegActivity extends AppCompatActivity {
     // on click listener for location edit text
     @OnClick (R.id.etLocation)
     public void onLocationClick(){
-        AutocompletUtils.callPlaceAutocompleteActivityIntent(VolRegActivity.this);
+        AutocompleteUtils.callPlaceAutocompleteActivityIntent(VolRegActivity.this);
     }
 
     // on click listener for register button

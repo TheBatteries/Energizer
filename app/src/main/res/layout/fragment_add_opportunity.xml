@@ -45,7 +45,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
-            android:hint="Opportunity Description"
+            android:hint="@string/opportunity_description"
             android:textSize="15dp"/>
 
         <EditText

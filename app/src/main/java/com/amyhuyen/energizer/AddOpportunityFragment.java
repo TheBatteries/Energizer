@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.AutocompleteUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,7 @@ public class AddOpportunityFragment extends Fragment{
     String endTime;
     String address;
     String npoId;
+    String npoName;
 
     LandingActivity landing;
 
@@ -73,8 +76,9 @@ public class AddOpportunityFragment extends Fragment{
         // bind the views
         ButterKnife.bind(this, view);
 
-        // get the NPO ID
+        // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        npoName = ((LandingActivity) getActivity()).UserName;
 
     }
 
@@ -165,20 +169,24 @@ public class AddOpportunityFragment extends Fragment{
     // on click listener for opportunity location edit text
     @OnClick (R.id.etOppLocation)
     public void onOppLocationClick(){
-        AutocompletUtils.callPlaceAutocompleteActivityIntent(getActivity());
+        AutocompleteUtils.callPlaceAutocompleteActivityIntent(getActivity());
     }
 
     // add opportunity to firebase;
     public void addOpp(){
         // create an instance of the opportunity class based on this information
-        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
         final String oppId = firebaseDataOpp.push().getKey();
+        final String intermediateId = firebaseDataOpp.push().getKey();
 
         landing = (LandingActivity) getActivity();
 
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId,
-                landing.address, landing.latLong);
-        firebaseDataOpp.child(oppId).setValue(newOpp);
+        // add as an opportunity and as opportunitiesPerNpo
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong);
+        firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
+        HashMap<String, String> oppIdMap = new HashMap<>();
+        oppIdMap.put("OppID", oppId);
+        firebaseDataOpp.child("OpportunitiesPerNPO").child(npoId).child(intermediateId).setValue(oppIdMap);
 
         // alert user of success
         Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();

@@ -109,6 +109,7 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                                     intent.putExtra("UserType", nonprofit.getUserType());
+                                    intent.putExtra("UserName", nonprofit.getName());
                                     startActivity(intent);
                                     finish();
 
