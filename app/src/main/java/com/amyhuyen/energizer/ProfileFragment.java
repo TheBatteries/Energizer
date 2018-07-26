@@ -108,6 +108,5 @@ public abstract class ProfileFragment extends Fragment {
 //        mListener = null;
 //    }
 
-
 }
 

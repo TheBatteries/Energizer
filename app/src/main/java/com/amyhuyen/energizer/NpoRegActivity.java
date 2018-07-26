@@ -35,16 +35,13 @@ import butterknife.OnClick;
 public class NpoRegActivity extends AppCompatActivity {
 
     // the views
-    @BindView(R.id.etEmail)
-    EditText etEmail;
+    @BindView(R.id.etEmail) EditText etEmail;
     @BindView (R.id.etPassword) EditText etPassword;
     @BindView (R.id.etConfirmPassword) EditText etConfirmPassword;
-    @BindView (R.id.etAge) EditText etAge;
+    @BindView (R.id.etNpoDescription) EditText etNpoDescription;
     @BindView (R.id.etPhone) EditText etPhone;
-    @BindView (R.id.btnRegister)
-    Button btnRegister;
-    @BindView (R.id.tvLogin)
-    TextView tvLogin;
+    @BindView (R.id.btnRegister) Button btnRegister;
+    @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocationNPO) EditText etLocationNPO;
 
@@ -55,7 +52,7 @@ public class NpoRegActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private String userID;
     private String latLong;
-    private String city;
+    private String address;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
