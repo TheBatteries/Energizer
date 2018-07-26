@@ -12,7 +12,7 @@ public class User implements Parcelable { //was implements Serializable
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
-            return new User();
+            return new User(email, name, phone, userID, userType, latLong, city);
         }
 
         @Override
@@ -29,7 +29,7 @@ public class User implements Parcelable { //was implements Serializable
     String userID;
     String userType;
 
-    public User() {
+    public User(String email, String name, String phone, String userID, String userType, String latLong, String city) {
     }
 
     public User(String age, String email, String name, String phone, String userID, String userType) {
@@ -67,7 +67,7 @@ public class User implements Parcelable { //was implements Serializable
     }
 
     // Parcelling part
-    public User(Parcel in){
+    public User(){
         this.age = in.readString();
         this.name = in.readString();
         this.email =  in.readString();

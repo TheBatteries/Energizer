@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Volunteer;
 import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -44,6 +43,7 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.etAge) EditText etAge;
     @BindView (R.id.etPhone) EditText etPhone;
     @BindView (R.id.btnRegister) Button btnRegister;
+    @BindView (R.id.btnAddImage) Button btnAddImage;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocation) EditText etLocation;
@@ -54,7 +54,6 @@ public class VolRegActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private String userID;
     private CallbackManager callbackManager;
-    private LoginButton loginButton;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String latLong;
     private String city;
@@ -64,7 +63,6 @@ public class VolRegActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vol_reg);
-        loginButton = findViewById(R.id.login_button);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();

@@ -19,10 +19,11 @@ public class Volunteer extends User {
 
 
 
-    public Volunteer() {
+    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String city, String age) {
+        super(email, name, phone, userID, userType, latLong, city);
         firebaseAuth = FirebaseAuth.getInstance();
         currentFirebaseUser = firebaseAuth.getCurrentUser();
-        userID = currentFirebaseUser.getUid();
+        this.userID = currentFirebaseUser.getUid();
         mDBRef = FirebaseDatabase.getInstance().getReference();
     }
 

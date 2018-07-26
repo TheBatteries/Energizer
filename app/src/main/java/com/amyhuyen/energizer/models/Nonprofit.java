@@ -7,7 +7,10 @@ public class Nonprofit extends User {
 
     String description;
 
-    public Nonprofit() { }
+    public Nonprofit() {
+        super();
+
+    }
 
     public Nonprofit(String email, String name, String phone, String userID, String userType, String latLong, String address, String description) {
         super(email, name, phone, userID, userType, latLong, address);

@@ -111,23 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-                mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-                currentFirebaseUser = firebaseAuth.getCurrentUser();
-                userID = currentFirebaseUser.getUid();
-
-                //TODO - not sure how to handle passing a user object when user is already logged in.
-                //Do we even need a user object here?
-                mDBUserRef.child(userID).addListenerForSingleValueEvent( new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                        finish();
-                        startActivity(intent);
-                    }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("Persisting User Main", databaseError.toString());
+
                 }
             });
         }
