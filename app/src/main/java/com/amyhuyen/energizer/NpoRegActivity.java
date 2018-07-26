@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Nonprofit;
 import com.facebook.CallbackManager;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -78,7 +78,7 @@ public class NpoRegActivity extends AppCompatActivity {
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
-        final String description = etNpoDescription.getText().toString().trim();
+        final String description = etLocationNPO.getText().toString().trim();
         final String phone = etPhone.getText().toString().trim();
         final String userType = "NPO";
 
@@ -106,7 +106,7 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
+                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, city, description);
                                     firebaseData.child("User").child(userID).setValue(nonprofit);
 
                                     // intent to the landing activity
@@ -137,7 +137,7 @@ public class NpoRegActivity extends AppCompatActivity {
             etLocationNPO.setText(place.getAddress().toString());
 
             // extract location data
-            address = place.getAddress().toString();
+            city = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

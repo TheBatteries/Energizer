@@ -11,8 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import org.parceler.Parcel;
+
+import java.util.ArrayList;
 
 @Parcel
 public class Volunteer extends User {
