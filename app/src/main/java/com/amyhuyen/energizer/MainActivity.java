@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private CallbackManager mCallbackManager;
+    private FirebaseUser currentFirebaseUser;
+    private String userID;
     private LoginButton loginButton;
+    private static final String EMAIL = "email";
     private static final String TAG = "FACELOG";
     private DatabaseReference firebaseData;
 
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         // check if user already is logged in (if so, launch landing activity)
+        // create and pass current user object
         if (firebaseAuth.getCurrentUser() != null){
             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User")
                     .child(firebaseAuth.getCurrentUser().getUid()).child("userType");
@@ -189,8 +193,6 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
-
     // on click listener for volunteer button
     @OnClick(R.id.btnVolunteer)
     public void onVolunteerClick(){
@@ -214,6 +216,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-
-
 }

@@ -39,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private FirebaseUser currentFirebaseUser;
+    private String userID;
     private DatabaseReference mDBUserRef;
-    private String userType;
     private User user;
     private static final String TAG = "FACELOG";
 
@@ -48,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         // bind the views
         ButterKnife.bind(this);
@@ -59,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
     }
-
 
     private void userLogin() {
 
@@ -111,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Log.e("error", task.getException().toString());
                             Toast.makeText(LoginActivity.this, "Could not login, please try again", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
                         }
                     }
                 });
