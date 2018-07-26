@@ -28,8 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -112,9 +110,8 @@ public class VolRegActivity extends AppCompatActivity {
                                     Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age);
                                     firebaseData.child("User").child(userID).setValue(volunteer);
 
-                                    // intent to the landing activity
+                                    // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
                                     intent.putExtra("UserType", volunteer.getUserType());
                                     startActivity(intent);
                                     finish();

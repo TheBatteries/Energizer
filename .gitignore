@@ -59,4 +59,4 @@ local.properties
 .cproject
 
 # PDT-specific
-.buildpath
+.buildpathvalues/secrets.xml

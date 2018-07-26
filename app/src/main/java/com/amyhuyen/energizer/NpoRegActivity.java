@@ -27,8 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,7 +68,6 @@ public class NpoRegActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-
         // access the text in the fields
         final String name = etName.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
@@ -109,7 +106,6 @@ public class NpoRegActivity extends AppCompatActivity {
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(nonprofit));
                                     intent.putExtra("UserType", nonprofit.getUserType());
                                     startActivity(intent);
                                     finish();
