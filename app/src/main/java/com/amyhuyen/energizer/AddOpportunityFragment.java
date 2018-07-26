@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -171,14 +172,19 @@ public class AddOpportunityFragment extends Fragment{
     // add opportunity to firebase;
     public void addOpp(){
         // create an instance of the opportunity class based on this information
-        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
         final String oppId = firebaseDataOpp.push().getKey();
+        final String intermediateId = firebaseDataOpp.push().getKey();
 
         landing = (LandingActivity) getActivity();
 
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId,
-                landing.address, landing.latLong);
-        firebaseDataOpp.child(oppId).setValue(newOpp);
+        // add as an opportunity and as opportunitiesPerNpo
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, landing.address, landing.latLong);
+        firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
+
+        HashMap<String, String> oppIdMap = new HashMap<>();
+        oppIdMap.put("OppID", oppId);
+        firebaseDataOpp.child("OpportunitiesPerNPO").child(npoId).child(intermediateId).setValue(oppIdMap);
 
         // alert user of success
         Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
