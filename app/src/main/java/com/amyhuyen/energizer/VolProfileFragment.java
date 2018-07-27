@@ -64,6 +64,5 @@ public class VolProfileFragment extends ProfileFragment {
                 tv_skills.setText(skills.toString());
             }
         });
-
     }
 }
