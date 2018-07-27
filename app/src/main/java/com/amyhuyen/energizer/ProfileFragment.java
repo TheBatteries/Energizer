@@ -74,6 +74,10 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
+
+        //user is null here
+        Log.i("ProfileFragment", "User name in onViewCreated: " + user.getName());
+
         //set textview text
         tv_name.setText( "Name: " + user.getName());
         tv_email.setText("Email: " + user.getEmail());
@@ -102,12 +106,5 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish(); //TODO - why couldn't I call finish here?
     }
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
-
 }
 

@@ -2,7 +2,9 @@ package com.amyhuyen.energizer;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Volunteer;
@@ -22,9 +24,21 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        //unpack the bundle with the user object
+        volunteer = this.getArguments().getParcelable("VolunteerObject");
+        Log.i("VolProfileFragment", "Volunteer name: " + volunteer.getName());
+        Log.i("VolProfileFragment", "Volunteer email: " + volunteer.getEmail());
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        volunteer = new Volunteer();
         drawCauseAreas();
         drawSkills();
     }
@@ -41,6 +55,5 @@ public class VolProfileFragment extends ProfileFragment {
         String volSkills = volunteer.getVolSkills().toString();
         tv_skills.setText(volSkills);
         Log.i("VolProfileFragment", "getVolSkills(): " + volSkills);
-
     }
 }

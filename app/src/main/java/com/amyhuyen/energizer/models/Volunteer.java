@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer.models;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,7 +17,7 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 
 @Parcel
-public class Volunteer extends User {
+public class Volunteer extends User implements Parcelable {
 
 
     String age;
@@ -60,7 +61,6 @@ public class Volunteer extends User {
                     skillIDlist.add(child.child("SkillID").getValue().toString());
                     Log.i("VolunteerClass", "skillIDList " + skillIDlist.toString());
                 }
-
             }
 
             @Override
@@ -68,7 +68,7 @@ public class Volunteer extends User {
                 Log.d("Volunteer", "unable to load skillPushID datasnapshot");
             }
         });
-        final ArrayList<String> skillsList = getSkillList(skillIDlist); //how can I force the return statement to wait for all of the searching through lists to be completed?
+        final ArrayList<String> skillsList = getSkillList(skillIDlist); //Why does this work? I thought that it would try to pass skillIDlist BEFORE I have the full skillIDlist
         return skillsList;
     }
 
