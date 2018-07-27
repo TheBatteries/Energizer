@@ -16,6 +16,7 @@ public class Opportunity {
     String address;
     String latLong;
 
+
     public Opportunity(){}
 
     public Opportunity(String name, String description, String oppId, String startDate,

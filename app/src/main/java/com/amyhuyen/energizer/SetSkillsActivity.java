@@ -70,7 +70,7 @@ public class SetSkillsActivity extends AppCompatActivity {
             addSkill.setEnabled(true);
         }
 
-        // autofill for the TextViews
+        // autofill for the TextView
         skillsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

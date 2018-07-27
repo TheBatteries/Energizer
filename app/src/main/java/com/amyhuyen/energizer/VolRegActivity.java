@@ -223,7 +223,7 @@ public class VolRegActivity extends AppCompatActivity {
             cursor.close();
             File imageFile = new File(filepath);
             final Uri imageURI = Uri.fromFile(imageFile);
-            storageReference.putFile(imageURI);
+            storageReference.child("profilePictures/users/" + firebaseAuth.getCurrentUser().getUid()).putFile(imageURI);
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

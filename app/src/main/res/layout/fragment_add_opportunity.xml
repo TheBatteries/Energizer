@@ -48,6 +48,17 @@
             android:hint="@string/opportunity_description"
             android:textSize="15dp"/>
 
+        <AutoCompleteTextView
+            android:id="@+id/actvOppSkill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/etOppDescription"
+            android:hint="Skill Required" />
+
         <EditText
             android:id="@+id/etOppLocation"
             android:layout_width="match_parent"
@@ -56,7 +67,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/etOppDescription"
+            android:layout_below="@id/actvOppSkill"
             android:hint="@string/opportunity_address"
             android:focusable="false"
             android:clickable="true"
