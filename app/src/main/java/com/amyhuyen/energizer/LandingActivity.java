@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 
@@ -57,6 +61,9 @@ public class LandingActivity extends AppCompatActivity {
     public String UserType;
     public String UserName;
 
+    public Volunteer volunteer;
+    public Nonprofit nonprofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +96,7 @@ public class LandingActivity extends AppCompatActivity {
         UserType = getIntent().getStringExtra("UserType");
         UserName = getIntent().getStringExtra("UserName");
 
+
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
         volProfileFragment = new VolProfileFragment();
@@ -104,8 +112,10 @@ public class LandingActivity extends AppCompatActivity {
         // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
+            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
         } else {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
+            nonprofit = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
         }
 
         // handle the bottom navigation bar switching
@@ -132,9 +142,9 @@ public class LandingActivity extends AppCompatActivity {
                 }
 
                 //put user object in bundle to pass to
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("UserObject", user);
-                selectedFragment.setArguments(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("UserObject", user);
+//                selectedFragment.setArguments(bundle);
 
                 // handle the fragment transaction
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -145,7 +155,7 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 
-    // handle onActivityResult for addOppFragg
+    // handle onActivityResult for addOppFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -161,7 +171,6 @@ public class LandingActivity extends AppCompatActivity {
                 // extract location data
                 address = place.getAddress().toString();
                 latLong = place.getLatLng().toString().replace("lat/lng: ", "");
-
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 // log the error

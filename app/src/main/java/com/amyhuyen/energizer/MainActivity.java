@@ -34,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,30 +95,42 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // check if user already is logged in (if so, launch landing activity)
-        if (firebaseAuth.getCurrentUser() != null){
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
-            dataUserRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
-                    String UserName = userMapping.get("name");
-                    String UserType = userMapping.get("userType");
-                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    intent.putExtra("UserType", UserType);
-                    intent.putExtra("UserName", UserName);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    finish();
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("Persisting User Main", databaseError.toString());
-                }
-            });
-        }
+//        // check if user already is logged in (if so, launch landing activity)
+//        if (firebaseAuth.getCurrentUser() != null){
+//            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
+//            dataUserRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    // prepare the intent
+//                    HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
+//                    String UserName = userMapping.get("name");
+//                    String UserType = userMapping.get("userType");
+//                    Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//                    intent.putExtra("UserType", UserType);
+//                    intent.putExtra("UserName", UserName);
+//
+//                    // create user (either NPO or Volunteer objects) and add to intent
+//                    if (UserType.equals("Volunteer")){
+//                        Volunteer volunteer = dataSnapshot.getValue(Volunteer.class);
+//                        intent.putExtra("UserObject", Parcels.wrap(volunteer));
+//                    } else if (UserType.equals("NPO")){
+//                        Nonprofit nonprofit = dataSnapshot.getValue(Nonprofit.class);
+//                        intent.putExtra("UserObject", Parcels.wrap(nonprofit));
+//                    }
+//
+//                    // fire the intent
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    finish();
+//                    startActivity(intent);
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    Log.e("Persisting User Main", databaseError.toString());
+//                }
+//            });
+//        }
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
