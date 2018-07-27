@@ -237,6 +237,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
         intent.putExtra("UserType", UserType);
         intent.putExtra("UserName", UserName);
+        intent.putExtra("UserObject", getIntent().getParcelableExtra("UserObject"));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();

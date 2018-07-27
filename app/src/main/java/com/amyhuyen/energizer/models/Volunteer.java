@@ -99,4 +99,15 @@ public class Volunteer extends User {
         Log.i("SKILL_TEST", skillNames.toString());
         mSkillFetchListner.onSkillsFetched(skillNames);
     }
+
+    ////////Parcelable part
+
+//    public static final Parcelable.Creator<Volunteer> CREATOR = new Parcelable.Creator<Volunteer>() {
+//        public Volunteer createFromParcel(Parcel in) {
+//            return new Volunteer(in);
+//        }
+
+
+
 }
+

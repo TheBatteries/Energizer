@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 
@@ -39,7 +42,7 @@ public class LandingActivity extends AppCompatActivity {
     private User passedUser;
     private String userID;
     private Volunteer volunteer;
-
+    private Nonprofit nonprofit;
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
@@ -112,23 +115,24 @@ public class LandingActivity extends AppCompatActivity {
         // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
             //how to handle creating volunteer object
-
-            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    volunteer = dataSnapshot.getValue(Volunteer.class); //TODO - I think I will have to modify volunteer class
-                    Log.i("LandingActivity", "volunteer name: " + volunteer.getName());
-                    userBundle.putParcelable("VolunteerObject", volunteer); //can't use this yet because Volunteer isn't parcelable? Can I put multiple Parcelable objects in same bundle?
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("LandingActivity", "unable to load volunteer");
-                }
-            });
-
+//
+//            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    volunteer = dataSnapshot.getValue(Volunteer.class); //TODO - I think I will have to modify volunteer class
+//                    Log.i("LandingActivity", "volunteer name: " + volunteer.getName());
+//                    userBundle.putParcelable("VolunteerObject", volunteer); //can't use this yet because Volunteer isn't parcelable? Can I put multiple Parcelable objects in same bundle?
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    Log.d("LandingActivity", "unable to load volunteer");
+//                }
+//            });
+            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
         } else {
+            nonprofit = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
         }
 
@@ -201,7 +205,6 @@ public class LandingActivity extends AppCompatActivity {
                 // log the error
                 Log.e("Location Cancelled Opp", "The user has cancelled the operation");
             }
-
         }
     }
 }
