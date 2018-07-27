@@ -26,21 +26,17 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
+
+    public final static String EXTRA_USER_OBJECT = "UserObject";
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDBUserRef;
@@ -80,30 +76,8 @@ public class LandingActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentFirebaseUser = firebaseAuth.getCurrentUser();
-        userID = currentFirebaseUser.getUid();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-        storageReference = FirebaseStorage.getInstance().getReference();
-
-        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Log.i("LandingActivity", "user name: " + user.getName());
-                //this works!
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LandingActivity", "unable to load User");
-            }
-        });
-
         // get the user type  and name info from the intent
-        UserType = getIntent().getStringExtra("UserType");
-        UserName = getIntent().getStringExtra("UserName");
+        UserType = UserDataProvider.getInstance().getCurrentUserType();
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
@@ -147,11 +121,6 @@ public class LandingActivity extends AppCompatActivity {
                         break;
                 }
 
-                //put user object in bundle to pass to
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("UserObject", user);
-                selectedFragment.setArguments(bundle);
-
                 // handle the fragment transaction
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, selectedFragment);
@@ -161,7 +130,7 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 
-    // handle onActivityResult for addOppFragg
+    // handle onActivityResult for addOppFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
