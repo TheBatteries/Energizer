@@ -35,16 +35,13 @@ import butterknife.OnClick;
 public class NpoRegActivity extends AppCompatActivity {
 
     // the views
-    @BindView(R.id.etEmail)
-    EditText etEmail;
+    @BindView(R.id.etEmail) EditText etEmail;
     @BindView (R.id.etPassword) EditText etPassword;
     @BindView (R.id.etConfirmPassword) EditText etConfirmPassword;
-    @BindView (R.id.etAge) EditText etAge;
+    @BindView (R.id.etNpoDescription) EditText etNpoDescription;
     @BindView (R.id.etPhone) EditText etPhone;
-    @BindView (R.id.btnRegister)
-    Button btnRegister;
-    @BindView (R.id.tvLogin)
-    TextView tvLogin;
+    @BindView (R.id.btnRegister) Button btnRegister;
+    @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocationNPO) EditText etLocationNPO;
 
@@ -55,7 +52,7 @@ public class NpoRegActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private String userID;
     private String latLong;
-    private String city;
+    private String address;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
@@ -106,12 +103,13 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, city, description);
+                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
                                     firebaseData.child("User").child(userID).setValue(nonprofit);
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
                                     intent.putExtra("UserType", nonprofit.getUserType());
+                                    intent.putExtra("UserName", nonprofit.getName());
                                     startActivity(intent);
                                     finish();
 
@@ -137,7 +135,7 @@ public class NpoRegActivity extends AppCompatActivity {
             etLocationNPO.setText(place.getAddress().toString());
 
             // extract location data
-            city = place.getAddress().toString();
+            address = place.getAddress().toString();
             latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

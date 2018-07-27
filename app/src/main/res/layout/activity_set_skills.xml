@@ -16,8 +16,6 @@
         android:layout_alignParentTop="true"
         android:text="@string/skills_message" />
 
-
-
     <Button
         android:id="@+id/setSkills"
         android:layout_width="match_parent"

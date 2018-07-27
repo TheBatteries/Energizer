@@ -9,11 +9,17 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Volunteer;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 public class VolProfileFragment extends ProfileFragment {
 
     Volunteer volunteer;
+
+    public interface SkillFetchListner {
+        void onSkillsFetched(List<String> skills);
+    }
 
     //views
     @BindView(R.id.tv_skills) TextView tv_skills;
@@ -52,8 +58,12 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
-        String volSkills = volunteer.getVolSkills().toString();
-        tv_skills.setText(volSkills);
-        Log.i("VolProfileFragment", "getVolSkills(): " + volSkills);
+        volunteer.fetchSkills(new SkillFetchListner() {
+            @Override
+            public void onSkillsFetched(List<String> skills) {
+                tv_skills.setText(skills.toString());
+            }
+        });
+
     }
 }

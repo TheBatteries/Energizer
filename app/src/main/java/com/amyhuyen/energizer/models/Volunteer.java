@@ -1,11 +1,10 @@
 package com.amyhuyen.energizer.models;
 
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.amyhuyen.energizer.VolProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,52 +14,45 @@ import com.google.firebase.database.ValueEventListener;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Parcel
-public class Volunteer extends User implements Parcelable {
+public class Volunteer extends User {
 
+    private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
+    private static final String KEY_SKILLS_ID  = "SkillID";
+    private static final String KEY_SKILLS  = "Skill";
 
-    String age;
+    String mAge;
 
     public Volunteer() {
     }
 
     public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
         super(email, name, phone, userID, userType, latLong, address);
-        this.age = age;
+        mAge = age;
     }
 
     public String getAge() {
-        return age;
+        return mAge;
     }
 
-    /**
-     * Get list of volunteer's skills
-     */
-    public ArrayList<String> getVolSkills() {
+    private VolProfileFragment.SkillFetchListner mSkillFetchListner;
 
-        final ArrayList<String> skillIDlist = new ArrayList<>();
-        final FirebaseUser currentFirebaseUser;
-        final String userID;
-        final DatabaseReference mDBRef;
+    public void fetchSkills(VolProfileFragment.SkillFetchListner skillFetchListner) {
+        mSkillFetchListner = skillFetchListner;
+        fetchSkillIds();
+    }
 
-        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        userID = currentFirebaseUser.getUid();
-        mDBRef = FirebaseDatabase.getInstance().getReference();
+    private void fetchSkillIds() {
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-
-        mDBRef.child("SkillsPerUser").child(userID).addValueEventListener(new ValueEventListener() {
-
-            //for each skillsPushID, get the skillID and add it to the skillIDlist
+        databaseReference.child(KEY_SKILLS_PER_USER).child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                //add the skillsPushID to the list skillPushIDlist
-                for (DataSnapshot child : dataSnapshot.getChildren()) { //TODO - start with this method. I think you have one too many for loops
-                    Log.i("VolunteerClass", "child.child(SkillID).getValue(): " + child.child("SkillID").getValue());
-                    skillIDlist.add(child.child("SkillID").getValue().toString());
-                    Log.i("VolunteerClass", "skillIDList " + skillIDlist.toString());
-                }
+                List<String> skillIds = getSkillsIds(dataSnapshot);
+                fetchSkillNames(skillIds);
             }
 
             @Override
@@ -68,32 +60,32 @@ public class Volunteer extends User implements Parcelable {
                 Log.d("Volunteer", "unable to load skillPushID datasnapshot");
             }
         });
-        final ArrayList<String> skillsList = getSkillList(skillIDlist); //Why does this work? I thought that it would try to pass skillIDlist BEFORE I have the full skillIDlist
-        return skillsList;
     }
 
-    /**helper method for getVolSkills
-     * @param skillIDlist is a list of the skillIDs
-     * @return skillsList, a list of the skills in word form*/
-    public ArrayList<String> getSkillList(ArrayList<String> skillIDlist) {
-        final ArrayList<String> skillIDList = skillIDlist;  //compiler wanted skillIDlist to be final. Why?
+    private List<String> getSkillsIds(@NonNull DataSnapshot dataSnapshot) {
+        final List<String> skillIds = new ArrayList<>();
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            skillIds.add(child.child(KEY_SKILLS_ID).getValue().toString());
+        }
+        return skillIds;
+    }
 
-        DatabaseReference mDBRef = FirebaseDatabase.getInstance().getReference();
-        final ArrayList<String> skillsList = new ArrayList<>();
+    private void fetchSkillNames(final List<String> skillIds) { //compiler wanted skillIDlist to be final. Why?
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        mDBRef.child("Skill").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(KEY_SKILLS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot skillID : dataSnapshot.getChildren()) {
-                    for (int i = 0; i < skillIDList.size(); i++) {    //search through all skillIDs under skills
-                        if (skillID.getKey().equals(skillIDList.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
-                            String wordSkill = skillID.child("Skill").getValue().toString();
-                            Log.i("Volunteer", "wordSkill being added: " + wordSkill);
-                            skillsList.add(wordSkill);
-                            Log.i("Volunteer", "skillsList: " + skillsList.toString());
+                List<String> skillNames = new ArrayList<>();
+                for (DataSnapshot skillId : dataSnapshot.getChildren()) {
+                    for (int i = 0; i < skillIds.size(); i++) {    //search through all skillIDs under skills
+                        if (skillId.getKey().equals(skillIds.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
+                            String skillName = skillId.child("Skill").getValue().toString();
+                            skillNames.add(skillName);
                         }
                     }
                 }
+                onSkillsFetched(skillNames);
             }
 
             @Override
@@ -101,6 +93,10 @@ public class Volunteer extends User implements Parcelable {
                 Log.d("Volunteer", "Unable to get snapshots of skills");
             }
         });
-        return skillsList;
+    }
+
+    private void onSkillsFetched(List<String> skillNames) {
+        Log.i("SKILL_TEST", skillNames.toString());
+        mSkillFetchListner.onSkillsFetched(skillNames);
     }
 }

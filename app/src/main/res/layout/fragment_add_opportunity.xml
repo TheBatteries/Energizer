@@ -45,14 +45,29 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
-            android:hint="Opportunity Description"
+            android:hint="@string/opportunity_description"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/etOppLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/etOppDescription"
+            android:hint="@string/opportunity_address"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none"
             android:textSize="15dp"/>
 
         <EditText
             android:id="@+id/etStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etOppDescription"
+            android:layout_below="@id/etOppLocation"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"

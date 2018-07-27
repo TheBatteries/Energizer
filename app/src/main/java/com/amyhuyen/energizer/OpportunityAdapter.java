@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.OppDisplayUtils;
 
 import org.parceler.Parcels;
 
@@ -37,6 +38,8 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvOppName) TextView tvOppName;
         public @BindView (R.id.tvOppDesc) TextView tvOppDesc;
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
+        public @BindView (R.id.tvOppTime) TextView tvOppTime;
+        public @BindView (R.id.tvOppAddress) TextView tvOppAddress;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -60,7 +63,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 bundle.putParcelable("Opportunity", Parcels.wrap(opportunity));
 
 
-                // switch the fragments and wrap the opportunity in a bundle
+                // switch the fragments
                 FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -88,12 +91,14 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
+        final String time = OppDisplayUtils.formatTime(opp);
 
-        // TODO fix NPO name
         // populate the views
         holder.tvOppName.setText(opp.getName());
-        holder.tvNpoName.setText("NPO Name");
+        holder.tvNpoName.setText(opp.getNpoName());
         holder.tvOppDesc.setText(opp.getDescription());
+        holder.tvOppTime.setText(time);
+        holder.tvOppAddress.setText(opp.getAddress());
     }
 
     // getting the number of items

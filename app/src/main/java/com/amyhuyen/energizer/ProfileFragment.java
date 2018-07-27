@@ -36,7 +36,6 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
 
-   // private OnFragmentInteractionListener mListener;
     FragmentActivity listener;
 
     @Override

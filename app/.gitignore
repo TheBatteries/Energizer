@@ -1,4 +1,5 @@
 /build
-values/secrets.xml
+app/src/main/res/values/secrets.xml
 /Users/acfoley/Desktop/Energizer/Energizer/app/src/main/res/values/secrets.xml
+values/secrets.xml
 secrets.xml

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.OppDisplayUtils;
 
 import org.parceler.Parcels;
 
@@ -22,6 +23,8 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.tvOppName) TextView tvOppName;
     @BindView (R.id.tvOppDesc) TextView tvOppDesc;
     @BindView (R.id.tvNpoName) TextView tvNpoName;
+    @BindView (R.id.tvOppTime) TextView tvOppTime;
+    @BindView (R.id.tvOppAddress) TextView tvOppAddress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,9 +44,14 @@ public class OpportunitiesDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         Opportunity opportunity = Parcels.unwrap(bundle.getParcelable("Opportunity"));
 
-        // TODO FIX HARD CODED NPO NAME
+        // reformat time
+        String time = OppDisplayUtils.formatTime(opportunity);
+
+        // populate the views
         tvOppName.setText(opportunity.getName());
         tvOppDesc.setText(opportunity.getDescription());
-        tvNpoName.setText("NPO Name");
+        tvNpoName.setText(opportunity.getNpoName());
+        tvOppTime.setText(time);
+        tvOppAddress.setText(opportunity.getAddress());
     }
 }
