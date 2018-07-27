@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -102,12 +104,21 @@ public class MainActivity extends AppCompatActivity {
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // prepare the intent
                     HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
-                    String UserName = userMapping.get("name");
                     String UserType = userMapping.get("userType");
+
+                    if (UserType == "Volunteer"){
+                        UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
+                    } else{
+                        UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));
+                    }
+
+                    UserDataProvider.getInstance().setCurrentUserType(UserType);
+
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                    intent.putExtra("UserType", UserType);
-                    intent.putExtra("UserName", UserName);
+
+                    // fire the intent
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
