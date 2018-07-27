@@ -115,7 +115,7 @@ public class LandingActivity extends AppCompatActivity {
             mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    volObject = dataSnapshot.getValue(Volunteer.class); //TODO - I think I will have to modify volunteer class
+                    volObject = dataSnapshot.getValue(Volunteer.class);
                     userBundle.putParcelable("UserObject", volObject);
 
                     Log.i("LandingActivity", "volunteer name: " + volObject.getName());

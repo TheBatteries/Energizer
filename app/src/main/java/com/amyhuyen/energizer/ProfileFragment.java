@@ -22,8 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-//TODO change all findViewByIds and OnClick listeners to butterknife style and call finish() as marked
-
 public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
@@ -60,7 +58,7 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
- 
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }

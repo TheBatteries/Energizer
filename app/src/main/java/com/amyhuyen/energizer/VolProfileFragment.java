@@ -32,14 +32,8 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //unpack the bundle with the user object
         volunteer = this.getArguments().getParcelable("UserObject");
-        Log.i("VolProfileFragment", "Volunteer name: " + volunteer.getName());
-        Log.i("VolProfileFragment", "Volunteer email: " + volunteer.getEmail());
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
-
     }
 
     @Override
@@ -58,12 +52,12 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
-        Log.i("VolProfileFragment", "Draw Skills");
-//        volunteer.fetchSkills(new SkillFetchListner() {
-//            @Override
-//            public void onSkillsFetched(List<String> skills) {
-//                tv_skills.setText(skills.toString());
-//            }
-//        });
+        volunteer.fetchSkills(new SkillFetchListner() {
+            @Override
+            public void onSkillsFetched(List<String> skills) {
+                tv_skills.setText(skills.toString());
+                Log.i("VolProfileFragment", "drawSkills: " + skills.toString());
+            }
+        });
     }
 }
