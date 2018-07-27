@@ -80,7 +80,7 @@ public class Volunteer extends User {
                 for (DataSnapshot skillId : dataSnapshot.getChildren()) {
                     for (int i = 0; i < skillIds.size(); i++) {    //search through all skillIDs under skills
                         if (skillId.getKey().equals(skillIds.get(i))) { //if the datasnapshot (a SkillID) matches a skillID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
-                            String skillName = skillId.child("Skill").getValue().toString();
+                            String skillName = skillId.child("skill").getValue().toString();
                             skillNames.add(skillName);
                         }
                     }

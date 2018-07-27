@@ -49,7 +49,7 @@ public class UserDataProvider {
 
     public String getCurrentUserName(){
         String UserName = null;
-        if (mUserType == "Volunteer"){
+        if (mUserType.equals("Volunteer")){
             UserName = mVolunteer.getName();
         } else {
             UserName = mNonprofit.getName();
@@ -59,7 +59,7 @@ public class UserDataProvider {
 
     public String getCurrentUserEmail(){
         String email = null;
-        if (mUserType == "Volunteer"){
+        if (mUserType.equals("Volunteer")){
             email = mVolunteer.getEmail();
         } else {
             email = mNonprofit.getEmail();

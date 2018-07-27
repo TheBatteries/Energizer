@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String UserType = userMapping.get("userType");
 
                                     // update user data provider
-                                    if (UserType == "Volunteer"){
+                                    if (UserType.equals("Volunteer")){
                                         UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
                                     } else{
                                         UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));

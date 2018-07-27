@@ -32,7 +32,7 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        volunteer = this.getArguments().getParcelable("UserObject");
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -52,6 +52,8 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
+        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
