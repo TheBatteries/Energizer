@@ -1,7 +1,14 @@
 package com.amyhuyen.energizer;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -16,6 +23,7 @@ import com.amyhuyen.energizer.models.User;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +31,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -44,6 +55,9 @@ public class LandingActivity extends AppCompatActivity {
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public String address;
     public String latLong;
+    private static final int SELECTED_PIC = 65538;
+    private StorageReference storageReference;
+    private Uri downloadURL;
 
 
     // fragment variables
@@ -56,6 +70,7 @@ public class LandingActivity extends AppCompatActivity {
 
     public String UserType;
     public String UserName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +85,7 @@ public class LandingActivity extends AppCompatActivity {
         currentFirebaseUser = firebaseAuth.getCurrentUser();
         userID = currentFirebaseUser.getUid();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -171,6 +187,32 @@ public class LandingActivity extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
                 // log the error
                 Log.e("Location Cancelled Opp", "The user has cancelled the operation");
+            }
+
+        }
+        if (requestCode == SELECTED_PIC){
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                String[] projection = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(projection[0]);
+                String filepath = cursor.getString(columnIndex);
+                cursor.close();
+                File imageFile = new File(filepath);
+                final Uri imageURI = Uri.fromFile(imageFile);
+                storageReference.child("profilePictures/users/" + firebaseAuth.getCurrentUser().getUid() + "/").putFile(imageURI);
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        downloadURL = uri;
+                    }
+                });
+                Bitmap bitmap = BitmapFactory.decodeFile(filepath);
+                // store the image as a Drawable
+                Drawable drawable = new BitmapDrawable(bitmap);
             }
 
         }
