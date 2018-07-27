@@ -153,7 +153,7 @@ public class NpoRegActivity extends AppCompatActivity {
     private void callPlaceAutocompleteActivityIntent() {
         try{
             // launches intent to the google place autocomplete widget
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch(GooglePlayServicesRepairableException e) {
             e.printStackTrace();
