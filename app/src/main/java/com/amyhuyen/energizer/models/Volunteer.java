@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer.models;
 
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -10,6 +11,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import android.net.Uri;
+
 
 import org.parceler.Parcel;
 
@@ -23,7 +27,7 @@ public class Volunteer extends User {
 
     public Volunteer() { }
 
-    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
+    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age, Uri profileImage) {
         super(email, name, phone, userID, userType, latLong, address);
         this.age = age;
     }

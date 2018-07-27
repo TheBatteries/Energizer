@@ -101,5 +101,11 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish(); //TODO - why couldn't I call finish here?
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }
 
