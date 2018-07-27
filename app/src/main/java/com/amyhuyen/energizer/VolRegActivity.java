@@ -124,10 +124,13 @@ public class VolRegActivity extends AppCompatActivity {
                                     Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age, downloadURL);
                                     firebaseData.child("User").child(userID).setValue(volunteer);
 
+                                    // update user data provider
+                                    UserDataProvider.getInstance().setCurrentUserType("Volunteer");
+                                    UserDataProvider.getInstance().setCurrentVolunteer(volunteer);
+
+
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserType", volunteer.getUserType());
-                                    intent.putExtra("UserName", volunteer.getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);

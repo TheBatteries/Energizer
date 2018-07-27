@@ -106,10 +106,12 @@ public class NpoRegActivity extends AppCompatActivity {
                                     Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
                                     firebaseData.child("User").child(userID).setValue(nonprofit);
 
+                                    // update use data provider
+                                    UserDataProvider.getInstance().setCurrentNPO(nonprofit);
+                                    UserDataProvider.getInstance().setCurrentUserType("NPO");
+
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                                    intent.putExtra("UserType", nonprofit.getUserType());
-                                    intent.putExtra("UserName", nonprofit.getName());
                                     startActivity(intent);
                                     finish();
 
@@ -153,7 +155,7 @@ public class NpoRegActivity extends AppCompatActivity {
     private void callPlaceAutocompleteActivityIntent() {
         try{
             // launches intent to the google place autocomplete widget
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch(GooglePlayServicesRepairableException e) {
             e.printStackTrace();
