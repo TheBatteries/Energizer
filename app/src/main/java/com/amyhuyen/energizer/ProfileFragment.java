@@ -27,14 +27,18 @@ import butterknife.OnClick;
 public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
-    User user;
+    static User user;
 
-    public ProfileFragment() { }
+    public ProfileFragment() {
+    }
 
     //views
-    @BindView(R.id.tv_name) TextView tv_name;
-    @BindView(R.id.btn_logout) ImageButton btn_logout;
-    @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.btn_logout)
+    ImageButton btn_logout;
+    @BindView(R.id.tv_email)
+    TextView tv_email;
 
     FragmentActivity listener;
 
@@ -56,12 +60,7 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //unpack the bundle with the user object
-        user = this.getArguments().getParcelable("UserObject");
-        Log.i("ProfileFragment", "User name: " + user.getName());
-        Log.i("ProfileFragment", "User email: " + user.getEmail());
-
-        // Inflate the layout for this fragment
+ 
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
@@ -73,12 +72,14 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
+        user = this.getArguments().getParcelable("UserObject");
 
-        //user is null here
+
+        //user is null here - remove
         Log.i("ProfileFragment", "User name in onViewCreated: " + user.getName());
 
-        //set textview text
-        tv_name.setText( "Name: " + user.getName());
+        // set textview text
+        tv_name.setText("Name: " + user.getName());
         tv_email.setText("Email: " + user.getEmail());
     }
 

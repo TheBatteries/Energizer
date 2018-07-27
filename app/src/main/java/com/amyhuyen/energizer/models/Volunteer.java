@@ -11,13 +11,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcel;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Parcel
+//@Parcel
 public class Volunteer extends User {
+
 
     private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
     private static final String KEY_SKILLS_ID  = "SkillID";

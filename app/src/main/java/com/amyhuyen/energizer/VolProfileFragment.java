@@ -33,7 +33,7 @@ public class VolProfileFragment extends ProfileFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //unpack the bundle with the user object
-        volunteer = this.getArguments().getParcelable("VolunteerObject");
+        volunteer = this.getArguments().getParcelable("UserObject");
         Log.i("VolProfileFragment", "Volunteer name: " + volunteer.getName());
         Log.i("VolProfileFragment", "Volunteer email: " + volunteer.getEmail());
 
@@ -58,11 +58,12 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
-        volunteer.fetchSkills(new SkillFetchListner() {
-            @Override
-            public void onSkillsFetched(List<String> skills) {
-                tv_skills.setText(skills.toString());
-            }
-        });
+        Log.i("VolProfileFragment", "Draw Skills");
+//        volunteer.fetchSkills(new SkillFetchListner() {
+//            @Override
+//            public void onSkillsFetched(List<String> skills) {
+//                tv_skills.setText(skills.toString());
+//            }
+//        });
     }
 }

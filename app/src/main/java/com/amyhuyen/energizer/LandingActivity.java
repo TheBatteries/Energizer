@@ -14,10 +14,10 @@ import android.widget.EditText;
 
 import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.amyhuyen.energizer.models.Volunteer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.parceler.Parcels;
 
 import java.util.HashMap;
 
@@ -39,10 +37,9 @@ public class LandingActivity extends AppCompatActivity {
     private DatabaseReference mDBUserRef;
     private FirebaseUser currentFirebaseUser;
     private User user;
-    private User passedUser;
     private String userID;
-    private Volunteer volunteer;
-    private Nonprofit nonprofit;
+    private Volunteer volObject;
+    private Nonprofit npoObject;
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
@@ -78,19 +75,19 @@ public class LandingActivity extends AppCompatActivity {
         userID = currentFirebaseUser.getUid();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
 
-        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Log.i("LandingActivity", "user name: " + user.getName());
-                //this works!
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LandingActivity", "unable to load User");
-            }
-        });
+//        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                user = dataSnapshot.getValue(User.class);
+//                Log.i("LandingActivity", "user name: " + user.getName());
+//                //this works!
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("LandingActivity", "unable to load User");
+//            }
+//        });
 
         // get the user type  and name info from the intent
         UserType = getIntent().getStringExtra("UserType");
@@ -114,25 +111,39 @@ public class LandingActivity extends AppCompatActivity {
 
         // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
-            //how to handle creating volunteer object
-//
-//            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    volunteer = dataSnapshot.getValue(Volunteer.class); //TODO - I think I will have to modify volunteer class
-//                    Log.i("LandingActivity", "volunteer name: " + volunteer.getName());
-//                    userBundle.putParcelable("VolunteerObject", volunteer); //can't use this yet because Volunteer isn't parcelable? Can I put multiple Parcelable objects in same bundle?
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//                    Log.d("LandingActivity", "unable to load volunteer");
-//                }
-//            });
-            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
+
+            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    volObject = dataSnapshot.getValue(Volunteer.class); //TODO - I think I will have to modify volunteer class
+                    userBundle.putParcelable("UserObject", volObject);
+
+                    Log.i("LandingActivity", "volunteer name: " + volObject.getName());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("LandingActivity", "unable to load volunteer");
+                }
+            });
+//            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
         } else {
-            nonprofit = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
+            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    npoObject = dataSnapshot.getValue(Nonprofit.class); //TODO - I think I will have to modify volunteer class
+                    userBundle.putParcelable("UserObject", npoObject);
+
+                    Log.i("LandingActivity", "volunteer name: " + npoObject.getName());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("LandingActivity", "unable to load volunteer");
+                }
+            });
+
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
         }
 
@@ -162,12 +173,7 @@ public class LandingActivity extends AppCompatActivity {
                 }
 
 //                //put user object in bundle to pass to
-//                Bundle userBundle = new Bundle();
-                userBundle.putParcelable("UserObject", userBundle);
                 selectedFragment.setArguments(userBundle);
-
-                //TODO - need to setArguments for userType bundle somewhere. Can I use same bundle for multiple objects?
-
 
                 // handle the fragment transaction
                 fragmentTransaction = fragmentManager.beginTransaction();
