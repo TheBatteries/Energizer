@@ -12,28 +12,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
-import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.parceler.Parcels;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
+
+    public final static String EXTRA_USER_OBJECT = "UserObject";
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDBUserRef;
@@ -61,9 +53,6 @@ public class LandingActivity extends AppCompatActivity {
     public String UserType;
     public String UserName;
 
-    public Volunteer volunteer;
-    public Nonprofit nonprofit;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,30 +61,8 @@ public class LandingActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentFirebaseUser = firebaseAuth.getCurrentUser();
-        userID = currentFirebaseUser.getUid();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-
-        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Log.i("LandingActivity", "user name: " + user.getName());
-                //this works!
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LandingActivity", "unable to load User");
-            }
-        });
-
         // get the user type  and name info from the intent
-        UserType = getIntent().getStringExtra("UserType");
-        UserName = getIntent().getStringExtra("UserName");
-
+        UserType = UserDataProvider.getInstance().getCurrentUserType();
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
@@ -112,10 +79,8 @@ public class LandingActivity extends AppCompatActivity {
         // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
-            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
         } else {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
-            nonprofit = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
         }
 
         // handle the bottom navigation bar switching
@@ -140,11 +105,6 @@ public class LandingActivity extends AppCompatActivity {
                         selectedFragment = volProfileFragment;
                         break;
                 }
-
-                //put user object in bundle to pass to
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("UserObject", user);
-//                selectedFragment.setArguments(bundle);
 
                 // handle the fragment transaction
                 fragmentTransaction = fragmentManager.beginTransaction();

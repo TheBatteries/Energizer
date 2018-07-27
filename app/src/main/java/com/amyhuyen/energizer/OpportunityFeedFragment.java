@@ -102,8 +102,6 @@ public class OpportunityFeedFragment extends Fragment {
                 // iterate through children to get each opportunity and add it to newOpportunities
                 for (DataSnapshot child : children) {
                     Opportunity newOpp = child.getValue(Opportunity.class);
-//                    ArrayList<Double> userLatLongArray = DistanceUtils.convertLatLong(((LandingActivity) getActivity()).volunteer.getLatLong());
-//                    ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(newOpp.getLatLong());
 
                     newOpportunities.add(newOpp);
                 }
@@ -123,45 +121,5 @@ public class OpportunityFeedFragment extends Fragment {
         });
     }
 
-//    private void skillsOppFilter(){
-//        final ArrayList<String> userSkills= new ArrayList<>();
-//        final ArrayList<String> mySkillsIdList = new ArrayList<>();
-//        final ArrayList<String> myOppsIdList = new ArrayList<>();
-//
-//        firebaseDataOpp.child("SkillsPerUser").child(((LandingActivity)getActivity()).volunteer.getUserID()).
-//                addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                newOppsSkillFilter.clear();
-//
-//                // get all the skill ids
-//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-//                for (DataSnapshot child : children){
-//                    mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get("SkillID"));
-//                }
-//
-//                firebaseDataOpp.child("OpportunitiesPerSkill").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        Log.e("skillsOppFilter Inner", databaseError.toString());
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("skillsOppFilter Outer", databaseError.toString());
-//
-//            }
-//        });
-//
-//
-//
-//    }
 
 }

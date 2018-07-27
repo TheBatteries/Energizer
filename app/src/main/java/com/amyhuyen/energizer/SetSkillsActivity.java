@@ -27,9 +27,6 @@ import butterknife.OnClick;
 public class SetSkillsActivity extends AppCompatActivity {
 
     // the views
-    //@BindView (R.id.etSkill1) EditText userSkill1;
-    //@BindView (R.id.etSkill2) EditText userSkill2;
-    //@BindView (R.id.etSkill3) EditText userSkill3;
     @BindView(R.id.actvSkill1) AutoCompleteTextView userSkill1;
     @BindView(R.id.actvSkill2) AutoCompleteTextView userSkill2;
     @BindView(R.id.actvSkill3) AutoCompleteTextView userSkill3;
@@ -234,7 +231,6 @@ public class SetSkillsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
         intent.putExtra("UserType", UserType);
         intent.putExtra("UserName", UserName);
-        intent.putExtra("UserObject", getIntent().getParcelableExtra("UserObject"));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();

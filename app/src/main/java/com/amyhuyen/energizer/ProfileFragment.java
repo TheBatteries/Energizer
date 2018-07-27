@@ -56,11 +56,6 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //unpack the bundle with the user object
-        user = this.getArguments().getParcelable("UserObject");
-        Log.i("ProfileFragment", "User name: " + user.getName());
-        Log.i("ProfileFragment", "User email: " + user.getEmail());
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -69,13 +64,12 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // bind the views
         ButterKnife.bind(this, view);
 
         //set textview text
-        tv_name.setText( "Name: " + user.getName());
-        tv_email.setText("Email: " + user.getEmail());
+        tv_name.setText( "Name: " + UserDataProvider.getInstance().getCurrentUserName());
+        tv_email.setText("Email: " + UserDataProvider.getInstance().getCurrentUserEmail());
     }
 
     //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
