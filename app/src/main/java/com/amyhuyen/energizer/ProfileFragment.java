@@ -22,21 +22,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
-    static User user;
+    User user;
 
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
     //views
-    @BindView(R.id.tv_name)
-    TextView tv_name;
-    @BindView(R.id.btn_logout)
-    ImageButton btn_logout;
-    @BindView(R.id.tv_email)
-    TextView tv_email;
+    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.btn_logout) ImageButton btn_logout;
+    @BindView(R.id.tv_email) TextView tv_email;
 
     FragmentActivity listener;
 
@@ -58,7 +55,7 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
@@ -66,19 +63,12 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // bind the views
         ButterKnife.bind(this, view);
 
-        user = this.getArguments().getParcelable("UserObject");
-
-
-        //user is null here - remove
-        Log.i("ProfileFragment", "User name in onViewCreated: " + user.getName());
-
-        // set textview text
-        tv_name.setText("Name: " + user.getName());
-        tv_email.setText("Email: " + user.getEmail());
+        //set textview text
+        tv_name.setText( "Name: " + UserDataProvider.getInstance().getCurrentUserName());
+        tv_email.setText("Email: " + UserDataProvider.getInstance().getCurrentUserEmail());
     }
 
     //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
@@ -104,5 +94,11 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish(); //TODO - why couldn't I call finish here?
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }
 

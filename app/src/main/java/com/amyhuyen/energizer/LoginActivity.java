@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -98,10 +100,17 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
                                     String UserType = userMapping.get("userType");
-                                    String UserName = userMapping.get("name");
+
+                                    // update user data provider
+                                    if (UserType == "Volunteer"){
+                                        UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
+                                    } else{
+                                        UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));
+                                    }
+                                    UserDataProvider.getInstance().setCurrentUserType(UserType);
+
+                                    // launch intent to landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-                                    intent.putExtra("UserType", UserType);
-                                    intent.putExtra("UserName", UserName);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();

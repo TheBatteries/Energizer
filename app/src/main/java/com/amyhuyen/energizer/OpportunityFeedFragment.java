@@ -19,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +31,9 @@ public class OpportunityFeedFragment extends Fragment {
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
+    List<Opportunity> newOppsSkillFilter;
+    List<String> mySkillsIdList;
+    List<String> myOppsIdList;
     OpportunityAdapter oppAdapter;
     DatabaseReference firebaseDataOpp;
 
@@ -48,11 +50,16 @@ public class OpportunityFeedFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // set up firebase database
-        firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+        firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
 
-        // initialize the data source
+        // initialize the lists to hold the data
         opportunities = new ArrayList<>();
         newOpportunities = new ArrayList<>();
+
+        // initialize the lists to hold the data (with filter)
+        newOppsSkillFilter = new ArrayList<>();
+        mySkillsIdList = new ArrayList<>();
+        myOppsIdList = new ArrayList<>();
 
         // construct the adapter from this data source
         oppAdapter = new OpportunityAdapter(opportunities, getActivity());
@@ -84,7 +91,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method to get data from firebase
     private void fetchOpportunities(){
-        firebaseDataOpp.addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child("Opportunity").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 newOpportunities.clear();
@@ -95,6 +102,7 @@ public class OpportunityFeedFragment extends Fragment {
                 // iterate through children to get each opportunity and add it to newOpportunities
                 for (DataSnapshot child : children) {
                     Opportunity newOpp = child.getValue(Opportunity.class);
+
                     newOpportunities.add(newOpp);
                 }
 
@@ -112,5 +120,6 @@ public class OpportunityFeedFragment extends Fragment {
             }
         });
     }
+
 
 }

@@ -12,35 +12,27 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.User;
-import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
+    public final static String EXTRA_USER_OBJECT = "UserObject";
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDBUserRef;
     private FirebaseUser currentFirebaseUser;
     private User user;
+    private User passedUser;
     private String userID;
-    private Volunteer volObject;
-    private Nonprofit npoObject;
-
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -69,29 +61,8 @@ public class LandingActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
-        final HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentFirebaseUser = firebaseAuth.getCurrentUser();
-        userID = currentFirebaseUser.getUid();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
-
-//        mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                user = dataSnapshot.getValue(User.class);
-//                Log.i("LandingActivity", "user name: " + user.getName());
-//                //this works!
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("LandingActivity", "unable to load User");
-//            }
-//        });
-
         // get the user type  and name info from the intent
-        UserType = getIntent().getStringExtra("UserType");
-        UserName = getIntent().getStringExtra("UserName");
+        UserType = UserDataProvider.getInstance().getCurrentUserType();
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
@@ -105,45 +76,10 @@ public class LandingActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
         fragmentTransaction.commit();
 
-        //put user object in bundle to pass to
-        // final Bundle userTypeBundle = new Bundle();
-        final Bundle userBundle = new Bundle();
-
         // check user type and inflate menu accordingly
         if (UserType.equals("Volunteer")) {
-
-            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    volObject = dataSnapshot.getValue(Volunteer.class);
-                    userBundle.putParcelable("UserObject", volObject);
-
-                    Log.i("LandingActivity", "volunteer name: " + volObject.getName());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("LandingActivity", "unable to load volunteer");
-                }
-            });
-//            volunteer = Parcels.unwrap(getIntent().getParcelableExtra("UserObject"));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
         } else {
-            mDBUserRef.child(userID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    npoObject = dataSnapshot.getValue(Nonprofit.class); //TODO - I think I will have to modify volunteer class
-                    userBundle.putParcelable("UserObject", npoObject);
-
-                    Log.i("LandingActivity", "volunteer name: " + npoObject.getName());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("LandingActivity", "unable to load volunteer");
-                }
-            });
-
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
         }
 
@@ -168,12 +104,7 @@ public class LandingActivity extends AppCompatActivity {
                     case R.id.ic_right:
                         selectedFragment = volProfileFragment;
                         break;
-                    default:
-                        selectedFragment = commitFrag;
                 }
-
-//                //put user object in bundle to pass to
-                selectedFragment.setArguments(userBundle);
 
                 // handle the fragment transaction
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -184,7 +115,7 @@ public class LandingActivity extends AppCompatActivity {
         });
     }
 
-    // handle onActivityResult for addOppFragg
+    // handle onActivityResult for addOppFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -201,7 +132,6 @@ public class LandingActivity extends AppCompatActivity {
                 address = place.getAddress().toString();
                 latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
-
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 // log the error
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -211,6 +141,7 @@ public class LandingActivity extends AppCompatActivity {
                 // log the error
                 Log.e("Location Cancelled Opp", "The user has cancelled the operation");
             }
+
         }
     }
 }

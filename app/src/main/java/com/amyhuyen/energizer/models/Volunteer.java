@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer.models;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -27,7 +28,7 @@ public class Volunteer extends User {
     public Volunteer() {
     }
 
-    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age) {
+    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age, Uri profileimage) {
         super(email, name, phone, userID, userType, latLong, address);
         mAge = age;
     }
