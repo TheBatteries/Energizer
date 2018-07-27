@@ -13,9 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.utils.AutocompleteUtils;
 import com.facebook.CallbackManager;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -26,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,8 +109,8 @@ public class VolRegActivity extends AppCompatActivity {
 
                                     // intent to the SetSkills activity
                                     Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
-                                    intent.putExtra("UserObject", Parcels.wrap(volunteer));
                                     intent.putExtra("UserType", volunteer.getUserType());
+                                    intent.putExtra("UserName", volunteer.getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
@@ -135,7 +132,7 @@ public class VolRegActivity extends AppCompatActivity {
     // on click listener for location edit text
     @OnClick (R.id.etLocation)
     public void onLocationClick(){
-        callPlaceAutocompleteActivityIntent();
+        AutocompleteUtils.callPlaceAutocompleteActivityIntent(VolRegActivity.this);
     }
 
     // on click listener for register button
@@ -153,40 +150,31 @@ public class VolRegActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // launches google place autocomplete widget
-    private void callPlaceAutocompleteActivityIntent() {
-        try{
-            // launches intent to the google place autocomplete widget
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch(GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            // get the location and log it
-            Place place = PlaceAutocomplete.getPlace(this, data);
-            Log.i("Location Success", "Place " + place.getAddress().toString());
-            etLocation.setText(place.getAddress().toString());
+            if (resultCode == RESULT_OK) {
+                // get the location and log it
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Log.i("Location Success", "Place " + place.getAddress().toString());
+                etLocation.setText(place.getAddress().toString());
 
-            // extract location data
-            city = place.getAddress().toString();
-            latLong = place.getLatLng().toString().replace("lat/lng: ", "");
+                // extract location data
+                city = place.getAddress().toString();
+                latLong = place.getLatLng().toString().replace("lat/lng: ", "");
 
-        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             // log the error
             Status status = PlaceAutocomplete.getStatus(this, data);
-            Log.e ("Location Error", status.getStatusMessage());
+            Log.e ("Location Error Reg", status.getStatusMessage());
 
-        } else if (resultCode == RESULT_CANCELED) {
-            // log the error
-            Log.e ("Location Cancelled", "The user has cancelled the operation");
+            } else if (resultCode == RESULT_CANCELED) {
+                // log the error
+                Log.e("Location Cancelled Reg", "The user has cancelled the operation");
+            }
+
         } else {
             // onActivityResult for Facebook Login
             callbackManager.onActivityResult(requestCode, resultCode, data);

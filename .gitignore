@@ -62,3 +62,10 @@ local.properties
 .buildpathvalues/secrets.xml
 /Users/acfoley/Desktop/Energizer/Energizer/app/src/main/res/values/secrets.xml
 values/secrets.xml
+
+# IOS System files
+*.DS_Store
+
+# Secret file
+*secrets.xml
+
