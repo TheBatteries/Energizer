@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
-import com.amyhuyen.energizer.utils.DistanceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,7 +32,6 @@ public class OpportunityFeedFragment extends Fragment {
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
-    List<Opportunity> newOppsSkillFilter;
     List<String> mySkillsIdList;
     List<String> myOppsIdList;
     OpportunityAdapter oppAdapter;
@@ -58,7 +57,6 @@ public class OpportunityFeedFragment extends Fragment {
         newOpportunities = new ArrayList<>();
 
         // initialize the lists to hold the data (with filter)
-        newOppsSkillFilter = new ArrayList<>();
         mySkillsIdList = new ArrayList<>();
         myOppsIdList = new ArrayList<>();
 
@@ -72,13 +70,13 @@ public class OpportunityFeedFragment extends Fragment {
         rvOpps.setAdapter(oppAdapter);
 
         // get the opportunities (for on launch)
-        fetchOpportunities();
+        matchBySkills();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchOpportunities();
+                matchBySkills();
             }
         });
 
@@ -89,6 +87,69 @@ public class OpportunityFeedFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
+
+    // method that filters opportunities displayed to a volunteer based on skills matching
+    private void matchBySkills(){
+        mySkillsIdList = new ArrayList<>();
+        myOppsIdList = new ArrayList<>();
+
+        // get the skillIds of the skills related to a certain user
+        userToSkillId();
+    }
+
+    // method that finds the all the skills a user has and puts those skillIds into a list
+    private void userToSkillId(){
+        firebaseDataOpp.child("SkillsPerUser").child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        // get all the skill ids and add them to mySkillsIdList
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child : children){
+                            mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get("SkillID"));
+                        }
+
+                        // call method that gets the oppIds of the opportunities related to these skills
+                        skillIdToOppId();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("userToSkillId", databaseError.toString());
+
+                    }
+                });
+    }
+
+    // method that takes the skillIds in the mySkillsIdList and finds the opportunities related to those skills
+    private void skillIdToOppId(){
+        firebaseDataOpp.child("OppsPerSkill").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // for every skill in mySkillsIdList, get the opportunities that require that skill
+                for (String skillId : mySkillsIdList){
+                    for (DataSnapshot child: dataSnapshot.child(skillId).getChildren()){
+                        HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
+
+                        // add those oppIds to the myOppIdList
+                        myOppsIdList.add(oppsPerSkillMapping.get("oppID"));
+
+                        // call the method that fetches the opportunities with those oppIds
+                        fetchOpportunities();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("skillIdtoOppId", databaseError.toString());
+            }
+        });
+    }
 
     // method to get data from firebase
     private void fetchOpportunities(){
@@ -103,18 +164,14 @@ public class OpportunityFeedFragment extends Fragment {
                 // iterate through children to get each opportunity and add it to newOpportunities
                 for (DataSnapshot child : children) {
                     Opportunity newOpp = child.getValue(Opportunity.class);
-                    ArrayList<Double> userLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
-                    ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(newOpp.getLatLong());
 
-                    newOpportunities.add(newOpp);
+                    // add to newOpportunities only the opportunity's oppId is in the filtered list
+                    if (myOppsIdList.contains(newOpp.getOppId())) {
+                        newOpportunities.add(newOpp);
+                    }
                 }
 
-                // clear the adapter and add newly fetched opportunities
-                oppAdapter.clear();
-                oppAdapter.addAll(newOpportunities);
-
-                // stop the refreshing
-                swipeContainer.setRefreshing(false);
+                updateAdapter();
             }
 
             @Override
@@ -124,42 +181,21 @@ public class OpportunityFeedFragment extends Fragment {
         });
     }
 
-//    private void skillsOppsFilter(){
-//        final ArrayList<String> userSkills= new ArrayList<>();
-//        final ArrayList<String> mySkillsIdList = new ArrayList<>();
-//        final ArrayList<String> myOppsIdList = new ArrayList<>();
-//
-//        firebaseDataOpp.child("SkillsPerUser").child(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong()).
-//                addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                newOppsSkillFilter.clear();
-//
-//                // get all the skill ids
-//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-//                for (DataSnapshot child : children){
-//                    mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get("SkillID"));
-//                }
-//
-//                firebaseDataOpp.child("OpportunitiesPerSkill").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        Log.e("skillsOppFilter Inner", databaseError.toString());
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("skillsOppFilter Outer", databaseError.toString());
-//
-//            }
-//        });
-//    }
+    // method that updates the adapter
+    private void updateAdapter(){
+
+        // clear the adapter and add newly fetched opportunities
+        oppAdapter.clear();
+        oppAdapter.addAll(newOpportunities);
+
+        // stop the refreshing
+        swipeContainer.setRefreshing(false);
+    }
+
 
 }
+
+
+// code for distance matching
+//                    ArrayList<Double> userLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
+//                    ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(newOpp.getLatLong());
