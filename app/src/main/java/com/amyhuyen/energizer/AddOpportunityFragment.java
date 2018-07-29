@@ -78,7 +78,7 @@ public class AddOpportunityFragment extends Fragment{
 
         // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        npoName = ((LandingActivity) getActivity()).UserName;
+        npoName = UserDataProvider.getInstance().getCurrentUserName();
 
     }
 
