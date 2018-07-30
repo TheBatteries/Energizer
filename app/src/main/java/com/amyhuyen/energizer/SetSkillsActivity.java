@@ -63,6 +63,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         // recyclerview setup
         rvSkills.setLayoutManager(new LinearLayoutManager(this));
         rvSkills.setAdapter(skillAdapter);
+        tvUserSkill.setThreshold(1);
 
         if (tvUserSkill.getText() == null){
             addSkill.setEnabled(false);
@@ -77,7 +78,11 @@ public class SetSkillsActivity extends AppCompatActivity {
                 // create an ArrayList to hold the skills -- and add the skills to it through "collectSkillName"
                 ArrayList<String> skills = collectSkillName((Map<String,Object>) dataSnapshot.getValue());
                 // connect the TextView to ArrayAdapter that holds the list of skills
-                tvUserSkill.setAdapter(newAdapter(skills));
+                final ArrayAdapter<String> afAdapter = new ArrayAdapter<>(
+                        SetSkillsActivity.this, android.R.layout.simple_dropdown_item_1line, skills);
+                tvUserSkill.setAdapter(afAdapter);
+                afAdapter.setNotifyOnChange(true);
+                afAdapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -89,6 +94,7 @@ public class SetSkillsActivity extends AppCompatActivity {
     // makes an ArrayAdapter -- made so that ArrayAdapters can be made within onDataChange() methods
     private ArrayAdapter<String> newAdapter(ArrayList<String> list){
         final ArrayAdapter<String> afAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
+        afAdapter.setNotifyOnChange(true);
         return afAdapter;
     }
 

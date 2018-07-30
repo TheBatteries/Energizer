@@ -66,4 +66,14 @@ public class UserDataProvider {
         }
         return email;
     }
+
+    public String getCurrentUserId(){
+        String userId = null;
+        if (mUserType == "Volunteer"){
+            userId = mVolunteer.getUserID();
+        } else {
+            userId = mNonprofit.getUserID();
+        }
+        return userId;
+    }
 }
