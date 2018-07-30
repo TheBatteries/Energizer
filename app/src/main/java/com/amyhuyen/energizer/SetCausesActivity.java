@@ -162,7 +162,7 @@ public class SetCausesActivity extends AppCompatActivity {
                                 firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                firebaseData.child(DBKeys.KEY_CAUSE).orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                causeDbRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         // since we did a .equalTo() search, this for loop only has one element
