@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.utils.DistanceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,8 +35,10 @@ public class OpportunityFeedFragment extends Fragment {
     List<Opportunity> newOpportunities;
     List<String> mySkillsIdList;
     List<String> myOppsIdList;
+    List<String> mySkillsNameList;
     OpportunityAdapter oppAdapter;
     DatabaseReference firebaseDataOpp;
+    ArrayList<Double> mUserLatLongArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +62,7 @@ public class OpportunityFeedFragment extends Fragment {
         // initialize the lists to hold the data (with filter)
         mySkillsIdList = new ArrayList<>();
         myOppsIdList = new ArrayList<>();
+        mySkillsNameList = new ArrayList<>();
 
         // construct the adapter from this data source
         oppAdapter = new OpportunityAdapter(opportunities, getActivity());
@@ -70,6 +74,7 @@ public class OpportunityFeedFragment extends Fragment {
         rvOpps.setAdapter(oppAdapter);
 
         // get the opportunities (for on launch)
+        mUserLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
         matchBySkills();
 
         // swipe refresh
@@ -110,8 +115,8 @@ public class OpportunityFeedFragment extends Fragment {
                             mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get("SkillID"));
                         }
 
-                        // call method that gets the oppIds of the opportunities related to these skills
-                        skillIdToOppId();
+                        // call the method that gets the skill names from these skillIds
+                        skillIdToSkillName();
 
                     }
 
@@ -123,15 +128,36 @@ public class OpportunityFeedFragment extends Fragment {
                 });
     }
 
+    // method to get the name of the skill from the skillId
+    private void skillIdToSkillName(){
+        firebaseDataOpp.child("Skill").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // iterate through skillIds and add the related skill name to mySkillsNameList
+                for (String skillId : mySkillsIdList){
+                    mySkillsNameList.add(dataSnapshot.child(skillId).child("skill").getValue(String.class));
+                }
+
+                // call method that gets the oppIds of the opportunities related to these skills
+                skillNameToOppId();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("skillIdToSkillName", databaseError.toString());
+            }
+        });
+    }
+
     // method that takes the skillIds in the mySkillsIdList and finds the opportunities related to those skills
-    private void skillIdToOppId(){
+    private void skillNameToOppId(){
         firebaseDataOpp.child("OppsPerSkill").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 // for every skill in mySkillsIdList, get the opportunities that require that skill
-                for (String skillId : mySkillsIdList){
-                    for (DataSnapshot child: dataSnapshot.child(skillId).getChildren()){
+                for (String skillName : mySkillsNameList){
+                    for (DataSnapshot child: dataSnapshot.child(skillName).getChildren()){
                         HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
 
                         // add those oppIds to the myOppIdList
@@ -167,7 +193,8 @@ public class OpportunityFeedFragment extends Fragment {
 
                     // add to newOpportunities only the opportunity's oppId is in the filtered list
                     if (myOppsIdList.contains(newOpp.getOppId())) {
-                        newOpportunities.add(newOpp);
+                        // check if opportunity is within ~25 miles of the user's given city
+                        filterByLocation(newOpp);
                     }
                 }
 
@@ -192,10 +219,16 @@ public class OpportunityFeedFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
+    // method that filters opportunities by location
+    private void filterByLocation(Opportunity opportunity){
+        ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(opportunity.getLatLong());
+        if (DistanceUtils.distanceBetween(mUserLatLongArray, oppLatLongArray) < 40000){
+            newOpportunities.add(opportunity);
+        }
+    }
 
 }
 
 
+
 // code for distance matching
-//                    ArrayList<Double> userLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
-//                    ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(newOpp.getLatLong());
