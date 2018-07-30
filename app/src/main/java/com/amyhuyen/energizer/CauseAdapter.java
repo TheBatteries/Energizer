@@ -51,7 +51,7 @@ public class CauseAdapter extends RecyclerView.Adapter<CauseAdapter.ViewHolder> 
     public CauseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View postView = inflater.inflate(R.layout.skill, parent, false); //I think I can leave this layout, but change name
+        View postView = inflater.inflate(R.layout.skill, parent, false); //I can leave this layout, but change name of layout later
         ViewHolder viewHolder = new ViewHolder(postView);
         return viewHolder;
     }
