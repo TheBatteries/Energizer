@@ -30,7 +30,8 @@ public class VolProfileFragment extends ProfileFragment {
     //views
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
-    @BindView (R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     public VolProfileFragment() {
         // Required empty public constructor
@@ -46,6 +47,7 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        drawContactInfo();
         drawCauseAreas();
         drawSkills();
     }
@@ -70,7 +72,10 @@ public class VolProfileFragment extends ProfileFragment {
         });
     }
 
-
+    @Override
+    public void drawContactInfo() {
+        tv_contact_info.setText(UserDataProvider.getInstance().getCurrentVolunteer().getAddress());
+    }
 
     @OnClick(R.id.profile_pic)
     public void onProfileImageClick(){

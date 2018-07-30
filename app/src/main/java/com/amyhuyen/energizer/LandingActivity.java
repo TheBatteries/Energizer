@@ -59,7 +59,7 @@ public class LandingActivity extends AppCompatActivity {
     // fragment variables
     public FragmentManager fragmentManager;
     public FragmentTransaction fragmentTransaction;
-    public Fragment volProfileFragment;
+    public Fragment profileFragment;
     public Fragment opportunityFeedFrag;
     public Fragment commitFrag;
     public Fragment addOppFrag;
@@ -81,22 +81,26 @@ public class LandingActivity extends AppCompatActivity {
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
-        volProfileFragment = new VolProfileFragment();
-        opportunityFeedFrag = new OpportunityFeedFragment();
         commitFrag = new CommitFragment();
-        addOppFrag = new AddOpportunityFragment();
+
+        // check user type and inflate menu and create fragments accordingly
+        Fragment startingFragment = null;
+        if (UserType.equals("Volunteer")) {
+            opportunityFeedFrag = new OpportunityFeedFragment();
+            profileFragment = new VolProfileFragment();
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
+            startingFragment = opportunityFeedFrag;
+        } else {
+            addOppFrag = new AddOpportunityFragment();
+            profileFragment = new NpoProfileFragment();
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
+            startingFragment = commitFrag;
+        }
 
         // handle the initial fragment transaction
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.replace(R.id.flContainer, startingFragment);
         fragmentTransaction.commit();
-
-        // check user type and inflate menu accordingly
-        if (UserType.equals("Volunteer")) {
-            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
-        } else {
-            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
-        }
 
         // handle the bottom navigation bar switching
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,7 +111,11 @@ public class LandingActivity extends AppCompatActivity {
                 // define all the possible fragment transactions
                 switch (item.getItemId()) {
                     case R.id.ic_left:
+                        if (UserType.equals("Volunteer")) {
                         selectedFragment = opportunityFeedFrag;
+                        } else {
+                        selectedFragment = commitFrag;
+                        }
                         break;
                     case R.id.ic_middle:
                         if (UserType.equals("Volunteer")) {
@@ -117,7 +125,7 @@ public class LandingActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.ic_right:
-                        selectedFragment = volProfileFragment;
+                        selectedFragment = profileFragment;
                         break;
                 }
 

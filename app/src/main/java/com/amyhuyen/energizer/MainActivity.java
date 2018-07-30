@@ -108,13 +108,12 @@ public class MainActivity extends AppCompatActivity {
                     HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
                     String UserType = userMapping.get("userType");
 
+                    UserDataProvider.getInstance().setCurrentUserType(UserType);
                     if (UserType.equals("Volunteer")){
                         UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
                     } else{
                         UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));
                     }
-
-                    UserDataProvider.getInstance().setCurrentUserType(UserType);
 
                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
 

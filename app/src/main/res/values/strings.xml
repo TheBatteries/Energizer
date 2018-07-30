@@ -44,4 +44,7 @@
     <string name="time">Time</string>
     <string name="address">Address</string>
     <string name="non_profit_name">Non-profit Name</string>
+    <string name="skills">Skills</string>
+    <string name="cause_areas">Cause Areas</string>
+    <string name="contact_information">Contact Information</string>
 </resources>

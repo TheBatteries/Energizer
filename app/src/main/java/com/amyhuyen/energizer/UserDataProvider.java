@@ -7,8 +7,6 @@ public class UserDataProvider {
     private Volunteer mVolunteer;
     private Nonprofit mNonprofit;
     private String mUserType;
-    private String mUserName;
-    private String mUserEmail;
 
     private static UserDataProvider sInstance;
 
