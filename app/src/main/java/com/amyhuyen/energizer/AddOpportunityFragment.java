@@ -334,9 +334,9 @@ public class AddOpportunityFragment extends Fragment{
         // run a for loop that goes into the DataSnapShot and retrieves the name of the skill
         for (Map.Entry<String, Object> entry : skill.entrySet()){
             // gets the name of the skill
-            Map singleSkill = (Map) entry.getValue();
+            Map singleCause = (Map) entry.getValue();
             // adds that skill name to the ArrayList
-            Skill userInputSkill = new Skill((String) singleSkill.get("skill"));
+            Skill userInputSkill = new Skill((String) singleCause.get("skill"));
             skills.add(userInputSkill.getSkill());
         }
         return skills;

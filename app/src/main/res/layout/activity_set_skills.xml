@@ -22,10 +22,6 @@
             android:layout_alignParentTop="true"
             android:text="@string/skills_message" />
 
-
-
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

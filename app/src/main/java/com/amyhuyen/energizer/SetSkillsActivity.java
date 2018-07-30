@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+
 import com.amyhuyen.energizer.models.Skill;
 import com.amyhuyen.energizer.models.Volunteer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,9 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -233,12 +236,12 @@ public class SetSkillsActivity extends AppCompatActivity {
         addSkills();
         // get intent information from previous activity
 
-        UserName = getIntent().getStringExtra("UserName");
-        UserType = getIntent().getStringExtra("UserType");
+//        UserName = getIntent().getStringExtra("UserName");
+//        UserType = getIntent().getStringExtra("UserType");
 
-        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
-        intent.putExtra("UserType", UserType);
-        intent.putExtra("UserName", UserName);
+        Intent intent = new Intent(getApplicationContext(), SetCausesActivity.class); //Make sure changin this from LandingActivity didn't mess up extras
+//        intent.putExtra("UserType", UserType);
+//        intent.putExtra("UserName", UserName);
 
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
