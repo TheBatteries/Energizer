@@ -70,8 +70,6 @@ public class VolProfileFragment extends ProfileFragment {
         });
     }
 
-
-
     @OnClick(R.id.profile_pic)
     public void onProfileImageClick(){
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

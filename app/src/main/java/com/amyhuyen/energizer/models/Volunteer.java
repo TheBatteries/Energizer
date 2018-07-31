@@ -99,5 +99,11 @@ public class Volunteer extends User {
         Log.i("SKILL_TEST", skillNames.toString());
         mSkillFetchListner.onSkillsFetched(skillNames);
     }
+
+    /////////drawCauseAreas
+
+    
+
+
 }
 
