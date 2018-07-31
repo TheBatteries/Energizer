@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,8 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
     @BindView (R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.btn_edit_causes)
+    Button btn_edit_causes;
 
     public VolProfileFragment() {
         // Required empty public constructor
@@ -74,5 +77,11 @@ public class VolProfileFragment extends ProfileFragment {
     public void onProfileImageClick(){
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
+    }
+
+    @OnClick(R.id.btn_edit_causes)
+    public void onEditCausesClick() {
+        Intent intent = new Intent(getActivity(), SetCausesActivity.class);
+        startActivity(intent);
     }
 }

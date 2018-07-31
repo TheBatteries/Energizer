@@ -84,5 +84,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
         android:hint="Skills" />
+
+    <Button
+        android:id="@+id/btn_edit_causes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="58dp"
+        android:text="Edit Causes" />
 </RelativeLayout>
 

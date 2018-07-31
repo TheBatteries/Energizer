@@ -222,7 +222,7 @@ public class AddOpportunityFragment extends Fragment{
     }
 
     // add opportunity to firebase;
-    public void addOpp(){
+    public void addOpp() {
         // create an instance of the opportunity class based on this information
         firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
         final String oppId = firebaseDataOpp.push().getKey();

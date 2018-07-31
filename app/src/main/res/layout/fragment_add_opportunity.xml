@@ -138,7 +138,6 @@
             android:inputType="none"
             android:textSize="15dp"/>
 
-
         <Button
             android:id="@+id/btnAddOpp"
             android:layout_width="match_parent"
