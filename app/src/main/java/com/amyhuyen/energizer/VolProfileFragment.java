@@ -91,6 +91,11 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     @Override
+    public void drawEditCausesBtn() {
+
+    }
+
+    @Override
     public void drawContactInfo() {
         tv_contact_info.setText(UserDataProvider.getInstance().getCurrentVolunteer().getAddress());
     }

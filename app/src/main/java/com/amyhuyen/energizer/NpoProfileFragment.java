@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ public class NpoProfileFragment extends ProfileFragment{
     @BindView(R.id.tv_cause_area) TextView tvCauseArea;
     @BindView(R.id.profile_pic) ImageView profilePic;
     @BindView(R.id.tv_contact_info) TextView tvContactInfo;
+//    @BindView(R.id.btn_edit_causes)
+//    Button btn_edit_causes;
 
     public NpoProfileFragment(){
         // required empty public constructor
@@ -32,11 +35,17 @@ public class NpoProfileFragment extends ProfileFragment{
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
+        drawEditCausesBtn();
     }
 
     @Override
@@ -53,5 +62,11 @@ public class NpoProfileFragment extends ProfileFragment{
     public void drawContactInfo() {
         tvContactInfo.setText(UserDataProvider.getInstance().getCurrentNPO().getPhone() + "\n" +
         UserDataProvider.getInstance().getCurrentNPO().getAddress());
+    }
+
+    @Override
+    public void drawEditCausesBtn() {
+        btn_edit_causes.setVisibility(View.GONE);
+
     }
 }
