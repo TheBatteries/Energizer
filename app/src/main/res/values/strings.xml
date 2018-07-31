@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Energizer</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_registration">User Registration</string>
     <string name="register_message">I am a...</string>
     <string name="volunteer">Volunteer</string>
@@ -50,4 +47,7 @@
     <string name="cause_areas">Cause Area</string>
     <string name="cause_areas_vol_prof">Your Cause Areas: </string>
     <string name="contact_information">Contact Information</string>
+    <string name="skill_required">Skill Required</string>
+    <string name="positions_available">Positions Available</string>
+    <string name="number_of_volunteers_needed">Number of Volunteers Needed</string>
 </resources>

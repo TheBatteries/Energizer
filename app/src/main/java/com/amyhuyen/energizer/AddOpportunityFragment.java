@@ -53,6 +53,7 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etEndTime) EditText etEndTime;
     @BindView (R.id.etOppLocation) EditText etOppLocation;
     @BindView (R.id.actvOppSkill) AutoCompleteTextView actvOppSkill;
+    @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
 
     // date variables
     private DatabaseReference firebaseData;
@@ -64,12 +65,6 @@ public class AddOpportunityFragment extends Fragment{
     Date timeEnd;
 
     // text variables
-    String name;
-    String description;
-    String startDate;
-    String startTime;
-    String endDate;
-    String endTime;
     String address;
     String npoId;
     String npoName;
@@ -125,14 +120,15 @@ public class AddOpportunityFragment extends Fragment{
     public void onAddOppClick() {
 
         // get the contents of the edit texts
-        name = etOppName.getText().toString().trim();
-        description = etOppDescription.getText().toString().trim();
-        startDate = etStartDate.getText().toString().trim();
-        startTime = etStartTime.getText().toString().trim();
-        endDate = etEndDate.getText().toString().trim();
-        endTime = etEndTime.getText().toString().trim();
-        address = etOppLocation.getText().toString().trim();
-        skill = actvOppSkill.getText().toString().trim();
+        String name = etOppName.getText().toString().trim();
+        String description = etOppDescription.getText().toString().trim();
+        String startDate = etStartDate.getText().toString().trim();
+        String startTime = etStartTime.getText().toString().trim();
+        String endDate = etEndDate.getText().toString().trim();
+        String endTime = etEndTime.getText().toString().trim();
+        String address = etOppLocation.getText().toString().trim();
+        String skill = actvOppSkill.getText().toString().trim();
+        String numVolNeeded = etNumVolNeeded.getText().toString().trim();
 
         // check that all fields are populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
@@ -168,7 +164,7 @@ public class AddOpportunityFragment extends Fragment{
                 if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
                     Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
                 } else {
-                    addOpp();
+                    addOpp(name, description, startDate, startTime, endDate, endTime, npoId, npoName, numVolNeeded);
                     clear();
                     //intent to go to SetCauseActivity
                     Intent causeIntent = new Intent(getActivity(), SetCausesActivity.class);
@@ -222,7 +218,7 @@ public class AddOpportunityFragment extends Fragment{
     }
 
     // add opportunity to firebase;
-    public void addOpp() {
+    public void addOpp(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded){
         // create an instance of the opportunity class based on this information
         firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
         final String oppId = firebaseDataOpp.push().getKey();
@@ -232,7 +228,7 @@ public class AddOpportunityFragment extends Fragment{
         landing = (LandingActivity) getActivity();
 
         // add as an opportunity and as opportunitiesPerNpo
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong);
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong, numVolNeeded);
         firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
         HashMap<String, String> oppIdMap = new HashMap<>();
         oppIdMap.put("OppID", oppId);
@@ -247,8 +243,8 @@ public class AddOpportunityFragment extends Fragment{
         // switch to my opportunity fragment and reflect change in bottom navigation view
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
         FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-        Fragment opportunityFeedFrag = new OpportunityFeedFragment();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        Fragment npoCommitFragment = new NpoCommitFragment();
+        fragmentTransaction.replace(R.id.flContainer, npoCommitFragment);
         fragmentTransaction.addToBackStack(null).commit();
     }
 
@@ -347,9 +343,9 @@ public class AddOpportunityFragment extends Fragment{
         // run a for loop that goes into the DataSnapShot and retrieves the name of the skill
         for (Map.Entry<String, Object> entry : skill.entrySet()){
             // gets the name of the skill
-            Map singleCause = (Map) entry.getValue();
+            Map singleSkill = (Map) entry.getValue();
             // adds that skill name to the ArrayList
-            Skill userInputSkill = new Skill((String) singleCause.get("skill"));
+            Skill userInputSkill = new Skill((String) singleSkill.get("skill"));
             skills.add(userInputSkill.getSkill());
         }
         return skills;
@@ -370,5 +366,7 @@ public class AddOpportunityFragment extends Fragment{
         etEndDate.setText("");
         etEndTime.setText("");
         etOppLocation.setText("");
+        actvOppSkill.setText("");
+        etNumVolNeeded.setText("");
     }
 }
