@@ -18,11 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -82,27 +77,13 @@ public class OpportunitiesDetailFragment extends Fragment {
         // check the capacity of the opportunity to take on new volunteers
         checkCapacity(opportunity);
 
-        oppsPerUserRef.orderByChild("OppID").equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    signUpForOpp.setEnabled(false);
-                    signUpForOpp.setVisibility(View.GONE);
-                    unregisterForOpp.setEnabled(true);
-                    unregisterForOpp.setVisibility(View.VISIBLE);
-                } else {
-                    signUpForOpp.setEnabled(true);
-                    signUpForOpp.setVisibility(View.VISIBLE);
-                    unregisterForOpp.setEnabled(false);
-                    unregisterForOpp.setVisibility(View.GONE);
-                }
-            }
+        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            showButtonsForVol(oppId);
+        } else {
+            hideButtons();
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
     }
 
     private void linkUserAndOpp(){
@@ -227,6 +208,39 @@ public class OpportunitiesDetailFragment extends Fragment {
     public void disableButtons() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
+    }
+
+    // method that hides buttons for nonProfits
+    public void hideButtons() {
+        signUpForOpp.setEnabled(false);
+        signUpForOpp.setVisibility(View.GONE);
+        unregisterForOpp.setEnabled(false);
+        unregisterForOpp.setVisibility(View.GONE);
+    }
+
+    // method for volunteers to see buttons
+    public void showButtonsForVol(String oppId) {
+        oppsPerUserRef.orderByChild("OppID").equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    signUpForOpp.setEnabled(false);
+                    signUpForOpp.setVisibility(View.GONE);
+                    unregisterForOpp.setEnabled(true);
+                    unregisterForOpp.setVisibility(View.VISIBLE);
+                } else {
+                    signUpForOpp.setEnabled(true);
+                    signUpForOpp.setVisibility(View.VISIBLE);
+                    unregisterForOpp.setEnabled(false);
+                    unregisterForOpp.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

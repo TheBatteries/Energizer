@@ -1,98 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".OpportunitiesDetailFragment"
-    android:layout_marginBottom="?android:attr/actionBarSize">
-
-    <TextView
-        android:id="@+id/tvOppName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="1dp"
-        android:text="@string/opportunity_name"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-    <TextView
-        android:id="@+id/tvNpoName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/tvOppName"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/non_profit_name"
-        android:textStyle="italic"
-        android:textSize="15dp"/>
-
-    <TextView
-        android:id="@+id/tvOppTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvNpoName"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/time"
-        android:textSize="15dp"/>
-
-    <TextView
-        android:id="@+id/tvOppAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvOppTime"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="1dp"
-        android:text="@string/address"
-        android:textSize="15dp"/>
-
-    <TextView
-        android:id="@+id/tvNumVolNeeded"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvOppAddress"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="1dp"
-        android:text="@string/number_of_volunteers_needed"
-        android:textSize="15dp"/>
-
-    <TextView
-        android:id="@+id/tvOppDesc"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:fillViewport="false">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvNumVolNeeded"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/opportunity_description"
-        android:textSize="18dp"/>
+        android:layout_height="match_parent"
+        tools:context=".OpportunitiesDetailFragment">
+
+        <TextView
+            android:id="@+id/tvOppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/opportunity_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/tvNpoName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvOppName"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/non_profit_name"
+            android:textStyle="italic"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvOppTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNpoName"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/time"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvOppAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOppTime"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/address"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvNumVolNeeded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOppAddress"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/number_of_volunteers_needed"
+            android:textStyle="bold"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvOppDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNumVolNeeded"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/opportunity_description"
+            android:textSize="15dp"/>
 
 
-    <Button
-        android:id="@+id/signUpForOpp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:text="Sign Up!"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/signUpForOpp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/tvOppDesc"
+            android:layout_margin="15dp"
+            android:text="Sign Up!"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/unregisterForOpp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:text="Unregister"
-        android:textAllCaps="false"
-        android:visibility="gone"/>
+        <Button
+            android:id="@+id/unregisterForOpp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_below="@id/tvOppDesc"
+            android:text="Unregister"
+            android:textAllCaps="false"
+            android:visibility="gone"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
