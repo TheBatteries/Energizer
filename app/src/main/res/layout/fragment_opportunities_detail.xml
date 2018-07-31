@@ -29,7 +29,7 @@
         android:layout_marginLeft="10dp"
         android:text="@string/non_profit_name"
         android:textStyle="italic"
-        android:textSize="12dp"/>
+        android:textSize="15dp"/>
 
     <TextView
         android:id="@+id/tvOppTime"
@@ -39,7 +39,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:text="@string/time"
-        android:textSize="12dp"/>
+        android:textSize="15dp"/>
 
     <TextView
         android:id="@+id/tvOppAddress"
@@ -50,18 +50,30 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="1dp"
         android:text="@string/address"
-        android:textSize="12dp"/>
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/tvNumVolNeeded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvOppAddress"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/number_of_volunteers_needed"
+        android:textSize="15dp"/>
 
     <TextView
         android:id="@+id/tvOppDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvOppAddress"
+        android:layout_below="@id/tvNumVolNeeded"
         android:layout_alignParentStart="true"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
         android:text="@string/opportunity_description"
-        android:textSize="15dp"/>
+        android:textSize="18dp"/>
+
 
 </RelativeLayout>
