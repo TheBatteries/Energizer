@@ -64,4 +64,23 @@
         android:text="@string/opportunity_description"
         android:textSize="15dp"/>
 
+    <Button
+        android:id="@+id/signUpForOpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:text="Sign Up!"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/unregisterForOpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:text="Unregister"
+        android:textAllCaps="false"
+        android:visibility="gone"/>
+
 </RelativeLayout>

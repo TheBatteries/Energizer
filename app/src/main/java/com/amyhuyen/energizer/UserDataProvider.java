@@ -67,7 +67,7 @@ public class UserDataProvider {
 
     public String getCurrentUserId(){
         String userId = null;
-        if (mUserType == "Volunteer"){
+        if (mUserType.equals("Volunteer")){
             userId = mVolunteer.getUserID();
         } else {
             userId = mNonprofit.getUserID();
