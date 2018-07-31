@@ -11,7 +11,7 @@ public class VolCommitFragment extends CommitFragment {
 
     @Override
     public DatabaseReference setDatabaseReference(){
-        dataOppPerUser = FirebaseDatabase.getInstance().getReference().child("OpportunitiesPerUser").child(userId);
+        dataOppPerUser = FirebaseDatabase.getInstance().getReference().child("OppsPerUser").child(userId);
         return dataOppPerUser;
     }
 
