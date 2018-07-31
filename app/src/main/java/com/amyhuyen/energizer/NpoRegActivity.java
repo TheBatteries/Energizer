@@ -72,10 +72,11 @@ public class NpoRegActivity extends AppCompatActivity {
     private void registerUser() {
         // access the text in the fields
         final String name = etName.getText().toString().trim();
+        final String description = etNpoDescription.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
-        final String description = etLocationNPO.getText().toString().trim();
+        final String address = etLocationNPO.getText().toString().trim();
         final String phone = etPhone.getText().toString().trim();
         final String userType = "NPO";
 
