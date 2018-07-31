@@ -80,7 +80,8 @@ public class VolProfileFragment extends ProfileFragment {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
-                tv_skills.setText(skills.toString());
+                String skillString = skills.toString().replace("[", "").replace("]", "");
+                tv_skills.setText(skillString);
                 Log.i("VolProfileFragment", "drawSkills: " + skills.toString());
             }
         });
