@@ -2,14 +2,8 @@ package com.amyhuyen.energizer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -26,7 +20,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,9 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +43,6 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (R.id.etAge) EditText etAge;
     @BindView (R.id.etPhone) EditText etPhone;
     @BindView (R.id.btnRegister) Button btnRegister;
-    @BindView (R.id.btnAddImage) Button btnAddImage;
     @BindView (R.id.tvLogin) TextView tvLogin;
     @BindView (R.id.etName) EditText etName;
     @BindView (R.id.etLocation) EditText etLocation;
@@ -162,12 +151,6 @@ public class VolRegActivity extends AppCompatActivity {
         registerUser();
     }
 
-    // on click listener for profile picture button
-    @OnClick(R.id.btnAddImage)
-    public void onImageClick(){
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, SELECTED_PIC);
-    }
 
     // on click listener for login text
     @OnClick (R.id.tvLogin)
@@ -210,31 +193,6 @@ public class VolRegActivity extends AppCompatActivity {
                 // log the error
                 Log.e("Location Cancelled", "The user has cancelled the operation");
             }
-        }
-        if (requestCode == SELECTED_PIC){
-            Uri uri = data.getData();
-            String[] projection = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(projection[0]);
-            String filepath = cursor.getString(columnIndex);
-            cursor.close();
-            File imageFile = new File(filepath);
-            final Uri imageURI = Uri.fromFile(imageFile);
-            storageReference.child("profilePictures/users/" + firebaseAuth.getCurrentUser().getUid()).putFile(imageURI);
-            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    downloadURL = uri;
-                }
-            });
-
-            Bitmap bitmap = BitmapFactory.decodeFile(filepath);
-            // store the image as a Drawable
-            Drawable drawable = new BitmapDrawable(bitmap);
-
         } else {
             // onActivityResult for Facebook Login
             callbackManager.onActivityResult(requestCode, resultCode, data);

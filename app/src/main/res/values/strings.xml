@@ -46,4 +46,7 @@
     <string name="address">Address</string>
     <string name="non_profit_name">Non-profit Name</string>
     <string name="set_causes_message">Select causes you care about.</string>
+    <string name="skills">Skills</string>
+    <string name="cause_areas">Cause Areas</string>
+    <string name="contact_information">Contact Information</string>
 </resources>

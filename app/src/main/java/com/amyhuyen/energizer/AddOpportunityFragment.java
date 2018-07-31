@@ -100,7 +100,7 @@ public class AddOpportunityFragment extends Fragment{
 
         // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        npoName = ((LandingActivity) getActivity()).UserName;
+        npoName = UserDataProvider.getInstance().getCurrentUserName();
 
         // autofill for the TextView
         skillsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -295,7 +295,7 @@ public class AddOpportunityFragment extends Fragment{
                                 Log.e("Existing Skill", databaseError.toString());
                             }
                         });
-
+//                        oppSkills.get(index).getSkill()
                     } else {
                         firebaseData.child("Skill").push().setValue(oppSkills.get(index));
                         // create a hashmap for the UserID

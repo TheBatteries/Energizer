@@ -46,13 +46,6 @@ public abstract class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -67,15 +60,17 @@ public abstract class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         //set textview text
-        tv_name.setText( "Name: " + UserDataProvider.getInstance().getCurrentUserName());
-        tv_email.setText("Email: " + UserDataProvider.getInstance().getCurrentUserEmail());
+        tv_name.setText( UserDataProvider.getInstance().getCurrentUserName());
+        tv_email.setText( UserDataProvider.getInstance().getCurrentUserEmail());
     }
 
-    //abstract methods to be implemented by subclasses VolProfileFragment or NPOPorfileFragment
+    //abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
 
     public abstract void drawSkills();
 
     public abstract void drawCauseAreas();
+
+    public abstract void drawContactInfo();
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {

@@ -1,14 +1,8 @@
 package com.amyhuyen.energizer;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -18,18 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.amyhuyen.energizer.models.User;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
+import com.google.firebase.storage.UploadTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +56,7 @@ public class LandingActivity extends AppCompatActivity {
     // fragment variables
     public FragmentManager fragmentManager;
     public FragmentTransaction fragmentTransaction;
-    public Fragment volProfileFragment;
+    public Fragment profileFragment;
     public Fragment opportunityFeedFrag;
     public Fragment commitFrag;
     public Fragment addOppFrag;
@@ -79,24 +76,32 @@ public class LandingActivity extends AppCompatActivity {
         // get the user type  and name info from the intent
         UserType = UserDataProvider.getInstance().getCurrentUserType();
 
+        // Call the storage reference
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
-        volProfileFragment = new VolProfileFragment();
-        opportunityFeedFrag = new OpportunityFeedFragment();
-        commitFrag = new CommitFragment();
-        addOppFrag = new AddOpportunityFragment();
+
+        // check user type and inflate menu and create fragments accordingly
+        Fragment startingFragment = null;
+        if (UserType.equals("Volunteer")) {
+            opportunityFeedFrag = new OpportunityFeedFragment();
+            profileFragment = new VolProfileFragment();
+            commitFrag = new VolCommitFragment();
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
+            startingFragment = opportunityFeedFrag;
+        } else {
+            addOppFrag = new AddOpportunityFragment();
+            profileFragment = new NpoProfileFragment();
+            commitFrag = new NpoCommitFragment();
+            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
+            startingFragment = commitFrag;
+        }
 
         // handle the initial fragment transaction
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        fragmentTransaction.replace(R.id.flContainer, startingFragment);
         fragmentTransaction.commit();
-
-        // check user type and inflate menu accordingly
-        if (UserType.equals("Volunteer")) {
-            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
-        } else {
-            bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
-        }
 
         // handle the bottom navigation bar switching
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,7 +112,11 @@ public class LandingActivity extends AppCompatActivity {
                 // define all the possible fragment transactions
                 switch (item.getItemId()) {
                     case R.id.ic_left:
+                        if (UserType.equals("Volunteer")) {
                         selectedFragment = opportunityFeedFrag;
+                        } else {
+                        selectedFragment = commitFrag;
+                        }
                         break;
                     case R.id.ic_middle:
                         if (UserType.equals("Volunteer")) {
@@ -117,7 +126,7 @@ public class LandingActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.ic_right:
-                        selectedFragment = volProfileFragment;
+                        selectedFragment = profileFragment;
                         break;
                 }
 
@@ -161,29 +170,31 @@ public class LandingActivity extends AppCompatActivity {
         }
         if (requestCode == SELECTED_PIC){
             if (resultCode == RESULT_OK) {
-                Uri uri = data.getData();
-                String[] projection = {MediaStore.Images.Media.DATA};
+                Uri selectedImageUri = data.getData();
 
-                Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(projection[0]);
-                String filepath = cursor.getString(columnIndex);
-                cursor.close();
-                File imageFile = new File(filepath);
-                final Uri imageURI = Uri.fromFile(imageFile);
-                storageReference.child("profilePictures/users/" + firebaseAuth.getCurrentUser().getUid() + "/").putFile(imageURI);
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        downloadURL = uri;
-                    }
-                });
-                Bitmap bitmap = BitmapFactory.decodeFile(filepath);
-                // store the image as a Drawable
-                Drawable drawable = new BitmapDrawable(bitmap);
+                storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").putFile(selectedImageUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // Get a URL to the uploaded content
+                                storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        ImageView profilePic = findViewById(R.id.profile_pic);
+                                        String downloadUrl = new String(uri.toString());
+                                        Glide.with(LandingActivity.this).load(downloadUrl).into(profilePic);
+                                    }
+                                });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                // ...
+                            }
+                        });
             }
-
         }
     }
 }

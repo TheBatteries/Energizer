@@ -70,7 +70,7 @@ public class Volunteer extends User {
         return skillIds;
     }
 
-    private void fetchSkillNames(final List<String> skillIds) { //compiler wanted skillIDlist to be final. Why?
+    private void fetchSkillNames(final List<String> skillIds) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child(KEY_SKILLS).addValueEventListener(new ValueEventListener() {

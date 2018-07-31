@@ -7,8 +7,6 @@ public class UserDataProvider {
     private Volunteer mVolunteer;
     private Nonprofit mNonprofit;
     private String mUserType;
-    private String mUserName;
-    private String mUserEmail;
 
     private static UserDataProvider sInstance;
 
@@ -65,5 +63,15 @@ public class UserDataProvider {
             email = mNonprofit.getEmail();
         }
         return email;
+    }
+
+    public String getCurrentUserId(){
+        String userId = null;
+        if (mUserType.equals("Volunteer")){
+            userId = mVolunteer.getUserID();
+        } else {
+            userId = mNonprofit.getUserID();
+        }
+        return userId;
     }
 }
