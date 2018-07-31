@@ -230,8 +230,8 @@ public class AddOpportunityFragment extends Fragment{
         // switch to my opportunity fragment and reflect change in bottom navigation view
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
         FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-        Fragment opportunityFeedFrag = new OpportunityFeedFragment();
-        fragmentTransaction.replace(R.id.flContainer, opportunityFeedFrag);
+        Fragment npoCommitFragment = new NpoCommitFragment();
+        fragmentTransaction.replace(R.id.flContainer, npoCommitFragment);
         fragmentTransaction.addToBackStack(null).commit();
     }
 

@@ -48,6 +48,10 @@ public class NpoProfileFragment extends ProfileFragment{
         drawCauseAreas();
         drawSkills();
 
+        getProfilePic();
+    }
+
+    public void getProfilePic(){
         storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
