@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -67,7 +68,10 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
-                Glide.with(getContext()).load(downloadUrl).into(profilePic);
+                GlideApp.with(getContext())
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(profilePic);
             }
         });
 
