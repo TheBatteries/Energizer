@@ -81,18 +81,19 @@ public class LandingActivity extends AppCompatActivity {
 
         // prepare for fragment manipulation
         fragmentManager = getSupportFragmentManager();
-        commitFrag = new CommitFragment();
 
         // check user type and inflate menu and create fragments accordingly
         Fragment startingFragment = null;
         if (UserType.equals("Volunteer")) {
             opportunityFeedFrag = new OpportunityFeedFragment();
             profileFragment = new VolProfileFragment();
+            commitFrag = new VolCommitFragment();
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
             startingFragment = opportunityFeedFrag;
         } else {
             addOppFrag = new AddOpportunityFragment();
             profileFragment = new NpoProfileFragment();
+            commitFrag = new NpoCommitFragment();
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
             startingFragment = commitFrag;
         }

@@ -49,6 +49,7 @@
         android:text="@string/address"
         android:textSize="12dp"/>
 
+
     <TextView
         android:id="@+id/tvOppDesc"
         android:layout_width="match_parent"

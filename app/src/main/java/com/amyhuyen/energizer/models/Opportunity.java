@@ -15,13 +15,14 @@ public class Opportunity {
     String npoName;
     String address;
     String latLong;
+    String numVolNeeded;
 
 
     public Opportunity(){}
 
     public Opportunity(String name, String description, String oppId, String startDate,
                        String startTime, String endDate, String endTime, String npoId,
-                       String npoName, String address, String latLong) {
+                       String npoName, String address, String latLong, String numVolNeeded) {
         this.name = name;
         this.description = description;
         this.oppId = oppId;
@@ -33,6 +34,7 @@ public class Opportunity {
         this.npoName = npoName;
         this.address = address;
         this.latLong = latLong;
+        this.numVolNeeded = numVolNeeded;
     }
 
     // the accessor for opportunity name
@@ -61,4 +63,6 @@ public class Opportunity {
     public String getAddress() { return address; }
 
     public String getLatLong() { return latLong; }
+
+    public String getNumVolNeeded() { return numVolNeeded; }
 }

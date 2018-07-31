@@ -47,4 +47,6 @@
     <string name="skills">Skills</string>
     <string name="cause_areas">Cause Areas</string>
     <string name="contact_information">Contact Information</string>
+    <string name="skill_required">Skill Required</string>
+    <string name="number_of_volunteers_needed">Number of Volunteers Needed</string>
 </resources>

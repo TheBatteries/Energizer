@@ -18,6 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -40,6 +45,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
+    @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +78,9 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvNpoName.setText(opportunity.getNpoName());
         tvOppTime.setText(time);
         tvOppAddress.setText(opportunity.getAddress());
+
+        // check the capacity of the opportunity to take on new volunteers
+        checkCapacity(opportunity);
 
         oppsPerUserRef.orderByChild("OppID").equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -189,6 +198,35 @@ public class OpportunitiesDetailFragment extends Fragment {
         signUpForOpp.setVisibility(View.VISIBLE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
+    }
+
+    // method that checks how many volunteers are currently signed up for this activity
+    public void checkCapacity(final Opportunity opportunity) {
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child("UsersPerOpp").child(opportunity.getOppId());
+        dataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // find how many volunteers are still needed and fill in the text accordingly
+                int numVolSignedUp = (int) dataSnapshot.getChildrenCount();
+                int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
+                tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
+
+                if (positionsAvailable == 0){
+                    disableButtons();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // method that disables the buttons
+    public void disableButtons() {
+        signUpForOpp.setEnabled(false);
+        signUpForOpp.setVisibility(View.GONE);
     }
 
 }

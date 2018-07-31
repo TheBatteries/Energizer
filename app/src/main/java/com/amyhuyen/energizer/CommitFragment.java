@@ -27,18 +27,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CommitFragment extends Fragment {
+public abstract class CommitFragment extends Fragment {
 
     // the views
     @BindView(R.id.rvOpps) RecyclerView rvOpps;
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
-    List<Opportunity> newOpportunities;
-    List<String> oppIdList;
     OpportunityAdapter oppAdapter;
-    DatabaseReference dataOppPerUser;
+
+    public DatabaseReference dataOppPerUser;
     DatabaseReference dataOpp;
-    String userId;
+
+    public String userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,14 +54,11 @@ public class CommitFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        // set up firebase database and get the id of the currently user
+        // set up firebase database and get the id of the current user
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        dataOppPerUser = FirebaseDatabase.getInstance().getReference().child("OpportunitiesPerUser").child(userId);
 
         // initialize the data source
         opportunities = new ArrayList<>();
-        newOpportunities = new ArrayList<>();
-        oppIdList = new ArrayList<>();
 
         // construct the adapter from this data source
         oppAdapter = new OpportunityAdapter(opportunities, getActivity());
@@ -90,8 +87,12 @@ public class CommitFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
+    public abstract DatabaseReference setDatabaseReference();
+
     // method to get all the opportunities to which the current user is committed
     public void fetchMyCommits(){
+        final ArrayList<String> oppIdList = new ArrayList<>();
+        dataOppPerUser = setDatabaseReference();
 
         // get all the oppIds of opportunities related to current user and add to list
         dataOppPerUser.addValueEventListener(new ValueEventListener() {
@@ -104,7 +105,7 @@ public class CommitFragment extends Fragment {
                 }
 
                 // find the opportunities associated with those oppIds and add them to newOpportunities
-                oppFromOppId();
+                oppFromOppId(oppIdList);
             }
 
             @Override
@@ -115,7 +116,8 @@ public class CommitFragment extends Fragment {
     }
 
     // method that takes all the oppIds in oppIdList, finds the associated Opportunities, and adds them to newOpportunities
-    public void oppFromOppId(){
+    public void oppFromOppId(final List<String> oppIdList){
+        final ArrayList<Opportunity> newOpportunities = new ArrayList<>();
         // get the firebase reference
         dataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
 
@@ -134,14 +136,7 @@ public class CommitFragment extends Fragment {
                         newOpportunities.add(newOpp);
                     }
                 }
-
-
-                // clear the adapter and add newly fetched opportunities
-                oppAdapter.clear();
-                oppAdapter.addAll(newOpportunities);
-
-                // stop the refreshing
-                swipeContainer.setRefreshing(false);
+                onCommitsFetched(newOpportunities);
             }
 
             @Override
@@ -149,5 +144,14 @@ public class CommitFragment extends Fragment {
                 Log.e("oppFromOppId", databaseError.toString());
             }
         });
+    }
+
+    protected void onCommitsFetched(List<Opportunity> opportunities) {
+        // clear the adapter and add newly fetched opportunities
+        oppAdapter.clear();
+        oppAdapter.addAll(opportunities);
+
+        // stop the refreshing
+        swipeContainer.setRefreshing(false);
     }
 }

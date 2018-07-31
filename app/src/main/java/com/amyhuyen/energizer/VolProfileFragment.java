@@ -27,8 +27,6 @@ public class VolProfileFragment extends ProfileFragment {
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
 
-
-
     public interface SkillFetchListner {
         void onSkillsFetched(List<String> skills);
     }
@@ -82,7 +80,8 @@ public class VolProfileFragment extends ProfileFragment {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
-                tv_skills.setText(skills.toString());
+                String skillString = skills.toString().replace("[", "").replace("]", "");
+                tv_skills.setText(skillString);
                 Log.i("VolProfileFragment", "drawSkills: " + skills.toString());
             }
         });
