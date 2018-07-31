@@ -49,22 +49,12 @@
         android:text="@string/address"
         android:textSize="12dp"/>
 
-    <TextView
-        android:id="@+id/tvNumVolNeeded"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvOppAddress"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="1dp"
-        android:text="@string/number_of_volunteers_needed"
-        android:textSize="12dp"/>
 
     <TextView
         android:id="@+id/tvOppDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvNumVolNeeded"
+        android:layout_below="@id/tvOppAddress"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"

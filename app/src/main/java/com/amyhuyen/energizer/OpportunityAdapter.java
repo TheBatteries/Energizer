@@ -40,7 +40,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
         public @BindView (R.id.tvOppTime) TextView tvOppTime;
         public @BindView (R.id.tvOppAddress) TextView tvOppAddress;
-        public @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -100,7 +99,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         holder.tvOppDesc.setText(opp.getDescription());
         holder.tvOppTime.setText(time);
         holder.tvOppAddress.setText(opp.getAddress());
-        holder.tvNumVolNeeded.setText("Total Volunteers Needed: " + opp.getNumVolNeeded());
     }
 
     // getting the number of items
