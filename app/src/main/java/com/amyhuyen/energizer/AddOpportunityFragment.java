@@ -282,7 +282,7 @@ public class AddOpportunityFragment extends Fragment{
                                 Log.e("Existing Skill", databaseError.toString());
                             }
                         });
-
+//                        oppSkills.get(index).getSkill()
                     } else {
                         firebaseData.child("Skill").push().setValue(oppSkills.get(index));
                         // create a hashmap for the UserID
