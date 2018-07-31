@@ -36,7 +36,6 @@ public class VolProfileFragment extends ProfileFragment {
         void onCausesFetched(List<String> causes);
     }
 
-
     //views
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
@@ -78,16 +77,14 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawCauseAreas() {
-        String causeAreas = volunteer.fetchCauses(new CauseFetchListener(){
+        volunteer.fetchCauses(new CauseFetchListener(){
             @Override
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
                 tv_cause_area.setText(causeString);
-                Log.i("VolProfileFragment", "causes: " + causes);
             }
-        }); //TODO - get list of causes
+        });
 
-        tv_cause_area.setText(causeAreas);
     }
 
     @Override
@@ -104,7 +101,6 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawEditCausesBtn() {
-
     }
 
     @Override

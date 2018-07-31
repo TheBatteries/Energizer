@@ -62,20 +62,22 @@
     <TextView
         android:id="@+id/tv_skills"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="98dp"
         android:layout_below="@id/profile_pic"
-        android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
-        android:text="@string/skills"/>
+        android:layout_marginRight="15dp"
+        android:text="@string/skills" />
 
     <TextView
         android:id="@+id/tv_cause_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="106dp"
+        android:layout_alignBottom="@id/btn_edit_causes"
+        android:layout_above="@id/btn_edit_causes"
         android:layout_below="@id/tv_skills"
-        android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
-        android:text="@string/cause_areas" />
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" />
 
     <Button
         android:id="@+id/btn_edit_causes"
