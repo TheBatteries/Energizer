@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AddOpportunityFragment extends Fragment{
 
@@ -167,9 +170,19 @@ public class AddOpportunityFragment extends Fragment{
                 } else {
                     addOpp();
                     clear();
-                    switchFrag();
+                    //intent to go to SetCauseActivity
+                    Intent causeIntent = new Intent(getActivity(), SetCausesActivity.class);
+                    startActivityForResult(causeIntent, RequestCodes.SET_CAUSES);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RequestCodes.SET_CAUSES && resultCode == RESULT_OK) {
+            switchFrag();
         }
     }
 
@@ -229,7 +242,7 @@ public class AddOpportunityFragment extends Fragment{
         Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
     }
 
-    // switch fragments method
+    // switch fragments method - this will go in onActivityResult() - after coming back from adding cause areas
     public void switchFrag(){
         // switch to my opportunity fragment and reflect change in bottom navigation view
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
