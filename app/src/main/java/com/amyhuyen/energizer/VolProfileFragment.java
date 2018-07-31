@@ -21,8 +21,6 @@ public class VolProfileFragment extends ProfileFragment {
     Volunteer volunteer;
     private static final int SELECTED_PIC = 2;
 
-
-
     public interface SkillFetchListner {
         void onSkillsFetched(List<String> skills);
     }
