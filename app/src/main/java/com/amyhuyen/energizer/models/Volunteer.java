@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.amyhuyen.energizer.DBKeys;
 import com.amyhuyen.energizer.VolProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +39,10 @@ public class Volunteer extends User {
     }
 
     private VolProfileFragment.SkillFetchListner mSkillFetchListner;
+    private VolProfileFragment.CauseFetchListener mCauseFetchListener;
+
+
+    ////////getting skills list
 
     public void fetchSkills(VolProfileFragment.SkillFetchListner skillFetchListner) {
         mSkillFetchListner = skillFetchListner;
@@ -100,10 +105,66 @@ public class Volunteer extends User {
         mSkillFetchListner.onSkillsFetched(skillNames);
     }
 
-    /////////drawCauseAreas
+    /////////CauseAreas
 
-    
+    public void fetchCauses(VolProfileFragment.CauseFetchListener causeFetchListener) {
+        mCauseFetchListener = causeFetchListener;
+        fetchCauseIds();
+    }
 
+    private void fetchCauseIds() {
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        databaseReference.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> causeIds = getCauseIds(dataSnapshot);
+                fetchCauseNames(causeIds);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Volunteer", "unable to load causePushID datasnapshot");
+            }
+        });
+    }
+
+    private List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
+        final List<String> causeIds = new ArrayList<>();
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            causeIds.add(child.child(DBKeys.KEY_CAUSE_ID).getValue().toString());
+        }
+        return causeIds;
+    }
+
+    private void fetchCauseNames(final List<String> causeIds) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child(DBKeys.KEY_CAUSE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> causeNames = new ArrayList<>();
+                for (DataSnapshot causeId : dataSnapshot.getChildren()) {
+                    for (int i = 0; i < causeIds.size(); i++) {    //search through all causeIDs under causes
+                        if (causeId.getKey().equals(causeIds.get(i))) { //if the datasnapshot (a causeID) matches a causeID in our skillIDList, get the word version of the skill and add it to the word version of the skill list
+                            String skillName = causeId.child(DBKeys.KEY_CAUSE_NAME).getValue().toString();
+                            causeNames.add(skillName);
+                        }
+                    }
+                }
+                onCausesFetched(causeNames);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Volunteer", "Unable to get snapshots of causes");
+            }
+        });
+    }
+
+    private void onCausesFetched(List<String> causeNames) {
+        Log.i("CAUSE_TEST", causeNames.toString());
+        mSkillFetchListner.onSkillsFetched(causeNames);
+    }
 }
-
