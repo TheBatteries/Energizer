@@ -65,7 +65,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
-            android:text="@string/number_of_volunteers_needed"
+            android:text="@string/positions_available"
             android:textStyle="bold"
             android:textSize="12dp"/>
 
