@@ -72,7 +72,7 @@ public class OpportunitiesDetailFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // find how many volunteers are still needed and fill in the text accordingly
                 int numVolSignedUp = (int) dataSnapshot.getChildrenCount();
-                int positionsAvailable = Integer.valueOf(opportunity.getNumVolNeeded()) - numVolSignedUp;
+                int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
                 if (positionsAvailable == 0){
