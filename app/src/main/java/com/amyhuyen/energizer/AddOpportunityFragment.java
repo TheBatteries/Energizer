@@ -1,6 +1,5 @@
 package com.amyhuyen.energizer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Skill;
 import com.amyhuyen.energizer.utils.AutocompleteUtils;
@@ -39,8 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
-
 public class AddOpportunityFragment extends Fragment{
 
     // the views
@@ -54,10 +52,13 @@ public class AddOpportunityFragment extends Fragment{
     @BindView (R.id.etOppLocation) EditText etOppLocation;
     @BindView (R.id.actvOppSkill) AutoCompleteTextView actvOppSkill;
     @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
+    @BindView (R.id.actvOppCause) AutoCompleteTextView actvOppCause;
+
 
     // date variables
     private DatabaseReference firebaseData;
     private DatabaseReference skillsRef;
+    private DatabaseReference causeRef;
     DatabaseReference firebaseDataOpp;
     Date dateStart;
     Date dateEnd;
@@ -71,6 +72,7 @@ public class AddOpportunityFragment extends Fragment{
     String skill;
 
     ArrayList<Skill> oppSkills;
+    ArrayList<Cause> oppCauses;
 
     LandingActivity landing;
 
@@ -92,6 +94,8 @@ public class AddOpportunityFragment extends Fragment{
         // references to the database
         firebaseData = FirebaseDatabase.getInstance().getReference();
         skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        causeRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
+
 
         // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -103,9 +107,25 @@ public class AddOpportunityFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // create an ArrayList to hold the skills -- and add the skills to it through "collectSkillName"
                 ArrayList<String> skills = collectSkillName((Map<String,Object>) dataSnapshot.getValue());
+
                 // connect the TextView to ArrayAdapter that holds the list of skills
                 actvOppSkill.setAdapter(newAdapter(skills));
                 actvOppSkill.setThreshold(1);
+            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        causeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // create an ArrayList to hold the causes -- and add the causes to it through "collectCauseName"
+                ArrayList<String> causes = collectCauseName((Map<String,Object>) dataSnapshot.getValue());
+
+                // connect the TextView to ArrayAdapter that holds the list of skills
+                actvOppCause.setAdapter(newAdapter(causes));
+                actvOppCause.setThreshold(1);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -166,19 +186,9 @@ public class AddOpportunityFragment extends Fragment{
                 } else {
                     addOpp(name, description, startDate, startTime, endDate, endTime, npoId, npoName, numVolNeeded);
                     clear();
-                    //intent to go to SetCauseActivity
-                    Intent causeIntent = new Intent(getActivity(), SetCausesActivity.class);
-                    startActivityForResult(causeIntent, RequestCodes.SET_CAUSES);
+                    switchFrag();
                 }
             }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestCodes.SET_CAUSES && resultCode == RESULT_OK) {
-            switchFrag();
         }
     }
 
@@ -224,6 +234,7 @@ public class AddOpportunityFragment extends Fragment{
         final String oppId = firebaseDataOpp.push().getKey();
         final String intermediateId = firebaseDataOpp.push().getKey();
         addSkill(oppId);
+        addCause(oppId);
 
         landing = (LandingActivity) getActivity();
 
@@ -357,6 +368,110 @@ public class AddOpportunityFragment extends Fragment{
         return autoFillAdapter;
     }
 
+    ////////add cause methods
+
+    // retrieve cause name when in a "Cause" DataSnapShot
+    private ArrayList<String> collectCauseName(Map<String, Object> cause){
+        // create an ArrayList that will hold the names of each skill within the database
+        ArrayList<String> causes = new ArrayList<String>();
+        // run a for loop that goes into the DataSnapShot and retrieves the name of the cause
+        for (Map.Entry<String, Object> entry : cause.entrySet()){
+            // gets the name of the skill
+            Map singleCause = (Map) entry.getValue();
+            // adds that cause name to the ArrayList
+            Cause userInputCause = new Cause((String) singleCause.get(DBKeys.KEY_CAUSE_NAME));
+            causes.add(userInputCause.getCause());
+        }
+        return causes;
+    }
+
+    // add link cause to oppurtunity and add it to database if it is not already there
+    public void addCause(final String oppId){
+        // ArrayList to hold the Causes required for an opportunity
+        oppCauses = new ArrayList<>();
+        // get the input causestring and make a cause with it
+        final String cause = actvOppCause.getText().toString().trim();
+        final Cause oppCause = new Cause(cause);
+        // add the scauses that the NPO input to the array
+        oppCauses.add(oppCause);
+        // add the causes within the ArrayList to the database
+        for (int i = 0; i < oppCauses.size(); i ++){
+            final int index = i;
+            causeRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(oppCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        final HashMap<String, String> opportunityId = new HashMap<String, String>();
+                        opportunityId.put("oppID", oppId );
+                        // push the hashmap to the preexisting database cause
+                        firebaseData.child(DBKeys.KEY_OPPS_PER_CAUSE).child(oppCauses.get(index).getCause()).push().setValue(opportunityId);
+                        // get the cause object ID from the database
+                        // we now set another listener for the exact cause in the database to find its specific id
+                        firebaseData.child(DBKeys.KEY_CAUSE).orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(oppCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // since we did a .equalTo() search, this for loop only has one element
+                                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                                    // we grab the id from the skill and link it to the string skillId
+                                    String causeId = child.getKey();
+                                    // Create the skillID hashmap
+                                    final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
+                                    // bind skillID to the hashmap
+                                    causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
+                                    // push the hashmap to the User's specific skill database
+                                    firebaseData.child(DBKeys.KEY_CAUSES_PER_OPP).child(oppId).push().setValue(causeIdDataMap);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // log the error
+                                Log.e("Existing cause", databaseError.toString());
+                            }
+                        });
+                    } else {
+                        firebaseData.child(DBKeys.KEY_CAUSE).push().setValue(oppCauses.get(index));
+                        // create a hashmap for the UserID
+                        final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
+                        // bind OppID to the hashmap
+                        userIdDataMap.put("oppID", oppId);
+                        // create a new item within the database that links the user to this new cause
+                        firebaseData.child(DBKeys.KEY_OPPS_PER_CAUSE).child(oppCauses.get(index).getCause()).push().setValue(userIdDataMap);
+                        // get the cause object ID from the database
+                        // we now set another listener for the exact cause in the database to find its specific id
+                        firebaseData.child(DBKeys.KEY_CAUSE).orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(oppCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // since we did a .equalTo() search, this for loop only has one element
+                                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                                    // we grab the id from the skill and link it to the string skillId
+                                    String causeId = child.getKey();
+                                    // Create the skillID hashmapq
+                                    final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
+                                    // link bind causeID to the hashmap
+                                    causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
+                                    // push the hashmap to the User's specific skill database
+                                    firebaseData.child(DBKeys.KEY_CAUSES_PER_OPP).child(oppId).push().setValue(causeIdDataMap);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // log the error
+                                Log.e("New Cause", databaseError.toString());
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // log the error
+                    Log.e("Adding causes", databaseError.toString());
+                }
+            });
+        }
+
+    }
+
     // clear fields method
     public void clear(){
         etOppName.setText("");
@@ -367,6 +482,7 @@ public class AddOpportunityFragment extends Fragment{
         etEndTime.setText("");
         etOppLocation.setText("");
         actvOppSkill.setText("");
+        actvOppCause.setText("");
         etNumVolNeeded.setText("");
     }
 }

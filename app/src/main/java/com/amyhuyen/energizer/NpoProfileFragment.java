@@ -3,7 +3,6 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class NpoProfileFragment extends ProfileFragment{
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
-                GlideApp.with(getContext())
+                GlideApp.with(getActivity())
                         .load(downloadUrl)
                         .transform(new CircleCrop())
                         .into(profilePic);

@@ -15,5 +15,8 @@ public class DBKeys {
     public static final String KEY_USER_ID = "UserID";
 
 
+    public static final String KEY_OPPS_PER_CAUSE = "OppsPerCause";
+    public static final String KEY_CAUSES_PER_OPP = "CausesPerOpp";
+
 
 }
