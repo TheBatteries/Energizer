@@ -94,9 +94,9 @@
 
         <Button
             android:id="@+id/signUpForOpp"
+            android:background="@drawable/button_yellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_below="@id/tvOppDesc"
             android:layout_margin="15dp"
             android:text="Sign Up!"
@@ -104,6 +104,7 @@
 
         <Button
             android:id="@+id/unregisterForOpp"
+            android:background="@drawable/button_yellow_filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"

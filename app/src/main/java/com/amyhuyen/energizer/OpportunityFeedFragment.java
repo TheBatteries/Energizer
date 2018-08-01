@@ -163,7 +163,7 @@ public class OpportunityFeedFragment extends Fragment {
                         myOppsIdList.add(oppsPerSkillMapping.get("oppID"));
 
                         // call the filters based on causes
-                        userToCauseId();
+                        fetchOpportunities();
                     }
                 }
 

@@ -14,16 +14,13 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.amyhuyen.energizer.models.User;
-import com.bumptech.glide.Glide;
+import com.amyhuyen.energizer.models.GlideApp;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,12 +32,6 @@ public class LandingActivity extends AppCompatActivity {
 
     public final static String EXTRA_USER_OBJECT = "UserObject";
 
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDBUserRef;
-    private FirebaseUser currentFirebaseUser;
-    private User user;
-    private User passedUser;
-    private String userID;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -182,7 +173,10 @@ public class LandingActivity extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         ImageView profilePic = findViewById(R.id.profile_pic);
                                         String downloadUrl = new String(uri.toString());
-                                        Glide.with(LandingActivity.this).load(downloadUrl).into(profilePic);
+                                        GlideApp.with(LandingActivity.this)
+                                                .load(downloadUrl)
+                                                .transform(new CircleCrop())
+                                                .into(profilePic);
                                     }
                                 });
                             }
