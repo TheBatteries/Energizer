@@ -165,6 +165,6 @@ public class Volunteer extends User {
 
     private void onCausesFetched(List<String> causeNames) {
         Log.i("CAUSE_TEST", causeNames.toString());
-        mSkillFetchListner.onSkillsFetched(causeNames);
+        mCauseFetchListener.onCausesFetched(causeNames);
     }
 }
