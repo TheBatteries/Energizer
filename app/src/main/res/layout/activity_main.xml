@@ -16,7 +16,9 @@
         android:text="@string/user_registration"
         android:layout_marginBottom = "15dp"
         android:layout_marginTop="180dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:fontFamily="@font/royal_crescent_demo"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/tvMessage"
@@ -25,11 +27,12 @@
         android:layout_height="wrap_content"
         android:text="@string/register_message"
         android:layout_margin="15dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/btnVolunteer"
-        android:background="@drawable/button_yellow"
+        android:background="@drawable/round_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvMessage"
@@ -38,12 +41,12 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/volunteer"
-        android:background="@color/translucent"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/btnNonProfit"
-        android:background="@drawable/button_blue"
+        android:background="@drawable/round_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvMessage"
@@ -52,8 +55,8 @@
         android:layout_marginBottom="10dp"
         android:layout_alignParentEnd="true"
         android:text="@string/non_profit"
-        android:background="@color/translucent"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/tvLogin"
@@ -62,7 +65,8 @@
         android:text="@string/login"
         android:layout_below="@id/btnNonProfit"
         android:layout_marginTop="20dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"

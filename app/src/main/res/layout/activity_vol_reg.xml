@@ -146,7 +146,7 @@
 
         <Button
             android:id="@+id/btnRegister"
-            android:background="@drawable/button_yellow"
+            android:background="@drawable/round_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etLocation"
@@ -156,7 +156,8 @@
             android:layout_marginRight="45dp"
             android:layout_marginTop="10dp"
             android:textAllCaps="false"
-            android:background="@color/translucent"/>
+            android:textColor="@color/white"
+            />
 
         <TextView
             android:id="@+id/tvLogin"
