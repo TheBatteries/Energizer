@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_grey"
+    android:background="@drawable/median"
     tools:context=".LoginActivity">
 
     <TextView
@@ -13,18 +13,28 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="User Login"
-        android:layout_above="@id/etEmail"
         android:layout_margin="15dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:fontFamily="@font/royal_crescent_demo"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_below="@id/tvLogin"
+        android:layout_marginTop="100dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:layout_margin="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColorHint="@color/white"
+        android:shadowColor="@color/white"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"/>
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -32,23 +42,29 @@
         android:layout_below="@id/etEmail"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp"
+        android:textColorHint="@color/white"
+        android:shadowColor="@color/white"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"/>
     <Button
         android:id="@+id/btnLogin"
-        android:background="@drawable/button_yellow"
+        android:background="@drawable/round_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:text="Login"
-        android:layout_margin="15dp"
-        android:textAllCaps="false"/>
+        android:layout_marginTop="95dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
     <TextView
         android:id="@+id/tvSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Don't have an account? Register"
         android:layout_below="@id/btnLogin"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
 
 
 

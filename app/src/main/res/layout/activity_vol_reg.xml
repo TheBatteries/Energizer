@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:background="@color/theme_grey"
-    android:fillViewport="false">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/median"
         tools:context=".VolRegActivity">
 
         <TextView
@@ -22,8 +17,10 @@
             android:text="@string/volunteer_registration"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:textAlignment="center"/>
+            android:layout_marginTop="35dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/royal_crescent_demo"/>
 
         <EditText
             android:id="@+id/etName"
@@ -32,11 +29,15 @@
             android:layout_below="@id/tvSignUp"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/name"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -45,12 +46,16 @@
             android:layout_below="@id/etName"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -58,12 +63,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etEmail"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etConfirmPassword"
@@ -73,10 +82,14 @@
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:textSize="15dp"/>
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etAge"
@@ -86,10 +99,14 @@
             android:hint="@string/age"
             android:inputType="number"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:textSize="15dp"/>
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etPhone"
@@ -99,38 +116,48 @@
             android:hint="@string/phone"
             android:inputType="phone"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:textSize="15dp"/>
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/etPhone"
             android:hint="@string/enter_city"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnRegister"
-            android:background="@drawable/button_yellow"
+            android:background="@drawable/round_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etLocation"
             android:text="@string/register"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:textAllCaps="false"/>
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            />
 
         <TextView
             android:id="@+id/tvLogin"
@@ -138,7 +165,17 @@
             android:layout_height="wrap_content"
             android:text="@string/login"
             android:layout_below="@id/btnRegister"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@color/litegrey"
+            android:id="@+id/backgroundTint" />
+
+
+
 
     </RelativeLayout>
-</ScrollView>

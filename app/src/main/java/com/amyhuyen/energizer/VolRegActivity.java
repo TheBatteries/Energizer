@@ -33,19 +33,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.amyhuyen.energizer.R.id;
+import static com.amyhuyen.energizer.R.layout;
+
 public class VolRegActivity extends AppCompatActivity {
-    //https://energizer-33c32.firebaseapp.com/__/auth/handler
 
     // the views
-    @BindView (R.id.etEmail) EditText etEmail;
-    @BindView (R.id.etPassword) EditText etPassword;
-    @BindView (R.id.etConfirmPassword) EditText etConfirmPassword;
-    @BindView (R.id.etAge) EditText etAge;
-    @BindView (R.id.etPhone) EditText etPhone;
-    @BindView (R.id.btnRegister) Button btnRegister;
-    @BindView (R.id.tvLogin) TextView tvLogin;
-    @BindView (R.id.etName) EditText etName;
-    @BindView (R.id.etLocation) EditText etLocation;
+    @BindView (id.etEmail) EditText etEmail;
+    @BindView (id.etPassword) EditText etPassword;
+    @BindView (id.etConfirmPassword) EditText etConfirmPassword;
+    @BindView (id.etAge) EditText etAge;
+    @BindView (id.etPhone) EditText etPhone;
+    @BindView (id.btnRegister) Button btnRegister;
+    @BindView (id.tvLogin) TextView tvLogin;
+    @BindView (id.etName) EditText etName;
+    @BindView (id.etLocation) EditText etLocation;
 
 
     private ProgressDialog progressDialog;
@@ -64,7 +66,7 @@ public class VolRegActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vol_reg);
+        setContentView(layout.activity_vol_reg);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();
@@ -76,6 +78,7 @@ public class VolRegActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
     }
+
 
     private void registerUser() {
         final String name = etName.getText().toString().trim();
@@ -139,13 +142,13 @@ public class VolRegActivity extends AppCompatActivity {
     }
 
     // on click listener for location edit text
-    @OnClick (R.id.etLocation)
+    @OnClick (id.etLocation)
     public void onLocationClick(){
         AutocompleteUtils.callPlaceAutocompleteActivityIntent(VolRegActivity.this);
     }
 
     // on click listener for register button
-    @OnClick(R.id.btnRegister)
+    @OnClick(id.btnRegister)
     public void onRegisterClick(){
         // register the user
         registerUser();
@@ -153,7 +156,7 @@ public class VolRegActivity extends AppCompatActivity {
 
 
     // on click listener for login text
-    @OnClick (R.id.tvLogin)
+    @OnClick (id.tvLogin)
     public void onLoginClick(){
         // intent to login activity
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

@@ -21,7 +21,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@drawable/ic_profile_pic" />
+        android:src="@drawable/ic_profile_pic"
+        android:outlineAmbientShadowColor="@color/black"/>
 
     <ImageButton
         android:id="@+id/btn_logout"
