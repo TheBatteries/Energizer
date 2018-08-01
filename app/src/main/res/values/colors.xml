@@ -303,4 +303,5 @@
     <color name="ig_brand_yellow_orange">#fbad50</color>
     <color name="translucent">#b2ffffff</color>
     <color name="liteblue">#efffff</color>
+    <color name="litegrey">#1c000000</color>
 </resources>
