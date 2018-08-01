@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="User Login"
-        android:layout_above="@id/etEmail"
         android:layout_margin="15dp"
         android:textAlignment="center"
         android:fontFamily="@font/royal_crescent_demo"
@@ -24,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_below="@id/tvLogin"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:layout_margin="15dp"
@@ -52,7 +52,8 @@
         android:layout_below="@id/etPassword"
         android:text="Login"
         android:layout_margin="15dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
     <TextView
         android:id="@+id/tvSignUp"
         android:layout_width="match_parent"

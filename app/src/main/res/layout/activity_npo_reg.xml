@@ -22,7 +22,9 @@
             android:layout_margin="10dp"
             android:text="@string/non_profit_registration"
             android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:fontFamily="@font/royal_crescent_demo"/>
 
         <EditText
             android:id="@+id/etName"
@@ -31,11 +33,15 @@
             android:layout_below="@id/tvSignUp"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
             android:hint="@string/organization_name"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etEmail"
@@ -44,12 +50,16 @@
             android:layout_below="@id/etName"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
             android:hint="@string/organization_email"
             android:inputType="textEmailAddress"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -57,12 +67,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etEmail"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etConfirmPassword"
@@ -70,12 +84,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etPassword"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etPhone"
@@ -83,41 +101,52 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etConfirmPassword"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
             android:hint="@string/organization_phone_number"
             android:inputType="phone"
-            android:textSize="15dp"/>
-
-        <EditText
-            android:id="@+id/etNpoDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etPhone"
-            android:minLines="5"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/non_profit_description"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etLocationNPO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/etNpoDescription"
+            android:layout_below="@id/etPhone"
             android:hint="@string/organization_address"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/etNpoDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etLocationNPO"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="5dp"
+            android:hint="@string/non_profit_description"
+            android:textSize="15dp"
+            android:textColorHint="@color/white"
+            android:shadowColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
 
 
         <Button
@@ -125,13 +154,14 @@
             android:background="@drawable/round_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etLocationNPO"
+            android:layout_below="@id/etNpoDescription"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="22dp"
             android:text="@string/register"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tvLogin"
@@ -139,7 +169,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btnRegister"
             android:text="@string/login"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"/>
 
     </RelativeLayout>
 </ScrollView>

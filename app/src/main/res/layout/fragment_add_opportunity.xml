@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etOppName"
-            android:minLines="3"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
