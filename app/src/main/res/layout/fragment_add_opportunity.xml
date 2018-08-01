@@ -83,6 +83,7 @@
             android:layout_marginTop="5dp"
             android:layout_below="@id/actvOppCause"
             android:hint="@string/number_of_volunteers_needed"
+            android:inputType="number"
             android:textSize="15dp"/>
 
         <EditText

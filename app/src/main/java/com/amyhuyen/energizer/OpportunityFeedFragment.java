@@ -35,7 +35,9 @@ public class OpportunityFeedFragment extends Fragment {
     List<Opportunity> newOpportunities;
     List<String> mySkillsIdList;
     List<String> myOppsIdList;
+    List<String> myCausesIdList;
     List<String> mySkillsNameList;
+    List<String> myCausesNameList;
     OpportunityAdapter oppAdapter;
     DatabaseReference firebaseDataOpp;
     ArrayList<Double> mUserLatLongArray;
@@ -59,11 +61,6 @@ public class OpportunityFeedFragment extends Fragment {
         opportunities = new ArrayList<>();
         newOpportunities = new ArrayList<>();
 
-        // initialize the lists to hold the data (with filter)
-        mySkillsIdList = new ArrayList<>();
-        myOppsIdList = new ArrayList<>();
-        mySkillsNameList = new ArrayList<>();
-
         // construct the adapter from this data source
         oppAdapter = new OpportunityAdapter(opportunities, getActivity());
 
@@ -75,13 +72,13 @@ public class OpportunityFeedFragment extends Fragment {
 
         // get the opportunities (for on launch)
         mUserLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
-        matchBySkills();
+        matchBySkillsAndCauses();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                matchBySkills();
+                matchBySkillsAndCauses();
             }
         });
 
@@ -94,9 +91,12 @@ public class OpportunityFeedFragment extends Fragment {
 
 
     // method that filters opportunities displayed to a volunteer based on skills matching
-    private void matchBySkills(){
+    private void matchBySkillsAndCauses(){
         mySkillsIdList = new ArrayList<>();
         myOppsIdList = new ArrayList<>();
+        myCausesIdList = new ArrayList<>();
+        mySkillsNameList = new ArrayList<>();
+        myCausesNameList = new ArrayList<>();
 
         // get the skillIds of the skills related to a certain user
         userToSkillId();
@@ -154,8 +154,7 @@ public class OpportunityFeedFragment extends Fragment {
         firebaseDataOpp.child("OppsPerSkill").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                // for every skill in mySkillsIdList, get the opportunities that require that skill
+                // for every skill in mySkillsNameList, get the opportunities that require that skill
                 for (String skillName : mySkillsNameList){
                     for (DataSnapshot child: dataSnapshot.child(skillName).getChildren()){
                         HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
@@ -163,8 +162,8 @@ public class OpportunityFeedFragment extends Fragment {
                         // add those oppIds to the myOppIdList
                         myOppsIdList.add(oppsPerSkillMapping.get("oppID"));
 
-                        // call the method that fetches the opportunities with those oppIds
-                        fetchOpportunities();
+                        // call the filters based on causes
+                        userToCauseId();
                     }
                 }
 
@@ -173,6 +172,80 @@ public class OpportunityFeedFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("skillIdtoOppId", databaseError.toString());
+            }
+        });
+    }
+
+    // method that finds all the causes a user has and puts those skillIds into a list
+    private void userToCauseId(){
+        firebaseDataOpp.child("CausesPerUser").child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        // get all the cause ids and add them to myCausesIdList
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child: children){
+                            myCausesIdList.add(((HashMap<String,String>)child.getValue()).get("CauseID"));
+                        }
+
+                        // call method that gets the cause names from these causeIds
+                        causeIdToCauseName();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("userToCauseId", databaseError.toString());
+                    }
+                });
+    }
+
+    // method to get the name of the cause from the causeId
+    private void causeIdToCauseName(){
+        firebaseDataOpp.child("Cause").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // iterate through the causeIds and add the related cause name to myCausesNameList
+                for (String causeId: myCausesIdList){
+                    myCausesNameList.add(dataSnapshot.child(causeId).child("cause").getValue(String.class));
+                }
+
+                // call method that gets the oppIds of the opportunities related to these causes
+                causeNameToOppId();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("causeIdToCauseName", databaseError.toString());
+            }
+        });
+    }
+
+    // method that takes the causeIds in the myCausesIdList and finds the opportunities related to those causes
+    private void causeNameToOppId(){
+        firebaseDataOpp.child("OppsPerCause").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // for every cause in myCausesNameList, get the opportunities that relates to that cause
+                for (String causeName : myCausesNameList){
+                    for (DataSnapshot child: dataSnapshot.child(causeName).getChildren()){
+                        HashMap<String,String> oppsPerCauseMapping = (HashMap<String,String>) child.getValue();
+
+                        // add these oppIds to the myOppIdList if they aren't already in there
+                        if (!myOppsIdList.contains(oppsPerCauseMapping.get("oppId"))){
+                            myOppsIdList.add(oppsPerCauseMapping.get("oppId"));
+                        }
+
+                        // call the method that fetches the opportunities with these oppIds
+                        fetchOpportunities();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -228,7 +301,3 @@ public class OpportunityFeedFragment extends Fragment {
     }
 
 }
-
-
-
-// code for distance matching
