@@ -87,8 +87,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText(causeString);
-                Log.i("VOL PROFILE TEST", "cause string: " + causeString);
+                tv_cause_area.setText("Your causes: " + causeString);
             }
         });
 
@@ -103,8 +102,7 @@ public class VolProfileFragment extends ProfileFragment {
                 //TODO - wjy does it go through this 2x - and the last time it gives me an empty string? drawCauses not getting called, and skillString has causes
 
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText(skillString);
-                Log.i("VOL PROFILE TEST", "cause string: " + skillString);
+                tv_skills.setText("Your skills: " + skillString);
 
             }
         });
