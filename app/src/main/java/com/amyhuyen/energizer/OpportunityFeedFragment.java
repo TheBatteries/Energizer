@@ -72,13 +72,13 @@ public class OpportunityFeedFragment extends Fragment {
 
         // get the opportunities (for on launch)
         mUserLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
-        matchBySkills();
+        matchBySkillsAndCauses();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                matchBySkills();
+                matchBySkillsAndCauses();
             }
         });
 
@@ -91,7 +91,7 @@ public class OpportunityFeedFragment extends Fragment {
 
 
     // method that filters opportunities displayed to a volunteer based on skills matching
-    private void matchBySkills(){
+    private void matchBySkillsAndCauses(){
         mySkillsIdList = new ArrayList<>();
         myOppsIdList = new ArrayList<>();
         myCausesIdList = new ArrayList<>();
