@@ -8,8 +8,6 @@
         android:background="@drawable/median"
         tools:context=".VolRegActivity">
 
-
-
         <TextView
             android:id="@+id/tvSignUp"
             android:layout_alignParentTop="true"

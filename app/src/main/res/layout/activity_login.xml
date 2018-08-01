@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_grey"
+    android:background="@drawable/median"
     tools:context=".LoginActivity">
 
     <TextView
@@ -15,7 +15,9 @@
         android:text="User Login"
         android:layout_above="@id/etEmail"
         android:layout_margin="15dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:fontFamily="@font/royal_crescent_demo"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/etEmail"
@@ -24,7 +26,12 @@
         android:layout_centerInParent="true"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp"
+        android:textColorHint="@color/white"
+        android:shadowColor="@color/white"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"/>
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -32,7 +39,11 @@
         android:layout_below="@id/etEmail"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp"
+        android:textColorHint="@color/white"
+        android:shadowColor="@color/white"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"/>
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
@@ -47,7 +58,8 @@
         android:layout_height="wrap_content"
         android:text="Don't have an account? Register"
         android:layout_below="@id/btnLogin"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
 
 
 
