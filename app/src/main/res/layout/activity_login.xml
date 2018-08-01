@@ -24,9 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_below="@id/tvLogin"
+        android:layout_marginTop="100dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:layout_margin="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:textColorHint="@color/white"
         android:shadowColor="@color/white"
         android:backgroundTint="@color/white"
@@ -51,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:text="Login"
-        android:layout_margin="15dp"
+        android:layout_marginTop="95dp"
         android:textAllCaps="false"
         android:textColor="@color/white"/>
     <TextView
