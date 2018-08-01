@@ -91,10 +91,25 @@
             android:textSize="15dp"/>
 
         <EditText
+            android:id="@+id/etLocationNPO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/etPhone"
+            android:hint="@string/organization_address"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none"
+            android:textSize="15dp"/>
+
+        <EditText
             android:id="@+id/etNpoDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etPhone"
+            android:layout_below="@id/etLocationNPO"
             android:minLines="5"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
@@ -104,28 +119,13 @@
             android:hint="@string/non_profit_description"
             android:textSize="15dp"/>
 
-        <EditText
-            android:id="@+id/etLocationNPO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/etNpoDescription"
-            android:hint="@string/organization_address"
-            android:focusable="false"
-            android:clickable="true"
-            android:inputType="none"
-            android:textSize="15dp"/>
-
 
         <Button
             android:id="@+id/btnRegister"
             android:background="@drawable/button_blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etLocationNPO"
+            android:layout_below="@id/etNpoDescription"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"

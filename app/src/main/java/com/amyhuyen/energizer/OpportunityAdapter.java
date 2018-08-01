@@ -34,6 +34,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     private List<Opportunity> mOpportunities;
     Activity context;
     public String skillName;
+    public String causeName;
 
     public OpportunityAdapter(List<Opportunity> opportunities, Activity activity){
         mOpportunities = opportunities;
@@ -47,6 +48,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvOppDesc) TextView tvOppDesc;
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
         public @BindView (R.id.tvSkills) TextView tvSkills;
+        public @BindView (R.id.tvCauses) TextView tvCauses;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -69,6 +71,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Opportunity", Parcels.wrap(opportunity));
                 bundle.putString("Skill Name", skillName);
+                bundle.putString("Cause Name", causeName);
 
 
                 // switch the fragments
@@ -125,7 +128,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     }
 
     // method that gets the skills related to an opportunity
-    public void getSkill(String oppId, final ViewHolder holder){
+    public void getSkill(final String oppId, final ViewHolder holder){
         final DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
         dataRef.child("SkillsPerOpp").child(oppId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,7 +137,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                     String skillId = ((HashMap<String,String>) child.getValue()).get("SkillID");
 
                     // call method that changes the skillId to the skillName
-                    skillIdToName(skillId, dataRef, holder);
+                    skillIdToName(skillId, dataRef, holder, oppId);
                 }
             }
 
@@ -146,18 +149,57 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     }
 
     // method that gets the skill name when given the id
-    public void skillIdToName(String skillId, DatabaseReference dataRef, final ViewHolder holder){
+    public void skillIdToName(String skillId, final DatabaseReference dataRef, final ViewHolder holder, final String oppId){
         dataRef.child("Skill").child(skillId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get("skill");
                 // set the text
-                holder.tvSkills.setText(skillName);
+                holder.tvSkills.setText("Skill Needed: " + skillName);
+
+                // get the causes
+                getCauses(oppId, dataRef, holder);
                 }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("skillIdToName", databaseError.toString());
+            }
+        });
+    }
 
+    // method that gets the causes related to an opportunity
+    public void getCauses(String oppId, final DatabaseReference dataRef, final ViewHolder holder){
+        dataRef.child("CausesPerOpp").child(oppId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String causeId = ((HashMap<String, String>) child.getValue()).get("CauseID");
+
+                    // call the method that changes the causeId to the causeName
+                    causeIdToName(causeId, dataRef, holder);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("getCauses", databaseError.toString());
+            }
+        });
+    }
+
+    // method that gets the cause name when give nteh id
+    public void causeIdToName(String causeId, DatabaseReference dataRef, final ViewHolder holder){
+        dataRef.child("Cause").child(causeId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                causeName = ((HashMap<String, String>) dataSnapshot.getValue()).get("cause");
+                holder.tvCauses.setText("Cause Area: " + causeName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("causeIdToName", databaseError.toString());
             }
         });
     }
