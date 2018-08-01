@@ -10,7 +10,4 @@ public class Skill {
     }
 
     public String getSkill(){ return skill; }
-
-
-
 }

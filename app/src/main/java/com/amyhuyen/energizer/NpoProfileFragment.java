@@ -3,6 +3,7 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class NpoProfileFragment extends ProfileFragment{
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
-
+        drawEditCausesBtn();
         getProfilePic();
     }
 
@@ -79,6 +80,12 @@ public class NpoProfileFragment extends ProfileFragment{
     public void drawContactInfo() {
         tvContactInfo.setText(UserDataProvider.getInstance().getCurrentNPO().getPhone() + "\n" +
         UserDataProvider.getInstance().getCurrentNPO().getAddress());
+    }
+
+    @Override
+    public void drawEditCausesBtn() {
+        btn_edit_causes.setVisibility(View.GONE);
+
     }
 
     @OnClick(R.id.profile_pic)

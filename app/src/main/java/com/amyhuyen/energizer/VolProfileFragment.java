@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,10 +33,16 @@ public class VolProfileFragment extends ProfileFragment {
         void onSkillsFetched(List<String> skills);
     }
 
+    public interface CauseFetchListener {
+        void onCausesFetched(List<String> causes);
+    }
+
     //views
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
-    @BindView(R.id.profile_pic) ImageView profilePic;
+    @BindView (R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.btn_edit_causes)
+    Button btn_edit_causes;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     public VolProfileFragment() {
@@ -68,27 +75,36 @@ public class VolProfileFragment extends ProfileFragment {
             }
         });
 
+        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
     }
 
 
     @Override
     public void drawCauseAreas() {
-        String causeAreas = "Cause area placeholder."; //TODO - get list of causes
-        tv_cause_area.setText(causeAreas);
+        volunteer.fetchCauses(new CauseFetchListener(){
+            @Override
+            public void onCausesFetched(List<String> causes){
+                String causeString = causes.toString().replace("[", "").replace("]", "");
+                tv_cause_area.setText(causeString);
+            }
+        });
+
     }
 
     @Override
     public void drawSkills() {
-        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
 
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText(skillString);
-                Log.i("VolProfileFragment", "drawSkills: " + skills.toString());
             }
         });
+    }
+
+    @Override
+    public void drawEditCausesBtn() {
     }
 
     @Override
@@ -100,5 +116,11 @@ public class VolProfileFragment extends ProfileFragment {
     public void onProfileImageClick(){
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
+    }
+
+    @OnClick(R.id.btn_edit_causes)
+    public void onEditCausesClick() {
+        Intent intent = new Intent(getActivity(), SetCausesActivity.class);
+        startActivity(intent);
     }
 }

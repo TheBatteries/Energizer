@@ -91,5 +91,14 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:text="@string/cause_areas" />
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btn_edit_causes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Edit Causes" />
 </RelativeLayout>
 
