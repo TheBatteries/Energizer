@@ -61,6 +61,18 @@
             android:hint="@string/skill_required"
             android:textSize="15dp"/>
 
+        <AutoCompleteTextView
+            android:id="@+id/actvOppCause"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/actvOppSkill"
+            android:textSize="15dp"
+            android:hint="@string/enter_cause" />
+
         <EditText
             android:id="@+id/etNumVolNeeded"
             android:layout_width="match_parent"
@@ -69,7 +81,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/actvOppSkill"
+            android:layout_below="@id/actvOppCause"
             android:hint="@string/number_of_volunteers_needed"
             android:textSize="15dp"/>
 

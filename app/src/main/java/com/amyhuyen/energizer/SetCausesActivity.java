@@ -31,8 +31,6 @@ import butterknife.OnClick;
 
 public class SetCausesActivity extends AppCompatActivity {
 
-    /////////////TODO - add intent to make this activity show after SetSkillsActivity. Also add a button to "Edit causes" on profile/////////
-    //Can I reuse SetSkillsActivity for setting skills and setting causes?
     //use set of causes instead of list?
 
     // the views
@@ -63,7 +61,7 @@ public class SetCausesActivity extends AppCompatActivity {
         firebaseData = FirebaseDatabase.getInstance().getReference();
         userId = currentFirebaseUser.getUid();
         causes = new ArrayList<>();
-        causeAdapter = new CauseAdapter(causes); //TODO - will need new adapter. Unless I can reuse this one
+        causeAdapter = new CauseAdapter(causes);
         // bind the views
         ButterKnife.bind(this);
         // recyclerview setup
