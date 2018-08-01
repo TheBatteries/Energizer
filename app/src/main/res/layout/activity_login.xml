@@ -35,6 +35,7 @@
         android:layout_margin="15dp"/>
     <Button
         android:id="@+id/btnLogin"
+        android:background="@drawable/button_yellow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"

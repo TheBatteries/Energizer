@@ -29,6 +29,7 @@
 
     <Button
         android:id="@+id/btnVolunteer"
+        android:background="@drawable/button_yellow"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvMessage"
@@ -41,6 +42,7 @@
 
     <Button
         android:id="@+id/btnNonProfit"
+        android:background="@drawable/button_blue"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvMessage"
@@ -66,8 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvLogin"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
         android:layout_marginTop="15dp" />
 
 
