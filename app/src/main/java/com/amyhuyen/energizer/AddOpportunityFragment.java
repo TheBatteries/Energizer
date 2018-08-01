@@ -428,7 +428,6 @@ public class AddOpportunityFragment extends Fragment{
                                 Log.e("Existing cause", databaseError.toString());
                             }
                         });
-//                        oppSkills.get(index).getCause()
                     } else {
                         firebaseData.child(DBKeys.KEY_CAUSE).push().setValue(oppCauses.get(index));
                         // create a hashmap for the UserID
