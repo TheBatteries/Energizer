@@ -353,5 +353,7 @@ public class AddOpportunityFragment extends Fragment{
         etEndDate.setText("");
         etEndTime.setText("");
         etOppLocation.setText("");
+        actvOppSkill.setText("");
+        etNumVolNeeded.setText("");
     }
 }

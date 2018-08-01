@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_grey"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/median">
 
     <TextView
         android:id="@+id/tvSignUp"
@@ -15,7 +15,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/user_registration"
         android:layout_marginBottom = "15dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="180dp"
         android:textAlignment="center"/>
 
     <TextView
@@ -37,6 +37,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/volunteer"
+        android:background="@color/translucent"
         android:textAllCaps="false"/>
 
     <Button
@@ -49,6 +50,7 @@
         android:layout_marginBottom="10dp"
         android:layout_alignParentEnd="true"
         android:text="@string/non_profit"
+        android:background="@color/translucent"
         android:textAllCaps="false"/>
 
     <TextView
