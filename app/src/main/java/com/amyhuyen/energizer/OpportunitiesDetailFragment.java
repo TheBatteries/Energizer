@@ -35,6 +35,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.tvNpoName) TextView tvNpoName;
     @BindView (R.id.tvOppTime) TextView tvOppTime;
     @BindView (R.id.tvOppAddress) TextView tvOppAddress;
+    @BindView (R.id.tvSkills) TextView tvSkills;
     @BindView (R.id.signUpForOpp) Button signUpForOpp;
     @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
 
@@ -73,6 +74,10 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvNpoName.setText(opportunity.getNpoName());
         tvOppTime.setText(time);
         tvOppAddress.setText(opportunity.getAddress());
+
+        // get the skill name from the bundle
+        String skillName = bundle.getString("Skill Name");
+        tvSkills.setText(skillName);
 
         // check the capacity of the opportunity to take on new volunteers
         checkCapacity(opportunity);
