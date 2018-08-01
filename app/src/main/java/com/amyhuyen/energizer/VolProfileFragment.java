@@ -45,6 +45,8 @@ public class VolProfileFragment extends ProfileFragment {
     Button btn_edit_causes;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
+    //TODO - start by fixing textviews. Skills and Cause areas text views seem to be overlapping
+
     public VolProfileFragment() {
         // Required empty public constructor
     }
@@ -86,6 +88,7 @@ public class VolProfileFragment extends ProfileFragment {
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
                 tv_cause_area.setText(causeString);
+                Log.i("VOL PROFILE TEST", "cause string: " + causeString);
             }
         });
 
@@ -97,8 +100,12 @@ public class VolProfileFragment extends ProfileFragment {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
+                //TODO - wjy does it go through this 2x - and the last time it gives me an empty string? drawCauses not getting called, and skillString has causes
+
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText(skillString);
+                Log.i("VOL PROFILE TEST", "cause string: " + skillString);
+
             }
         });
     }
