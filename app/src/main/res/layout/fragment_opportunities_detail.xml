@@ -58,14 +58,25 @@
             android:textSize="12dp"/>
 
         <TextView
-            android:id="@+id/tvNumVolNeeded"
+            android:id="@+id/tvSkills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppAddress"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
-            android:text="@string/number_of_volunteers_needed"
+            android:text="@string/skill_required"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvNumVolNeeded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSkills"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/positions_available"
             android:textStyle="bold"
             android:textSize="12dp"/>
 

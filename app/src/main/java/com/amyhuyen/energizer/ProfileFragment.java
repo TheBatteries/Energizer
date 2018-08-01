@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.tv_name) TextView tv_name;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.btn_edit_causes)
+    Button btn_edit_causes;
+
 
     FragmentActivity listener;
 
@@ -72,6 +76,9 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawContactInfo();
 
+    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
+    public abstract void drawEditCausesBtn();
+
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
         // log user out
@@ -87,7 +94,7 @@ public abstract class ProfileFragment extends Fragment {
         // intent to login activity
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
-        listener.finish(); //TODO - why couldn't I call finish here?
+        listener.finish();
     }
 
     @Override

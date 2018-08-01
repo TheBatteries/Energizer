@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_grey"
-    tools:context=".SetSkillsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SetCausesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,37 +14,37 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvSkill"
+            android:id="@+id/tvCauseMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:text="@string/skills_message" />
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:text="@string/set_causes_message" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
 
             <AutoCompleteTextView
-                android:id="@+id/actvSkill"
+                android:id="@+id/actvCause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
-                android:hint="@string/enter_skill" />
+                android:hint="@string/enter_cause" />
 
             <ImageView
-                android:id="@+id/addSkill"
+                android:id="@+id/addCause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
@@ -54,11 +54,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvSkills"
+                android:id="@+id/rvCauses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
@@ -82,6 +82,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
-        android:text="Continue"
+        android:text="@string/go_to_feed"
         android:textAllCaps="false" />
 </RelativeLayout>

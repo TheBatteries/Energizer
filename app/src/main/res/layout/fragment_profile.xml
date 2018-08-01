@@ -7,6 +7,22 @@
     tools:context=".ProfileFragment"
     android:layout_marginBottom="?android:attr/actionBarSize">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/background_profile_gradient"/>
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_profile_pic" />
+
     <ImageButton
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
@@ -17,54 +33,50 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="21dp"
-        android:layout_toRightOf="@id/profile_pic"
-        android:layout_alignTop="@id/profile_pic"
+        android:layout_below="@id/profile_pic"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/black_80_transparent"
         android:text="@string/name" />
 
     <TextView
         android:id="@+id/tv_email"
-        android:layout_width="215dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/profile_pic"
         android:layout_below="@id/tv_name"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:ems="10"
+        android:gravity="center"
         android:textStyle="italic"
         android:text="@string/email" />
 
     <TextView
         android:id="@+id/tv_contact_info"
-        android:layout_width="215dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/profile_pic"
         android:layout_below="@id/tv_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:ems="10"
+        android:gravity="center"
         android:textStyle="italic"
         android:text="@string/contact_information"/>
 
-
-    <ImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="129dp"
-        android:layout_height="147dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="15dp"
-        android:text=""
-        android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
 
     <TextView
         android:id="@+id/tv_skills"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profile_pic"
+        android:layout_below="@id/tv_contact_info"
+        android:layout_centerHorizontal="true"
+        android:gravity="left"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:text="@string/skills"/>
 
@@ -72,9 +84,21 @@
         android:id="@+id/tv_cause_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/tv_skills"
+        android:gravity="left"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:text="@string/cause_areas" />
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btn_edit_causes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Edit Causes" />
 </RelativeLayout>
 

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,15 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,6 +33,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     // declare variables
     private List<Opportunity> mOpportunities;
     Activity context;
+    public String skillName;
 
     public OpportunityAdapter(List<Opportunity> opportunities, Activity activity){
         mOpportunities = opportunities;
@@ -38,8 +46,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvOppName) TextView tvOppName;
         public @BindView (R.id.tvOppDesc) TextView tvOppDesc;
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
-        public @BindView (R.id.tvOppTime) TextView tvOppTime;
-        public @BindView (R.id.tvOppAddress) TextView tvOppAddress;
+        public @BindView (R.id.tvSkills) TextView tvSkills;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -61,6 +68,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 // create a bundle to hold the opportunity for transfer to details fragment
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Opportunity", Parcels.wrap(opportunity));
+                bundle.putString("Skill Name", skillName);
 
 
                 // switch the fragments
@@ -97,8 +105,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         holder.tvOppName.setText(opp.getName());
         holder.tvNpoName.setText(opp.getNpoName());
         holder.tvOppDesc.setText(opp.getDescription());
-        holder.tvOppTime.setText(time);
-        holder.tvOppAddress.setText(opp.getAddress());
+        getSkill(opp.getOppId(), holder);
     }
 
     // getting the number of items
@@ -115,5 +122,43 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public void addAll(List<Opportunity> list){
         mOpportunities.addAll(list);
         notifyDataSetChanged();
+    }
+
+    // method that gets the skills related to an opportunity
+    public void getSkill(String oppId, final ViewHolder holder){
+        final DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
+        dataRef.child("SkillsPerOpp").child(oppId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String skillId = ((HashMap<String,String>) child.getValue()).get("SkillID");
+
+                    // call method that changes the skillId to the skillName
+                    skillIdToName(skillId, dataRef, holder);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("getSkill", databaseError.toString());
+            }
+        });
+    }
+
+    // method that gets the skill name when given the id
+    public void skillIdToName(String skillId, DatabaseReference dataRef, final ViewHolder holder){
+        dataRef.child("Skill").child(skillId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get("skill");
+                // set the text
+                holder.tvSkills.setText(skillName);
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
