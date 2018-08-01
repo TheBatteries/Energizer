@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private CallbackManager mCallbackManager;
-    private FirebaseUser currentFirebaseUser;
-    private String userID;
-    private DatabaseReference mDBUserRef;
-    private LoginButton loginButton;
     private static final String TAG = "FACELOG";
     private DatabaseReference firebaseData;
 
@@ -95,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
