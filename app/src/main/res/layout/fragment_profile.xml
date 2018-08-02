@@ -67,12 +67,113 @@
         android:textStyle="italic"
         android:text="@string/contact_information"/>
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/tv_contact_info"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <RelativeLayout
+                android:id="@+id/rlLeftBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
+                <TextView
+                    android:id="@+id/tvLeftNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:maxLines="1"/>
+                <TextView
+                    android:id="@+id/tvLeftDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/tvLeftNumber"
+                    android:maxLines="2"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlMiddleBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
+                <TextView
+                    android:id="@+id/tvMiddleNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:maxLines="1"/>
+                <TextView
+                    android:id="@+id/tvMiddleDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/tvMiddleNumber"
+                    android:maxLines="2"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlRightBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
+                <TextView
+                    android:id="@+id/tvRightNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:maxLines="1" />
+                <TextView
+                    android:id="@+id/tvRightDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/tvRightNumber"
+                    android:maxLines="2"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
 
     <TextView
         android:id="@+id/tv_skills"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_contact_info"
+        android:layout_below="@id/cvMenu"
         android:layout_centerHorizontal="true"
         android:gravity="left"
         android:layout_marginRight="15dp"

@@ -42,7 +42,7 @@ public class Volunteer extends User {
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;
 
 
-    ////////getting skills list
+    // getting skills list
 
     public void fetchSkills(VolProfileFragment.SkillFetchListner skillFetchListner) {
         mSkillFetchListner = skillFetchListner;
@@ -105,7 +105,7 @@ public class Volunteer extends User {
         mSkillFetchListner.onSkillsFetched(skillNames);
     }
 
-    /////////CauseAreas
+    // getting causes list
 
     public void fetchCauses(VolProfileFragment.CauseFetchListener causeFetchListener) {
         mCauseFetchListener = causeFetchListener;

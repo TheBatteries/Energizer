@@ -33,7 +33,9 @@ public abstract class CommitFragment extends Fragment {
     @BindView(R.id.rvOpps) RecyclerView rvOpps;
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
-    OpportunityAdapter oppAdapter;
+    List<String> oppIdList;
+    public OpportunityAdapter oppAdapter;
+    public int commitCount;
 
     public DatabaseReference dataOppPerUser;
     DatabaseReference dataOpp;
@@ -59,6 +61,7 @@ public abstract class CommitFragment extends Fragment {
 
         // initialize the data source
         opportunities = new ArrayList<>();
+        oppIdList = new ArrayList<>();
 
         // construct the adapter from this data source
         oppAdapter = new OpportunityAdapter(opportunities, getActivity());
@@ -91,7 +94,6 @@ public abstract class CommitFragment extends Fragment {
 
     // method to get all the opportunities to which the current user is committed
     public void fetchMyCommits(){
-        final ArrayList<String> oppIdList = new ArrayList<>();
         dataOppPerUser = setDatabaseReference();
 
         // get all the oppIds of opportunities related to current user and add to list
@@ -151,7 +153,20 @@ public abstract class CommitFragment extends Fragment {
         oppAdapter.clear();
         oppAdapter.addAll(opportunities);
 
+        commitCount = opportunities.size();
+
         // stop the refreshing
         swipeContainer.setRefreshing(false);
     }
+
+    // method that returns how many opportunities a volunteer has committed to
+    public int getCommitCount(){
+        return commitCount;
+    }
+
+    // method that returns all the list of opportunities to be displayed
+    public List<String> getOppIdList(){
+        return oppIdList;
+    }
+
 }

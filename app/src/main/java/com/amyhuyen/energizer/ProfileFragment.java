@@ -34,22 +34,14 @@ public abstract class ProfileFragment extends Fragment {
     User user;
     private Set<Character> vowels = new HashSet<>();
 
-
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
     //views
-    @BindView(R.id.tv_name)
-    TextView tv_name;
-    @BindView(R.id.btn_logout)
-    ImageButton btn_logout;
-    @BindView(R.id.tv_email)
-    TextView tv_email;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
-    @BindView(R.id.ivBackground)
-    ImageView ivBackground;
-
+    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.btn_logout) ImageButton btn_logout;
+    @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.btn_edit_causes) Button btn_edit_causes;
+    @BindView(R.id.ivBackground) ImageView ivBackground;
 
     FragmentActivity listener;
 
@@ -91,7 +83,7 @@ public abstract class ProfileFragment extends Fragment {
         drawProfileBanner();
     }
 
-    //abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
+    // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
 
     public abstract void drawSkills();
 
@@ -99,6 +91,11 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawContactInfo();
 
+    public abstract void drawMenu();
+
+    public abstract void switchToCommitFragment();
+
+    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
 
     @OnClick(R.id.btn_logout)
@@ -174,6 +171,11 @@ public abstract class ProfileFragment extends Fragment {
                 break;
         }
         return imageResource;
+    }
+
+    @OnClick (R.id.rlLeftBox)
+    public void onLeftBoxClick(){
+        switchToCommitFragment();
     }
 }
 
