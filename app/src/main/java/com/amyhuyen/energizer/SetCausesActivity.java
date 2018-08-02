@@ -34,12 +34,9 @@ public class SetCausesActivity extends AppCompatActivity {
     //use set of causes instead of list?
 
     // the views
-    @BindView(R.id.actvCause)
-    AutoCompleteTextView tvUserCause;
-    @BindView(R.id.rvCauses)
-    RecyclerView rvCauses;
-    @BindView(R.id.addCause)
-    ImageView addCause;
+    @BindView(R.id.actvCause) AutoCompleteTextView tvUserCause;
+    @BindView(R.id.rvCauses) RecyclerView rvCauses;
+    @BindView(R.id.addCause) ImageView addCause;
 
     private DatabaseReference firebaseData;
     private ArrayList<Cause> userCauses;
@@ -155,7 +152,7 @@ public class SetCausesActivity extends AppCompatActivity {
                                 // create hashmap for UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                 // put UserID into the hashmap
-                                userIdDataMap.put("UserID", userId);
+                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
                                 // push the hashmap to the preexisting database skill
                                 firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database

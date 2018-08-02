@@ -78,7 +78,7 @@ public class NpoRegActivity extends AppCompatActivity {
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String address = etLocationNPO.getText().toString().trim();
         final String phone = etPhone.getText().toString().trim();
-        final String userType = "NPO";
+        final String userType = DBKeys.KEY_NPO;
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
@@ -105,11 +105,11 @@ public class NpoRegActivity extends AppCompatActivity {
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
                                     Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
-                                    firebaseData.child("User").child(userID).setValue(nonprofit);
+                                    firebaseData.child(DBKeys.KEY_USER).child(userID).setValue(nonprofit);
 
                                     // update use data provider
                                     UserDataProvider.getInstance().setCurrentNPO(nonprofit);
-                                    UserDataProvider.getInstance().setCurrentUserType("NPO");
+                                    UserDataProvider.getInstance().setCurrentUserType(userType);
 
                                     // intent to the landing activity
                                     Intent intent = new Intent(getApplicationContext(), LandingActivity.class);

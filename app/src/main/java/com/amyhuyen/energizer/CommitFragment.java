@@ -101,7 +101,7 @@ public abstract class CommitFragment extends Fragment {
                 oppIdList.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()){
                     final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
-                    oppIdList.add(myOppMapping.get("OppID"));
+                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
                 }
 
                 // find the opportunities associated with those oppIds and add them to newOpportunities
@@ -119,7 +119,7 @@ public abstract class CommitFragment extends Fragment {
     public void oppFromOppId(final List<String> oppIdList){
         final ArrayList<Opportunity> newOpportunities = new ArrayList<>();
         // get the firebase reference
-        dataOpp = FirebaseDatabase.getInstance().getReference().child("Opportunity");
+        dataOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPORTUNITY);
 
         dataOpp.addValueEventListener(new ValueEventListener() {
             @Override

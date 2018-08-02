@@ -94,16 +94,16 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
-            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
+            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER).child(firebaseAuth.getCurrentUser().getUid());
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // prepare the intent
                     HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
-                    String UserType = userMapping.get("userType");
+                    String UserType = userMapping.get(DBKeys.KEY_USER_TYPE);
 
                     UserDataProvider.getInstance().setCurrentUserType(UserType);
-                    if (UserType.equals("Volunteer")){
+                    if (UserType.equals(DBKeys.KEY_VOLUNTEER)){
                         UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
                     } else{
                         UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         final String userId = user.getUid();
-        firebaseData.child("User").child(userId).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseData.child(DBKeys.KEY_USER).child(userId).child(DBKeys.KEY_EMAIL).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

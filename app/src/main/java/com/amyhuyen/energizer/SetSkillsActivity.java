@@ -57,7 +57,7 @@ public class SetSkillsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_skills);
-        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         userId = currentFirebaseUser.getUid();
@@ -113,7 +113,7 @@ public class SetSkillsActivity extends AppCompatActivity {
             // gets the name of the skill
             Map singleSkill = (Map) entry.getValue();
             // adds that skill name to the ArrayList
-            Skill userInputSkill = new Skill((String) singleSkill.get("skill"));
+            Skill userInputSkill = new Skill((String) singleSkill.get(DBKeys.KEY_SKILL_INNER));
             skills.add(userInputSkill.getSkill());
         }
         return skills;
@@ -136,7 +136,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         // set all the skills that the user inputs to new Skills
         final String skill = tvUserSkill.getText().toString().trim();
         // store the database reference to "Skill" as a shortcut
-        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         // if the user does not add the last skill they fill in to the recycler view, then we want to grab it
         // and store it as a new skill
         if (!skill.isEmpty()) {
@@ -150,7 +150,7 @@ public class SetSkillsActivity extends AppCompatActivity {
             // we need to bind our index to a final integer in order to link it to the database
             final int index = i;
             // we now go through all the skills already in the database to see if the skill that the user input is already there or not
-            skillsRef.orderByChild("skill").equalTo(userSkills.get(index).getSkill())
+            skillsRef.orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -160,12 +160,12 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 // create hashmap for UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                 // put UserID into the hashmap
-                                userIdDataMap.put("UserID", userId);
+                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
                                 // push the hashmap to the preexisting database skill
-                                firebaseData.child("UsersPerSkill").child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
+                                firebaseData.child(DBKeys.KEY_USERS_PER_SKILL).child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                firebaseData.child("Skill").orderByChild("skill").equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         // since we did a .equalTo() search, this for loop only has one element
@@ -175,9 +175,9 @@ public class SetSkillsActivity extends AppCompatActivity {
                                             // Create the skillID hashmap
                                             final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
                                             // bind skillID to the hashmap
-                                            skillIdDataMap.put("SkillID", skillId);
+                                            skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
                                             // push the hashmap to the User's specific skill database
-                                            firebaseData.child("SkillsPerUser").child(userId).push().setValue(skillIdDataMap);
+                                            firebaseData.child(DBKeys.KEY_SKILLS_PER_USER).child(userId).push().setValue(skillIdDataMap);
                                         }
                                     }
 
@@ -189,16 +189,16 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 });
                                 // if the skill that the user input is not already in the database then we run through the else case
                             } else {
-                                firebaseData.child("Skill").push().setValue(userSkills.get(index));
+                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).push().setValue(userSkills.get(index));
                                 // create a hashmap for the UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                 // bind UserID to the hashmap
-                                userIdDataMap.put("UserID", userId);
+                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
                                 // create a new item within the database that links the user to this new skill
-                                firebaseData.child("UsersPerSkill").child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
+                                firebaseData.child(DBKeys.KEY_USERS_PER_SKILL).child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                firebaseData.child("Skill").orderByChild("skill").equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         // since we did a .equalTo() search, this for loop only has one element
@@ -208,9 +208,9 @@ public class SetSkillsActivity extends AppCompatActivity {
                                             // Create the skillID hashmap
                                             final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
                                             // link bind skillID to the hashmap
-                                            skillIdDataMap.put("SkillID", skillId);
+                                            skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
                                             // push the hashmap to the User's specific skill database
-                                            firebaseData.child("SkillsPerUser").child(userId).push().setValue(skillIdDataMap);
+                                            firebaseData.child(DBKeys.KEY_SKILLS_PER_USER).child(userId).push().setValue(skillIdDataMap);
                                         }
                                     }
 
@@ -249,7 +249,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         addSkills();
         Intent intent;
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")) {
+        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
             intent = new Intent(getApplicationContext(), SetCausesActivity.class); //Make sure changin this from LandingActivity didn't mess up extras
         } else {
             // get intent information from previous activity
