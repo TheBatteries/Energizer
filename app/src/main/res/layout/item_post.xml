@@ -43,7 +43,6 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="46dp"
-        android:layout_alignStart="@+id/tvOppName"
         android:layout_below="@id/tvNpoName"
         android:layout_centerVertical="true"
         android:layout_marginTop="9dp"
@@ -76,7 +75,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="1"
         android:textSize="14dp"/>
 
 

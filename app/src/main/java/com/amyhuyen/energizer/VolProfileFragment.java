@@ -96,8 +96,6 @@ public class VolProfileFragment extends ProfileFragment {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
-                //TODO - wjy does it go through this 2x - and the last time it gives me an empty string? drawCauses not getting called, and skillString has causes
-
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText("Your skills: " + skillString);
 
