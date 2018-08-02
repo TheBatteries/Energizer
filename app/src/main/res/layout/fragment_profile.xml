@@ -87,7 +87,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="@drawable/border">
+                android:background="@drawable/border_menu">
                 <TextView
                     android:id="@+id/tvLeftNumber"
                     android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="@drawable/border">
+                android:background="@drawable/border_menu">
                 <TextView
                     android:id="@+id/tvMiddleNumber"
                     android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="@drawable/border">
+                android:background="@drawable/border_menu">
                 <TextView
                     android:id="@+id/tvRightNumber"
                     android:layout_width="match_parent"
