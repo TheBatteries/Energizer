@@ -3,7 +3,6 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +43,6 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.btn_edit_causes)
     Button btn_edit_causes;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
-
-    //TODO - start by fixing textviews. Skills and Cause areas text views seem to be overlapping
 
     public VolProfileFragment() {
         // Required empty public constructor
