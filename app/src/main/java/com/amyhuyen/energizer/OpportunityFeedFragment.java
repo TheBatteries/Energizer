@@ -110,7 +110,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method that finds the all the skills a user has and puts those skillIds into a list
     private void userToSkillId(){
-        firebaseDataOpp.child("SkillsPerUser").child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
+        firebaseDataOpp.child(DBKeys.KEY_SKILLS_PER_USER).child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
                 addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -118,7 +118,7 @@ public class OpportunityFeedFragment extends Fragment {
                         // get all the skill ids and add them to mySkillsIdList
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child : children){
-                            mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get("SkillID"));
+                            mySkillsIdList.add(((HashMap<String, String>)child.getValue()).get(DBKeys.KEY_SKILL_ID));
                         }
 
                         // call the method that gets the skill names from these skillIds
@@ -136,12 +136,12 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method to get the name of the skill from the skillId
     private void skillIdToSkillName(){
-        firebaseDataOpp.child("Skill").addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child(DBKeys.KEY_SKILL_OUTER).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // iterate through skillIds and add the related skill name to mySkillsNameList
                 for (String skillId : mySkillsIdList){
-                    mySkillsNameList.add(dataSnapshot.child(skillId).child("skill").getValue(String.class));
+                    mySkillsNameList.add(dataSnapshot.child(skillId).child(DBKeys.KEY_SKILL_INNER).getValue(String.class));
                 }
 
                 // call method that gets the oppIds of the opportunities related to these skills
@@ -157,7 +157,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method that takes the skillIds in the mySkillsIdList and finds the opportunities related to those skills
     private void skillNameToOppId(){
-        firebaseDataOpp.child("OppsPerSkill").addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child(DBKeys.KEY_OPPS_PER_SKILL).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // for every skill in mySkillsNameList, get the opportunities that require that skill
@@ -166,10 +166,10 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
 
                         // add those oppIds to the myOppIdList
-                        myOppsIdList.add(oppsPerSkillMapping.get("oppID"));
+                        myOppsIdList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
 
                         // call the filters based on causes
-                        fetchOpportunities();
+                        userToCauseId();
                     }
                 }
 
@@ -184,7 +184,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method that finds all the causes a user has and puts those skillIds into a list
     private void userToCauseId(){
-        firebaseDataOpp.child("CausesPerUser").child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
+        firebaseDataOpp.child(DBKeys.KEY_CAUSES_PER_USER).child(UserDataProvider.getInstance().getCurrentVolunteer().getUserID()).
                 addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -192,7 +192,7 @@ public class OpportunityFeedFragment extends Fragment {
                         // get all the cause ids and add them to myCausesIdList
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child: children){
-                            myCausesIdList.add(((HashMap<String,String>)child.getValue()).get("CauseID"));
+                            myCausesIdList.add(((HashMap<String,String>)child.getValue()).get(DBKeys.KEY_CAUSE_ID));
                         }
 
                         // call method that gets the cause names from these causeIds
@@ -209,12 +209,12 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method to get the name of the cause from the causeId
     private void causeIdToCauseName(){
-        firebaseDataOpp.child("Cause").addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child(DBKeys.KEY_CAUSE).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // iterate through the causeIds and add the related cause name to myCausesNameList
                 for (String causeId: myCausesIdList){
-                    myCausesNameList.add(dataSnapshot.child(causeId).child("cause").getValue(String.class));
+                    myCausesNameList.add(dataSnapshot.child(causeId).child(DBKeys.KEY_CAUSE_NAME).getValue(String.class));
                 }
 
                 // call method that gets the oppIds of the opportunities related to these causes
@@ -230,7 +230,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method that takes the causeIds in the myCausesIdList and finds the opportunities related to those causes
     private void causeNameToOppId(){
-        firebaseDataOpp.child("OppsPerCause").addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child(DBKeys.KEY_OPPS_PER_CAUSE).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // for every cause in myCausesNameList, get the opportunities that relates to that cause
@@ -239,8 +239,8 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String,String> oppsPerCauseMapping = (HashMap<String,String>) child.getValue();
 
                         // add these oppIds to the myOppIdList if they aren't already in there
-                        if (!myOppsIdList.contains(oppsPerCauseMapping.get("oppId"))){
-                            myOppsIdList.add(oppsPerCauseMapping.get("oppId"));
+                        if (!myOppsIdList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
+                            myOppsIdList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                         }
 
                         // call the method that fetches the opportunities with these oppIds
@@ -258,7 +258,7 @@ public class OpportunityFeedFragment extends Fragment {
 
     // method to get data from firebase
     private void fetchOpportunities(){
-        firebaseDataOpp.child("Opportunity").addValueEventListener(new ValueEventListener() {
+        firebaseDataOpp.child(DBKeys.KEY_OPPORTUNITY).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 newOpportunities.clear();

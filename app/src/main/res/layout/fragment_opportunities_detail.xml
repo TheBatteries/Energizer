@@ -86,10 +86,21 @@
             android:textSize="12dp"/>
 
         <TextView
-            android:id="@+id/tvNumVolNeeded"
+            android:id="@+id/tvCauses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSkills"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/skill_required"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvNumVolNeeded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCauses"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"

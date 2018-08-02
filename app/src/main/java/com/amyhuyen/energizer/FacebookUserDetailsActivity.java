@@ -84,7 +84,7 @@ public class FacebookUserDetailsActivity extends AppCompatActivity {
         final String email = fbEmail.getText().toString().trim();
         final String age = fbAge.getText().toString().trim();
         final String phone = fbPhone.getText().toString().trim();
-        final String userType = "Volunteer";
+        final String userType = DBKeys.KEY_VOLUNTEER;
         final String userID;
 
 
@@ -94,7 +94,7 @@ public class FacebookUserDetailsActivity extends AppCompatActivity {
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             userID = currentFirebaseUser.getUid();
             User user = new User(email, name, phone, userID, userType, latLong, city);
-            firebaseData.child("User").child(userID).setValue(user);
+            firebaseData.child(DBKeys.KEY_USER).child(userID).setValue(user);
             Intent intent = new Intent(getApplicationContext(), SetSkillsActivity.class);
             intent.putExtra("UserObject", Parcels.wrap(user));
             startActivity(intent);
@@ -106,7 +106,7 @@ public class FacebookUserDetailsActivity extends AppCompatActivity {
     private void callPlaceAutocompleteActivityIntent() {
         try{
             // launches intent to the google place autocomplete widget
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch(GooglePlayServicesRepairableException e) {
             e.printStackTrace();

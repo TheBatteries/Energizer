@@ -84,7 +84,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText("Your causes: " + causeString);
+                tv_cause_area.setText("My causes: " + causeString);
             }
         });
 
@@ -97,7 +97,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText("Your skills: " + skillString);
+                tv_skills.setText("My skills: " + skillString);
 
             }
         });

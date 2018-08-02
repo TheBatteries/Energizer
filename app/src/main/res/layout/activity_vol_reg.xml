@@ -169,13 +169,5 @@
             android:textColor="@color/white"
             android:layout_marginTop="10dp"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@color/litegrey"
-            android:id="@+id/backgroundTint" />
 
-
-
-
-    </RelativeLayout>
+</RelativeLayout>

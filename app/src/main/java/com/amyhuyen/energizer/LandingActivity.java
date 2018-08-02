@@ -30,8 +30,6 @@ import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
-    public final static String EXTRA_USER_OBJECT = "UserObject";
-
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -41,7 +39,6 @@ public class LandingActivity extends AppCompatActivity {
     public String latLong;
     private static final int SELECTED_PIC = 65538;
     private StorageReference storageReference;
-    private Uri downloadURL;
 
 
     // fragment variables
@@ -53,7 +50,6 @@ public class LandingActivity extends AppCompatActivity {
     public Fragment addOppFrag;
 
     public String UserType;
-    public String UserName;
 
 
     @Override
@@ -75,7 +71,7 @@ public class LandingActivity extends AppCompatActivity {
 
         // check user type and inflate menu and create fragments accordingly
         Fragment startingFragment = null;
-        if (UserType.equals("Volunteer")) {
+        if (UserType.equals(DBKeys.KEY_VOLUNTEER)) {
             opportunityFeedFrag = new OpportunityFeedFragment();
             profileFragment = new VolProfileFragment();
             commitFrag = new VolCommitFragment();
@@ -103,14 +99,14 @@ public class LandingActivity extends AppCompatActivity {
                 // define all the possible fragment transactions
                 switch (item.getItemId()) {
                     case R.id.ic_left:
-                        if (UserType.equals("Volunteer")) {
+                        if (UserType.equals(DBKeys.KEY_VOLUNTEER)) {
                         selectedFragment = opportunityFeedFrag;
                         } else {
                         selectedFragment = commitFrag;
                         }
                         break;
                     case R.id.ic_middle:
-                        if (UserType.equals("Volunteer")) {
+                        if (UserType.equals(DBKeys.KEY_VOLUNTEER)) {
                             selectedFragment = commitFrag;
                         } else {
                             selectedFragment = addOppFrag;
