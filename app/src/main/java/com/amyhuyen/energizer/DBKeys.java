@@ -39,6 +39,9 @@ public class DBKeys {
     public static final String KEY_OPPS_PER_SKILL = "OppsPerSkill";
     public static final String KEY_OPP_ID_INNER_TWO = "oppID";
 
+    // OppsPerUser
+    public static final String KEY_OPPS_PER_USER = "OppsPerUser";
+
     // Skill
     public static final String KEY_SKILL_OUTER = "Skill";
     public static final String KEY_SKILL_INNER = "skill";

@@ -60,11 +60,11 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         // get the bundle from the feed fragment
         Bundle bundle = getArguments();
-        Opportunity opportunity = Parcels.unwrap(bundle.getParcelable("Opportunity"));
+        Opportunity opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
         final String oppId = opportunity.getOppId();
-        userPerOppRef = FirebaseDatabase.getInstance().getReference().child("UsersPerOpp").child(oppId);
+        userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
-        oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child("OppsPerUser").child(userId);
+        oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);
@@ -85,7 +85,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         // check the capacity of the opportunity to take on new volunteers
         checkCapacity(opportunity);
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             showButtonsForVol(oppId);
         } else {
             hideButtons();
@@ -99,11 +99,11 @@ public class OpportunitiesDetailFragment extends Fragment {
         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
         // put UserID into the hashmap
-        userIdDataMap.put("UserID", userId);
+        userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
         // push the hashmap to the preexisting database skill
         userPerOppRef.push().setValue(userIdDataMap);
         final HashMap<String, String> oppIdDataMap = new HashMap<String, String>();
-        oppIdDataMap.put("OppID", oppId);
+        oppIdDataMap.put(DBKeys.KEY_OPP_ID, oppId);
         oppsPerUserRef.push().setValue(oppIdDataMap);
     }
 
@@ -111,7 +111,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         final String oppId = userPerOppRef.getKey().toString();
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
         if (signUpForOpp.isEnabled() == true) {
-            userPerOppRef.orderByChild("UserID").equalTo(userId).addChildEventListener(new ChildEventListener() {
+            userPerOppRef.orderByChild(DBKeys.KEY_USER_ID).equalTo(userId).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if (signUpForOpp.isEnabled() == true) {
@@ -140,7 +140,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 }
             });
 
-            oppsPerUserRef.orderByChild("OppID").equalTo(oppId).addChildEventListener(new ChildEventListener() {
+            oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if (signUpForOpp.isEnabled() == true) {
@@ -191,7 +191,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     // method that checks how many volunteers are currently signed up for this activity
     public void checkCapacity(final Opportunity opportunity) {
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child("UsersPerOpp").child(opportunity.getOppId());
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId());
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -228,7 +228,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     // method for volunteers to see buttons
     public void showButtonsForVol(String oppId) {
-        oppsPerUserRef.orderByChild("OppID").equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
+        oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
