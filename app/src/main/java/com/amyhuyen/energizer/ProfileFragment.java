@@ -152,22 +152,22 @@ public abstract class ProfileFragment extends Fragment {
                 imageResource = R.color.colorAccent;
                 break;
             case 'e':
-                imageResource = R.color.blueteal_0;
+                imageResource = R.color.colorPrimary;
                 break;
             case 'i':
-                imageResource = R.color.greenteal;
+                imageResource = R.color.colorPrimaryDark;
                 break;
             case 'o':
-                imageResource = R.color.red_9;
+                imageResource = R.color.colorAccent;
                 break;
             case 'u':
-                imageResource = R.color.purple_0;
+                imageResource = R.color.colorSecondaryDark;
                 break;
             case 'y':
-                imageResource = R.color.orange_9;
+                imageResource = R.color.blue_5_10_transparent;
                 break;
             case 'z':
-                imageResource = R.color.pink_9;
+                imageResource = R.color.orange_4;
                 break;
             default:
                 imageResource = R.color.colorPrimary;
