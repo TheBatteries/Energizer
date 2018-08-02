@@ -57,6 +57,7 @@ public class DBKeys {
     public static final String KEY_PHONE = "phone";
     public static final String KEY_USER_ID_INNER = "userID";
     public static final String KEY_USER_TYPE = "userType";
+    public static final String KEY_VOLUNTEER = "Volunteer"
 
     // UsersPerCause
     public static final String KEY_USERS_PER_CAUSE = "UsersPerCause";

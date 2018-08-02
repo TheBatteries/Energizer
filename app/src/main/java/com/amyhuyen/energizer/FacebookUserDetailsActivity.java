@@ -84,7 +84,7 @@ public class FacebookUserDetailsActivity extends AppCompatActivity {
         final String email = fbEmail.getText().toString().trim();
         final String age = fbAge.getText().toString().trim();
         final String phone = fbPhone.getText().toString().trim();
-        final String userType = "Volunteer";
+        final String userType = DBKeys.KEY_VOLUNTEER;
         final String userID;
 
 
