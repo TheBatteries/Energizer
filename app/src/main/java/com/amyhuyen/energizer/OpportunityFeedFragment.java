@@ -163,7 +163,7 @@ public class OpportunityFeedFragment extends Fragment {
                         myOppsIdList.add(oppsPerSkillMapping.get("oppID"));
 
                         // call the filters based on causes
-                        fetchOpportunities();
+                        userToCauseId();
                     }
                 }
 
@@ -233,8 +233,8 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String,String> oppsPerCauseMapping = (HashMap<String,String>) child.getValue();
 
                         // add these oppIds to the myOppIdList if they aren't already in there
-                        if (!myOppsIdList.contains(oppsPerCauseMapping.get("oppId"))){
-                            myOppsIdList.add(oppsPerCauseMapping.get("oppId"));
+                        if (!myOppsIdList.contains(oppsPerCauseMapping.get("oppID"))){
+                            myOppsIdList.add(oppsPerCauseMapping.get("oppID"));
                         }
 
                         // call the method that fetches the opportunities with these oppIds
