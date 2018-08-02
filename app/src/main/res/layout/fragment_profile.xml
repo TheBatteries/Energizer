@@ -71,10 +71,11 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cvMenu"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:layout_below="@id/tv_contact_info">
+        android:layout_below="@id/tv_contact_info"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,15 +84,16 @@
             android:weightSum="3">
 
             <RelativeLayout
+                android:id="@+id/rlLeftBox"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/border"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
                 <TextView
                     android:id="@+id/tvLeftNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:textStyle="bold"
@@ -101,22 +103,24 @@
                     android:id="@+id/tvLeftDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/tvLeftNumber"
-                    android:maxLines="1"/>
+                    android:maxLines="2"/>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlMiddleBox"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/border"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
                 <TextView
                     android:id="@+id/tvMiddleNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:textStyle="bold"
@@ -126,23 +130,24 @@
                     android:id="@+id/tvMiddleDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/tvMiddleNumber"
-                    android:maxLines="1"/>
+                    android:maxLines="2"/>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlRightBox"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/border"
-
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
                 <TextView
                     android:id="@+id/tvRightNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:textStyle="bold"
@@ -152,10 +157,11 @@
                     android:id="@+id/tvRightDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/tvRightNumber"
-                    android:maxLines="1"/>
+                    android:maxLines="2"/>
             </RelativeLayout>
 
 

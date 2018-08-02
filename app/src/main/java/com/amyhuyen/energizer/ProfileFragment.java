@@ -35,9 +35,7 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.tv_name) TextView tv_name;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
-
+    @BindView(R.id.btn_edit_causes) Button btn_edit_causes;
 
     FragmentActivity listener;
 
@@ -68,13 +66,17 @@ public abstract class ProfileFragment extends Fragment {
         tv_email.setText( UserDataProvider.getInstance().getCurrentUserEmail());
     }
 
-    //abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
+    // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
 
     public abstract void drawSkills();
 
     public abstract void drawCauseAreas();
 
     public abstract void drawContactInfo();
+
+    public abstract void drawMenu();
+
+    public abstract void switchToCommitFragment();
 
     //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
@@ -100,6 +102,11 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @OnClick (R.id.rlLeftBox)
+    public void onLeftBoxClick(){
+        switchToCommitFragment();
     }
 
 }

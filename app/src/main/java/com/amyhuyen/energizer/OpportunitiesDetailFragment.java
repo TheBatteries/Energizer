@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class OpportunitiesDetailFragment extends Fragment {
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
     @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
+
+    public int numVolSignedUp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -196,7 +199,7 @@ public class OpportunitiesDetailFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // find how many volunteers are still needed and fill in the text accordingly
-                int numVolSignedUp = (int) dataSnapshot.getChildrenCount();
+                numVolSignedUp = (int) dataSnapshot.getChildrenCount();
                 int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
@@ -207,7 +210,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("checkCapacity", databaseError.toString());
             }
         });
     }
