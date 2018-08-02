@@ -49,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
+//        BitmapFactory.Options opts = new BitmapFactory.Options();
+//        opts.inSampleSize = 4;
+//        Bitmap newBitmap = BitmapFactory.decodeFile("/Users/acfoley/Desktop/Energizer/Energizer/app/src/main/res/drawable/skyline.jpg", opts);
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDBUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER);
