@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/vol_reg_background"
+    android:background="@drawable/median"
     tools:context=".LoginActivity">
 
     <TextView
@@ -65,8 +65,5 @@
         android:layout_below="@id/btnLogin"
         android:textAlignment="center"
         android:textColor="@color/white"/>
-
-
-
 
 </RelativeLayout>
