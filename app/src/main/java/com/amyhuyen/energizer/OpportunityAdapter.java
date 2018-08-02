@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -10,15 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.parceler.Parcels;
 
@@ -34,6 +41,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     private List<Opportunity> mOpportunities;
     Activity context;
     public String skillName;
+    private StorageReference storageReference;
 
     public OpportunityAdapter(List<Opportunity> opportunities, Activity activity){
         mOpportunities = opportunities;
@@ -47,6 +55,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvOppDesc) TextView tvOppDesc;
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
         public @BindView (R.id.tvSkills) TextView tvSkills;
+        public @BindView(R.id.profile_pic_feed) ImageView ivProfilePicFeed;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -96,16 +105,33 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     // bind the values based on the position of the element
     @Override
-    public void onBindViewHolder (@NonNull ViewHolder holder, int position){
+    public void onBindViewHolder (@NonNull final ViewHolder holder, int position){
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
         final String time = OppDisplayUtils.formatTime(opp);
+        storageReference = FirebaseStorage.getInstance().getReference();
+
 
         // populate the views
         holder.tvOppName.setText(opp.getName());
         holder.tvNpoName.setText(opp.getNpoName());
         holder.tvOppDesc.setText(opp.getDescription());
         getSkill(opp.getOppId(), holder);
+
+        //images
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+
+        storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(context)
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(holder.ivProfilePicFeed);
+            }
+        });
     }
 
     // getting the number of items
