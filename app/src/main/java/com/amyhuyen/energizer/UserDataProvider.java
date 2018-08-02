@@ -47,7 +47,7 @@ public class UserDataProvider {
 
     public String getCurrentUserName(){
         String UserName = null;
-        if (mUserType.equals("Volunteer")){
+        if (mUserType.equals(DBKeys.KEY_VOLUNTEER)){
             UserName = mVolunteer.getName();
         } else {
             UserName = mNonprofit.getName();
@@ -57,7 +57,7 @@ public class UserDataProvider {
 
     public String getCurrentUserEmail(){
         String email = null;
-        if (mUserType.equals("Volunteer")){
+        if (mUserType.equals(DBKeys.KEY_VOLUNTEER)){
             email = mVolunteer.getEmail();
         } else {
             email = mNonprofit.getEmail();
@@ -67,7 +67,7 @@ public class UserDataProvider {
 
     public String getCurrentUserId(){
         String userId = null;
-        if (mUserType.equals("Volunteer")){
+        if (mUserType.equals(DBKeys.KEY_VOLUNTEER)){
             userId = mVolunteer.getUserID();
         } else {
             userId = mNonprofit.getUserID();

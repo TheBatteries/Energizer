@@ -3,7 +3,6 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +86,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText("Your causes: " + causeString);
+                tv_cause_area.setText("My causes: " + causeString);
             }
         });
 
@@ -102,7 +101,7 @@ public class VolProfileFragment extends ProfileFragment {
                 //TODO - wjy does it go through this 2x - and the last time it gives me an empty string? drawCauses not getting called, and skillString has causes
 
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText("Your skills: " + skillString);
+                tv_skills.setText("My skills: " + skillString);
 
             }
         });

@@ -34,12 +34,9 @@ public class SetCausesActivity extends AppCompatActivity {
     //use set of causes instead of list?
 
     // the views
-    @BindView(R.id.actvCause)
-    AutoCompleteTextView tvUserCause;
-    @BindView(R.id.rvCauses)
-    RecyclerView rvCauses;
-    @BindView(R.id.addCause)
-    ImageView addCause;
+    @BindView(R.id.actvCause) AutoCompleteTextView tvUserCause;
+    @BindView(R.id.rvCauses) RecyclerView rvCauses;
+    @BindView(R.id.addCause) ImageView addCause;
 
     private DatabaseReference firebaseData;
     private ArrayList<Cause> userCauses;
