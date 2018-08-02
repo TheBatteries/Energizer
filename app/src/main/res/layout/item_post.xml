@@ -44,8 +44,8 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="46dp"
-        android:layout_below="@id/tvOppName"
-        android:layout_alignParentRight="true"
+        android:layout_below="@id/tvNpoName"
+        android:layout_alignStart="@id/tvNpoName"
         android:numStars="3"
         android:scaleX="0.5"
         android:scaleY="0.5"
@@ -64,7 +64,7 @@
         android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="25dp"
         android:textSize="12dp"/>
 
     <TextView
@@ -72,6 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvSkills"
+        android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:textSize="12dp"/>
