@@ -5,6 +5,7 @@ package com.amyhuyen.energizer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -20,8 +21,14 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -32,6 +39,7 @@ public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
+    DatabaseReference databaseReference;
     private Set<Character> vowels = new HashSet<>();
 
 
@@ -75,33 +83,29 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        //create set for pseudo-randomly deciding background
-//        vowels.add('a');
-//        vowels.add('e');
-//        vowels.add('i');
-//        vowels.add('o');
-//        vowels.add('u');
-//        vowels.add('y');
 
         //set textview text
         tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
         tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         //load banner
+        //createImageUrlSet();
 //        drawProfileBanner();
 
         //attempt to load image from url
-
         String imageUrlString = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80";
 
         GlideApp.with(getContext())
                 .load(imageUrlString)
                 .placeholder(R.color.colorAccent)
                 .error(R.color.red_4)
+                .centerCrop()
                 .into(ivProfileBanner);
     }
 
-    //abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
+    // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
 
     public abstract void drawSkills();
 
@@ -109,6 +113,11 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawContactInfo();
 
+    public abstract void drawMenu();
+
+    public abstract void switchToCommitFragment();
+
+    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
 
     @OnClick(R.id.btn_logout)
@@ -128,6 +137,49 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish();
     }
+
+    @OnClick(R.id.rlLeftBox)
+    public void onLeftBoxClick() {
+        switchToCommitFragment();
+    }
+
+    //TODO - will have to separate this into Vol/Npo
+    public abstract void getCauseIds();
+    public abstract List<String> getCauseIdList();
+
+    public void getBannerImageUrl() {
+        databaseReference.child(DBKeys.KEY_CAUSE).child(getCauseIdList().get(0)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (imageUrlSet.contains(dataSnapshot.getKey())) {
+                    String bannerImageUrl = drawBanner(dataSnapshot.getKey());
+                } else {
+                    drawBanner(defaultImageUrl);
+                }
+                }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("ProfileFragment", "Unable to get datasnapshot at "causeImageUrl);
+                String bannerImageUrl = drawBanner(defaultImageUrl);
+            }
+        });
+    }
+
+    //TODO - assign defaultImageUrl and make drawBanner(Strng imageurl) --should just be the glide stuff
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////color banners
 
 //    public void drawProfileBanner() {
 //        char letter = getCharFromName();
@@ -186,26 +238,6 @@ public abstract class ProfileFragment extends Fragment {
 //        return imageResource;
 //    }
 
-    ////////change banners with pictures
-//    public void drawProfileBanner() {
-//        URL url = null;
-//        try {
-//            url = new URL("https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80");
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//            Log.d("Profile Fragment", "Problem loading image from Url");
-//        }
-//        Bitmap bmp = null;
-//        try {
-//            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.d("Profile Fragment", "Problem with .openConnection()");
-//
-//        }
-//        ivProfileBanner.setImageBitmap(bmp);
-//    }
-
 
 
 //    //returns the first vowel as char in the person's name
@@ -220,40 +252,3 @@ public abstract class ProfileFragment extends Fragment {
 //        }
 //        return letter;
 //    }
-//
-//    //chooses background banner based on first vowel in person's name
-//    private int decideBanner(char letter) {
-//
-//        int imageResource;
-//
-//        switch (letter) {
-//            case 'a':
-//                imageResource = R.color.colorAccent;
-//                break;
-//            case 'e':
-//                imageResource = R.color.colorPrimary;
-//                break;
-//            case 'i':
-//                imageResource = R.color.colorPrimaryDark;
-//                break;
-//            case 'o':
-//                imageResource = R.color.colorAccent;
-//                break;
-//            case 'u':
-//                imageResource = R.color.colorSecondaryDark;
-//                break;
-//            case 'y':
-//                imageResource = R.color.blue_5_10_transparent;
-//                break;
-//            case 'z':
-//                imageResource = R.color.orange_4;
-//                break;
-//            default:
-//                imageResource = R.color.colorPrimary;
-//                break;
-//        }
-//        return imageResource;
-//    }
-
-        }
-

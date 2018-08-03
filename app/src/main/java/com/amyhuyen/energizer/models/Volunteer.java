@@ -42,7 +42,7 @@ public class Volunteer extends User {
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;
 
 
-    ////////getting skills list
+    // getting skills list
 
     public void fetchSkills(VolProfileFragment.SkillFetchListner skillFetchListner) {
         mSkillFetchListner = skillFetchListner;
@@ -105,14 +105,14 @@ public class Volunteer extends User {
         mSkillFetchListner.onSkillsFetched(skillNames);
     }
 
-    /////////CauseAreas
+    // getting causes list
 
     public void fetchCauses(VolProfileFragment.CauseFetchListener causeFetchListener) {
         mCauseFetchListener = causeFetchListener;
         fetchCauseIds();
     }
 
-    private void fetchCauseIds() {
+    public void fetchCauseIds() {
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -130,7 +130,7 @@ public class Volunteer extends User {
         });
     }
 
-    private List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
+    public List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
         final List<String> causeIds = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             causeIds.add(child.child(DBKeys.KEY_CAUSE_ID).getValue().toString());
