@@ -121,6 +121,7 @@ public class Volunteer extends User {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> causeIds = getCauseIds(dataSnapshot);
                 fetchCauseNames(causeIds);
+                onCauseIdsFetched(causeIds);
             }
 
             @Override
@@ -167,4 +168,11 @@ public class Volunteer extends User {
         Log.i("CAUSE_TEST", causeNames.toString());
         mCauseFetchListener.onCausesFetched(causeNames);
     }
+
+    private void onCauseIdsFetched(List<String> causeIds) {
+        mCauseFetchListener.onCauseIdsFetched(causeIds);
+    }
+
+
+
 }

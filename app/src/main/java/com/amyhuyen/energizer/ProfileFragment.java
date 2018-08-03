@@ -5,7 +5,6 @@ package com.amyhuyen.energizer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -21,11 +20,8 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,8 +35,8 @@ public abstract class ProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     User user;
     DatabaseReference databaseReference;
-    private Set<String> imageUrlSet;
-    private String defaultImageUrl;
+    public Set<String> imageUrlSet;
+    public String defaultImageUrl;
 
 
     public ProfileFragment() {
@@ -102,7 +98,7 @@ public abstract class ProfileFragment extends Fragment {
 
 //        getCauseIds();
 //        getCauseIdList();
-        getBannerImageUrl();
+//        getBannerImageUrl();
     }
 
     // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
@@ -142,32 +138,6 @@ public abstract class ProfileFragment extends Fragment {
         switchToCommitFragment();
     }
 
-    //TODO - will have to separate this into Vol/Npo
-//    public abstract void getCauseIds();
-
-//    public abstract List<String> getCauseIdList(List<String> causeIds);
-
-    //TODO - get causeID
-    public void getBannerImageUrl() {
-        databaseReference.child(DBKeys.KEY_CAUSE).child("-LImO9lPk8Q_69g75WHx").child(DBKeys.KEY_CAUSE_IMAGE_URL).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (imageUrlSet.contains(dataSnapshot.getValue())) {
-                    String bannerImageUrl = dataSnapshot.getValue().toString();
-                    drawBanner(bannerImageUrl);
-                } else {
-                    drawBanner(defaultImageUrl);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("ProfileFragment", "Unable to get datasnapshot at causeImageUrl");
-                drawBanner(defaultImageUrl);
-            }
-        });
-    }
-
     public void drawBanner(String bannerImageUrl) {
         GlideApp.with(getContext())
                 .load(bannerImageUrl)
@@ -177,8 +147,6 @@ public abstract class ProfileFragment extends Fragment {
                 .into(ivProfileBanner);
     }
 }
-
-//TODO - assign defaultImageUrl and make drawBanner(Strng imageurl) --should just be the glide stuff
 
 
 /////////////////////////color banners
