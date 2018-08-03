@@ -1,16 +1,25 @@
 package com.amyhuyen.energizer.models;
 
-public class Cause{
+public class Cause {
 
 
-        String cause;
+    String cause;
 
-        public Cause(){ }
+    public Cause() {
+    }
 
-        public Cause(String cause){
-            this.cause = cause;
-        }
+    public Cause(String cause) {
+        this.cause = cause;
+    }
 
-        public String getCause(){ return cause; }
+    public String getCause() {
+        return cause;
+    }
+
+//    public String getCausePicPath() {
+//    String causePicPath;
+//
+//    return causePicPath;
+//    }
 
 }
