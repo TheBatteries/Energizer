@@ -3,7 +3,8 @@
     <color name="colorPrimary">#6CDFFE</color>
     <color name="colorPrimaryDark">#FDC915</color>
     <color name="colorAccent">#6CDFFE</color>
-    <color name="colorSecondaryDark">#CB9B8C</color>
+    <color name="colorAccentSeeThrough">#166cdffe</color>
+    <color name="colorSecondaryDark">#f2a33b</color>
     <color name="colorSecondaryLight">#FFFFEE</color>
     <color name="theme_grey">#F5F5F6</color>
     <color name="action_bar_semi_transparent_white">#bfffffff</color>

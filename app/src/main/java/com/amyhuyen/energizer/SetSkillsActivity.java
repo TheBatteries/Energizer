@@ -54,7 +54,7 @@ public class SetSkillsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_skills);
-        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         userId = currentFirebaseUser.getUid();
@@ -110,7 +110,7 @@ public class SetSkillsActivity extends AppCompatActivity {
             // gets the name of the skill
             Map singleSkill = (Map) entry.getValue();
             // adds that skill name to the ArrayList
-            Skill userInputSkill = new Skill((String) singleSkill.get("skill"));
+            Skill userInputSkill = new Skill((String) singleSkill.get(DBKeys.KEY_SKILL_INNER));
             skills.add(userInputSkill.getSkill());
         }
         return skills;
@@ -133,7 +133,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         // set all the skills that the user inputs to new Skills
         final String skill = tvUserSkill.getText().toString().trim();
         // store the database reference to "Skill" as a shortcut
-        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        final DatabaseReference skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         // if the user does not add the last skill they fill in to the recycler view, then we want to grab it
         // and store it as a new skill
         if (!skill.isEmpty()) {
@@ -146,7 +146,7 @@ public class SetSkillsActivity extends AppCompatActivity {
             // we need to bind our index to a final integer in order to link it to the database
             final int index = i;
             // we now go through all the skills already in the database to see if the skill that the user input is already there or not
-            skillsRef.orderByChild("skill").equalTo(userSkills.get(index).getSkill())
+            skillsRef.orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -161,7 +161,7 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 pushToSkillsPerUser(index);
                                 // if the skill that the user input is not already in the database then we run through the else case
                             } else {
-                                firebaseData.child("Skill").push().setValue(userSkills.get(index));
+                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).push().setValue(userSkills.get(index));
                                 // create a hashmap for the UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                 pushToUsersPerSkill(userIdDataMap, index);
@@ -228,7 +228,7 @@ public class SetSkillsActivity extends AppCompatActivity {
         addSkills();
         Intent intent;
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")) {
+        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
             intent = new Intent(getApplicationContext(), SetCausesActivity.class); //Make sure changin this from LandingActivity didn't mess up extras
         } else {
             // get intent information from previous activity

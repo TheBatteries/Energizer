@@ -3,6 +3,8 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VolProfileFragment extends ProfileFragment {
@@ -36,14 +39,22 @@ public class VolProfileFragment extends ProfileFragment {
         void onCausesFetched(List<String> causes);
     }
 
-    //views
+    // the views
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
     @BindView (R.id.profile_pic) ImageView profilePic;
     @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
-    //TODO - start by fixing textviews. Skills and Cause areas text views seem to be overlapping
+    // menu views
+    @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
+    @BindView(R.id.tvLeftDescription) TextView tvLeftDescription;
+    @BindView(R.id.tvMiddleNumber) TextView tvMiddleNumber;
+    @BindView(R.id.tvMiddleDescription) TextView tvMiddleDescription;
+    @BindView(R.id.tvRightNumber) TextView tvRightNumber;
+    @BindView(R.id.tvRightDescription) TextView tvRightDescription;
+
+
 
     public VolProfileFragment() {
         // Required empty public constructor
@@ -61,9 +72,12 @@ public class VolProfileFragment extends ProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         volunteer = new Volunteer();
         storageReference = FirebaseStorage.getInstance().getReference();
+        ButterKnife.bind(this, view);
+
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
+        drawMenu();
         storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -85,7 +99,13 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onCausesFetched(List<String> causes){
                 String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText("Your causes: " + causeString);
+                tv_cause_area.setText("My causes: " + causeString);
+
+                // set the text in the menu for number of causes
+                tvRightNumber.setText(Integer.toString(causes.size()));
+                if (causes.size() == 1) {
+                    tvRightDescription.setText("Cause");
+                }
             }
         });
 
@@ -99,7 +119,13 @@ public class VolProfileFragment extends ProfileFragment {
             public void onSkillsFetched(List<String> skills) {
 
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText("Your skills: " + skillString);
+                tv_skills.setText("My skills: " + skillString);
+
+                // set the text in the menu for number of skills
+                tvMiddleNumber.setText(Integer.toString(skills.size()));
+                if (skills.size() == 1){
+                    tvMiddleDescription.setText("Skill");
+                }
 
             }
         });
@@ -119,6 +145,29 @@ public class VolProfileFragment extends ProfileFragment {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
     }
+    @Override
+    public void drawMenu() {
+        // set the text for the descriptions
+        tvLeftDescription.setText("Commits");
+        tvMiddleDescription.setText("Skills");
+        tvRightDescription.setText("Causes");
 
+        // set the text for the number of commits
+        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+        tvLeftNumber.setText(Integer.toString(numCommits));
+        if (numCommits == 1){
+            tvLeftDescription.setText("Commit");
+        }
+    }
+
+    @Override
+    public void switchToCommitFragment(){
+        LandingActivity landing = (LandingActivity) getActivity();
+        landing.bottomNavigationView.setSelectedItemId(R.id.ic_middle);
+        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        Fragment volCommitFragment = landing.commitFrag;
+        fragmentTransaction.replace(R.id.flContainer, volCommitFragment);
+        fragmentTransaction.commit();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -10,15 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.parceler.Parcels;
 
@@ -34,6 +41,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     private List<Opportunity> mOpportunities;
     Activity context;
     public String skillName;
+    private StorageReference storageReference;
     public String causeName;
 
     public OpportunityAdapter(List<Opportunity> opportunities, Activity activity){
@@ -49,6 +57,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
         public @BindView (R.id.tvSkills) TextView tvSkills;
         public @BindView (R.id.tvCauses) TextView tvCauses;
+        public @BindView(R.id.profile_pic_feed) ImageView ivProfilePicFeed;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -69,7 +78,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
                 // create a bundle to hold the opportunity for transfer to details fragment
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("Opportunity", Parcels.wrap(opportunity));
+                bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
                 bundle.putString("Skill Name", skillName);
                 bundle.putString("Cause Name", causeName);
 
@@ -99,16 +108,33 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     // bind the values based on the position of the element
     @Override
-    public void onBindViewHolder (@NonNull ViewHolder holder, int position){
+    public void onBindViewHolder (@NonNull final ViewHolder holder, int position){
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
         final String time = OppDisplayUtils.formatTime(opp);
+        storageReference = FirebaseStorage.getInstance().getReference();
+
 
         // populate the views
         holder.tvOppName.setText(opp.getName());
         holder.tvNpoName.setText(opp.getNpoName());
         holder.tvOppDesc.setText(opp.getDescription());
         getSkill(opp.getOppId(), holder);
+
+        //images
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+
+        storageReference.child("profilePictures/users/" + opp.getNpoId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(context)
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(holder.ivProfilePicFeed);
+            }
+        });
     }
 
     // getting the number of items
@@ -130,11 +156,11 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     // method that gets the skills related to an opportunity
     public void getSkill(final String oppId, final ViewHolder holder){
         final DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
-        dataRef.child("SkillsPerOpp").child(oppId).addValueEventListener(new ValueEventListener() {
+        dataRef.child(DBKeys.KEY_SKILLS_PER_OPP).child(oppId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String skillId = ((HashMap<String,String>) child.getValue()).get("SkillID");
+                    String skillId = ((HashMap<String,String>) child.getValue()).get(DBKeys.KEY_SKILL_ID);
 
                     // call method that changes the skillId to the skillName
                     skillIdToName(skillId, dataRef, holder, oppId);
@@ -150,10 +176,10 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     // method that gets the skill name when given the id
     public void skillIdToName(String skillId, final DatabaseReference dataRef, final ViewHolder holder, final String oppId){
-        dataRef.child("Skill").child(skillId).addValueEventListener(new ValueEventListener() {
+        dataRef.child(DBKeys.KEY_SKILL_OUTER).child(skillId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get("skill");
+                skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get(DBKeys.KEY_SKILL_INNER);
                 // set the text
                 holder.tvSkills.setText("Skill Needed: " + skillName);
 
@@ -170,11 +196,11 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     // method that gets the causes related to an opportunity
     public void getCauses(String oppId, final DatabaseReference dataRef, final ViewHolder holder){
-        dataRef.child("CausesPerOpp").child(oppId).addValueEventListener(new ValueEventListener() {
+        dataRef.child(DBKeys.KEY_CAUSES_PER_OPP).child(oppId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String causeId = ((HashMap<String, String>) child.getValue()).get("CauseID");
+                    String causeId = ((HashMap<String, String>) child.getValue()).get(DBKeys.KEY_CAUSE_ID);
 
                     // call the method that changes the causeId to the causeName
                     causeIdToName(causeId, dataRef, holder);
@@ -190,10 +216,10 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     // method that gets the cause name when give nteh id
     public void causeIdToName(String causeId, DatabaseReference dataRef, final ViewHolder holder){
-        dataRef.child("Cause").child(causeId).addValueEventListener(new ValueEventListener() {
+        dataRef.child(DBKeys.KEY_CAUSE).child(causeId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                causeName = ((HashMap<String, String>) dataSnapshot.getValue()).get("cause");
+                causeName = ((HashMap<String, String>) dataSnapshot.getValue()).get(DBKeys.KEY_CAUSE_NAME);
                 holder.tvCauses.setText("Cause Area: " + causeName);
             }
 

@@ -21,8 +21,7 @@
         <item name="titleTextStyle">@style/MyActionBar.TitleTextStyle</item>
     </style>
 
-    <style name="MyActionBar.TitleTextStyle"
-        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="MyActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/black_70_transparent</item>
     </style>
 
@@ -30,6 +29,10 @@
         <item name="android:textColor">@color/black_70_transparent</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat" >
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
 
 
 </resources>

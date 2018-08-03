@@ -71,7 +71,4 @@
         android:textAlignment="center"
         android:textColor="@color/white"/>
 
-
-
-
 </RelativeLayout>

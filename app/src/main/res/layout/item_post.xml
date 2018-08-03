@@ -4,16 +4,28 @@
     android:layout_height="wrap_content"
     android:background="@drawable/border">
 
+    <ImageView
+        android:id="@+id/profile_pic_feed"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_profile_pic"
+        android:layout_margin="8dp"
+        android:outlineAmbientShadowColor="@color/black"/>
+
     <TextView
         android:id="@+id/tvOppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="1dp"
+        android:fontFamily="@font/royal_crescent_demo"
+        android:textSize="14dp"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
@@ -21,18 +33,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvOppName"
+        android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
         android:textStyle="italic"
         android:textSize="12dp"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_below="@id/tvNpoName"
+        android:layout_alignStart="@id/tvNpoName"
+        android:numStars="5"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:stepSize="0.5"
+        android:theme="@style/RatingBar"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp" />
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_toEndOf="@id/tvNpoName"-->
 
     <TextView
         android:id="@+id/tvSkills"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvNpoName"
+        android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
         android:textSize="12dp"/>
 
     <TextView
@@ -40,6 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvSkills"
+        android:layout_toRightOf="@id/profile_pic_feed"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:textSize="12dp"/>
@@ -54,7 +87,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="1"
         android:textSize="14dp"/>
+
+
 
 </RelativeLayout>

@@ -13,13 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Nonprofit;
-import com.amyhuyen.energizer.models.User;
 import com.amyhuyen.energizer.models.Volunteer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,11 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private FirebaseUser currentFirebaseUser;
-    private String userID;
     private DatabaseReference mDBUserRef;
-    private User user;
-    private static final String TAG = "FACELOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +49,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
+//        BitmapFactory.Options opts = new BitmapFactory.Options();
+//        opts.inSampleSize = 4;
+//        Bitmap newBitmap = BitmapFactory.decodeFile("/Users/acfoley/Desktop/Energizer/Energizer/app/src/main/res/drawable/skyline.jpg", opts);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mDBUserRef = FirebaseDatabase.getInstance().getReference().child("User");
+        mDBUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER);
 
         progressDialog = new ProgressDialog(this);
     }
@@ -94,16 +91,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             // find user type then launch intent to landing activity
-                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child("User").child(firebaseAuth.getCurrentUser().getUid());
+                            DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER).child(firebaseAuth.getCurrentUser().getUid());
                             dataUserRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     HashMap<String, String> userMapping = (HashMap<String, String>) dataSnapshot.getValue();
-                                    String UserType = userMapping.get("userType");
+                                    String UserType = userMapping.get(DBKeys.KEY_USER_TYPE);
 
                                     // update user data provider
                                     UserDataProvider.getInstance().setCurrentUserType(UserType);
-                                    if (UserType.equals("Volunteer")){
+                                    if (UserType.equals(DBKeys.KEY_VOLUNTEER)){
                                         UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
                                     } else{
                                         UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));

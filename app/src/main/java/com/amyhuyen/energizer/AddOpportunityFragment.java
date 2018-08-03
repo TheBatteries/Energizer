@@ -93,7 +93,7 @@ public class AddOpportunityFragment extends Fragment{
 
         // references to the database
         firebaseData = FirebaseDatabase.getInstance().getReference();
-        skillsRef = FirebaseDatabase.getInstance().getReference("Skill");
+        skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         causeRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
 
 
@@ -240,10 +240,10 @@ public class AddOpportunityFragment extends Fragment{
 
         // add as an opportunity and as opportunitiesPerNpo
         Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong, numVolNeeded);
-        firebaseDataOpp.child("Opportunity").child(oppId).setValue(newOpp);
+        firebaseDataOpp.child(DBKeys.KEY_OPPORTUNITY).child(oppId).setValue(newOpp);
         HashMap<String, String> oppIdMap = new HashMap<>();
-        oppIdMap.put("OppID", oppId);
-        firebaseDataOpp.child("OpportunitiesPerNPO").child(npoId).child(intermediateId).setValue(oppIdMap);
+        oppIdMap.put(DBKeys.KEY_OPP_ID, oppId);
+        firebaseDataOpp.child(DBKeys.KEY_OPPS_PER_NPO).child(npoId).child(intermediateId).setValue(oppIdMap);
 
         // alert user of success
         Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
@@ -254,7 +254,7 @@ public class AddOpportunityFragment extends Fragment{
         // switch to my opportunity fragment and reflect change in bottom navigation view
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
         FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-        Fragment npoCommitFragment = new NpoCommitFragment();
+        Fragment npoCommitFragment = landing.commitFrag;
         fragmentTransaction.replace(R.id.flContainer, npoCommitFragment);
         fragmentTransaction.addToBackStack(null).commit();
     }
@@ -271,17 +271,17 @@ public class AddOpportunityFragment extends Fragment{
         // add the skills within the ArrayList to the database
         for (int i = 0; i < oppSkills.size(); i ++){
             final int index = i;
-            skillsRef.orderByChild("skill").equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+            skillsRef.orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
                         final HashMap<String, String> opportunityId = new HashMap<String, String>();
-                        opportunityId.put("oppID", oppId );
+                        opportunityId.put(DBKeys.KEY_OPP_ID_INNER, oppId );
                         // push the hashmap to the preexisting database skill
-                        firebaseData.child("OppsPerSkill").child(oppSkills.get(index).getSkill()).push().setValue(opportunityId);
+                        firebaseData.child(DBKeys.KEY_OPPS_PER_SKILL).child(oppSkills.get(index).getSkill()).push().setValue(opportunityId);
                         // get the skill object ID from the database
                         // we now set another listener for the exact skill in the database to find its specific id
-                        firebaseData.child("Skill").orderByChild("skill").equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 // since we did a .equalTo() search, this for loop only has one element
@@ -291,9 +291,9 @@ public class AddOpportunityFragment extends Fragment{
                                     // Create the skillID hashmap
                                     final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
                                     // bind skillID to the hashmap
-                                    skillIdDataMap.put("SkillID", skillId);
+                                    skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
                                     // push the hashmap to the User's specific skill database
-                                    firebaseData.child("SkillsPerOpp").child(oppId).push().setValue(skillIdDataMap);
+                                    firebaseData.child(DBKeys.KEY_SKILLS_PER_OPP).child(oppId).push().setValue(skillIdDataMap);
                                 }
                             }
                             @Override
@@ -304,16 +304,16 @@ public class AddOpportunityFragment extends Fragment{
                         });
 //                        oppSkills.get(index).getSkill()
                     } else {
-                        firebaseData.child("Skill").push().setValue(oppSkills.get(index));
+                        firebaseData.child(DBKeys.KEY_SKILL_OUTER).push().setValue(oppSkills.get(index));
                         // create a hashmap for the UserID
                         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                         // bind OppID to the hashmap
-                        userIdDataMap.put("oppID", oppId);
+                        userIdDataMap.put(DBKeys.KEY_OPP_ID_INNER_TWO, oppId);
                         // create a new item within the database that links the user to this new skill
-                        firebaseData.child("OppsPerSkill").child(oppSkills.get(index).getSkill()).push().setValue(userIdDataMap);
+                        firebaseData.child(DBKeys.KEY_OPPS_PER_SKILL).child(oppSkills.get(index).getSkill()).push().setValue(userIdDataMap);
                         // get the skill object ID from the database
                         // we now set another listener for the exact skill in the database to find its specific id
-                        firebaseData.child("Skill").orderByChild("skill").equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(oppSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 // since we did a .equalTo() search, this for loop only has one element
@@ -323,9 +323,9 @@ public class AddOpportunityFragment extends Fragment{
                                     // Create the skillID hashmap
                                     final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
                                     // link bind skillID to the hashmap
-                                    skillIdDataMap.put("SkillID", skillId);
+                                    skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
                                     // push the hashmap to the User's specific skill database
-                                    firebaseData.child("SkillsPerOpp").child(oppId).push().setValue(skillIdDataMap);
+                                    firebaseData.child(DBKeys.KEY_SKILLS_PER_OPP).child(oppId).push().setValue(skillIdDataMap);
                                 }
                             }
                             @Override
@@ -356,7 +356,7 @@ public class AddOpportunityFragment extends Fragment{
             // gets the name of the skill
             Map singleSkill = (Map) entry.getValue();
             // adds that skill name to the ArrayList
-            Skill userInputSkill = new Skill((String) singleSkill.get("skill"));
+            Skill userInputSkill = new Skill((String) singleSkill.get(DBKeys.KEY_SKILL_INNER));
             skills.add(userInputSkill.getSkill());
         }
         return skills;
@@ -402,7 +402,7 @@ public class AddOpportunityFragment extends Fragment{
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
                         final HashMap<String, String> opportunityId = new HashMap<String, String>();
-                        opportunityId.put("oppID", oppId );
+                        opportunityId.put(DBKeys.KEY_OPP_ID_INNER_TWO, oppId );
                         // push the hashmap to the preexisting database cause
                         firebaseData.child(DBKeys.KEY_OPPS_PER_CAUSE).child(oppCauses.get(index).getCause()).push().setValue(opportunityId);
                         // get the cause object ID from the database
@@ -433,7 +433,7 @@ public class AddOpportunityFragment extends Fragment{
                         // create a hashmap for the UserID
                         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                         // bind OppID to the hashmap
-                        userIdDataMap.put("oppID", oppId);
+                        userIdDataMap.put(DBKeys.KEY_OPP_ID_INNER_TWO, oppId);
                         // create a new item within the database that links the user to this new cause
                         firebaseData.child(DBKeys.KEY_OPPS_PER_CAUSE).child(oppCauses.get(index).getCause()).push().setValue(userIdDataMap);
                         // get the cause object ID from the database

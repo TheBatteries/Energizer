@@ -87,7 +87,7 @@ public class VolRegActivity extends AppCompatActivity {
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String age = etAge.getText().toString().trim();
         final String phone = etPhone.getText().toString().trim();
-        final String userType = "Volunteer";
+        final String userType = DBKeys.KEY_VOLUNTEER;
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
@@ -114,10 +114,10 @@ public class VolRegActivity extends AppCompatActivity {
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
                                     Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age, downloadURL);
-                                    firebaseData.child("User").child(userID).setValue(volunteer);
+                                    firebaseData.child(DBKeys.KEY_USER).child(userID).setValue(volunteer);
 
                                     // update user data provider
-                                    UserDataProvider.getInstance().setCurrentUserType("Volunteer");
+                                    UserDataProvider.getInstance().setCurrentUserType(userType);
                                     UserDataProvider.getInstance().setCurrentVolunteer(volunteer);
 
 
