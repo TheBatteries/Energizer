@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +42,16 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.tvCauses) TextView tvCauses;
     @BindView (R.id.signUpForOpp) Button signUpForOpp;
     @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
+    @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
     @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
 
     public int numVolSignedUp;
+    Opportunity opportunity;
+    String skillName;
+    String causeName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +69,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         // get the bundle from the feed fragment
         Bundle bundle = getArguments();
-        Opportunity opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
+        opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
@@ -80,8 +86,8 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvOppAddress.setText(opportunity.getAddress());
 
         // get the skill and cause name from the bundle
-        String skillName = bundle.getString("Skill Name");
-        String causeName = bundle.getString("Cause Name");
+        skillName = bundle.getString("Skill Name");
+        causeName = bundle.getString("Cause Name");
         tvSkills.setText("Skill Needed: " + skillName);
         tvCauses.setText("Cause Area: " + causeName);
 
@@ -175,7 +181,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     @OnClick(R.id.signUpForOpp)
-    public void onSignUpForOppButtonClick(){
+    public void onSignUpForOppButtonClick() {
         signUpForOpp.setEnabled(false);
         linkUserAndOpp();
         signUpForOpp.setVisibility(View.GONE);
@@ -184,12 +190,33 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     @OnClick(R.id.unregisterForOpp)
-    public void onUnregisterForOppClick(){
+    public void onUnregisterForOppClick() {
         signUpForOpp.setEnabled(true);
         unlinkUserAndOpp();
         signUpForOpp.setVisibility(View.VISIBLE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
+    }
+
+    @OnClick (R.id.btnUpdateOpp)
+    public void onUpdateOppClick() {
+        // create a bundle to hold the opportunity for transfer to edit opportunity fragment
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
+        bundle.putString("Skill Name", skillName);
+        bundle.putString("Cause Name", causeName);
+        bundle.putString("Number of Registered Volunteers", Integer.toString(numVolSignedUp));
+        switchToUpeq53OpportunityFragment(bundle);
+    }
+
+    // method that switches you to the update opportunity fragment
+    public void switchToUpeq53OpportunityFragment(Bundle bundle) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        UpdateOpportunityFragment updateOpportunityFragment = new UpdateOpportunityFragment();
+        updateOpportunityFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.flContainer, updateOpportunityFragment);
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     // method that checks how many volunteers are currently signed up for this activity
@@ -221,12 +248,15 @@ public class OpportunitiesDetailFragment extends Fragment {
         signUpForOpp.setVisibility(View.GONE);
     }
 
-    // method that hides buttons for nonProfits
+    // method that hides registration buttons for nonProfits and shows the edit opportunity button
     public void hideButtons() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
+        btnUpdateOpp.setEnabled(true);
+        btnUpdateOpp.setVisibility(View.VISIBLE);
+
     }
 
     // method for volunteers to see buttons
@@ -249,9 +279,8 @@ public class OpportunitiesDetailFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+                Log.e("showButtonsForVol", databaseError.toString());
+            };
         });
     }
-
 }

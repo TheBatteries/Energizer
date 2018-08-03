@@ -50,4 +50,7 @@
     <string name="skill_required">Skill Required</string>
     <string name="positions_available">Positions Available</string>
     <string name="number_of_volunteers_needed">Number of Volunteers Needed</string>
+    <string name="unregister">Unregister</string>
+    <string name="sign_up">Sign Up!</string>
+    <string name="update_opportunity">Update Opportunity</string>
 </resources>

@@ -112,7 +112,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
         final String time = OppDisplayUtils.formatTime(opp);
-        storageReference = FirebaseStorage.getInstance().getReference();
 
 
         // populate the views
@@ -123,8 +122,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
         //images
         storageReference = FirebaseStorage.getInstance().getReference();
-
-
         storageReference.child("profilePictures/users/" + opp.getNpoId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
