@@ -14,7 +14,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
     @Override
     public void updateDatabase(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded){
         // create an instance of the opportunity class based on this information
-        DatabaseReference firebaseDataOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPORTUNITY);
+        DatabaseReference firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
         final String oppId = firebaseDataOpp.push().getKey();
         final String intermediateId = firebaseDataOpp.push().getKey();
         addSkill(oppId);

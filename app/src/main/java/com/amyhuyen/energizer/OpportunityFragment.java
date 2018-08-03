@@ -66,10 +66,10 @@ public abstract class OpportunityFragment extends Fragment{
     Date timeEnd;
 
     // text variables
-    String address;
     String npoId;
     String npoName;
     String skill;
+    String cause;
 
     ArrayList<Skill> oppSkills;
     ArrayList<Cause> oppCauses;
@@ -151,12 +151,14 @@ public abstract class OpportunityFragment extends Fragment{
         String endDate = etEndDate.getText().toString().trim();
         String endTime = etEndTime.getText().toString().trim();
         String address = etOppLocation.getText().toString().trim();
-        String skill = actvOppSkill.getText().toString().trim();
+        skill = actvOppSkill.getText().toString().trim();
+        cause = actvOppCause.getText().toString().trim();
         String numVolNeeded = etNumVolNeeded.getText().toString().trim();
 
         // check that all fields are populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
-                TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime) || TextUtils.isEmpty(skill) || TextUtils.isEmpty(address)){
+                TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime) || TextUtils.isEmpty(skill) || TextUtils.isEmpty(cause) ||
+                TextUtils.isEmpty(address) || TextUtils.isEmpty(numVolNeeded)){
             Toast.makeText(getActivity(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
         } else {
             // remove prefixes on start and end times/dates
@@ -196,7 +198,7 @@ public abstract class OpportunityFragment extends Fragment{
 
 
 
-    // on click listener for add opportunity button
+    // on click listener for finish updating button
     @OnClick (R.id.btnFinishUpdating)
     public void onFinishUpdatingClick() {
         checkFieldAndTimeValidity();

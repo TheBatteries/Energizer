@@ -201,16 +201,16 @@ public class OpportunitiesDetailFragment extends Fragment {
     @OnClick (R.id.btnUpdateOpp)
     public void onUpdateOppClick() {
         // create a bundle to hold the opportunity for transfer to edit opportunity fragment
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
-        bundle.putString("Skill Name", skillName);
-        bundle.putString("Cause Name", causeName);
-        bundle.putString("Number of Registered Volunteers", Integer.toString(numVolSignedUp));
-        switchToUpeq53OpportunityFragment(bundle);
+        Bundle updateBundle = new Bundle();
+        updateBundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
+        updateBundle.putString("Skill Name", skillName);
+        updateBundle.putString("Cause Name", causeName);
+        updateBundle.putString("Number of Registered Volunteers", Integer.toString(numVolSignedUp));
+        switchToUpdateOpportunityFragment(updateBundle);
     }
 
     // method that switches you to the update opportunity fragment
-    public void switchToUpeq53OpportunityFragment(Bundle bundle) {
+    public void switchToUpdateOpportunityFragment(Bundle bundle) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         UpdateOpportunityFragment updateOpportunityFragment = new UpdateOpportunityFragment();
