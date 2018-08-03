@@ -3,10 +3,8 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,6 @@ import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -184,24 +179,24 @@ public class VolProfileFragment extends ProfileFragment {
 
     ///////getting banner
 
-    @Override
-    public void getCauseIds() {
-        databaseReference.child(DBKeys.KEY_CAUSES_PER_USER).child(volunteer.getUserID()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                getCauseIdList(volunteer.getCauseIds(dataSnapshot));
-            }
+//    @Override
+//    public void getCauseIds() {
+//        databaseReference.child(DBKeys.KEY_CAUSES_PER_USER).child(volunteer.getUserID()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                getACause(volunteer.getCauseIds(dataSnapshot));
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("Volunteer", "unable to load causePushID datasnapshot");
+//            }
+//        });
+//    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Volunteer", "unable to load causePushID datasnapshot");
-            }
-        });
+//    @Override
+    public String getACause(List<String> causeIds) {
+        return causeIds.get(0);
     }
-
-    public List<String> getCauseIdList(List<String> causeIds){
-        return causeIds;
-    }
-
 
 }

@@ -28,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -40,7 +39,8 @@ public abstract class ProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     User user;
     DatabaseReference databaseReference;
-    private Set<Character> vowels = new HashSet<>();
+    private Set<String> imageUrlSet;
+    private String defaultImageUrl;
 
 
     public ProfileFragment() {
@@ -88,21 +88,21 @@ public abstract class ProfileFragment extends Fragment {
         tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
         tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
 
+        //attempt to load image from url
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        //load banner
-        //createImageUrlSet();
-//        drawProfileBanner();
+        imageUrlSet = new HashSet<>();
+        imageUrlSet.add("https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80");
+        imageUrlSet.add("https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80");
+        imageUrlSet.add("https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80");
+        imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80");
 
-        //attempt to load image from url
-        String imageUrlString = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80";
+        defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80";
 
-        GlideApp.with(getContext())
-                .load(imageUrlString)
-                .placeholder(R.color.colorAccent)
-                .error(R.color.red_4)
-                .centerCrop()
-                .into(ivProfileBanner);
+//        getCauseIds();
+//        getCauseIdList();
+        getBannerImageUrl();
     }
 
     // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
@@ -117,7 +117,6 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void switchToCommitFragment();
 
-    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
 
     @OnClick(R.id.btn_logout)
@@ -144,39 +143,42 @@ public abstract class ProfileFragment extends Fragment {
     }
 
     //TODO - will have to separate this into Vol/Npo
-    public abstract void getCauseIds();
-    public abstract List<String> getCauseIdList();
+//    public abstract void getCauseIds();
 
+//    public abstract List<String> getCauseIdList(List<String> causeIds);
+
+    //TODO - get causeID
     public void getBannerImageUrl() {
-        databaseReference.child(DBKeys.KEY_CAUSE).child(getCauseIdList().get(0)).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(DBKeys.KEY_CAUSE).child("-LImO9lPk8Q_69g75WHx").child(DBKeys.KEY_CAUSE_IMAGE_URL).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (imageUrlSet.contains(dataSnapshot.getKey())) {
-                    String bannerImageUrl = drawBanner(dataSnapshot.getKey());
+                if (imageUrlSet.contains(dataSnapshot.getValue())) {
+                    String bannerImageUrl = dataSnapshot.getValue().toString();
+                    drawBanner(bannerImageUrl);
                 } else {
                     drawBanner(defaultImageUrl);
                 }
-                }
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("ProfileFragment", "Unable to get datasnapshot at "causeImageUrl);
-                String bannerImageUrl = drawBanner(defaultImageUrl);
+                Log.i("ProfileFragment", "Unable to get datasnapshot at causeImageUrl");
+                drawBanner(defaultImageUrl);
             }
         });
     }
 
-    //TODO - assign defaultImageUrl and make drawBanner(Strng imageurl) --should just be the glide stuff
+    public void drawBanner(String bannerImageUrl) {
+        GlideApp.with(getContext())
+                .load(bannerImageUrl)
+                .placeholder(R.color.colorAccent)
+                .error(R.color.red_4)
+                .centerCrop()
+                .into(ivProfileBanner);
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
+//TODO - assign defaultImageUrl and make drawBanner(Strng imageurl) --should just be the glide stuff
 
 
 /////////////////////////color banners
@@ -237,7 +239,6 @@ public abstract class ProfileFragment extends Fragment {
 //        }
 //        return imageResource;
 //    }
-
 
 
 //    //returns the first vowel as char in the person's name
