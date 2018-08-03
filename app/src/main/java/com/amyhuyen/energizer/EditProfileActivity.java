@@ -324,8 +324,10 @@ public class EditProfileActivity extends AppCompatActivity {
     @OnClick(R.id.setUserProfileEdits)
     public void onConfirmEditsClick() {
         // register the user and go to landing activity
-        addSkills();
-        addCauses();
+        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            addSkills();
+            addCauses();
+        }
         updateUserData();
         // get intent information from previous activity
 

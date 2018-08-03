@@ -105,10 +105,20 @@ public class UserDataProvider {
 
     public String getCurrentUserDescription() {
         String userDescription = null;
-        if (mUserType.equals("Volunteer")) {
+        if (mUserType.equals("NPO")) {
             userDescription = mNonprofit.getDescription();
         }
         return userDescription;
+    }
+
+    public String getCurrentUserLatLong() {
+        String userLatLong= null;
+        if (mUserType.equals("Volunteer")) {
+            userLatLong = mVolunteer.getLatLong();
+        } else {
+            userLatLong = mNonprofit.getLatLong();
+        }
+        return userLatLong;
     }
 
 }
