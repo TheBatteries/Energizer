@@ -3,7 +3,6 @@ package com.amyhuyen.energizer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,7 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
     @BindView (R.id.profile_pic) ImageView profilePic;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     //TODO - start by fixing textviews. Skills and Cause areas text views seem to be overlapping
@@ -99,7 +97,6 @@ public class VolProfileFragment extends ProfileFragment {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
-                //TODO - wjy does it go through this 2x - and the last time it gives me an empty string? drawCauses not getting called, and skillString has causes
 
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText("Your skills: " + skillString);
@@ -123,9 +120,5 @@ public class VolProfileFragment extends ProfileFragment {
         super.startActivityForResult(intent, SELECTED_PIC);
     }
 
-    @OnClick(R.id.btn_edit_causes)
-    public void onEditCausesClick() {
-        Intent intent = new Intent(getActivity(), SetCausesActivity.class);
-        startActivity(intent);
-    }
+
 }

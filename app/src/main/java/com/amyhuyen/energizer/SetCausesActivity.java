@@ -154,69 +154,20 @@ public class SetCausesActivity extends AppCompatActivity {
                                 // skill already exists in database
                                 // create hashmap for UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-                                // put UserID into the hashmap
-                                userIdDataMap.put("UserID", userId);
-                                // push the hashmap to the preexisting database skill
-                                firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
+                                pushToUsersPerCause(userIdDataMap, index);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                causeDbRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // since we did a .equalTo() search, this for loop only has one element
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            // we grab the id from the skill and link it to the string skillId
-                                            String causeId = child.getKey();
-                                            // Create the skillID hashmap
-                                            final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
-                                            // bind skillID to the hashmap
-                                            causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
-                                            // push the hashmap to the User's specific skill database
-                                            firebaseData.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).push().setValue(causeIdDataMap);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        // log the error
-                                        Log.e("Existing Cause", databaseError.toString());
-                                    }
-                                });
+                                pushToCausesPerUser(index);
                                 // if the skill that the user input is not already in the database then we run through the else case
                             } else {
                                 firebaseData.child(DBKeys.KEY_CAUSE).push().setValue(userCauses.get(index));
                                 // create a hashmap for the UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-                                // bind UserID to the hashmap
-                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
-                                // create a new item within the database that links the user to this new skill
-                                firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
+                               pushToUsersPerCause(userIdDataMap, index);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
 
-                                //Key: Cause, Value: null
-                                causeDbRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // since we did a .equalTo() search, this for loop only has one element
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            // we grab the id from the skill and link it to the string skillId
-                                            String causeId = child.getKey();
-                                            // Create the skillID hashmap
-                                            final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
-                                            // link bind skillID to the hashmap
-                                            causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
-                                            // push the hashmap to the User's specific skill database
-                                            firebaseData.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).push().setValue(causeIdDataMap);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        // log the error
-                                        Log.e("New Cause", databaseError.toString());
-                                    }
-                                });
+                                pushToCausesPerUser(index);
                             }
                         }
 
@@ -227,6 +178,39 @@ public class SetCausesActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void pushToUsersPerCause(HashMap<String, String> userIdDataMap, Integer index){
+        // put UserID into the hashmap
+        userIdDataMap.put("UserID", userId);
+        // push the hashmap to the preexisting database skill
+        firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
+    }
+
+    private void pushToCausesPerUser(Integer index){
+        final DatabaseReference causeDbRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
+        causeDbRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // since we did a .equalTo() search, this for loop only has one element
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    // we grab the id from the skill and link it to the string skillId
+                    String causeId = child.getKey();
+                    // Create the skillID hashmap
+                    final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
+                    // bind skillID to the hashmap
+                    causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
+                    // push the hashmap to the User's specific skill database
+                    firebaseData.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).push().setValue(causeIdDataMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // log the error
+                Log.e("Existing Cause", databaseError.toString());
+            }
+        });
     }
 
     // on click listener for add button

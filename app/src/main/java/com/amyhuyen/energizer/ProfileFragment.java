@@ -28,6 +28,7 @@ public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
+    private static final int EDIT_PROFILE = 1;
 
     public ProfileFragment() { }
 
@@ -35,8 +36,7 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.tv_name) TextView tv_name;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
 
 
     FragmentActivity listener;
@@ -76,7 +76,6 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawContactInfo();
 
-    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
 
     @OnClick(R.id.btn_logout)
@@ -96,6 +95,13 @@ public abstract class ProfileFragment extends Fragment {
         startActivity(intent);
         listener.finish();
     }
+
+    @OnClick(R.id.btn_edit_profile)
+    public void onEditProfileClick(){
+        Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivityForResult(editProfileIntent, EDIT_PROFILE);
+    }
+
 
     @Override
     public void onDetach() {
