@@ -125,7 +125,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         storageReference = FirebaseStorage.getInstance().getReference();
 
 
-        storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("profilePictures/users/" + opp.getNpoId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());

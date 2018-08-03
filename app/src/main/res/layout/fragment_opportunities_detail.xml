@@ -45,7 +45,7 @@
             android:layout_below="@id/tvNpoName"
             android:layout_centerVertical="true"
             android:stepSize="0.5"
-            android:numStars="3"
+            android:numStars="5"
             android:theme="@style/RatingBar"
             android:scaleX="0.5"
             android:scaleY="0.5"
