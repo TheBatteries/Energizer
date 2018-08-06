@@ -231,7 +231,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
                 if (positionsAvailable == 0){
-                    disableButtons();
+                    disableVolSignUpButtons();
                 }
             }
 
@@ -243,7 +243,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     // method that disables the buttons
-    public void disableButtons() {
+    public void disableVolSignUpButtons() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
     }

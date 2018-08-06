@@ -31,7 +31,6 @@ public class AddOpportunityFragment extends OpportunityFragment{
 
         // alert user of success
         Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
-        clear();
         switchFrag();
     }
 
@@ -39,6 +38,15 @@ public class AddOpportunityFragment extends OpportunityFragment{
     public void setInitialText() {
         tvTitle.setText("Add Opportunity");
         btnFinishUpdating.setText("Add Opportunity");
-        clear();
+        etOppName.setText("");
+        etOppDescription.setText("");
+        etStartDate.setText("");
+        etStartTime.setText("");
+        etEndDate.setText("");
+        etEndTime.setText("");
+        etOppLocation.setText("");
+        actvOppSkill.setText("");
+        actvOppCause.setText("");
+        etNumVolNeeded.setText("");
     }
 }

@@ -196,8 +196,6 @@ public abstract class OpportunityFragment extends Fragment{
         }
     }
 
-
-
     // on click listener for finish updating button
     @OnClick (R.id.btnFinishUpdating)
     public void onFinishUpdatingClick() {
@@ -460,19 +458,5 @@ public abstract class OpportunityFragment extends Fragment{
             });
         }
 
-    }
-
-    // clear fields method
-    public void clear(){
-        etOppName.setText("");
-        etOppDescription.setText("");
-        etStartDate.setText("");
-        etStartTime.setText("");
-        etEndDate.setText("");
-        etEndTime.setText("");
-        etOppLocation.setText("");
-        actvOppSkill.setText("");
-        actvOppCause.setText("");
-        etNumVolNeeded.setText("");
     }
 }
