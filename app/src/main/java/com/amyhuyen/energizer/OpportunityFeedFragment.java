@@ -163,11 +163,11 @@ public class OpportunityFeedFragment extends Fragment {
 
                         // add those oppIds to the myOppIdList
                         myOppsIdList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
-
-                        // call the filters based on causes
-                        userToCauseId();
                     }
                 }
+
+                // call the filters based on causes
+                userToCauseId();
 
             }
 
@@ -238,11 +238,11 @@ public class OpportunityFeedFragment extends Fragment {
                         if (!myOppsIdList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
                             myOppsIdList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                         }
-
-                        // call the method that fetches the opportunities with these oppIds
-                        fetchOpportunities();
                     }
                 }
+
+                // call the method that fetches the opportunities with these oppIds
+                fetchOpportunities();
             }
 
             @Override
