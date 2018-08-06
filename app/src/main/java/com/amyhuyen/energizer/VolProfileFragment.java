@@ -47,30 +47,20 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     // the views
-    @BindView(R.id.tv_skills)
-    TextView tv_skills;
-    @BindView(R.id.tv_cause_area)
-    TextView tv_cause_area;
-    @BindView(R.id.profile_pic)
-    ImageView profilePic;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
-    @BindView(R.id.tv_contact_info)
-    TextView tv_contact_info;
+    @BindView(R.id.tv_skills) TextView tv_skills;
+    @BindView(R.id.tv_cause_area) TextView tv_cause_area;
+    @BindView (R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
+    @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     // menu views
-    @BindView(R.id.tvLeftNumber)
-    TextView tvLeftNumber;
-    @BindView(R.id.tvLeftDescription)
-    TextView tvLeftDescription;
-    @BindView(R.id.tvMiddleNumber)
-    TextView tvMiddleNumber;
-    @BindView(R.id.tvMiddleDescription)
-    TextView tvMiddleDescription;
-    @BindView(R.id.tvRightNumber)
-    TextView tvRightNumber;
-    @BindView(R.id.tvRightDescription)
-    TextView tvRightDescription;
+    @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
+    @BindView(R.id.tvLeftDescription) TextView tvLeftDescription;
+    @BindView(R.id.tvMiddleNumber) TextView tvMiddleNumber;
+    @BindView(R.id.tvMiddleDescription) TextView tvMiddleDescription;
+    @BindView(R.id.tvRightNumber) TextView tvRightNumber;
+    @BindView(R.id.tvRightDescription) TextView tvRightDescription;
+
 
 
     public VolProfileFragment() {
@@ -162,13 +152,6 @@ public class VolProfileFragment extends ProfileFragment {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
     }
-
-    @OnClick(R.id.btn_edit_causes)
-    public void onEditCausesClick() {
-        Intent intent = new Intent(getActivity(), SetCausesActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void drawMenu() {
         // set the text for the descriptions

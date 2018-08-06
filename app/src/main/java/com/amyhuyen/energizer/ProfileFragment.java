@@ -34,13 +34,13 @@ public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
+    private static final int EDIT_PROFILE = 1;
+    private Set<Character> vowels = new HashSet<>();
     DatabaseReference databaseReference;
     public Set<String> imageUrlSet;
     public String defaultImageUrl;
 
-
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
     //views
     @BindView(R.id.tv_name)
@@ -49,8 +49,8 @@ public abstract class ProfileFragment extends Fragment {
     ImageButton btn_logout;
     @BindView(R.id.tv_email)
     TextView tv_email;
-    @BindView(R.id.btn_edit_causes)
-    Button btn_edit_causes;
+//    @BindView(R.id.btn_edit_causes)
+//    Button btn_edit_causes;
     @BindView(R.id.ivProfileBanner)
     ImageView ivProfileBanner;
 
@@ -79,7 +79,6 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-
         //set textview text
         tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
         tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
@@ -95,10 +94,6 @@ public abstract class ProfileFragment extends Fragment {
         imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"); //books
 
         defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80"; //hand extended
-
-//        getCauseIds();
-//        getCauseIdList();
-//        getBannerImageUrl();
     }
 
     // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
@@ -137,6 +132,20 @@ public abstract class ProfileFragment extends Fragment {
 
     @OnClick(R.id.rlLeftBox)
     public void onLeftBoxClick() {
+    @OnClick(R.id.btn_edit_profile)
+    public void onEditProfileClick(){
+        Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivityForResult(editProfileIntent, EDIT_PROFILE);
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @OnClick (R.id.rlLeftBox)
+    public void onLeftBoxClick(){
         switchToCommitFragment();
     }
 

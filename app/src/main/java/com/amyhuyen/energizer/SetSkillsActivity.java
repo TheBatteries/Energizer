@@ -32,12 +32,9 @@ import butterknife.OnClick;
 public class SetSkillsActivity extends AppCompatActivity {
 
     // the views
-    @BindView(R.id.actvSkill)
-    AutoCompleteTextView tvUserSkill;
-    @BindView(R.id.rvSkills)
-    RecyclerView rvSkills;
-    @BindView(R.id.addSkill)
-    ImageView addSkill;
+    @BindView(R.id.actvSkill) AutoCompleteTextView tvUserSkill;
+    @BindView(R.id.rvSkills) RecyclerView rvSkills;
+    @BindView(R.id.addSkill) ImageView addSkill;
 
     private DatabaseReference firebaseData;
     private ArrayList<Skill> userSkills;
@@ -142,7 +139,6 @@ public class SetSkillsActivity extends AppCompatActivity {
         if (!skill.isEmpty()) {
             final Skill userLastInputSkill = new Skill(skill);
             userSkills.add(userLastInputSkill);
-
         }
         userSkills.addAll(skills);
         // index through the arraylist to add the skills to the database and link them with the current user
@@ -159,70 +155,21 @@ public class SetSkillsActivity extends AppCompatActivity {
                                 // skill already exists in database
                                 // create hashmap for UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-                                // put UserID into the hashmap
-                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
-                                // push the hashmap to the preexisting database skill
-                                firebaseData.child(DBKeys.KEY_USERS_PER_SKILL).child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
+                                pushToUsersPerSkill(userIdDataMap, index);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // since we did a .equalTo() search, this for loop only has one element
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            // we grab the id from the skill and link it to the string skillId
-                                            String skillId = child.getKey();
-                                            // Create the skillID hashmap
-                                            final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
-                                            // bind skillID to the hashmap
-                                            skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
-                                            // push the hashmap to the User's specific skill database
-                                            firebaseData.child(DBKeys.KEY_SKILLS_PER_USER).child(userId).push().setValue(skillIdDataMap);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        // log the error
-                                        Log.e("Existing Skill", databaseError.toString());
-                                    }
-                                });
+                                pushToSkillsPerUser(index);
                                 // if the skill that the user input is not already in the database then we run through the else case
                             } else {
                                 firebaseData.child(DBKeys.KEY_SKILL_OUTER).push().setValue(userSkills.get(index));
                                 // create a hashmap for the UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-                                // bind UserID to the hashmap
-                                userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
-                                // create a new item within the database that links the user to this new skill
-                                firebaseData.child(DBKeys.KEY_USERS_PER_SKILL).child(userSkills.get(index).getSkill()).push().setValue(userIdDataMap);
+                                pushToUsersPerSkill(userIdDataMap, index);
                                 // get the skill object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
-                                firebaseData.child(DBKeys.KEY_SKILL_OUTER).orderByChild(DBKeys.KEY_SKILL_INNER).equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // since we did a .equalTo() search, this for loop only has one element
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            // we grab the id from the skill and link it to the string skillId
-                                            String skillId = child.getKey();
-                                            // Create the skillID hashmap
-                                            final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
-                                            // link bind skillID to the hashmap
-                                            skillIdDataMap.put(DBKeys.KEY_SKILL_ID, skillId);
-                                            // push the hashmap to the User's specific skill database
-                                            firebaseData.child(DBKeys.KEY_SKILLS_PER_USER).child(userId).push().setValue(skillIdDataMap);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        // log the error
-                                        Log.e("New Skill", databaseError.toString());
-                                    }
-                                });
+                                pushToSkillsPerUser(index);
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             // log the error
@@ -230,6 +177,38 @@ public class SetSkillsActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void pushToSkillsPerUser(Integer index){
+        firebaseData.child("Skill").orderByChild("skill").equalTo(userSkills.get(index).getSkill()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // since we did a .equalTo() search, this for loop only has one element
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    // we grab the id from the skill and link it to the string skillId
+                    String skillId = child.getKey();
+                    // Create the skillID hashmap
+                    final HashMap<String, String> skillIdDataMap = new HashMap<String, String>();
+                    // link bind skillID to the hashmap
+                    skillIdDataMap.put("SkillID", skillId);
+                    // push the hashmap to the User's specific skill database
+                    firebaseData.child("SkillsPerUser").child(userId).push().setValue(skillIdDataMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // log the error
+                Log.e("New Skill", databaseError.toString());
+            }
+        });
+    }
+
+    private void pushToUsersPerSkill(HashMap<String, String> dataHashMap, Integer index){
+        // bind UserID to the hashmap
+        dataHashMap.put("UserID", userId);
+        // create a new item within the database that links the user to this new skill
+        firebaseData.child("UsersPerSkill").child(userSkills.get(index).getSkill()).push().setValue(dataHashMap);
     }
 
     // on click listener for add button

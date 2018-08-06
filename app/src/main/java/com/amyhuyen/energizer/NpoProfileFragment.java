@@ -130,7 +130,6 @@ public class NpoProfileFragment extends ProfileFragment {
 
     @Override
     public void drawEditCausesBtn() {
-        btn_edit_causes.setVisibility(View.GONE);
 
     }
 

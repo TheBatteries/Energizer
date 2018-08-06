@@ -50,4 +50,7 @@
     <string name="skill_required">Skill Required</string>
     <string name="positions_available">Positions Available</string>
     <string name="number_of_volunteers_needed">Number of Volunteers Needed</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
