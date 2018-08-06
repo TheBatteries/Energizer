@@ -91,16 +91,11 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvSkills.setText("Skill Needed: " + skillName);
         tvCauses.setText("Cause Area: " + causeName);
 
-        // check the capacity of the opportunity to take on new volunteers
-        checkCapacity(opportunity);
-
         if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
-            showButtonsForVol(oppId);
+            determineButtonsToShowForVol(oppId);
         } else {
-            hideButtons();
+            setUpButtonsForNpoUser();
         }
-
-
     }
 
     private void linkUserAndOpp(){
@@ -231,7 +226,9 @@ public class OpportunitiesDetailFragment extends Fragment {
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
                 if (positionsAvailable == 0){
-                    disableVolSignUpButtons();
+                    disableAllVolSignUpButtons();
+                } else {
+                    showRegisterButton();
                 }
             }
 
@@ -242,38 +239,49 @@ public class OpportunitiesDetailFragment extends Fragment {
         });
     }
 
-    // method that disables the buttons
-    public void disableVolSignUpButtons() {
+    // method that disables the buttons for volunteers (because capacity has been reached)
+    public void disableAllVolSignUpButtons() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
+        unregisterForOpp.setEnabled(false);
+        unregisterForOpp.setVisibility(View.GONE);
     }
 
     // method that hides registration buttons for nonProfits and shows the edit opportunity button
-    public void hideButtons() {
+    public void setUpButtonsForNpoUser() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
         btnUpdateOpp.setEnabled(true);
         btnUpdateOpp.setVisibility(View.VISIBLE);
+    }
 
+    // method that shows registered volunteers the unregister button only
+    public void showUnregisterButton() {
+        signUpForOpp.setEnabled(false);
+        signUpForOpp.setVisibility(View.GONE);
+        unregisterForOpp.setEnabled(true);
+        unregisterForOpp.setVisibility(View.VISIBLE);
+    }
+
+    // method that shows unregistered volunteers the register button only
+    public void showRegisterButton() {
+        signUpForOpp.setEnabled(true);
+        signUpForOpp.setVisibility(View.VISIBLE);
+        unregisterForOpp.setEnabled(false);
+        unregisterForOpp.setVisibility(View.GONE);
     }
 
     // method for volunteers to see buttons
-    public void showButtonsForVol(String oppId) {
+    public void determineButtonsToShowForVol(String oppId) {
         oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    signUpForOpp.setEnabled(false);
-                    signUpForOpp.setVisibility(View.GONE);
-                    unregisterForOpp.setEnabled(true);
-                    unregisterForOpp.setVisibility(View.VISIBLE);
+                    showUnregisterButton();
                 } else {
-                    signUpForOpp.setEnabled(true);
-                    signUpForOpp.setVisibility(View.VISIBLE);
-                    unregisterForOpp.setEnabled(false);
-                    unregisterForOpp.setVisibility(View.GONE);
+                    checkCapacity(opportunity);
                 }
             }
 
