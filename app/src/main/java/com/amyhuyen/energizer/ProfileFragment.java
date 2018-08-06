@@ -130,8 +130,7 @@ public abstract class ProfileFragment extends Fragment {
         listener.finish();
     }
 
-    @OnClick(R.id.rlLeftBox)
-    public void onLeftBoxClick() {
+
     @OnClick(R.id.btn_edit_profile)
     public void onEditProfileClick(){
         Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
