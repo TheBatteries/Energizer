@@ -9,7 +9,7 @@ import com.amyhuyen.energizer.models.Volunteer;
 
 import java.util.List;
 
-public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<HorizontalRecyclerViewProfileAdapter.ViewHolder>{
+public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<HorizontalRecyclerViewProfileAdapter.ViewHolder> {
 
     //list of volunteers signed up for opportunity
     private List<Volunteer> mCommittedVolunteers;
@@ -19,6 +19,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         mCommittedVolunteers = committedVolunteers;
     }
 
+    public class ViewHolder
 
     @NonNull
     @Override
@@ -35,4 +36,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     public int getItemCount() {
         return 0;
     }
+
+
+
 }

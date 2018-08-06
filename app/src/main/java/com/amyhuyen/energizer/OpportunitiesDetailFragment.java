@@ -43,10 +43,13 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.signUpForOpp) Button signUpForOpp;
     @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
     @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
+    @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
+
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
-    @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
+
+    private HorizontalRecyclerViewProfileAdapter horizontalRecyclerViewProfileAdapter;
 
     public int numVolSignedUp;
     Opportunity opportunity;
@@ -74,6 +77,9 @@ public class OpportunitiesDetailFragment extends Fragment {
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
+
+        //adapter for horizontal recycler view of profile images
+        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(opportunity.getSignedUpUserIds(), )
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);

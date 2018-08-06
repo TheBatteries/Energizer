@@ -1,6 +1,20 @@
 package com.amyhuyen.energizer.models;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.amyhuyen.energizer.DBKeys;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.parceler.Parcel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Parcel
 public class Opportunity {
@@ -65,4 +79,25 @@ public class Opportunity {
     public String getLatLong() { return latLong; }
 
     public String getNumVolNeeded() { return numVolNeeded; }
+
+
+    public List<String> getSignedUpUserIds() {
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
+
+        final ArrayList<String> signedUpUserIds = new ArrayList<>();
+        dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot user : dataSnapshot.getChildren()) {
+                            signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("User", "Error in .signedUpUserIds() : " + databaseError.toString());
+                    }
+                });
+    }
 }
