@@ -52,6 +52,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     Opportunity opportunity;
     String skillName;
     String causeName;
+    UserDataProvider userDataProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +73,8 @@ public class OpportunitiesDetailFragment extends Fragment {
         opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        userDataProvider = UserDataProvider.getInstance();
+        final String userId = userDataProvider.getCurrentUserId();
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
 
         // reformat time
@@ -91,17 +93,18 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvSkills.setText("Skill Needed: " + skillName);
         tvCauses.setText("Cause Area: " + causeName);
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
+        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
         } else {
             setUpButtonsForNpoUser();
+            checkCapacity(opportunity);
         }
     }
 
     private void linkUserAndOpp(){
         final String oppId = userPerOppRef.getKey().toString();
         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        final String userId = userDataProvider.getCurrentUserId();
         // put UserID into the hashmap
         userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
         // push the hashmap to the preexisting database skill
@@ -113,7 +116,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     private void unlinkUserAndOpp(){
         final String oppId = userPerOppRef.getKey().toString();
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        final String userId = userDataProvider.getCurrentUserId();
         if (signUpForOpp.isEnabled() == true) {
             userPerOppRef.orderByChild(DBKeys.KEY_USER_ID).equalTo(userId).addChildEventListener(new ChildEventListener() {
                 @Override
@@ -225,10 +228,12 @@ public class OpportunitiesDetailFragment extends Fragment {
                 int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
-                if (positionsAvailable == 0){
-                    disableAllVolSignUpButtons();
-                } else {
-                    showRegisterButton();
+                if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
+                    if (positionsAvailable == 0){
+                        disableAllVolSignUpButtons();
+                    } else {
+                        showRegisterButton();
+                    }
                 }
             }
 

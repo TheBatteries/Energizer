@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OpportunityFeedFragment extends Fragment {
-
-    private StorageReference storageReference;
-
 
     // the views
     @BindView (R.id.rvOpps) RecyclerView rvOpps;
