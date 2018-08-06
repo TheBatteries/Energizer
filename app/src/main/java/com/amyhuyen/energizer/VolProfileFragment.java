@@ -194,32 +194,7 @@ public class VolProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
-    ///////getting banner
-
-//    @Override
-//    public void getCauseIds() {
-//        databaseReference.child(DBKeys.KEY_CAUSES_PER_USER).child(volunteer.getUserID()).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                getCauseId(volunteer.getCauseIds(dataSnapshot));
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("Volunteer", "unable to load causePushID datasnapshot");
-//            }
-//        });
-//    }
-//
-////    @Override
-//    public String getCauseId(List<String> causeIds) {
-//        return causeIds.get(0);
-//    }
-
-
-    ////////drawing banner using listener
-
-    //    @Override
+        @Override
     public void drawProfileBanner() {
         volunteer.fetchCauses(new CauseFetchListener() {
             public void onCausesFetched(List<String> causes) {

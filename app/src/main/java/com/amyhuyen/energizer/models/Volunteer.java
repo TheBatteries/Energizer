@@ -21,8 +21,8 @@ public class Volunteer extends User {
 
 
     private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
-    private static final String KEY_SKILLS_ID  = "SkillID";
-    private static final String KEY_SKILLS  = "Skill";
+    private static final String KEY_SKILLS_ID = "SkillID";
+    private static final String KEY_SKILLS = "Skill";
 
     String mAge;
 
@@ -172,7 +172,4 @@ public class Volunteer extends User {
     private void onCauseIdsFetched(List<String> causeIds) {
         mCauseFetchListener.onCauseIdsFetched(causeIds);
     }
-
-
-
 }

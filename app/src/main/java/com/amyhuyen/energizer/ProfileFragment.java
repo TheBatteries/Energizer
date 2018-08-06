@@ -89,12 +89,12 @@ public abstract class ProfileFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         imageUrlSet = new HashSet<>();
-        imageUrlSet.add("https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80");
-        imageUrlSet.add("https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80");
-        imageUrlSet.add("https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80");
-        imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80");
+        imageUrlSet.add("https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"); //guy with arms crossed
+        imageUrlSet.add("https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80"); //yosemite
+        imageUrlSet.add("https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80");//peace sign
+        imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"); //books
 
-        defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80";
+        defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80"; //hand extended
 
 //        getCauseIds();
 //        getCauseIdList();
@@ -114,6 +114,8 @@ public abstract class ProfileFragment extends Fragment {
     public abstract void switchToCommitFragment();
 
     public abstract void drawEditCausesBtn();
+    public abstract void drawProfileBanner();
+//    public abstract void getBannerImageUrl(String causeId);
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
@@ -147,77 +149,3 @@ public abstract class ProfileFragment extends Fragment {
                 .into(ivProfileBanner);
     }
 }
-
-
-/////////////////////////color banners
-
-//    public void drawProfileBanner() {
-//        char letter = getCharFromName();
-//
-//        //assign banner pseudo-randomly based on character in name
-//        decideBanner(letter);
-//        ivProfileBanner.setImageResource(decideBanner(letter));
-//
-//
-//    }
-//
-//    //returns the first vowel as char in the person's name
-//    private char getCharFromName() {
-//        char letter = 'z';
-//
-//        for (char aLetter : UserDataProvider.getInstance().getCurrentUserName().toCharArray()) {
-//            if (vowels.contains(aLetter)) {
-//                letter = aLetter;
-//                break;
-//            }
-//        }
-//        return letter;
-//    }
-//
-//    //chooses background banner based on first vowel in person's name
-//    private int decideBanner(char letter) {
-//
-//        int imageResource;
-//
-//        switch (letter) {
-//            case 'a':
-//                imageResource = R.color.colorAccent;
-//                break;
-//            case 'e':
-//                imageResource = R.color.colorPrimary;
-//                break;
-//            case 'i':
-//                imageResource = R.color.colorPrimaryDark;
-//                break;
-//            case 'o':
-//                imageResource = R.color.colorAccent;
-//                break;
-//            case 'u':
-//                imageResource = R.color.colorSecondaryDark;
-//                break;
-//            case 'y':
-//                imageResource = R.color.blue_5_10_transparent;
-//                break;
-//            case 'z':
-//                imageResource = R.color.orange_4;
-//                break;
-//            default:
-//                imageResource = R.color.colorPrimary;
-//                break;
-//        }
-//        return imageResource;
-//    }
-
-
-//    //returns the first vowel as char in the person's name
-//    private char getCharFromName() {
-//        char letter = 'z';
-//
-//        for (char aLetter : UserDataProvider.getInstance().getCurrentUserName().toCharArray()) {
-//            if (vowels.contains(aLetter)) {
-//                letter = aLetter;
-//                break;
-//            }
-//        }
-//        return letter;
-//    }

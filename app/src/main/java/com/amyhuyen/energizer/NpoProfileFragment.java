@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
-import com.amyhuyen.energizer.models.Nonprofit;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,34 +24,47 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NpoProfileFragment extends ProfileFragment{
+public class NpoProfileFragment extends ProfileFragment {
 
-    Nonprofit nonprofit;
+//    Nonprofit nonprofit;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
     private ArrayList<Integer> volunteersCommitted;
+    private Set<Character> vowels;
 
     // views
-    @BindView(R.id.tv_skills) TextView tvSkills;
-    @BindView(R.id.tv_cause_area) TextView tvCauseArea;
-    @BindView(R.id.profile_pic) ImageView profilePic;
-    @BindView(R.id.tv_contact_info) TextView tvContactInfo;
+    @BindView(R.id.tv_skills)
+    TextView tvSkills;
+    @BindView(R.id.tv_cause_area)
+    TextView tvCauseArea;
+    @BindView(R.id.profile_pic)
+    ImageView profilePic;
+    @BindView(R.id.tv_contact_info)
+    TextView tvContactInfo;
 
     // menu views
-    @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
-    @BindView(R.id.tvLeftDescription) TextView tvLeftDescription;
-    @BindView(R.id.tvMiddleNumber) TextView tvMiddleNumber;
-    @BindView(R.id.tvMiddleDescription) TextView tvMiddleDescription;
-    @BindView(R.id.tvRightNumber) TextView tvRightNumber;
-    @BindView(R.id.tvRightDescription) TextView tvRightDescription;
+    @BindView(R.id.tvLeftNumber)
+    TextView tvLeftNumber;
+    @BindView(R.id.tvLeftDescription)
+    TextView tvLeftDescription;
+    @BindView(R.id.tvMiddleNumber)
+    TextView tvMiddleNumber;
+    @BindView(R.id.tvMiddleDescription)
+    TextView tvMiddleDescription;
+    @BindView(R.id.tvRightNumber)
+    TextView tvRightNumber;
+    @BindView(R.id.tvRightDescription)
+    TextView tvRightDescription;
 
-    public NpoProfileFragment(){
+    public NpoProfileFragment() {
         // required empty public constructor
     }
 
@@ -67,15 +79,27 @@ public class NpoProfileFragment extends ProfileFragment{
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         storageReference = FirebaseStorage.getInstance().getReference();
+//        nonprofit = UserDataProvider.getInstance().getCurrentNPO();
+
+        //vowels set for deciding banner image pseudo-randomly
+        vowels = new HashSet<>();
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('y');
+
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
         drawMenu();
         drawEditCausesBtn();
         getProfilePic();
+        drawProfileBanner();
     }
 
-    public void getProfilePic(){
+    public void getProfilePic() {
         storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -101,7 +125,7 @@ public class NpoProfileFragment extends ProfileFragment{
     @Override
     public void drawContactInfo() {
         tvContactInfo.setText(UserDataProvider.getInstance().getCurrentNPO().getPhone() + "\n" +
-        UserDataProvider.getInstance().getCurrentNPO().getAddress());
+                UserDataProvider.getInstance().getCurrentNPO().getAddress());
     }
 
     @Override
@@ -111,7 +135,7 @@ public class NpoProfileFragment extends ProfileFragment{
     }
 
     @OnClick(R.id.profile_pic)
-    public void onProfileImageClick(){
+    public void onProfileImageClick() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
     }
@@ -139,7 +163,7 @@ public class NpoProfileFragment extends ProfileFragment{
 
     }
 
-    public void setTotalVolunteersCommitted(){
+    public void setTotalVolunteersCommitted() {
         volunteersCommitted = new ArrayList<>();
         volunteersCommitted.add(0);
 
@@ -152,8 +176,8 @@ public class NpoProfileFragment extends ProfileFragment{
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-                    if (myOppIds.contains(child.getKey())){
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (myOppIds.contains(child.getKey())) {
                         int temp = volunteersCommitted.get(0);
                         volunteersCommitted.remove(0);
                         volunteersCommitted.add(temp + (int) child.getChildrenCount());
@@ -175,12 +199,69 @@ public class NpoProfileFragment extends ProfileFragment{
     }
 
     @Override
-    public void switchToCommitFragment(){
+    public void switchToCommitFragment() {
         LandingActivity landing = (LandingActivity) getActivity();
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
         FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
         Fragment npoCommitFragment = landing.commitFrag;
         fragmentTransaction.replace(R.id.flContainer, npoCommitFragment);
         fragmentTransaction.commit();
+    }
+
+    ////TODO - start here - draw banner for NPOs. could just assign them a link based on name? Or do it by cause
+
+    @Override
+    public void drawProfileBanner() {
+        char letter = getCharFromName();
+        drawBanner(getBannerImageUrl(letter)); //assign banner pseudo-randomly based on character in name
+
+    }
+
+
+    //returns the first vowel as char in the person's name
+    private char getCharFromName() {
+        char letter = 'z';
+
+        for (char aLetter : UserDataProvider.getInstance().getCurrentUserName().toCharArray()) {
+            if (vowels.contains(aLetter)) {
+                letter = aLetter;
+                break;
+            }
+        }
+        return letter;
+    }
+
+    //    chooses background banner based on first vowel in person's name
+    private String getBannerImageUrl(char letter) {
+
+        String profileImageUrl;
+
+        switch (letter) {
+            case 'a':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'e':
+                profileImageUrl = "https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80";
+                break;
+            case 'i':
+                profileImageUrl = "https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'o':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'u':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'y':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'z':
+                profileImageUrl = "https://images.unsplash.com/photo-1525422847952-7f91db09a364?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ce6622924dae3b9be067e1778a6b8707&auto=format&fit=crop&w=2130&q=80";
+                break;
+            default:
+                profileImageUrl = "https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80";
+                break;
+        }
+        return profileImageUrl;
     }
 }
