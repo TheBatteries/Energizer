@@ -2,9 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:fillViewport="false"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:fillViewport="false">
+    android:padding="5dp">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -15,15 +16,15 @@
             android:id="@+id/tvOppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
             android:layout_marginBottom="1dp"
-            android:text="@string/opportunity_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/royal_crescent_demo"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:text="@string/opportunity_name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/tvNpoName"
@@ -31,11 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@id/tvOppName"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/non_profit_name"
-            android:textStyle="italic"
-            android:textSize="12dp"/>
+            android:textSize="12dp"
+            android:textStyle="italic" />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -44,113 +45,163 @@
             android:layout_alignStart="@id/tvNpoName"
             android:layout_below="@id/tvNpoName"
             android:layout_centerVertical="true"
-            android:stepSize="0.5"
             android:numStars="5"
-            android:theme="@style/RatingBar"
             android:scaleX="0.5"
             android:scaleY="0.5"
+            android:stepSize="0.5"
+            android:theme="@style/RatingBar"
             android:transformPivotX="0dp"
-            android:transformPivotY="0dp"/>
+            android:transformPivotY="0dp" />
 
         <TextView
             android:id="@+id/tvOppTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNpoName"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/time"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tvOppAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppTime"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/address"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tvSkills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppAddress"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/skill_required"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tvCauses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSkills"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/skill_required"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tvNumVolNeeded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvCauses"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/positions_available"
-            android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvOppDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvNumVolNeeded"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="10dp"
+            android:layout_below="@id/tvNumVolNeeded"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/opportunity_description"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
 
         <Button
             android:id="@+id/signUpForOpp"
-            android:background="@drawable/button_yellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppDesc"
             android:layout_margin="15dp"
+            android:background="@drawable/button_yellow"
             android:text="@string/sign_up"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/unregisterForOpp"
-            android:background="@drawable/button_yellow_filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
             android:layout_below="@id/tvOppDesc"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_yellow_filled"
             android:text="@string/unregister"
             android:textAllCaps="false"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
+
+
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scrollview_profile_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/tvOppName"
+            android:layout_below="@+id/tvOppDesc"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <LinearLayout
+                android:id="@+id/full_profile_image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <include
+                    layout="@layout/profile_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <Button
             android:id="@+id/btnUpdateOpp"
-            android:background="@drawable/button_yellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/horizontal_scrollview_profile_images"
             android:layout_margin="15dp"
-            android:layout_below="@id/tvOppDesc"
+            android:background="@drawable/button_yellow"
             android:text="@string/update_opportunity"
             android:textAllCaps="false"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 </ScrollView>
