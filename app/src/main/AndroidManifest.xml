@@ -71,7 +71,7 @@
         <!-- </service> -->
         <activity android:name=".FacebookUserDetailsActivity" />
         <activity android:name=".SetCausesActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
     </application>
 
 </manifest>

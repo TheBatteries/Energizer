@@ -115,21 +115,21 @@ public class SetCausesActivity extends AppCompatActivity {
     ///                                                           addCauses() --works the same as addSkills()                                                                //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                                                                                       //
-    //   a method that takes the skills that the current user inputs and adds them to the data base if they are not already current skills   //
-    //   if the skill already exists then the skill is not repeated within the database                                                      //
-    //   the method also links the user's unique UID to the list of all users that have the given skill                                      //
-    //   and links the unique ID of the skill to the list of skills that the signed in user possesses                                        //
+    //   a method that takes the causes that the current user inputs and adds them to the database if they are not already current causes   //
+    //   if the cause already exists then the cause is not repeated within the database                                                      //
+    //   the method also links the user's unique UID to the list of all users that have the given cause                                      //
+    //   and links the unique ID of the cause to the list of causes that the signed in user possesses                                        //
     //                                                                                                                                       //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void addCauses() {
-        // create a new arraylist that will be used to hold all the skills that the user inputs
+        // create a new arraylist that will be used to hold all the causes that the user inputs
         userCauses = new ArrayList<>();
-        // set all the skills that the user inputs to new Skills
+        // set all the causes that the user inputs to new Skills
         final String cause = tvUserCause.getText().toString().trim();
-        // store the database reference to "Skill" as a shortcut
+        // store the database reference to "Cause" as a shortcut
         final DatabaseReference causeDbRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
-        // if the user does not add the last skill they fill in to the recycler view, then we want to grab it
+        // if the user does not add the last cause they fill in to the recycler view, then we want to grab it
         // and store it as a new skill
         if (!cause.isEmpty()) {
             final Cause userLastInputCause = new Cause(cause);
@@ -137,32 +137,32 @@ public class SetCausesActivity extends AppCompatActivity {
 
         }
         userCauses.addAll(causes);
-        // index through the arraylist to add the skills to the database and link them with the current user
+        // index through the arraylist to add the causes to the database and link them with the current user
         for (int i = 0; i < userCauses.size(); i++) {
             // we need to bind our index to a final integer in order to link it to the database
             final int index = i;
-            // we now go through all the skills already in the database to see if the skill that the user input is already there or not
+            // we now go through all the causes already in the database to see if the cause that the user input is already there or not
             causeDbRef.orderByChild(DBKeys.KEY_CAUSE_NAME).equalTo(userCauses.get(index).getCause())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            // if the skill is already in the database then we continue through the if statement
+                            // if the cause is already in the database then we continue through the if statement
                             if (dataSnapshot.exists()) {
-                                // skill already exists in database
+                                // cause already exists in database
                                 // create hashmap for UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                 pushToUsersPerCause(userIdDataMap, index);
-                                // get the skill object ID from the database
+                                // get the cause object ID from the database
                                 // we now set another listener for the exact skill in the database to find its specific id
                                 pushToCausesPerUser(index);
-                                // if the skill that the user input is not already in the database then we run through the else case
+                                // if the cause that the user input is not already in the database then we run through the else case
                             } else {
                                 firebaseData.child(DBKeys.KEY_CAUSE).push().setValue(userCauses.get(index));
                                 // create a hashmap for the UserID
                                 final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
                                pushToUsersPerCause(userIdDataMap, index);
-                                // get the skill object ID from the database
-                                // we now set another listener for the exact skill in the database to find its specific id
+                                // get the cause object ID from the database
+                                // we now set another listener for the exact cause in the database to find its specific id
 
                                 pushToCausesPerUser(index);
                             }
@@ -180,7 +180,7 @@ public class SetCausesActivity extends AppCompatActivity {
     private void pushToUsersPerCause(HashMap<String, String> userIdDataMap, Integer index){
         // put UserID into the hashmap
         userIdDataMap.put("UserID", userId);
-        // push the hashmap to the preexisting database skill
+        // push the hashmap to the preexisting database cause
         firebaseData.child(DBKeys.KEY_USERS_PER_CAUSE).child(userCauses.get(index).getCause()).push().setValue(userIdDataMap);
     }
 
@@ -191,13 +191,13 @@ public class SetCausesActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // since we did a .equalTo() search, this for loop only has one element
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    // we grab the id from the skill and link it to the string skillId
+                    // we grab the id from the cause and link it to the string skillId
                     String causeId = child.getKey();
-                    // Create the skillID hashmap
+                    // Create the causeID hashmap
                     final HashMap<String, String> causeIdDataMap = new HashMap<String, String>();
-                    // bind skillID to the hashmap
+                    // bind causeID to the hashmap
                     causeIdDataMap.put(DBKeys.KEY_CAUSE_ID, causeId);
-                    // push the hashmap to the User's specific skill database
+                    // push the hashmap to the User's specific cause database
                     firebaseData.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).push().setValue(causeIdDataMap);
                 }
             }

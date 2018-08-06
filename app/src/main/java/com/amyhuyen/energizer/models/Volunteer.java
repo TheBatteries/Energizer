@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.amyhuyen.energizer.DBKeys;
-import com.amyhuyen.energizer.UserDataProvider;
 import com.amyhuyen.energizer.VolProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -171,7 +170,7 @@ public class Volunteer extends User {
 
     public ArrayList<Skill> fetchSkillObjects(){
         final ArrayList<Skill> skillsList = new ArrayList<Skill>();
-        UserDataProvider.getInstance().getCurrentVolunteer().fetchSkills(new VolProfileFragment.SkillFetchListner() {
+        this.fetchSkills(new VolProfileFragment.SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 for (int i = 0; i < skills.size(); i++){
@@ -191,7 +190,7 @@ public class Volunteer extends User {
     }
 
     public void addCausesToList(final ArrayList<Cause> list){
-        UserDataProvider.getInstance().getCurrentVolunteer().fetchCauses(new VolProfileFragment.CauseFetchListener() {
+        this.fetchCauses(new VolProfileFragment.CauseFetchListener() {
             @Override
             public void onCausesFetched(List<String> causes) {
                 for (int i = 0; i < causes.size(); i ++){

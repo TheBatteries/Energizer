@@ -36,8 +36,8 @@ public class CauseAdapter extends RecyclerView.Adapter<CauseAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView (R.id.singleSkill) TextView userCause;
-        @BindView (R.id.deleteSkill) ImageView delete;
+        @BindView (R.id.singleCause) TextView userCause;
+        @BindView (R.id.deleteCause) ImageView delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,7 +58,7 @@ public class CauseAdapter extends RecyclerView.Adapter<CauseAdapter.ViewHolder> 
     public CauseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View postView = inflater.inflate(R.layout.skill, parent, false); //I can leave this layout, but change name of layout later
+        View postView = inflater.inflate(R.layout.item_cause, parent, false); //I can leave this layout, but change name of layout later
         ViewHolder viewHolder = new ViewHolder(postView);
         return viewHolder;
     }
@@ -69,7 +69,7 @@ public class CauseAdapter extends RecyclerView.Adapter<CauseAdapter.ViewHolder> 
 
         // set the data for each skill
         holder.userCause.setText(cause.getCause());
-        holder.delete.findViewById(R.id.deleteSkill);
+        holder.delete.findViewById(R.id.deleteCause);
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
