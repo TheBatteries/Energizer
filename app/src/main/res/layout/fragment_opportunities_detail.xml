@@ -128,7 +128,8 @@
             android:layout_below="@id/tvOppDesc"
             android:layout_margin="15dp"
             android:text="@string/sign_up"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/unregisterForOpp"

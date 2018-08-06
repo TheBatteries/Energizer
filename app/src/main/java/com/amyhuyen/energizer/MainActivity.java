@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private static final String TAG = "FACELOG";
     private DatabaseReference firebaseData;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
+        progressDialog = new ProgressDialog(this);
 
 
         // Initialize Facebook Login button
@@ -94,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
+            progressDialog.setMessage("Logging you in...");
+            progressDialog.show();
             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER).child(firebaseAuth.getCurrentUser().getUid());
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
+                    progressDialog.dismiss();
                 }
 
                 @Override

@@ -91,12 +91,11 @@ public class NpoProfileFragment extends ProfileFragment {
         vowels.add('y');
 
         drawContactInfo();
-        drawCauseAreas();
         drawSkills();
         drawMenu();
         drawEditCausesBtn();
         getProfilePic();
-        drawProfileBanner();
+        drawProfileBannerAndCauseAreas();
     }
 
     public void getProfilePic() {
@@ -110,11 +109,6 @@ public class NpoProfileFragment extends ProfileFragment {
                         .into(profilePic);
             }
         });
-    }
-
-    @Override
-    public void drawCauseAreas() {
-        tvCauseArea.setVisibility(View.GONE);
     }
 
     @Override
@@ -206,7 +200,8 @@ public class NpoProfileFragment extends ProfileFragment {
     }
 
     @Override
-    public void drawProfileBanner() {
+    public void drawProfileBannerAndCauseAreas() {
+        tvCauseArea.setVisibility(View.GONE);
         char letter = getCharFromName();
         drawBanner(getBannerImageUrl(letter)); //assign banner pseudo-randomly based on character in name
 

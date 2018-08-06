@@ -187,7 +187,7 @@ public abstract class OpportunityFragment extends Fragment{
                 Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
             } else {
                 // alert user if end time is before start time or equal to start time
-                if (timeStart.after(timeEnd) || timeStart.equals(timeEnd)) {
+                if (timeStart.after(timeEnd) || ((timeStart.equals(timeEnd)) && dateStart.equals(dateEnd))) {
                     Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
                 } else {
                     updateDatabase(name, description, startDate, startTime, endDate, endTime, npoId, npoName, numVolNeeded);
@@ -239,6 +239,7 @@ public abstract class OpportunityFragment extends Fragment{
 
     // switch fragments method - this will go in onActivityResult() - after coming back from adding cause areas
     public void switchFrag(){
+        setInitialText();
         // switch to my opportunity fragment and reflect change in bottom navigation view
         landing = (LandingActivity) getActivity();
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);

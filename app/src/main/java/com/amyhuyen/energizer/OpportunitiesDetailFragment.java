@@ -52,6 +52,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     Opportunity opportunity;
     String skillName;
     String causeName;
+    UserDataProvider userDataProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +73,8 @@ public class OpportunitiesDetailFragment extends Fragment {
         opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        userDataProvider = UserDataProvider.getInstance();
+        final String userId = userDataProvider.getCurrentUserId();
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
 
         // reformat time
@@ -91,22 +93,18 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvSkills.setText("Skill Needed: " + skillName);
         tvCauses.setText("Cause Area: " + causeName);
 
-        // check the capacity of the opportunity to take on new volunteers
-        checkCapacity(opportunity);
-
-        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
-            showButtonsForVol(oppId);
+        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
+            determineButtonsToShowForVol(oppId);
         } else {
-            hideButtons();
+            setUpButtonsForNpoUser();
+            checkCapacity(opportunity);
         }
-
-
     }
 
     private void linkUserAndOpp(){
         final String oppId = userPerOppRef.getKey().toString();
         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        final String userId = userDataProvider.getCurrentUserId();
         // put UserID into the hashmap
         userIdDataMap.put(DBKeys.KEY_USER_ID, userId);
         // push the hashmap to the preexisting database skill
@@ -118,7 +116,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     private void unlinkUserAndOpp(){
         final String oppId = userPerOppRef.getKey().toString();
-        final String userId = UserDataProvider.getInstance().getCurrentUserId();
+        final String userId = userDataProvider.getCurrentUserId();
         if (signUpForOpp.isEnabled() == true) {
             userPerOppRef.orderByChild(DBKeys.KEY_USER_ID).equalTo(userId).addChildEventListener(new ChildEventListener() {
                 @Override
@@ -230,8 +228,12 @@ public class OpportunitiesDetailFragment extends Fragment {
                 int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
                 tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
-                if (positionsAvailable == 0){
-                    disableVolSignUpButtons();
+                if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
+                    if (positionsAvailable == 0){
+                        disableAllVolSignUpButtons();
+                    } else {
+                        showRegisterButton();
+                    }
                 }
             }
 
@@ -242,38 +244,49 @@ public class OpportunitiesDetailFragment extends Fragment {
         });
     }
 
-    // method that disables the buttons
-    public void disableVolSignUpButtons() {
+    // method that disables the buttons for volunteers (because capacity has been reached)
+    public void disableAllVolSignUpButtons() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
+        unregisterForOpp.setEnabled(false);
+        unregisterForOpp.setVisibility(View.GONE);
     }
 
     // method that hides registration buttons for nonProfits and shows the edit opportunity button
-    public void hideButtons() {
+    public void setUpButtonsForNpoUser() {
         signUpForOpp.setEnabled(false);
         signUpForOpp.setVisibility(View.GONE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
         btnUpdateOpp.setEnabled(true);
         btnUpdateOpp.setVisibility(View.VISIBLE);
+    }
 
+    // method that shows registered volunteers the unregister button only
+    public void showUnregisterButton() {
+        signUpForOpp.setEnabled(false);
+        signUpForOpp.setVisibility(View.GONE);
+        unregisterForOpp.setEnabled(true);
+        unregisterForOpp.setVisibility(View.VISIBLE);
+    }
+
+    // method that shows unregistered volunteers the register button only
+    public void showRegisterButton() {
+        signUpForOpp.setEnabled(true);
+        signUpForOpp.setVisibility(View.VISIBLE);
+        unregisterForOpp.setEnabled(false);
+        unregisterForOpp.setVisibility(View.GONE);
     }
 
     // method for volunteers to see buttons
-    public void showButtonsForVol(String oppId) {
+    public void determineButtonsToShowForVol(String oppId) {
         oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    signUpForOpp.setEnabled(false);
-                    signUpForOpp.setVisibility(View.GONE);
-                    unregisterForOpp.setEnabled(true);
-                    unregisterForOpp.setVisibility(View.VISIBLE);
+                    showUnregisterButton();
                 } else {
-                    signUpForOpp.setEnabled(true);
-                    signUpForOpp.setVisibility(View.VISIBLE);
-                    unregisterForOpp.setEnabled(false);
-                    unregisterForOpp.setVisibility(View.GONE);
+                    checkCapacity(opportunity);
                 }
             }
 

@@ -204,11 +204,15 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot user : dataSnapshot.getChildren()) {
-                            signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot user : dataSnapshot.getChildren()) {
+                                signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+                            }
+                            dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId).removeValue();
+                            removeFromOppsPerUser(oppId, signedUpUserIds, dataRef);
+                        } else {
+                            switchFrag();
                         }
-                        dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId).removeValue();
-                        removeFromOppsPerUser(oppId, signedUpUserIds, dataRef);
                     }
 
                     @Override
@@ -228,10 +232,10 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                         if (usersOppId.equals(oppId)) {
                             String intermediateKey = usersOpportunity.getKey();
                             dataRef.child(DBKeys.KEY_OPPS_PER_USER).child(userId).child(intermediateKey).removeValue();
-
-                            switchFrag();
-                        }
+                            }
                     }
+                    Log.e("removeFromOppsPerUser", "made it");
+                    switchFrag();
                 }
             }
 

@@ -1,206 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProfileFragment"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:fillViewport="false"
     android:layout_marginBottom="?android:attr/actionBarSize">
 
-    <ImageView
-        android:id="@+id/ivProfileBanner"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"
+        tools:context=".ProfileFragment"
+        android:layout_marginBottom="?android:attr/actionBarSize">
 
-    <ImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/ic_profile_pic"
-        android:outlineAmbientShadowColor="@color/black"/>
-
-    <ImageButton
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_logout" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_pic"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/black_80_transparent"
-        android:text="@string/name" />
-
-    <TextView
-        android:id="@+id/tv_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:gravity="center"
-        android:textStyle="italic"
-        android:text="@string/email" />
-
-    <TextView
-        android:id="@+id/tv_contact_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_email"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:gravity="center"
-        android:textStyle="italic"
-        android:text="@string/contact_information"/>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@id/tv_contact_info"
-        app:cardElevation="0dp">
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ivProfileBanner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true" />
 
-            <RelativeLayout
-                android:id="@+id/rlLeftBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/ic_profile_pic"
+            android:outlineAmbientShadowColor="@color/black"/>
+
+        <ImageButton
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_logout" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black_80_transparent"
+            android:text="@string/name" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_name"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:text="@string/email" />
+
+        <TextView
+            android:id="@+id/tv_contact_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:text="@string/contact_information"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tv_contact_info"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_menu">
-                <TextView
-                    android:id="@+id/tvLeftNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:maxLines="1"/>
-                <TextView
-                    android:id="@+id/tvLeftDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:layout_below="@id/tvLeftNumber"
-                    android:maxLines="2"/>
-            </RelativeLayout>
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-            <RelativeLayout
-                android:id="@+id/rlMiddleBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@drawable/border_menu">
-                <TextView
-                    android:id="@+id/tvMiddleNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:maxLines="1"/>
-                <TextView
-                    android:id="@+id/tvMiddleDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:layout_below="@id/tvMiddleNumber"
-                    android:maxLines="2"/>
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlLeftBox"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu">
+                    <TextView
+                        android:id="@+id/tvLeftNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:maxLines="1"/>
+                    <TextView
+                        android:id="@+id/tvLeftDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:layout_below="@id/tvLeftNumber"
+                        android:maxLines="2"/>
+                </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rlRightBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@drawable/border_menu">
-                <TextView
-                    android:id="@+id/tvRightNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:maxLines="1" />
-                <TextView
-                    android:id="@+id/tvRightDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
-                    android:layout_below="@id/tvRightNumber"
-                    android:maxLines="2"/>
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlMiddleBox"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu">
+                    <TextView
+                        android:id="@+id/tvMiddleNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:maxLines="1"/>
+                    <TextView
+                        android:id="@+id/tvMiddleDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:layout_below="@id/tvMiddleNumber"
+                        android:maxLines="2"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlRightBox"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu">
+                    <TextView
+                        android:id="@+id/tvRightNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/tvRightDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:layout_below="@id/tvRightNumber"
+                        android:maxLines="2"/>
+                </RelativeLayout>
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/tv_skills"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cvMenu"
-        android:layout_centerHorizontal="true"
-        android:gravity="left"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:text="@string/skills"/>
+        <TextView
+            android:id="@+id/tv_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cvMenu"
+            android:layout_centerHorizontal="true"
+            android:gravity="left"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/skills"/>
 
-    <TextView
-        android:id="@+id/tv_cause_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tv_skills"
-        android:gravity="left"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp" />
+        <TextView
+            android:id="@+id/tv_cause_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_skills"
+            android:gravity="left"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp" />
 
-    <Button
-        android:id="@+id/btn_edit_profile"
-        android:background="@drawable/button_yellow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:textAllCaps="false"
-        android:text="Edit Profile" />
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_edit_profile"
+            android:background="@drawable/button_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_cause_area"
+            android:textAllCaps="false"
+            android:text="Edit Profile" />
+    </RelativeLayout>
+</ScrollView>
 
