@@ -240,6 +240,7 @@ public abstract class OpportunityFragment extends Fragment{
     // switch fragments method - this will go in onActivityResult() - after coming back from adding cause areas
     public void switchFrag(){
         // switch to my opportunity fragment and reflect change in bottom navigation view
+        landing = (LandingActivity) getActivity();
         landing.bottomNavigationView.setSelectedItemId(R.id.ic_left);
         FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
         Fragment npoCommitFragment = landing.commitFrag;
@@ -264,7 +265,7 @@ public abstract class OpportunityFragment extends Fragment{
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
                         final HashMap<String, String> opportunityId = new HashMap<String, String>();
-                        opportunityId.put(DBKeys.KEY_OPP_ID_INNER, oppId );
+                        opportunityId.put(DBKeys.KEY_OPP_ID_INNER_TWO, oppId );
                         // push the hashmap to the preexisting database skill
                         firebaseData.child(DBKeys.KEY_OPPS_PER_SKILL).child(oppSkills.get(index).getSkill()).push().setValue(opportunityId);
                         // get the skill object ID from the database

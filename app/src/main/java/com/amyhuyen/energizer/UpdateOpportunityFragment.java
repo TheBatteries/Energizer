@@ -185,7 +185,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             String intermediateKey = child.getKey();
-                            dataRef.child(npoId).child(intermediateKey).removeValue();
+                            dataRef.child(DBKeys.KEY_OPPS_PER_NPO).child(npoId).child(intermediateKey).removeValue();
 
                             removeFromUsersPerOpp(oppId, dataRef);
                         }
