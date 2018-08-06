@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppDesc"
             android:layout_margin="15dp"
-            android:text="Sign Up!"
+            android:text="@string/sign_up"
             android:textAllCaps="false"/>
 
         <Button
@@ -137,7 +137,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_below="@id/tvOppDesc"
-            android:text="Unregister"
+            android:text="@string/unregister"
+            android:textAllCaps="false"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnUpdateOpp"
+            android:background="@drawable/button_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_below="@id/tvOppDesc"
+            android:text="@string/update_opportunity"
             android:textAllCaps="false"
             android:visibility="gone"/>
 

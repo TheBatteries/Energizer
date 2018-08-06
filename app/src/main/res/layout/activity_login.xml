@@ -42,7 +42,6 @@
         android:layout_below="@id/etEmail"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginTop="45dp"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:textColorHint="@color/white"
