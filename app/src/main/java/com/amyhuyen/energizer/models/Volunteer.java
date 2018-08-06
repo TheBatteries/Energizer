@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.amyhuyen.energizer.DBKeys;
+import com.amyhuyen.energizer.UserDataProvider;
 import com.amyhuyen.energizer.VolProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +22,8 @@ public class Volunteer extends User {
 
 
     private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
-    private static final String KEY_SKILLS_ID  = "SkillID";
-    private static final String KEY_SKILLS  = "Skill";
+    private static final String KEY_SKILLS_ID = "SkillID";
+    private static final String KEY_SKILLS = "Skill";
 
     String mAge;
 
@@ -112,7 +113,7 @@ public class Volunteer extends User {
         fetchCauseIds();
     }
 
-    private void fetchCauseIds() {
+    public void fetchCauseIds() {
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -121,6 +122,7 @@ public class Volunteer extends User {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> causeIds = getCauseIds(dataSnapshot);
                 fetchCauseNames(causeIds);
+                onCauseIdsFetched(causeIds);
             }
 
             @Override
@@ -130,7 +132,7 @@ public class Volunteer extends User {
         });
     }
 
-    private List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
+    public List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
         final List<String> causeIds = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             causeIds.add(child.child(DBKeys.KEY_CAUSE_ID).getValue().toString());
@@ -166,5 +168,46 @@ public class Volunteer extends User {
     private void onCausesFetched(List<String> causeNames) {
         Log.i("CAUSE_TEST", causeNames.toString());
         mCauseFetchListener.onCausesFetched(causeNames);
+    }
+
+    private void onCauseIdsFetched(List<String> causeIds) {
+        mCauseFetchListener.onCauseIdsFetched(causeIds);
+    }
+
+    public ArrayList<Skill> fetchSkillObjects(){
+        final ArrayList<Skill> skillsList = new ArrayList<Skill>();
+        UserDataProvider.getInstance().getCurrentVolunteer().fetchSkills(new VolProfileFragment.SkillFetchListner() {
+            @Override
+            public void onSkillsFetched(List<String> skills) {
+                for (int i = 0; i < skills.size(); i++){
+                    Skill skill = new Skill(skills.get(i));
+                    skillsList.add(skill);
+                }
+            }
+        });
+        return skillsList;
+    }
+
+
+    public ArrayList<Cause> fetchCauseObjects(){
+        final ArrayList<Cause> causesList = new ArrayList<Cause>();
+        addCausesToList(causesList);
+        return causesList;
+    }
+
+    public void addCausesToList(final ArrayList<Cause> list){
+        UserDataProvider.getInstance().getCurrentVolunteer().fetchCauses(new VolProfileFragment.CauseFetchListener() {
+            @Override
+            public void onCausesFetched(List<String> causes) {
+                for (int i = 0; i < causes.size(); i ++){
+                    Cause cause = new Cause(causes.get(i));
+                    list.add(cause);
+                }
+            }
+
+            @Override
+            public void onCauseIdsFetched(List<String> causeIds) {
+            }
+        });
     }
 }

@@ -17,8 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,21 +30,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     User user;
+    private static final int EDIT_PROFILE = 1;
     private Set<Character> vowels = new HashSet<>();
+    DatabaseReference databaseReference;
+    public Set<String> imageUrlSet;
+    public String defaultImageUrl;
 
     public ProfileFragment() { }
 
     //views
-    @BindView(R.id.tv_name) TextView tv_name;
-    @BindView(R.id.btn_logout) ImageButton btn_logout;
-    @BindView(R.id.tv_email) TextView tv_email;
-    @BindView(R.id.btn_edit_causes) Button btn_edit_causes;
-    @BindView(R.id.ivBackground) ImageView ivBackground;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.btn_logout)
+    ImageButton btn_logout;
+    @BindView(R.id.tv_email)
+    TextView tv_email;
+//    @BindView(R.id.btn_edit_causes)
+//    Button btn_edit_causes;
+    @BindView(R.id.ivProfileBanner)
+    ImageView ivProfileBanner;
+
 
     FragmentActivity listener;
 
@@ -67,20 +79,21 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        //create set for pseudo-randomly deciding background
-        vowels.add('a');
-        vowels.add('e');
-        vowels.add('i');
-        vowels.add('o');
-        vowels.add('u');
-        vowels.add('y');
-
         //set textview text
         tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
         tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
 
-        //load banner
-        drawProfileBanner();
+        //attempt to load image from url
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        imageUrlSet = new HashSet<>();
+        imageUrlSet.add("https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"); //guy with arms crossed
+        imageUrlSet.add("https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80"); //yosemite
+        imageUrlSet.add("https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80");//peace sign
+        imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"); //books
+
+        defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80"; //hand extended
     }
 
     // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
@@ -95,8 +108,9 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void switchToCommitFragment();
 
-    //TODO - btn_edit_causes is supposedly null,. try adding abstract method and implementing in both subclasses?
     public abstract void drawEditCausesBtn();
+    public abstract void drawProfileBanner();
+//    public abstract void getBannerImageUrl(String causeId);
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
@@ -116,66 +130,30 @@ public abstract class ProfileFragment extends Fragment {
         listener.finish();
     }
 
-    public void drawProfileBanner() {
-        char letter = getCharFromName();
 
-        //assign banner pseudo-randomly based on character in name
-        decideBanner(letter);
-        ivBackground.setImageResource(decideBanner(letter));
-
-
+    @OnClick(R.id.btn_edit_profile)
+    public void onEditProfileClick(){
+        Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivityForResult(editProfileIntent, EDIT_PROFILE);
     }
 
-    //returns the first vowel as char in the person's name
-    private char getCharFromName() {
-        char letter = 'z';
 
-        for (char aLetter : UserDataProvider.getInstance().getCurrentUserName().toCharArray()) {
-            if (vowels.contains(aLetter)) {
-                letter = aLetter;
-                break;
-            }
-        }
-        return letter;
-    }
-
-    //chooses background banner based on first vowel in person's name
-    private int decideBanner(char letter) {
-
-        int imageResource;
-
-        switch (letter) {
-            case 'a':
-                imageResource = R.color.colorAccent;
-                break;
-            case 'e':
-                imageResource = R.color.colorPrimary;
-                break;
-            case 'i':
-                imageResource = R.color.colorPrimaryDark;
-                break;
-            case 'o':
-                imageResource = R.color.colorAccent;
-                break;
-            case 'u':
-                imageResource = R.color.colorSecondaryDark;
-                break;
-            case 'y':
-                imageResource = R.color.blue_5_10_transparent;
-                break;
-            case 'z':
-                imageResource = R.color.orange_4;
-                break;
-            default:
-                imageResource = R.color.colorPrimary;
-                break;
-        }
-        return imageResource;
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @OnClick (R.id.rlLeftBox)
     public void onLeftBoxClick(){
         switchToCommitFragment();
     }
-}
 
+    public void drawBanner(String bannerImageUrl) {
+        GlideApp.with(getContext())
+                .load(bannerImageUrl)
+                .placeholder(R.color.colorAccent)
+                .error(R.color.red_4)
+                .centerCrop()
+                .into(ivProfileBanner);
+    }
+}

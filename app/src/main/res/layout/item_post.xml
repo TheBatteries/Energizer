@@ -53,8 +53,6 @@
         android:theme="@style/RatingBar"
         android:transformPivotX="0dp"
         android:transformPivotY="0dp" />
-    <!--android:layout_centerVertical="true"-->
-    <!--android:layout_toEndOf="@id/tvNpoName"-->
 
     <TextView
         android:id="@+id/tvSkills"

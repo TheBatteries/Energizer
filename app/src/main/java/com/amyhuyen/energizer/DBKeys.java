@@ -5,6 +5,7 @@ public class DBKeys {
     // Cause
     public static final String KEY_CAUSE = "Cause";
     public static final String KEY_CAUSE_NAME = "cause";
+    public static final String KEY_CAUSE_IMAGE_URL = "causeImageUrl";
 
     // CausesPerOpp
     public static final String KEY_CAUSES_PER_OPP = "CausesPerOpp";
@@ -73,6 +74,9 @@ public class DBKeys {
     // UsersPerSkill
     public static final String KEY_USERS_PER_SKILL = "UsersPerSkill";
 
-
-
+    //causeImageUrls
+//    "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"
+//     "https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80"
+//    https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80
+//    https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80
 }

@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".LandingActivity" />
         <activity android:name=".SetSkillsActivity" />
         <activity android:name=".VolRegActivity" />
@@ -69,7 +70,8 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".FacebookUserDetailsActivity" />
-        <activity android:name=".SetCausesActivity"></activity>
+        <activity android:name=".SetCausesActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -74,4 +74,51 @@ public class UserDataProvider {
         }
         return userId;
     }
+
+    public String getCurrentUserAddress(){
+        String userAddress = null;
+        if (mUserType.equals("Volunteer")){
+            userAddress = mVolunteer.getAddress();
+        } else {
+            userAddress = mNonprofit.getAddress();
+        }
+        return userAddress;
+    }
+
+    public String getCurrentUserPhone() {
+        String userPhone = null;
+        if (mUserType.equals("Volunteer")) {
+            userPhone = mVolunteer.getPhone();
+        } else {
+            userPhone = mNonprofit.getPhone();
+        }
+        return userPhone;
+    }
+
+    public String getCurrentUserAge() {
+        String userAge = null;
+        if (mUserType.equals("Volunteer")) {
+            userAge = mVolunteer.getAge();
+        }
+        return userAge;
+    }
+
+    public String getCurrentUserDescription() {
+        String userDescription = null;
+        if (mUserType.equals("NPO")) {
+            userDescription = mNonprofit.getDescription();
+        }
+        return userDescription;
+    }
+
+    public String getCurrentUserLatLong() {
+        String userLatLong= null;
+        if (mUserType.equals("Volunteer")) {
+            userLatLong = mVolunteer.getLatLong();
+        } else {
+            userLatLong = mNonprofit.getLatLong();
+        }
+        return userLatLong;
+    }
+
 }
