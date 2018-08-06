@@ -21,8 +21,8 @@ public class Volunteer extends User {
 
 
     private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
-    private static final String KEY_SKILLS_ID  = "SkillID";
-    private static final String KEY_SKILLS  = "Skill";
+    private static final String KEY_SKILLS_ID = "SkillID";
+    private static final String KEY_SKILLS = "Skill";
 
     String mAge;
 
@@ -112,7 +112,7 @@ public class Volunteer extends User {
         fetchCauseIds();
     }
 
-    private void fetchCauseIds() {
+    public void fetchCauseIds() {
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -121,6 +121,7 @@ public class Volunteer extends User {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> causeIds = getCauseIds(dataSnapshot);
                 fetchCauseNames(causeIds);
+                onCauseIdsFetched(causeIds);
             }
 
             @Override
@@ -130,7 +131,7 @@ public class Volunteer extends User {
         });
     }
 
-    private List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
+    public List<String> getCauseIds(@NonNull DataSnapshot dataSnapshot) {
         final List<String> causeIds = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             causeIds.add(child.child(DBKeys.KEY_CAUSE_ID).getValue().toString());
@@ -168,6 +169,10 @@ public class Volunteer extends User {
         mCauseFetchListener.onCausesFetched(causeNames);
     }
 
+    private void onCauseIdsFetched(List<String> causeIds) {
+        mCauseFetchListener.onCauseIdsFetched(causeIds);
+    }
+
     public ArrayList<Skill> fetchSkillObjects(){
         final ArrayList<Skill> skillsList = new ArrayList<Skill>();
         this.fetchSkills(new VolProfileFragment.SkillFetchListner() {
@@ -197,6 +202,10 @@ public class Volunteer extends User {
                     Cause cause = new Cause(causes.get(i));
                     list.add(cause);
                 }
+            }
+
+            @Override
+            public void onCauseIdsFetched(List<String> causeIds) {
             }
         });
     }
