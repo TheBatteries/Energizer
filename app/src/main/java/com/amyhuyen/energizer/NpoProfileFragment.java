@@ -158,8 +158,6 @@ public class NpoProfileFragment extends ProfileFragment {
 
         // set the text for the number of volunteers committed
         setTotalVolunteersCommitted();
-
-
     }
 
     public void setTotalVolunteersCommitted() {
@@ -207,8 +205,6 @@ public class NpoProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
-    ////TODO - start here - draw banner for NPOs. could just assign them a link based on name? Or do it by cause
-
     @Override
     public void drawProfileBanner() {
         char letter = getCharFromName();
@@ -252,13 +248,13 @@ public class NpoProfileFragment extends ProfileFragment {
                 profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
                 break;
             case 'y':
-                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"; //guy with arms crossed
                 break;
             case 'z':
                 profileImageUrl = "https://images.unsplash.com/photo-1525422847952-7f91db09a364?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ce6622924dae3b9be067e1778a6b8707&auto=format&fit=crop&w=2130&q=80";
                 break;
             default:
-                profileImageUrl = "https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80";
+                profileImageUrl = "https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"; //books
                 break;
         }
         return profileImageUrl;

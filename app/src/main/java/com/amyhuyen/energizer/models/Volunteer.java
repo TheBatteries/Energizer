@@ -204,6 +204,10 @@ public class Volunteer extends User {
                     list.add(cause);
                 }
             }
+
+            @Override
+            public void onCauseIdsFetched(List<String> causeIds) {
+            }
         });
     }
 }
