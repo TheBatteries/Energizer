@@ -77,8 +77,8 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
                 VolProfileFragment volProfileFragment = new VolProfileFragment();
                 Volunteer volunteer = mCommittedVolunteers.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
+                Bundle userBundle = new Bundle();
+                userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
                 fragmentTransaction.replace(R.id.flContainer, volProfileFragment);
                 fragmentTransaction.addToBackStack(null).commit();
             }

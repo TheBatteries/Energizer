@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.amyhuyen.energizer.models.GlideApp;
+import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -23,6 +25,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,21 +74,27 @@ public class LandingActivity extends AppCompatActivity {
 
         // check user type and inflate menu and create fragments accordingly
         Fragment startingFragment = null;
+        Bundle userBundle = new Bundle();
         if (UserType.equals(DBKeys.KEY_VOLUNTEER)) {
             opportunityFeedFrag = new OpportunityFeedFragment();
             profileFragment = new VolProfileFragment();
             commitFrag = new VolCommitFragment();
+            Volunteer volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+            userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
             startingFragment = opportunityFeedFrag;
         } else {
             addOppFrag = new AddOpportunityFragment();
             profileFragment = new NpoProfileFragment();
             commitFrag = new NpoCommitFragment();
+            Nonprofit nonprofit = UserDataProvider.getInstance().getCurrentNPO();
+            userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(nonprofit));
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
             startingFragment = commitFrag;
         }
 
         // handle the initial fragment transaction
+        startingFragment.setArguments(userBundle);
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, startingFragment);
         fragmentTransaction.commit();
