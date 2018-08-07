@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,8 +35,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView (id.etName) EditText etName;
     @BindView (id.tvSignUp) TextView tvSignUp;
 
-
-
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseData;
@@ -42,6 +42,22 @@ public class RegistrationActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private String userType;
 
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            checkFieldsForEmptyValues();
+        }
+    };
 
 
     @Override
@@ -65,6 +81,31 @@ public class RegistrationActivity extends AppCompatActivity {
             etName.setHint(R.string.organization_name);
             etEmail.setHint(R.string.organization_email);
         }
+
+        checkFieldsForEmptyValues();
+
+        // set text change listeners for all fields
+        etName.addTextChangedListener(mTextWatcher);
+        etEmail.addTextChangedListener(mTextWatcher);
+        etPassword.addTextChangedListener(mTextWatcher);
+        etConfirmPassword.addTextChangedListener(mTextWatcher);
+    }
+
+    void checkFieldsForEmptyValues() {
+        // get the contents of the edit texts
+        String name = etName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String confirmPassword = etConfirmPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)){
+            btnRegister.setEnabled(false);
+            btnRegister.setClickable(false);
+        } else {
+            btnRegister.setEnabled(true);
+            btnRegister.setClickable(true);
+        }
+
     }
 
 
@@ -74,35 +115,31 @@ public class RegistrationActivity extends AppCompatActivity {
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // make toast if fields are not all populated
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)){
-            Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
-        } else {
-            // proceed to registering user if passwords match
-            if (password.equals(confirmPassword)) {
+        // proceed to registering user if passwords match
+        if (password.equals(confirmPassword)) {
 
-                // intent to the SetSkills activity
-                if (userType.equals(DBKeys.KEY_VOLUNTEER)){
-                    Intent continueRegistrationIntent = new Intent(getApplicationContext(), VolRegContActivity.class);
-                    continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
-                    continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
-                    continueRegistrationIntent.putExtra("Password", password);
-                    startActivity(continueRegistrationIntent);
-                    finish();
-                } else {
-                    Intent continueRegistrationIntent = new Intent(getApplicationContext(), NpoRegContActivity.class);
-                    continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
-                    continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
-                    continueRegistrationIntent.putExtra("Password", password);
-                    startActivity(continueRegistrationIntent);
-                    finish();
-                }
-
+            // intent to the SetSkills activity
+            if (userType.equals(DBKeys.KEY_VOLUNTEER)){
+                Intent continueRegistrationIntent = new Intent(getApplicationContext(), VolRegContActivity.class);
+                continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
+                continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
+                continueRegistrationIntent.putExtra("Password", password);
+                startActivity(continueRegistrationIntent);
+                finish();
             } else {
-                // if passwords don't match, alert user using toast
-                Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                Intent continueRegistrationIntent = new Intent(getApplicationContext(), NpoRegContActivity.class);
+                continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
+                continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
+                continueRegistrationIntent.putExtra("Password", password);
+                startActivity(continueRegistrationIntent);
+                finish();
             }
+
+        } else {
+            // if passwords don't match, alert user using toast
+            Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
         }
+
     }
 
  
