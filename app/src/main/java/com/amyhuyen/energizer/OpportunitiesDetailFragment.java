@@ -79,7 +79,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
 
         //adapter for horizontal recycler view of profile images
-        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(opportunity.getSignedUpUserIds(), )
+        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(opportunity.getSignedUpUserIds(), getActivity(), opportunity);
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);

@@ -1,9 +1,11 @@
 package com.amyhuyen.energizer.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.amyhuyen.energizer.DBKeys;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,7 @@ public class Opportunity {
     String address;
     String latLong;
     String numVolNeeded;
+    DatabaseReference dataRef;
 
 
     public Opportunity(){}
@@ -49,6 +52,7 @@ public class Opportunity {
         this.address = address;
         this.latLong = latLong;
         this.numVolNeeded = numVolNeeded;
+        dataRef = FirebaseDatabase.getInstance().getReference();
     }
 
     // the accessor for opportunity name
@@ -81,8 +85,7 @@ public class Opportunity {
     public String getNumVolNeeded() { return numVolNeeded; }
 
 
-    public List<String> getSignedUpUserIds() {
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
+    public void fetchSignedUpUserIds() {
 
         final ArrayList<String> signedUpUserIds = new ArrayList<>();
         dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId)
@@ -92,6 +95,7 @@ public class Opportunity {
                         for (DataSnapshot user : dataSnapshot.getChildren()) {
                             signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
                         }
+                        getSignedUpUserIds(signedUpUserIds);
                     }
 
                     @Override
@@ -100,4 +104,72 @@ public class Opportunity {
                     }
                 });
     }
+
+    public List<String> getSignedUpUserIds(List<String> signedUpUserIds) {
+        return signedUpUserIds;
+    }
+
+    //TODO - need method that returns list of volunteer objects given the list of userIds
+    //will probably require a listener
+
+    //add all Vol user ids to set
+//    for each signed up userId: signedUpUserId
+//if (VolUserIdSet.contains(singedUpUserId)){
+// add Volunteer object to list of Vol
+// }
+
+    public void fetchSignedUpVolunteers(List<String> signedUpUserIds) {
+//        dataRef.child(DBKeys.KEY_USER)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot user : dataSnapshot.getChildren()) {
+//                            signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+//                        }
+//                        getSignedUpUserIds(signedUpUserIds);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    }
+//                });
+        final List<Volunteer> signedUpVolunteers = new ArrayList<>();
+        //for each signed up user Id, add that Vol object to DB
+        for (String signedUpUserId: signedUpUserIds) {
+            dataRef.child(DBKeys.KEY_USER).orderByChild(DBKeys.KEY_USER_ID).equalTo(signedUpUserId).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    signedUpVolunteers.add(dataSnapshot.getValue(Volunteer.class));
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("User", "Error in .fetchSignedUpUserIds() : " + databaseError.toString());
+
+                }
+            });
+            getSignedUpVolunteers(signedUpVolunteers);
+        }
+
+    }
+
+    public List<Volunteer> getSignedUpVolunteers(List<Volunteer> signedUpVolunteers) {
+        return signedUpVolunteers;
+    }
+
 }
