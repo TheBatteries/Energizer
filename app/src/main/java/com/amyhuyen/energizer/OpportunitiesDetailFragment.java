@@ -93,8 +93,8 @@ public class OpportunitiesDetailFragment extends Fragment {
         // get the skill and cause name from the bundle
         skillName = bundle.getString("Skill Name");
         causeName = bundle.getString("Cause Name");
-        tvSkills.setText("Skill Needed: " + skillName);
-        tvCauses.setText("Cause Area: " + causeName);
+        tvSkills.setText(skillName);
+        tvCauses.setText(causeName);
 
         if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
@@ -251,7 +251,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 // find how many volunteers are still needed and fill in the text accordingly
                 numVolSignedUp = (int) dataSnapshot.getChildrenCount();
                 int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
-                tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
+                tvNumVolNeeded.setText(positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
                 if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
                     if (positionsAvailable == 0){
