@@ -196,7 +196,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get(DBKeys.KEY_SKILL_INNER);
                 // set the text
-                holder.tvSkills.setText("Skill Needed: " + skillName);
+                holder.tvSkills.setText(skillName);
 
                 // get the causes
                 getCauses(oppId, dataRef, holder);
@@ -235,7 +235,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String causeName = ((HashMap<String, String>) dataSnapshot.getValue()).get(DBKeys.KEY_CAUSE_NAME);
-                holder.tvCauses.setText("Cause Area: " + causeName);
+                holder.tvCauses.setText(causeName);
             }
 
             @Override
