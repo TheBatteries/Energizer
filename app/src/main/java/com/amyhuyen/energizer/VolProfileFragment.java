@@ -118,7 +118,6 @@ public class VolProfileFragment extends ProfileFragment {
             public void onCauseIdsFetched(List<String> causeIds) {
             }
         });
-
     }
 
     @Override

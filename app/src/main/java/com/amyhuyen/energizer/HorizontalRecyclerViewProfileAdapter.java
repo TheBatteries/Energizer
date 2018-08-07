@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Volunteer;
-import com.amyhuyen.energizer.utils.OppDisplayUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,8 +28,10 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
     //list of volunteers signed up for opportunity
     private List<String> mSignedUpVolunteerIds;
+    private List<Volunteer> mCommittedVolunteers;
     Activity mActivity;
     Opportunity mOpportunity;
+
 
     //interface CommittedVolunteerListener
     public interface CommittedVolunteerFetchListener {
@@ -80,15 +81,6 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         }
     }
 
-    public void drawProfileItem() {
-        mOpportunity.fetchSignedUpVolunteers(new CommittedVolunteerFetchListener() {
-            public void onCommittedVolunteersFetched(){
-
-        }
-        });
-
-    }
-
     @NonNull
     @Override
     public HorizontalRecyclerViewProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -105,26 +97,31 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
     }
 
-
-    //START HERE
     public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder) {
 
 
-        List<Volunteer> signedUpVolunteers = mOpportunity.getSignedUpVolunteers(); //TODO - I think you will need to make a listener in Opportunity to get list of Volunteer objects that belong to that Opp
-        for (Volunteer signedUpVolunteer : signedUpVolunteers) {
-            viewHolder.tv_name_under_profile_image.setText(signedUpVolunteer.getName());
+        mOpportunity.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
 
-            storageReference.child("profilePictures/users/" + signedUpVolunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    String downloadUrl = new String(uri.toString());
-                    GlideApp.with(mActivity)
-                            .load(downloadUrl)
-                            .transform(new CircleCrop())
-                            .into(viewHolder.iv_profile_pic_horizontal_rv);
+            @Override
+            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+                for (Volunteer committedVolunteer : committedVolunteers) {
+                    viewHolder.tv_name_under_profile_image.setText(committedVolunteer.getName());
+
+                    storageReference.child("profilePictures/users/" + committedVolunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String downloadUrl = new String(uri.toString());
+                            GlideApp.with(mActivity)
+                                    .load(downloadUrl)
+                                    .transform(new CircleCrop())
+                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
+
+
     }
 
     @Override
@@ -133,21 +130,4 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     }
 
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-//    //START HERE - DO I WANT THIS FUNC TO TAKE THE LIST OF IDS OR A SINGLE ID?
-//    //draw profile picture - need to change user ID
-//    public void drawProfilePicture(String userId) {
-//        storageReference.child("profilePictures/users/" + userId + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                String downloadUrl = new String(uri.toString());
-//                GlideApp.with(mActivity)
-//                        .load(downloadUrl)
-//                        .transform(new CircleCrop())
-//                        .into(iv_profile_pic_horizontal_rv);
-//            }
-//        });
-//    }
-
-
 }
