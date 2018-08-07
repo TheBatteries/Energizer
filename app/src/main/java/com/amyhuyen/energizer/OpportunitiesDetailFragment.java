@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +45,11 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
+    DatabaseReference oppPerNPORef;
     @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
 
     public int numVolSignedUp;
+    private String npoId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +72,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
+        npoId = opportunity.getNpoId();
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);
@@ -90,9 +95,11 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             showButtonsForVol(oppId);
+
         } else {
             hideButtons();
         }
+
 
 
     }
@@ -190,6 +197,26 @@ public class OpportunitiesDetailFragment extends Fragment {
         signUpForOpp.setVisibility(View.VISIBLE);
         unregisterForOpp.setEnabled(false);
         unregisterForOpp.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.tvNpoName)
+    public void onNPONameClick(){
+
+        Bundle bundle = new Bundle();
+        bundle.putString(DBKeys.KEY_USER_ID, npoId);
+        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            bundle.putString(DBKeys.KEY_USER_TYPE, "NPO");
+        } else {
+            bundle.putString(DBKeys.KEY_USER_TYPE, "Volunteer");
+        }
+
+        // switch the fragments
+        FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        VisitingNPOProfileFragment visitingProfileFrag = new VisitingNPOProfileFragment();
+        visitingProfileFrag.setArguments(bundle);
+        fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+        fragmentTransaction.commit();
     }
 
     // method that checks how many volunteers are currently signed up for this activity

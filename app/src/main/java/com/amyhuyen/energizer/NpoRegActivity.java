@@ -28,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,6 +55,8 @@ public class NpoRegActivity extends AppCompatActivity {
     private String userID;
     private String latLong;
     private String address;
+    private Integer randomInt1;
+    private Integer randomInt2;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
@@ -67,18 +71,27 @@ public class NpoRegActivity extends AppCompatActivity {
         // bind the views
         ButterKnife.bind(this);
 
+
+        Random rand = new Random();
+
+        randomInt1 = rand.nextInt(4) + 3;
+        randomInt2 = rand.nextInt(9) + 0;
+
+
     }
 
     private void registerUser() {
         // access the text in the fields
+        String phone = etPhone.getText().toString().trim();
         final String name = etName.getText().toString().trim();
         final String description = etNpoDescription.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
         final String address = etLocationNPO.getText().toString().trim();
-        final String phone = etPhone.getText().toString().trim();
+        final String phoneNumber = "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6, 10);
         final String userType = DBKeys.KEY_NPO;
+        final String rating = randomInt1.toString() + "." + randomInt2;
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
@@ -104,7 +117,7 @@ public class NpoRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Nonprofit nonprofit = new Nonprofit(email, name, phone, userID, userType, latLong, address, description);
+                                    Nonprofit nonprofit = new Nonprofit(email, name, phoneNumber, userID, userType, latLong, address, description, rating);
                                     firebaseData.child(DBKeys.KEY_USER).child(userID).setValue(nonprofit);
 
                                     // update use data provider

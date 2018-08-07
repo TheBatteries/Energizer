@@ -82,7 +82,6 @@ public class EditProfileActivity extends AppCompatActivity {
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
         if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
-            etEditUniqueField.setText(UserDataProvider.getInstance().getCurrentUserAge(), EditText.BufferType.EDITABLE);
             etEditUniqueField.setInputType(InputType.TYPE_CLASS_NUMBER);
             skills = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchSkillObjects());
             causes = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchCauseObjects());
@@ -92,6 +91,7 @@ public class EditProfileActivity extends AppCompatActivity {
             rvCurrentSkills.setAdapter(skillAdapter);
             rvCurrentCauses.setLayoutManager(new LinearLayoutManager(this));
             rvCurrentCauses.setAdapter(causeAdapter);
+            etEditUniqueField.setVisibility(View.GONE);
         } else {
             llVolunteerSkillsAndCauses.setVisibility(View.GONE);
             etEditUniqueField.setText(UserDataProvider.getInstance().getCurrentUserDescription(), EditText.BufferType.EDITABLE);
@@ -290,12 +290,10 @@ public class EditProfileActivity extends AppCompatActivity {
             firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("phone").setValue(etEditPhone.getText().toString());
         }
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
-            if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentVolunteer().getAge())){
-                firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("age").setValue(etEditUniqueField.getText().toString());
+        if (!UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentNPO().getDescription())){
+                firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("description").setValue(etEditUniqueField.getText().toString());
             }
-        } else if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentNPO().getDescription())){
-            firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("description").setValue(etEditUniqueField.getText().toString());
         }
     }
 

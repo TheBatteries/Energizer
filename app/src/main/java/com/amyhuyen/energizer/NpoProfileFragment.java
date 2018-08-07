@@ -68,6 +68,8 @@ public class NpoProfileFragment extends ProfileFragment {
         // required empty public constructor
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,7 +156,7 @@ public class NpoProfileFragment extends ProfileFragment {
         }
 
         // TODO - hard code rating
-        tvRightNumber.setText("4.7");
+        tvRightNumber.setText(UserDataProvider.getInstance().getCurrentNPO().getRating());
 
         // set the text for the number of volunteers committed
         setTotalVolunteersCommitted();

@@ -24,19 +24,15 @@ public class Volunteer extends User {
     private static final String KEY_SKILLS_ID = "SkillID";
     private static final String KEY_SKILLS = "Skill";
 
-    String mAge;
+
 
     public Volunteer() {
     }
 
-    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, String age, Uri profileimage) {
+    public Volunteer(String email, String name, String phone, String userID, String userType, String latLong, String address, Uri profileimage) {
         super(email, name, phone, userID, userType, latLong, address);
-        mAge = age;
     }
 
-    public String getAge() {
-        return mAge;
-    }
 
     private VolProfileFragment.SkillFetchListner mSkillFetchListner;
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;

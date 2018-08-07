@@ -43,16 +43,11 @@ public abstract class ProfileFragment extends Fragment {
     public ProfileFragment() { }
 
     //views
-    @BindView(R.id.tv_name)
-    TextView tv_name;
-    @BindView(R.id.btn_logout)
-    ImageButton btn_logout;
-    @BindView(R.id.tv_email)
-    TextView tv_email;
-//    @BindView(R.id.btn_edit_causes)
-//    Button btn_edit_causes;
-    @BindView(R.id.ivProfileBanner)
-    ImageView ivProfileBanner;
+    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.btn_logout) ImageButton btn_logout;
+    @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.ivProfileBanner) ImageView ivProfileBanner;
+    @BindView(R.id.btn_edit_profile) Button editProfile;
 
 
     FragmentActivity listener;

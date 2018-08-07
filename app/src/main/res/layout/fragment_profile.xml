@@ -161,6 +161,16 @@
                     android:gravity="center_horizontal"
                     android:layout_below="@id/tvRightNumber"
                     android:maxLines="2"/>
+
+
+                <Spinner
+                    android:id="@+id/contactInfoSpinner"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    style="@style/SpinnerTheme"
+                    android:visibility="gone"
+                    />
             </RelativeLayout>
 
 
@@ -203,5 +213,14 @@
         android:layout_margin="20dp"
         android:textAllCaps="false"
         android:text="Edit Profile" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_logout" />
+
+
 </RelativeLayout>
 

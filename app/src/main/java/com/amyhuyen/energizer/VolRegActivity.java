@@ -113,7 +113,7 @@ public class VolRegActivity extends AppCompatActivity {
                                     // add user's data into the database
                                     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     userID = currentFirebaseUser.getUid();
-                                    Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, age, downloadURL);
+                                    Volunteer volunteer = new Volunteer(email, name, phone, userID, userType, latLong, city, downloadURL);
                                     firebaseData.child(DBKeys.KEY_USER).child(userID).setValue(volunteer);
 
                                     // update user data provider
