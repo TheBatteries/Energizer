@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +78,6 @@ public abstract class OpportunityFragment extends Fragment{
 
     LandingActivity landing;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,7 +98,6 @@ public abstract class OpportunityFragment extends Fragment{
         firebaseData = FirebaseDatabase.getInstance().getReference();
         skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         causeRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
-
 
         // get the NPO ID and name
         npoId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -135,14 +135,40 @@ public abstract class OpportunityFragment extends Fragment{
             }
         });
 
+        checkFieldsForEmptyValues();
+
+        // set text change listeners for all fields
+        etOppName.addTextChangedListener(mTextWatcher);
+        etOppDescription.addTextChangedListener(mTextWatcher);
+        etStartDate.addTextChangedListener(mTextWatcher);
+        etEndDate.addTextChangedListener(mTextWatcher);
+        etStartTime.addTextChangedListener(mTextWatcher);
+        etEndTime.addTextChangedListener(mTextWatcher);
+        etOppLocation.addTextChangedListener(mTextWatcher);
+        actvOppSkill.addTextChangedListener(mTextWatcher);
+        actvOppCause.addTextChangedListener(mTextWatcher);
+        etNumVolNeeded.addTextChangedListener(mTextWatcher);
     }
 
-    // abstract methods to be implemented in AddOpportunityFragment and EditOpportunityFragment
-    public abstract void updateDatabase(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded);
-    public abstract void setInitialText();
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    // method that checks that all fields are populated and that start and end times are valid
-    public void checkFieldAndTimeValidity() {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            checkFieldsForEmptyValues();
+        }
+    };
+
+
+    void checkFieldsForEmptyValues() {
         // get the contents of the edit texts
         String name = etOppName.getText().toString().trim();
         String description = etOppDescription.getText().toString().trim();
@@ -155,51 +181,75 @@ public abstract class OpportunityFragment extends Fragment{
         cause = actvOppCause.getText().toString().trim();
         String numVolNeeded = etNumVolNeeded.getText().toString().trim();
 
-        // check that all fields are populated
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(startTime) ||
                 TextUtils.isEmpty(endDate) || TextUtils.isEmpty(endTime) || TextUtils.isEmpty(skill) || TextUtils.isEmpty(cause) ||
                 TextUtils.isEmpty(address) || TextUtils.isEmpty(numVolNeeded)){
-            Toast.makeText(getActivity(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
+            btnFinishUpdating.setEnabled(false);
+            btnFinishUpdating.setClickable(false);
         } else {
-            // remove prefixes on start and end times/dates
-            startDate = startDate.replace("Start Date:  ", "");
-            endDate = endDate.replace("End Date:  ", "");
-            startTime = startTime.replace("Start Time:  ", "");
-            endTime = endTime.replace("End Time:  ", "");
+            btnFinishUpdating.setEnabled(true);
+            btnFinishUpdating.setClickable(true);
+        }
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
+    }
 
-            // convert strings to dates
-            try {
-                dateStart = dateFormat.parse(startDate);
-                dateEnd = dateFormat.parse(endDate);
-                timeStart = timeFormat.parse(startTime);
-                timeEnd = timeFormat.parse(endTime);
+    // abstract methods to be implemented in AddOpportunityFragment and EditOpportunityFragment
+    public abstract void updateDatabase(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded);
+    public abstract void setInitialText();
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+    // method that checks that all fields are populated and that start and end times are valid
+    public void checkTimeValidity() {
+        // get the contents of the edit texts
+        String name = etOppName.getText().toString().trim();
+        String description = etOppDescription.getText().toString().trim();
+        String startDate = etStartDate.getText().toString().trim();
+        String startTime = etStartTime.getText().toString().trim();
+        String endDate = etEndDate.getText().toString().trim();
+        String endTime = etEndTime.getText().toString().trim();
+        skill = actvOppSkill.getText().toString().trim();
+        cause = actvOppCause.getText().toString().trim();
+        String numVolNeeded = etNumVolNeeded.getText().toString().trim();
 
-            // check that dates and times are valid
-            if (dateStart.after(dateEnd)) {
-                // alert user if end date is before start date
-                Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
+
+        // remove prefixes on start and end times/dates
+        startDate = startDate.replace("Start Date:  ", "");
+        endDate = endDate.replace("End Date:  ", "");
+        startTime = startTime.replace("Start Time:  ", "");
+        endTime = endTime.replace("End Time:  ", "");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
+
+        // convert strings to dates
+        try {
+            dateStart = dateFormat.parse(startDate);
+            dateEnd = dateFormat.parse(endDate);
+            timeStart = timeFormat.parse(startTime);
+            timeEnd = timeFormat.parse(endTime);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // check that dates and times are valid
+        if (dateStart.after(dateEnd)) {
+            // alert user if end date is before start date
+            Toast.makeText(getActivity(), "Please enter a valid end date", Toast.LENGTH_SHORT).show();
+        } else {
+            // alert user if end time is before start time or equal to start time
+            if (timeStart.after(timeEnd) || ((timeStart.equals(timeEnd)) && dateStart.equals(dateEnd))) {
+                Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
             } else {
-                // alert user if end time is before start time or equal to start time
-                if (timeStart.after(timeEnd) || ((timeStart.equals(timeEnd)) && dateStart.equals(dateEnd))) {
-                    Toast.makeText(getActivity(), "Please enter a valid end time", Toast.LENGTH_SHORT).show();
-                } else {
-                    updateDatabase(name, description, startDate, startTime, endDate, endTime, npoId, npoName, numVolNeeded);
-                }
+                updateDatabase(name, description, startDate, startTime, endDate, endTime, npoId, npoName, numVolNeeded);
             }
         }
+
     }
 
     // on click listener for finish updating button
     @OnClick (R.id.btnFinishUpdating)
     public void onFinishUpdatingClick() {
-        checkFieldAndTimeValidity();
+        checkTimeValidity();
     }
 
     // on click listener for start time edit text
@@ -335,6 +385,11 @@ public abstract class OpportunityFragment extends Fragment{
             });
         }
 
+    }
+
+    // set finish updating button enabled method
+    private void setFinishUpdatingButtonEnabled() {
+        btnFinishUpdating.setEnabled(true);
     }
 
     // retrieve skill name when in a "Skill" DataSnapShot
