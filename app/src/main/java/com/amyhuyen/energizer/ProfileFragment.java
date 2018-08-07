@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +47,8 @@ public abstract class ProfileFragment extends Fragment {
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.tv_email) TextView tv_email;
     @BindView(R.id.ivProfileBanner) ImageView ivProfileBanner;
-    @BindView(R.id.btn_edit_profile) Button editProfile;
+    @BindView(R.id.btn_edit_profile)
+    Button editProfile;
 
 
     FragmentActivity listener;

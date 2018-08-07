@@ -221,4 +221,5 @@
             android:textAllCaps="false"
             android:text="Edit Profile" />
 </RelativeLayout>
+</ScrollView>
 
