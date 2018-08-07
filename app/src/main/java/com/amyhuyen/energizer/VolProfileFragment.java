@@ -82,10 +82,9 @@ public class VolProfileFragment extends ProfileFragment {
         ButterKnife.bind(this, view);
 
         drawContactInfo();
-        drawCauseAreas();
         drawSkills();
         drawMenu();
-        drawProfileBanner();
+        drawProfileBannerAndCauseAreas();
         storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -98,27 +97,6 @@ public class VolProfileFragment extends ProfileFragment {
         });
 
         volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
-    }
-
-
-    @Override
-    public void drawCauseAreas() {
-        volunteer.fetchCauses(new CauseFetchListener() {
-            @Override
-            public void onCausesFetched(List<String> causes) {
-                String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText("My causes: " + causeString);
-
-                // set the text in the menu for number of causes
-                tvRightNumber.setText(Integer.toString(causes.size()));
-                if (causes.size() == 1) {
-                    tvRightDescription.setText("Cause");
-                }
-            }
-            public void onCauseIdsFetched(List<String> causeIds) {
-            }
-        });
-
     }
 
     @Override
@@ -177,10 +155,19 @@ public class VolProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
-        @Override
-    public void drawProfileBanner() {
+    @Override
+    public void drawProfileBannerAndCauseAreas() {
         volunteer.fetchCauses(new CauseFetchListener() {
+            @Override
             public void onCausesFetched(List<String> causes) {
+                String causeString = causes.toString().replace("[", "").replace("]", "");
+                tv_cause_area.setText("My causes: " + causeString);
+
+                // set the text in the menu for number of causes
+                tvRightNumber.setText(Integer.toString(causes.size()));
+                if (causes.size() == 1) {
+                    tvRightDescription.setText("Cause");
+                }
             }
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {

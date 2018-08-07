@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -95,8 +94,6 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawSkills();
 
-    public abstract void drawCauseAreas();
-
     public abstract void drawContactInfo();
 
     public abstract void drawMenu();
@@ -104,7 +101,7 @@ public abstract class ProfileFragment extends Fragment {
     public abstract void switchToCommitFragment();
 
     public abstract void drawEditCausesBtn();
-    public abstract void drawProfileBanner();
+    public abstract void drawProfileBannerAndCauseAreas();
 //    public abstract void getBannerImageUrl(String causeId);
 
     @OnClick(R.id.btn_logout)

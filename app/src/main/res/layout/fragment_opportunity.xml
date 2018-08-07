@@ -13,12 +13,11 @@
         tools:context=".AddOpportunityFragment">
 
         <TextView
-            android:id="@+id/tvAddOpp"
+            android:id="@+id/tvTitle"
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/add_opportunity"
             android:layout_margin="15dp"
             android:textAlignment="center"/>
 
@@ -26,7 +25,7 @@
             android:id="@+id/etOppName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvAddOpp"
+            android:layout_below="@id/tvTitle"
             android:layout_centerInParent="true"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
@@ -166,17 +165,33 @@
 
 
         <Button
-            android:id="@+id/btnAddOpp"
+            android:id="@+id/btnFinishUpdating"
             android:background="@drawable/button_blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etEndTime"
-            android:text="@string/add_opportunity"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
             android:textAllCaps="false"/>
+
+
+        <Button
+            android:id="@+id/btnDeleteOpportunity"
+            android:background="@drawable/button_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnFinishUpdating"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/delete_opportunity"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:enabled="false"/>
+
 
     </RelativeLayout>
 </ScrollView>
