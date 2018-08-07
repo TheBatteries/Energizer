@@ -16,22 +16,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/profile_pic_feed"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_profile_pic"
-            android:layout_margin="8dp"
-            android:outlineAmbientShadowColor="@color/black"/>
+            <RelativeLayout
+                android:id="@+id/profile_pic_holder"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:padding="2dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_border_style">
+
+                <ImageView
+                    android:id="@+id/profile_pic_feed"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_profile_pic"
+                    android:outlineAmbientShadowColor="@color/black"/>
+            </RelativeLayout>
 
         <TextView
             android:id="@+id/tvOppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/profile_pic_feed"
+            android:layout_toRightOf="@id/profile_pic_holder"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
@@ -46,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppName"
-            android:layout_toRightOf="@id/profile_pic_feed"
+            android:layout_toRightOf="@id/profile_pic_holder"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textStyle="italic"
@@ -57,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNpoName"
-            android:layout_toRightOf="@id/profile_pic_feed"
+            android:layout_toRightOf="@id/profile_pic_holder"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textSize="12dp"/>
@@ -67,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSkills"
-            android:layout_toRightOf="@id/profile_pic_feed"
+            android:layout_toRightOf="@id/profile_pic_holder"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textSize="12dp"/>
