@@ -51,7 +51,6 @@ public class LandingActivity extends AppCompatActivity {
 
     public String UserType;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

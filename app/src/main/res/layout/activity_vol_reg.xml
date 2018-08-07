@@ -135,8 +135,7 @@
             android:layout_marginRight="45dp"
             android:layout_marginTop="10dp"
             android:textAllCaps="false"
-            style="@style/SignUpText"
-            />
+            style="@style/SignUpText" />
 
         <TextView
             android:id="@+id/tvLogin"
