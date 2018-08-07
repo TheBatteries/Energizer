@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import static com.amyhuyen.energizer.R.id;
 import static com.amyhuyen.energizer.R.layout;
 
-public class VolRegActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     // the views
     @BindView (id.etEmail) EditText etEmail;
@@ -31,6 +31,7 @@ public class VolRegActivity extends AppCompatActivity {
     @BindView (id.btnRegister) Button btnRegister;
     @BindView (id.tvLogin) TextView tvLogin;
     @BindView (id.etName) EditText etName;
+    @BindView (id.tvSignUp) TextView tvSignUp;
 
 
 
@@ -39,16 +40,14 @@ public class VolRegActivity extends AppCompatActivity {
     private DatabaseReference firebaseData;
     private String userID;
     private CallbackManager callbackManager;
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private String latLong;
-    private String city;
+    private String userType;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.activity_vol_reg);
+        setContentView(layout.activity_registration);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseData = FirebaseDatabase.getInstance().getReference();
         callbackManager = CallbackManager.Factory.create();
@@ -57,6 +56,15 @@ public class VolRegActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
+
+        userType = getIntent().getStringExtra(DBKeys.KEY_USER_TYPE);
+        if (userType.equals(DBKeys.KEY_VOLUNTEER)){
+            tvSignUp.setText(R.string.volunteer_registration);
+        } else {
+            tvSignUp.setText(R.string.non_profit_registration);
+            etName.setHint(R.string.organization_name);
+            etEmail.setHint(R.string.organization_email);
+        }
     }
 
 
@@ -74,14 +82,21 @@ public class VolRegActivity extends AppCompatActivity {
             if (password.equals(confirmPassword)) {
 
                 // intent to the SetSkills activity
-                Intent continueRegistrationIntent = new Intent(getApplicationContext(), VolRegContActivity.class);
-                continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
-                continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
-                continueRegistrationIntent.putExtra("Password", password);
-                continueRegistrationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                continueRegistrationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(continueRegistrationIntent);
-                finish();
+                if (userType.equals(DBKeys.KEY_VOLUNTEER)){
+                    Intent continueRegistrationIntent = new Intent(getApplicationContext(), VolRegContActivity.class);
+                    continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
+                    continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
+                    continueRegistrationIntent.putExtra("Password", password);
+                    startActivity(continueRegistrationIntent);
+                    finish();
+                } else {
+                    Intent continueRegistrationIntent = new Intent(getApplicationContext(), NpoRegContActivity.class);
+                    continueRegistrationIntent.putExtra(DBKeys.KEY_NAME, name);
+                    continueRegistrationIntent.putExtra(DBKeys.KEY_EMAIL, email);
+                    continueRegistrationIntent.putExtra("Password", password);
+                    startActivity(continueRegistrationIntent);
+                    finish();
+                }
 
             } else {
                 // if passwords don't match, alert user using toast
