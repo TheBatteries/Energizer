@@ -20,22 +20,32 @@
             android:layout_height="150dp"
             android:layout_alignParentTop="true" />
 
-        <ImageView
-            android:id="@+id/profile_pic"
+        <RelativeLayout
+            android:id="@+id/profile_pic_holder"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="100dp"
-            android:src="@drawable/ic_profile_pic"
-            android:outlineAmbientShadowColor="@color/black"/>
+            android:padding="2dp"
+            android:background="@drawable/round_border_style">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_profile_pic"
+                android:outlineAmbientShadowColor="@color/black"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profile_pic"
+            android:layout_below="@id/profile_pic_holder"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:gravity="center"
