@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.amyhuyen.energizer.models.Cause;
@@ -31,12 +32,12 @@ import butterknife.OnClick;
 
 public class SetCausesActivity extends AppCompatActivity {
 
-    //use set of causes instead of list?
-
     // the views
     @BindView(R.id.actvCause) AutoCompleteTextView tvUserCause;
     @BindView(R.id.rvCauses) RecyclerView rvCauses;
     @BindView(R.id.addCause) ImageView addCause;
+    @BindView(R.id.setCauses) Button btnSetCauses;
+
 
     private DatabaseReference firebaseData;
     private ArrayList<Cause> userCauses;
@@ -86,9 +87,7 @@ public class SetCausesActivity extends AppCompatActivity {
 
             }
         });
-
     }
-
 
     // makes an ArrayAdapter -- made so that ArrayAdapters can be made within onDataChange() methods
     private ArrayAdapter<String> newAdapter(ArrayList<String> list) {
@@ -220,7 +219,7 @@ public class SetCausesActivity extends AppCompatActivity {
     }
 
     // on click listener for register button
-    @OnClick(R.id.setSkills)
+    @OnClick(R.id.setCauses)
     public void onRegisterClick() {
         // register the user and go to landing activity
         addCauses();
