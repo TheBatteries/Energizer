@@ -213,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btnVolunteer)
     public void onVolunteerClick(){
         // intent to volunteer registration activity
-        Intent intent = new Intent(getApplicationContext(), VolRegActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+        intent.putExtra(DBKeys.KEY_USER_TYPE, DBKeys.KEY_VOLUNTEER);
         startActivity(intent);
     }
 
@@ -221,7 +222,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btnNonProfit)
     public void onNonProfitClick(){
         // intent to nonprofit registration activity
-        Intent intent = new Intent(getApplicationContext(), NpoRegActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+        intent.putExtra(DBKeys.KEY_USER_TYPE, DBKeys.KEY_NPO);
         startActivity(intent);
     }
 

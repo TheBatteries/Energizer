@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:background="@drawable/median"
-    android:fillViewport="false">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".NpoRegActivity">
+        android:background="@drawable/median"
+        tools:context=".RegistrationActivity">
 
         <TextView
             android:id="@+id/tvSignUp"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/non_profit_registration"
-            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/volunteer_registration"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="35dp"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/royal_crescent_demo"/>
 
@@ -38,10 +31,10 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/organization_name"
+            android:layout_marginTop="50dp"
+            android:hint="@string/name"
             android:textSize="15dp"
-            style="@style/SignUpText"/>
+            style="@style/SignUpText" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -52,8 +45,8 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/organization_email"
+            android:layout_marginTop="30dp"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textSize="15dp"
             style="@style/SignUpText"/>
@@ -66,7 +59,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="30dp"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textSize="15dp"
@@ -77,56 +70,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etPassword"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:textSize="15dp"
-            style="@style/SignUpText"/>
-
-        <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etConfirmPassword"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/organization_phone_number"
-            android:inputType="phone"
-            android:textSize="15dp"
-            style="@style/SignUpText"/>
-
-        <EditText
-            android:id="@+id/etLocationNPO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/etPhone"
-            android:hint="@string/organization_address"
-            android:focusable="false"
-            android:clickable="true"
-            android:inputType="none"
-            android:textSize="15dp"
-            style="@style/SignUpText"/>
-
-        <EditText
-            android:id="@+id/etNpoDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etLocationNPO"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/non_profit_description"
+            android:layout_marginTop="30dp"
             android:textSize="15dp"
             style="@style/SignUpText"/>
 
@@ -136,24 +85,25 @@
             android:background="@drawable/button_yellow_filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etNpoDescription"
+            android:layout_above="@id/tvLogin"
+            android:text="Continue"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="22dp"
-            android:text="@string/register"
+            android:layout_marginTop="10dp"
             android:textAllCaps="false"
-            style="@style/SignUpText"/>
+            style="@style/SignUpText" />
 
         <TextView
             android:id="@+id/tvLogin"
             android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnRegister"
             android:text="@string/login"
+            android:layout_alignParentBottom="true"
             android:textAlignment="center"
             style="@style/SignUpText"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
 
-    </RelativeLayout>
-</ScrollView>
+
+</RelativeLayout>
