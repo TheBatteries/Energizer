@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
+    RecyclerView rvHorizontalProfiles;
 
     private HorizontalRecyclerViewProfileAdapter horizontalRecyclerViewProfileAdapter;
 
@@ -79,7 +82,9 @@ public class OpportunitiesDetailFragment extends Fragment {
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
 
         //adapter for horizontal recycler view of profile images
-        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(opportunity.getSignedUpUserIds(), getActivity(), opportunity);
+        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity);
+        rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
+        rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);

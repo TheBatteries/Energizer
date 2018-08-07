@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.amyhuyen.energizer.models.GlideApp;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.common.api.Status;

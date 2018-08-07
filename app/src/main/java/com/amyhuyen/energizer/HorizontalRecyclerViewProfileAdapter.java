@@ -3,6 +3,8 @@ package com.amyhuyen.energizer;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,10 +30,10 @@ import butterknife.ButterKnife;
 public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<HorizontalRecyclerViewProfileAdapter.ViewHolder> {
 
     //list of volunteers signed up for opportunity
-    private List<String> mSignedUpVolunteerIds;
     private List<Volunteer> mCommittedVolunteers;
-    Activity mActivity;
-    Opportunity mOpportunity;
+    private Activity mActivity;
+    private Opportunity mOpportunity;
+    private OpportunityFetchHandler mOpportunityFetchHandler;
 
 
     //interface CommittedVolunteerListener
@@ -38,11 +41,10 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers);
     }
 
-
-    public HorizontalRecyclerViewProfileAdapter(List<String> signedUpVolunteerIds, Activity activity, Opportunity opportunity) {
-        mSignedUpVolunteerIds = signedUpVolunteerIds;
+    public HorizontalRecyclerViewProfileAdapter(Activity activity, Opportunity opportunity) {
         mActivity = activity;
         mOpportunity = opportunity;
+        mOpportunityFetchHandler = new OpportunityFetchHandler();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -60,24 +62,22 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
             itemView.setOnClickListener(this);
         }
 
-        // TODO - on click listener for individual profiles; click launches profile for that volunteer
         @Override
         public void onClick(View view) {
             Toast.makeText(mActivity, "clicked profile pic!", Toast.LENGTH_LONG).show();
-            // get the item position
-//            int position = getAdapterPosition();
-//            // make sure the position is valid
-//            if (position != RecyclerView.NO_POSITION) {//
-//
-//                // switch the fragments
-//                FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//                OpportunitiesDetailFragment oppDetailFrag = new OpportunitiesDetailFragment();
-//                oppDetailFrag.setArguments(bundle);
-//
-//                fragmentTransaction.replace(R.id.flContainer, oppDetailFrag);
-//                fragmentTransaction.addToBackStack(null).commit();
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+
+                //TODO - start here - how to handle resetting user in UserDataProvider on back press
+                // switch the fragments
+                FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                VolProfileFragment volProfileFragment = new VolProfileFragment();
+//                UserDataProvider.getInstance().setCurrentVolunteer(mCommittedVolunteers.get(position)); //VolProfileFragment needs the current user from UserDataProvider. I'll set/reset the current user in UserDataProvider when going to/from VolProfileFragment. (UserDataProvider.getCurrentUser() will temporarily NOT have the actual current user)
+                fragmentTransaction.replace(R.id.flContainer, volProfileFragment);
+                fragmentTransaction.addToBackStack(null).commit();
+            }
         }
     }
 
@@ -87,47 +87,69 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View profileImageView = inflater.inflate(R.layout.profile_image_layout, viewGroup, false);
         HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder = new HorizontalRecyclerViewProfileAdapter.ViewHolder(profileImageView);
+        getmCommittedVolunteersList();
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, int i) {
-        storageReference = FirebaseStorage.getInstance().getReference();         //Storage ref for profile images
-        drawProfileItem(viewHolder);
-
+        final Volunteer volunteer = mCommittedVolunteers.get(i);
+        drawProfileItem(viewHolder, volunteer);
     }
 
-    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder) {
 
 
-        mOpportunity.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
-
+    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
+        storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
-                for (Volunteer committedVolunteer : committedVolunteers) {
-                    viewHolder.tv_name_under_profile_image.setText(committedVolunteer.getName());
-
-                    storageReference.child("profilePictures/users/" + committedVolunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String downloadUrl = new String(uri.toString());
-                            GlideApp.with(mActivity)
-                                    .load(downloadUrl)
-                                    .transform(new CircleCrop())
-                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
-                        }
-                    });
-                }
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(mActivity)
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(viewHolder.iv_profile_pic_horizontal_rv);
             }
         });
+    }
 
-
+    public List<Volunteer> getmCommittedVolunteersList() {
+        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
+            @Override
+            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+                mCommittedVolunteers.addAll(committedVolunteers);
+            }
+        }, mOpportunity.getOppId());
+        return mCommittedVolunteers;
     }
 
     @Override
     public int getItemCount() {
         return 0;
     }
-
-    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 }
+
+
+//had this before making list of vol separately
+//    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder) {
+//        mOpportunity.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
+//            @Override
+//            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+//                for (Volunteer committedVolunteer : committedVolunteers) {
+//                    viewHolder.tv_name_under_profile_image.setText(committedVolunteer.getName());
+//
+//                    storageReference.child("profilePictures/users/" + committedVolunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            String downloadUrl = new String(uri.toString());
+//                            GlideApp.with(mActivity)
+//                                    .load(downloadUrl)
+//                                    .transform(new CircleCrop())
+//                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//    }
