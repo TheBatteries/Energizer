@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.ViewHolder>{
 
@@ -55,7 +56,9 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
         public @BindView (R.id.tvNpoName) TextView tvNpoName;
         public @BindView (R.id.tvSkills) TextView tvSkills;
         public @BindView (R.id.tvCauses) TextView tvCauses;
-        public @BindView(R.id.profile_pic_feed) ImageView ivProfilePicFeed;
+        public @BindView (R.id.profile_pic_feed) ImageView ivProfilePicFeed;
+        public @BindView (R.id.ivExpandMore) ImageView ivExpandMore;
+        public @BindView (R.id.ivExpandLess) ImageView ivExpandLess;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -93,6 +96,21 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 fragmentTransaction.replace(R.id.flContainer, oppDetailFrag);
                 fragmentTransaction.addToBackStack(null).commit();
             }
+        }
+
+        @OnClick(R.id.ivExpandMore)
+        public void onExpandMoreClick() {
+            ivExpandMore.setVisibility(View.GONE);
+            ivExpandLess.setVisibility(View.VISIBLE);
+            tvOppDesc.setMaxLines(15);
+
+        }
+
+        @OnClick(R.id.ivExpandLess)
+        public void onExpandLessClick() {
+            ivExpandLess.setVisibility(View.GONE);
+            ivExpandMore.setVisibility(View.VISIBLE);
+            tvOppDesc.setMaxLines(3);
         }
     }
 

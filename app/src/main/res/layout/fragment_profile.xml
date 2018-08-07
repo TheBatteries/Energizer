@@ -31,14 +31,6 @@
             android:src="@drawable/ic_profile_pic"
             android:outlineAmbientShadowColor="@color/black"/>
 
-        <ImageButton
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_logout" />
-
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
@@ -51,11 +43,21 @@
             android:textColor="@color/black_80_transparent"
             android:text="@string/name" />
 
+        <View
+            android:id="@+id/vDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_name"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/grey_2"/>
+
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
+            android:layout_below="@id/vDivider"
             android:layout_centerHorizontal="true"
             android:ems="10"
             android:gravity="center"
@@ -68,11 +70,39 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_email"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
             android:ems="10"
             android:gravity="center"
             android:textStyle="italic"
             android:text="@string/contact_information"/>
+
+        <LinearLayout
+            android:id="@+id/llButtons"
+            android:layout_below="@id/tv_contact_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:weightSum="3">
+            <Button
+                android:id="@+id/btn_edit_profile"
+                android:background="@drawable/button_yellow"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="2.5"
+                android:text="Edit Profile"
+                android:textAllCaps="false" />
+
+            <ImageButton
+                android:id="@+id/btn_logout"
+                android:src="@drawable/ic_logout"
+                android:background="@drawable/button_logout_yellow"
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.CardView
             android:id="@+id/cvMenu"
@@ -80,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:layout_below="@id/tv_contact_info"
+            android:layout_below="@id/llButtons"
             app:cardElevation="0dp">
 
             <LinearLayout
@@ -199,15 +229,6 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp" />
-
-        <Button
-            android:id="@+id/btn_edit_profile"
-            android:background="@drawable/button_yellow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_cause_area"
-            android:textAllCaps="false"
-            android:text="Edit Profile" />
     </RelativeLayout>
 </ScrollView>
 
