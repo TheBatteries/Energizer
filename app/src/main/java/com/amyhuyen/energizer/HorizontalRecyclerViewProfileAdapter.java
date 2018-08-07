@@ -32,6 +32,12 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     Activity mActivity;
     Opportunity mOpportunity;
 
+    //interface CommittedVolunteerListener
+    public interface CommittedVolunteerFetchListener {
+        void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers);
+    }
+
+
     public HorizontalRecyclerViewProfileAdapter(List<String> signedUpVolunteerIds, Activity activity, Opportunity opportunity) {
         mSignedUpVolunteerIds = signedUpVolunteerIds;
         mActivity = activity;
@@ -60,18 +66,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
             // get the item position
 //            int position = getAdapterPosition();
 //            // make sure the position is valid
-//            if (position != RecyclerView.NO_POSITION) {
-//                // get the opportunity at that position
-//                Opportunity opportunity = mOpportunities.get(position);
-//
-//                // create a bundle to hold the opportunity for transfer to details fragment
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
-//                String myOppSkill = tvSkills.getText().toString().replace("Skill Needed: ", "");
-//                String myOppCause = tvCauses.getText().toString().replace("Cause Area: ", "");
-//                bundle.putString("Skill Name", myOppSkill);
-//                bundle.putString("Cause Name", myOppCause);
-//
+//            if (position != RecyclerView.NO_POSITION) {//
 //
 //                // switch the fragments
 //                FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
@@ -85,6 +80,15 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         }
     }
 
+    public void drawProfileItem() {
+        mOpportunity.fetchSignedUpVolunteers(new CommittedVolunteerFetchListener() {
+            public void onCommittedVolunteersFetched(){
+
+        }
+        });
+
+    }
+
     @NonNull
     @Override
     public HorizontalRecyclerViewProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -96,21 +100,8 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, int i) {
-        // get the data according to the position
-//        final Opportunity opp = mOpportunities.get(position);
-//        final String time = OppDisplayUtils.formatTime(opp);
-
-
-        // populate the views
-//        holder.tvOppName.setText(opp.getName());
-//        holder.tvNpoName.setText(opp.getNpoName());
-//        holder.tvOppDesc.setText(opp.getDescription());
-//        getSkill(opp.getOppId(), holder);
-
+        storageReference = FirebaseStorage.getInstance().getReference();         //Storage ref for profile images
         drawProfileItem(viewHolder);
-
-        //images
-        storageReference = FirebaseStorage.getInstance().getReference();
 
     }
 
