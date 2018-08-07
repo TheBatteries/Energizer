@@ -62,23 +62,45 @@
             android:textSize="12dp"/>
 
         <TextView
+            android:id="@+id/tvSkillsIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNpoName"
+            android:layout_alignStart="@id/tvNpoName"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/profile_pic_holder"
+            android:text="@string/skill_needed_colon"
+            android:textStyle="bold"
+            android:textSize="12dp"/>
+
+        <TextView
             android:id="@+id/tvSkills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNpoName"
+            android:layout_toEndOf="@id/tvSkillsIntro"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/tvCausesIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSkillsIntro"
+            android:layout_alignStart="@id/tvSkillsIntro"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@id/profile_pic_holder"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:text="@string/cause_area_colon"
+            android:textStyle="bold"
             android:textSize="12dp"/>
 
         <TextView
             android:id="@+id/tvCauses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvSkills"
-            android:layout_toRightOf="@id/profile_pic_holder"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_below="@id/tvSkillsIntro"
+            android:layout_toEndOf="@id/tvCausesIntro"
             android:textSize="12dp"/>
 
         <TextView
