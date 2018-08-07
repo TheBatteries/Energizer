@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.parceler.Parcels;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,14 +34,14 @@ import butterknife.OnClick;
 public abstract class ProfileFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
-    User user;
     private static final int EDIT_PROFILE = 1;
-    private Set<Character> vowels = new HashSet<>();
     DatabaseReference databaseReference;
     public Set<String> imageUrlSet;
     public String defaultImageUrl;
+    private User user;
 
-    public ProfileFragment() { }
+    public ProfileFragment() {
+    }
 
     //views
     @BindView(R.id.tv_name)
@@ -48,8 +50,6 @@ public abstract class ProfileFragment extends Fragment {
     ImageButton btn_logout;
     @BindView(R.id.tv_email)
     TextView tv_email;
-//    @BindView(R.id.btn_edit_causes)
-//    Button btn_edit_causes;
     @BindView(R.id.ivProfileBanner)
     ImageView ivProfileBanner;
 
@@ -91,7 +91,6 @@ public abstract class ProfileFragment extends Fragment {
         imageUrlSet.add("https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80"); //yosemite
         imageUrlSet.add("https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80");//peace sign
         imageUrlSet.add("https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"); //books
-
         defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80"; //hand extended
     }
 

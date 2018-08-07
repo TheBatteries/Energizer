@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,9 +34,10 @@ import butterknife.OnClick;
 
 public class VolProfileFragment extends ProfileFragment {
 
-    Volunteer volunteer;
+    private Volunteer volunteer;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
+    private Bundle bundle;
 
     public interface SkillFetchListner {
         void onSkillsFetched(List<String> skills);
@@ -64,7 +67,8 @@ public class VolProfileFragment extends ProfileFragment {
 
 
     public VolProfileFragment() {
-        // Required empty public constructor
+        bundle = getArguments();
+        volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
     }
 
     @Override
@@ -77,7 +81,6 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
         storageReference = FirebaseStorage.getInstance().getReference();
         ButterKnife.bind(this, view);
 
@@ -86,7 +89,7 @@ public class VolProfileFragment extends ProfileFragment {
         drawSkills();
         drawMenu();
         drawProfileBanner();
-        storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("profilePictures/users/" + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
@@ -96,8 +99,6 @@ public class VolProfileFragment extends ProfileFragment {
                         .into(profilePic);
             }
         });
-
-        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
     }
 
 
@@ -143,7 +144,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawContactInfo() {
-        tv_contact_info.setText(UserDataProvider.getInstance().getCurrentVolunteer().getAddress());
+        tv_contact_info.setText(volunteer.getAddress());
     }
 
     @OnClick(R.id.profile_pic)

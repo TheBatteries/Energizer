@@ -19,15 +19,15 @@ import java.util.List;
 public class OpportunityFetchHandler {
     private CommittedVolunteerFetchListener mCommittedVolunteerFetchListener;
 
-    public void fetchCommittedVolunteers(CommittedVolunteerFetchListener committedVolunteerFetchListener, String appId) {
+    public void fetchCommittedVolunteers(CommittedVolunteerFetchListener committedVolunteerFetchListener, String opportunityId) {
         mCommittedVolunteerFetchListener = committedVolunteerFetchListener;
-        fetchCommittedVolunteerIds(appId);
+        fetchCommittedVolunteerIds(opportunityId);
     }
 
-    private void fetchCommittedVolunteerIds(String operationId) {
+    private void fetchCommittedVolunteerIds(String opportunityId) {
         final DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
         final ArrayList<String> committedVolunteerIds = new ArrayList<>();
-        dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(operationId)
+        dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(opportunityId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -43,7 +43,6 @@ public class OpportunityFetchHandler {
                     }
                 });
     }
-
 
     private void fetchCommittedVolunteerObjects(final List<String> committedVolunteerIds) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

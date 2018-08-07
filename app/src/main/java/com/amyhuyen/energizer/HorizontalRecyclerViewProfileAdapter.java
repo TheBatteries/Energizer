@@ -2,6 +2,7 @@ package com.amyhuyen.energizer;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -69,12 +72,13 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
             if (position != RecyclerView.NO_POSITION) {
 
                 //TODO - start here - how to handle resetting user in UserDataProvider on back press
-                // switch the fragments
                 FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 VolProfileFragment volProfileFragment = new VolProfileFragment();
-//                UserDataProvider.getInstance().setCurrentVolunteer(mCommittedVolunteers.get(position)); //VolProfileFragment needs the current user from UserDataProvider. I'll set/reset the current user in UserDataProvider when going to/from VolProfileFragment. (UserDataProvider.getCurrentUser() will temporarily NOT have the actual current user)
+                Volunteer volunteer = mCommittedVolunteers.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
                 fragmentTransaction.replace(R.id.flContainer, volProfileFragment);
                 fragmentTransaction.addToBackStack(null).commit();
             }
