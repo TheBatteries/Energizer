@@ -114,6 +114,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
+            drawCheckBoxes();
         } else {
             setUpButtonsForNpoUser();
             checkCapacityForUnregisteredUsers(opportunity);
