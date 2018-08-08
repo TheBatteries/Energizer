@@ -30,7 +30,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
         Bundle bundle = getArguments();
 
         name = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NAME));
-        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_CAUSE_NAME));
+        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_DESCRIPTION));
         skill = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_SKILL_INNER));
         cause = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_CAUSE_NAME));
         address = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_ADDRESS));
@@ -46,7 +46,17 @@ public class AddOpportunityFragment extends OpportunityFragment{
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Confirm Opportunity");
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
 
 
     @Override
@@ -77,14 +87,13 @@ public class AddOpportunityFragment extends OpportunityFragment{
     @Override
     public void setInitialText() {
         unwrapBundle();
-        tvTitle.setText("Add Opportunity");
         btnFinishUpdating.setText("Add Opportunity");
         etOppName.setText(name);
         etOppDescription.setText(description);
-        etStartDate.setText( startDate);
-        etStartTime.setText( startTime);
+        etStartDate.setText(startDate);
+        etStartTime.setText(startTime);
         etEndDate.setText(endDate);
-        etEndTime.setText( endTime);
+        etEndTime.setText(endTime);
         etOppLocation.setText(address);
         actvOppSkill.setText(skill);
         actvOppCause.setText(cause);

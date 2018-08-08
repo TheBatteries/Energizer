@@ -60,7 +60,17 @@ public class MakeOpp4Fragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_make_opp4, container, false);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Create an Opportunity");
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

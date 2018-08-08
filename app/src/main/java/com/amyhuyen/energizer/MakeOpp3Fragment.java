@@ -56,6 +56,18 @@ public class MakeOpp3Fragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Create an Opportunity");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

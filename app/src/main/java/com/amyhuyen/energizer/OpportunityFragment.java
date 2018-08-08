@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Cause;
@@ -44,7 +43,6 @@ import butterknife.OnClick;
 public abstract class OpportunityFragment extends Fragment{
 
     // the views
-    @BindView (R.id.tvTitle) TextView tvTitle;
     @BindView (R.id.etOppName) EditText etOppName;
     @BindView (R.id.etOppDescription) EditText etOppDescription;
     @BindView (R.id.etStartDate) EditText etStartDate;
@@ -82,7 +80,7 @@ public abstract class OpportunityFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_opp, container, false);
+        return inflater.inflate(R.layout.fragment_opportunity, container, false);
     }
 
     @Override

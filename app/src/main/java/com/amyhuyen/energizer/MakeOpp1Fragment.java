@@ -43,6 +43,17 @@ public class MakeOpp1Fragment extends Fragment {
 
         return fragment;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Create an Opportunity");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +68,7 @@ public class MakeOpp1Fragment extends Fragment {
 
         // bind the views
         ButterKnife.bind(this, view);
+
 
         // set text change listeners for all fields
         etOppName.addTextChangedListener(mTextWatcher);
