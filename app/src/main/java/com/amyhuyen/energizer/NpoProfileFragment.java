@@ -68,8 +68,6 @@ public class NpoProfileFragment extends ProfileFragment {
         // required empty public constructor
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,6 +97,19 @@ public class NpoProfileFragment extends ProfileFragment {
         getProfilePic();
         drawProfileBannerAndCauseAreas();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
 
     public void getProfilePic() {
         storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

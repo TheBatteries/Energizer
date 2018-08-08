@@ -100,6 +100,18 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
     public void drawSkills() {
         volunteer.fetchSkills(new SkillFetchListner() {
             @Override

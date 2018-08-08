@@ -103,7 +103,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="2.5"
                 android:text="Edit Profile"
-                android:textColor="@color/colorPrimaryDark"
                 android:textAllCaps="false" />
 
             <ImageButton
