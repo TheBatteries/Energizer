@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.parceler.Parcels;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,10 +46,11 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.signUpForOpp) Button signUpForOpp;
     @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
     @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
+    @BindView (R.id.icCausesCheck) ImageView icCausesCheck;
+    @BindView (R.id.icSkillsCheck) ImageView icSkillsCheck;
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
-    DatabaseReference oppPerNPORef;
     @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
 
     public int numVolSignedUp;
@@ -55,6 +59,18 @@ public class OpportunitiesDetailFragment extends Fragment {
     String skillName;
     String causeName;
     UserDataProvider userDataProvider;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,17 +109,42 @@ public class OpportunitiesDetailFragment extends Fragment {
         // get the skill and cause name from the bundle
         skillName = bundle.getString("Skill Name");
         causeName = bundle.getString("Cause Name");
-        tvSkills.setText("Skill Needed: " + skillName);
-        tvCauses.setText("Cause Area: " + causeName);
+        tvSkills.setText(skillName);
+        tvCauses.setText(causeName);
 
         if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
         } else {
             setUpButtonsForNpoUser();
-            checkCapacity(opportunity);
+            checkCapacityForUnregisteredUsers(opportunity);
         }
+    }
 
 
+    private void drawCheckBoxes(){
+        final Volunteer volunteer = userDataProvider.getCurrentVolunteer();
+        volunteer.fetchSkills(new VolProfileFragment.SkillFetchListner() {
+            @Override
+            public void onSkillsFetched(List<String> skills) {
+                if (skills.contains(skillName)) {
+                    icSkillsCheck.setVisibility(View.VISIBLE);
+                }
+                volunteer.fetchCauses(new VolProfileFragment.CauseFetchListener() {
+                    @Override
+                    public void onCausesFetched(List<String> causes) {
+                        if (causes.contains(causeName)) {
+                            icCausesCheck.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCauseIdsFetched(List<String> causeIds) {
+
+                    }
+                });
+
+            }
+        });
     }
 
     private void linkUserAndOpp(){
@@ -243,7 +284,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     // method that checks how many volunteers are currently signed up for this activity
-    public void checkCapacity(final Opportunity opportunity) {
+    public void checkCapacityForUnregisteredUsers(final Opportunity opportunity) {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId());
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -251,15 +292,34 @@ public class OpportunitiesDetailFragment extends Fragment {
                 // find how many volunteers are still needed and fill in the text accordingly
                 numVolSignedUp = (int) dataSnapshot.getChildrenCount();
                 int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
-                tvNumVolNeeded.setText("Positions Available: " + positionsAvailable + "/" + opportunity.getNumVolNeeded());
+                tvNumVolNeeded.setText(positionsAvailable + "/" + opportunity.getNumVolNeeded());
 
                 if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
-                    if (positionsAvailable == 0){
+                    if (positionsAvailable == 0) {
                         disableAllVolSignUpButtons();
                     } else {
                         showRegisterButton();
                     }
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("checkCapacity", databaseError.toString());
+            }
+        });
+    }
+
+    // method that checks how many volunteers are currently signed up for this activity
+    public void checkCapacityForRegisteredUsers(final Opportunity opportunity) {
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId());
+        dataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // find how many volunteers are still needed and fill in the text accordingly
+                numVolSignedUp = (int) dataSnapshot.getChildrenCount();
+                int positionsAvailable = Integer.parseInt(opportunity.getNumVolNeeded()) - numVolSignedUp;
+                tvNumVolNeeded.setText(positionsAvailable + "/" + opportunity.getNumVolNeeded());
             }
 
             @Override
@@ -305,13 +365,14 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     // method for volunteers to see buttons
     public void determineButtonsToShowForVol(String oppId) {
-        oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addListenerForSingleValueEvent(new ValueEventListener() {
+        oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     showUnregisterButton();
+                    checkCapacityForRegisteredUsers(opportunity);
                 } else {
-                    checkCapacity(opportunity);
+                    checkCapacityForUnregisteredUsers(opportunity);
                 }
             }
 

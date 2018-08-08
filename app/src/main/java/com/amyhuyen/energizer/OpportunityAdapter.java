@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
-import com.amyhuyen.energizer.utils.OppDisplayUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +84,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                 bundle.putString("Skill Name", myOppSkill);
                 bundle.putString("Cause Name", myOppCause);
 
-
                 // switch the fragments
                 FragmentManager fragmentManager = ((LandingActivity) context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -129,8 +127,6 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public void onBindViewHolder (@NonNull final ViewHolder holder, int position){
         // get the data according to the position
         final Opportunity opp = mOpportunities.get(position);
-        final String time = OppDisplayUtils.formatTime(opp);
-
 
         // populate the views
         holder.tvOppName.setText(opp.getName());
@@ -196,7 +192,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String skillName = ((HashMap<String,String>) dataSnapshot.getValue()).get(DBKeys.KEY_SKILL_INNER);
                 // set the text
-                holder.tvSkills.setText("Skill Needed: " + skillName);
+                holder.tvSkills.setText(skillName);
 
                 // get the causes
                 getCauses(oppId, dataRef, holder);
@@ -235,7 +231,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String causeName = ((HashMap<String, String>) dataSnapshot.getValue()).get(DBKeys.KEY_CAUSE_NAME);
-                holder.tvCauses.setText("Cause Area: " + causeName);
+                holder.tvCauses.setText(causeName);
             }
 
             @Override

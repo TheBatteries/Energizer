@@ -190,7 +190,6 @@ public abstract class OpportunityFragment extends Fragment{
             btnFinishUpdating.setEnabled(true);
             btnFinishUpdating.setClickable(true);
         }
-
     }
 
     // abstract methods to be implemented in AddOpportunityFragment and EditOpportunityFragment

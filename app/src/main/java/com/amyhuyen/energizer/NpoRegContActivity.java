@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +54,22 @@ public class NpoRegContActivity extends AppCompatActivity {
     private String email;
     private String password;
 
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            checkFieldsForEmptyValues();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +93,28 @@ public class NpoRegContActivity extends AppCompatActivity {
         name = getIntent().getStringExtra(DBKeys.KEY_NAME);
         email = getIntent().getStringExtra(DBKeys.KEY_EMAIL);
         password = getIntent().getStringExtra("Password");
+
+        checkFieldsForEmptyValues();
+
+        // set text change listeners for all edit texts
+        etPhone.addTextChangedListener(mTextWatcher);
+        etLocationNPO.addTextChangedListener(mTextWatcher);
+        etNpoDescription.addTextChangedListener(mTextWatcher);
+    }
+
+    void checkFieldsForEmptyValues() {
+        // get the contents of the edit texts
+        String phone = etPhone.getText().toString().trim();
+        String location = etLocationNPO.getText().toString().trim();
+        String npoDescription = etNpoDescription.getText().toString().trim();
+
+        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(location) || TextUtils.isEmpty(npoDescription)){
+            btnRegister.setEnabled(false);
+            btnRegister.setClickable(false);
+        } else {
+            btnRegister.setEnabled(true);
+            btnRegister.setClickable(true);
+        }
     }
 
     private void registerUser() {

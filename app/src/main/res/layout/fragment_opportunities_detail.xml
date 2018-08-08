@@ -75,25 +75,77 @@
             android:textSize="12dp"/>
 
         <TextView
+            android:id="@+id/tvSkillsIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOppAddress"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/skill_needed_colon"
+            android:textStyle="bold"
+            android:textSize="12dp"/>
+
+        <TextView
             android:id="@+id/tvSkills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvOppAddress"
-            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@id/tvSkillsIntro"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="3dp"
+            android:textSize="12dp"/>
+
+        <ImageView
+            android:id="@+id/icSkillsCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tvSkills"
+            android:layout_below="@id/tvOppAddress"
+            android:layout_marginBottom="1dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvCausesIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSkillsIntro"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
-            android:text="@string/skill_required"
+            android:layout_marginRight="5dp"
+            android:text="@string/cause_area_colon"
+            android:textStyle="bold"
             android:textSize="12dp"/>
 
         <TextView
             android:id="@+id/tvCauses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvSkills"
-            android:layout_marginRight="10dp"
+            android:layout_below="@id/tvSkillsIntro"
+            android:layout_toEndOf="@id/tvCausesIntro"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="3dp"
+            android:textSize="12dp"/>
+
+        <ImageView
+            android:id="@+id/icCausesCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tvCauses"
+            android:layout_below="@id/tvSkillsIntro"
+            android:layout_marginBottom="1dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvPositionsAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCausesIntro"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="1dp"
-            android:text="@string/skill_required"
+            android:layout_marginRight="5dp"
+            android:text="@string/positions_available_colon"
+            android:textStyle="bold"
             android:textSize="12dp"/>
 
         <TextView
@@ -101,24 +153,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvCauses"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/tvPositionsAvailable"
             android:layout_marginBottom="1dp"
-            android:text="@string/positions_available"
-            android:textStyle="bold"
             android:textSize="12dp"/>
+
+        <View
+            android:id="@+id/vDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tvNumVolNeeded"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/grey_2"/>
 
         <TextView
             android:id="@+id/tvOppDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvNumVolNeeded"
+            android:layout_below="@id/vDivider"
             android:layout_alignParentStart="true"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:text="@string/opportunity_description"
             android:textSize="15dp"/>
-
 
         <Button
             android:id="@+id/signUpForOpp"

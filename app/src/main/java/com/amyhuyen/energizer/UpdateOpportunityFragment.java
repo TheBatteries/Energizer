@@ -32,6 +32,18 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
     @BindView(R.id.btnDeleteOpportunity) Button btnDeleteOpportunity;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
     public void updateDatabase(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded) {
         if (checkVolunteerNeededValidity(etNumVolNeeded.getText().toString())) {
             // create an instance of the opportunity class based on this information

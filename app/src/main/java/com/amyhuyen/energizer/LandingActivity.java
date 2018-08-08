@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -30,8 +32,9 @@ import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tvToolbarTitle) TextView tvToolbarTitle;
 
     // handling google autocomplete results in add opp fragment
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -58,6 +61,9 @@ public class LandingActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        // remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // get the user type  and name info from the intent
         UserType = UserDataProvider.getInstance().getCurrentUserType();

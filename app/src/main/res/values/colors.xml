@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FDC915</color>
-    <color name="colorPrimaryDark">#FDC915</color>
-    <color name="colorPrimaryDarkSeeThrough">#16FDC915</color>
-    <color name="colorAccent">#6CDFFE</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimarySeeThrough">#16FDC915</color>
+    <color name="colorAccent">#ff999999</color>
     <color name="colorAccentSeeThrough">#166cdffe</color>
     <color name="colorSecondaryDark">#f2a33b</color>
     <color name="colorSecondaryLight">#FFFFEE</color>

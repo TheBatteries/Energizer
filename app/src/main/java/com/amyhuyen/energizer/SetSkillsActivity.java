@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.amyhuyen.energizer.models.Skill;
@@ -35,6 +36,7 @@ public class SetSkillsActivity extends AppCompatActivity {
     @BindView(R.id.actvSkill) AutoCompleteTextView tvUserSkill;
     @BindView(R.id.rvSkills) RecyclerView rvSkills;
     @BindView(R.id.addSkill) ImageView addSkill;
+    @BindView(R.id.setSkills) Button btnSetSkills;
 
     private DatabaseReference firebaseData;
     private ArrayList<Skill> userSkills;
@@ -48,7 +50,6 @@ public class SetSkillsActivity extends AppCompatActivity {
     private String userType;
     private ArrayList<Skill> skills;
     private SkillAdapter skillAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

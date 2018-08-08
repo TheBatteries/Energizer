@@ -32,10 +32,8 @@
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:layout_marginTop="100dp"
-        android:textSize="15dp"
-        android:shadowColor="@color/black"
-        android:backgroundTint="@color/black"
-        android:textColor="@color/black"/>
+        style="@style/SignUpText"
+        android:textSize="15dp" />
 
     <EditText
         android:id="@+id/etLocation"
@@ -51,23 +49,18 @@
         android:clickable="true"
         android:inputType="none"
         android:textSize="15dp"
-        android:shadowColor="@color/black"
-        android:backgroundTint="@color/black"
-        android:textColor="@color/black" />
+        style="@style/SignUpText"/>
 
     <Button
         android:id="@+id/btnRegister"
-        android:background="@drawable/round_button"
+        android:background="@drawable/button_yellow_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:layout_marginBottom="25dp"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
-        android:layout_marginTop="10dp"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

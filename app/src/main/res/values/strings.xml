@@ -47,16 +47,15 @@
     <string name="cause_areas">Cause Area</string>
     <string name="cause_areas_vol_prof">Your Cause Areas: </string>
     <string name="contact_information">Contact Information</string>
-    <string name="skill_required">Skill Required</string>
-    <string name="positions_available">Positions Available</string>
+    <string name="skill_needed">Skill Needed</string>
+    <string name="skill_needed_colon">Skill Needed: </string>
+    <string name="cause_area_colon">Cause Area: </string>
     <string name="number_of_volunteers_needed">Number of Volunteers Needed</string>
     <string name="unregister">Unregister</string>
     <string name="sign_up">Sign Up!</string>
     <string name="update_opportunity">Update Opportunity</string>
     <string name="delete_opportunity">Delete Opportunity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="positions_available_colon">Positions Available: </string>
 
     <string-array name="contact_info">
         <item></item>
