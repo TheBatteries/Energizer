@@ -130,7 +130,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
                         .load(downloadUrl)
                         .transform(new CircleCrop())
                         .into(holder.ivProfilePicFeed);
-            }
+             }
         });
     }
 

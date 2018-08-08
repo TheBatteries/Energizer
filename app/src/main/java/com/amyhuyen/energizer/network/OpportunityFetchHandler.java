@@ -33,7 +33,7 @@ public class OpportunityFetchHandler {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot user : dataSnapshot.getChildren()) {
                             committedVolunteerIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
-                        }
+                        } //gets correct userId for Opp
                         fetchCommittedVolunteerObjects(committedVolunteerIds);
                     }
 
@@ -50,10 +50,10 @@ public class OpportunityFetchHandler {
         databaseReference.child(DBKeys.KEY_USER).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Volunteer> committedVolunteers = new ArrayList<>(); //was List<Volunteers>
+                List<Volunteer> committedVolunteers = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     for (String committedVolunteerId : committedVolunteerIds) {
-                        if (committedVolunteerId.equals(snapshot.child(DBKeys.KEY_USER_ID).getValue())) {
+                        if (committedVolunteerId.equals(snapshot.getKey())) { //never entering If?
                             Volunteer volunteer = snapshot.getValue(Volunteer.class);                   //error with Parceler because passing back list of Volunteers/Listener doesn't know how to handle this?
                             committedVolunteers.add(volunteer);
                         }

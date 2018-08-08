@@ -20,6 +20,7 @@ import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -88,10 +89,10 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     @NonNull
     @Override
     public HorizontalRecyclerViewProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext()); //was "mActivity";
         View profileImageView = inflater.inflate(R.layout.profile_image_layout, viewGroup, false);
         HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder = new HorizontalRecyclerViewProfileAdapter.ViewHolder(profileImageView);
-        getmCommittedVolunteersList();
+//        getmCommittedVolunteersList();
         return viewHolder;
     }
 
@@ -99,23 +100,30 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     public void onBindViewHolder(@NonNull HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, int i) {
         final Volunteer volunteer = mCommittedVolunteers.get(i);
         drawProfileItem(viewHolder, volunteer);
-    }
+    } //START HERE - will this iterate through each item in list of volunteers/ match it to a layout
 
 
-
-    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
-        storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) { //had volunteer as a param
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
             @Override
-            public void onSuccess(Uri uri) {
-                String downloadUrl = new String(uri.toString());
-                GlideApp.with(mActivity)
-                        .load(downloadUrl)
-                        .transform(new CircleCrop())
-                        .into(viewHolder.iv_profile_pic_horizontal_rv);
+            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+//                for (Volunteer volunteer : committedVolunteers) {
+
+                    viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
+                    final Task<Uri> uriTask = storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String downloadUrl = new String(uri.toString());
+                            GlideApp.with(mActivity)
+                                    .load(downloadUrl)
+                                    .transform(new CircleCrop())
+                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
+                        }
+                    });
+//                }
             }
-        });
+        }, mOpportunity.getOppId());
     }
 
     public List<Volunteer> getmCommittedVolunteersList() {
@@ -123,6 +131,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
             @Override
             public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
                 mCommittedVolunteers.addAll(committedVolunteers);
+                notifyDataSetChanged();
             }
         }, mOpportunity.getOppId());
         return mCommittedVolunteers;
@@ -132,6 +141,18 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     public int getItemCount() {
         return 0;
     }
+
+////    // add a list of all elements to the recycler
+//    public void addAll(List<Volunteer> volunteers){
+////        getmCommittedVolunteersList().addAll(volunteers);
+////        notifyDataSetChanged();
+//    }
+//
+//    public void clear(){
+//        mCommittedVolunteers.clear();
+//        notifyDataSetChanged();
+//    }
+
 }
 
 

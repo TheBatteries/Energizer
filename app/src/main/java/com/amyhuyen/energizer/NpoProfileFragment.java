@@ -129,8 +129,9 @@ public class NpoProfileFragment extends ProfileFragment {
 
     @Override
     public void drawContactInfo() {
-        tvContactInfo.setText(nonprofit.getPhone() + "\n" +
-                nonprofit.getAddress());
+//        tvContactInfo.setText(nonprofit.getPhone() + "\n" +
+//                nonprofit.getAddress());
+        //TODO -fix null object reference on nonprofit
     }
 
     @Override

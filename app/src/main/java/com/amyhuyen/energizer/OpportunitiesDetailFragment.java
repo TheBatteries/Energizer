@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +56,8 @@ public class OpportunitiesDetailFragment extends Fragment {
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
+    private OpportunityFetchHandler mOpportunityFetchHandler;
+    private List<Volunteer> mCommittedVolunteers;
 
     private HorizontalRecyclerViewProfileAdapter horizontalRecyclerViewProfileAdapter;
 
@@ -78,9 +84,13 @@ public class OpportunitiesDetailFragment extends Fragment {
         opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
 
         //adapter for recycler view of profile images
+        mOpportunityFetchHandler = new OpportunityFetchHandler();
+        mCommittedVolunteers = new ArrayList<>();
         horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity);
         rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
         rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
+        //TODO - problem: not populating profile image view
+        populateProfileRv();
 
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
@@ -111,6 +121,18 @@ public class OpportunitiesDetailFragment extends Fragment {
         } else {
             hideButtons();
         }
+    }
+
+    public void populateProfileRv() {
+//        horizontalRecyclerViewProfileAdapter.getmCommittedVolunteersList();
+//        horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
+        mOpportunityFetchHandler.fetchCommittedVolunteers(new HorizontalRecyclerViewProfileAdapter.CommittedVolunteerFetchListener() {
+            @Override
+            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+                mCommittedVolunteers.addAll(committedVolunteers);
+            }
+        }, opportunity.getOppId());
+
     }
 
     private void linkUserAndOpp(){
