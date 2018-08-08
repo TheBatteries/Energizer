@@ -167,11 +167,11 @@ public class VolProfileFragment extends ProfileFragment {
         tvRightDescription.setText("Causes");
 
         // set the text for the number of commits
-        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-        tvLeftNumber.setText(Integer.toString(numCommits));
-        if (numCommits == 1) {
-            tvLeftDescription.setText("Commit");
-        }
+//        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+//        tvLeftNumber.setText(Integer.toString(numCommits));
+//        if (numCommits == 1) {
+//            tvLeftDescription.setText("Commit");
+//        }
     }
 
     @Override
@@ -191,7 +191,7 @@ public class VolProfileFragment extends ProfileFragment {
             }
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {
-                getBannerImageUrl(causeIds.get(0));
+//                getBannerImageUrl(causeIds.get(0));
             }
         });
     }

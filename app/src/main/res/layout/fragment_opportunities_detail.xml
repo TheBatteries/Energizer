@@ -135,7 +135,7 @@
             android:id="@+id/unregisterForOpp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvOppDesc"
+            android:layout_below="@id/horizontal_rv_profile_images"
             android:layout_margin="15dp"
             android:background="@drawable/button_yellow_filled"
             android:text="@string/unregister"
