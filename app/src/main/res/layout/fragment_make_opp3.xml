@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MakeOpp3Fragment">
+
+    <EditText
+        android:id="@+id/etOppLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:hint="@string/opportunity_address"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
+        android:textSize="15dp"/>
+
+    <EditText
+        android:id="@+id/etNumVolNeeded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/etOppLocation"
+        android:hint="@string/number_of_volunteers_needed"
+        android:inputType="number"
+        android:textSize="15dp"/>
+
+    <Button
+        android:id="@+id/btnFinishUpdating"
+        android:background="@drawable/button_yellow_selector"
+        android:enabled="false"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etNumVolNeeded"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="40dp"
+        android:textAllCaps="false"
+        android:text="Continue"/>
+
+
+</RelativeLayout>

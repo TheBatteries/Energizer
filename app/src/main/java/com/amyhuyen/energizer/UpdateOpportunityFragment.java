@@ -34,7 +34,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Update Opportunity");
     }
 
     @Override
@@ -158,14 +158,13 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
         oldSkillName = bundle.getString("Skill Name");
         oldCauseName = bundle.getString("Cause Name");
 
-        tvTitle.setText("Update Opportunity");
         btnFinishUpdating.setText("Finish Updating Opportunity");
         etOppName.setText(opportunity.getName());
         etOppDescription.setText(opportunity.getDescription());
-        etStartDate.setText("Start Date:  " + opportunity.getStartDate());
-        etStartTime.setText("Start Time:  " + opportunity.getStartTime());
-        etEndDate.setText("End Date:  " + opportunity.getEndDate());
-        etEndTime.setText("End Time:  " + opportunity.getEndTime());
+        etStartDate.setText(opportunity.getStartDate());
+        etStartTime.setText(opportunity.getStartTime());
+        etEndDate.setText(opportunity.getEndDate());
+        etEndTime.setText(opportunity.getEndTime());
         etOppLocation.setText(opportunity.getAddress());
         actvOppSkill.setText(oldSkillName);
         actvOppCause.setText(oldCauseName);

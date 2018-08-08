@@ -4,158 +4,253 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dp"
-    android:fillViewport="false">
+    android:fillViewport="false"
+    android:layout_marginBottom="?android:attr/actionBarSize">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".AddOpportunityFragment">
 
+
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
+            android:id="@+id/tvOppName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_margin="15dp"
-            android:textAlignment="center"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Name" />
 
         <EditText
             android:id="@+id/etOppName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle"
+            android:layout_below="@id/tvOppName"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/opportunity_name"
-            android:textSize="15dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/opportunity_name" />
+
+        <TextView
+            android:id="@+id/tvOppDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etOppName"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Description" />
 
         <EditText
             android:id="@+id/etOppDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etOppName"
+            android:layout_below="@id/tvOppDesc"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/opportunity_description"
             android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/tvOppSkill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etOppDescription"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Skill" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppSkill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/etOppDescription"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tvOppSkill"
             android:hint="@string/skill_needed"
             android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/tvOppCause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/actvOppSkill"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Cause" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppCause"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/actvOppSkill"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tvOppCause"
             android:textSize="15dp"
             android:hint="@string/enter_cause" />
+
+        <TextView
+            android:id="@+id/tvOppNumVol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/actvOppCause"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Volunteers Needed" />
+
 
         <EditText
             android:id="@+id/etNumVolNeeded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/actvOppCause"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tvOppNumVol"
             android:hint="@string/number_of_volunteers_needed"
             android:inputType="number"
             android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/tvOppAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etNumVolNeeded"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Location" />
 
         <EditText
             android:id="@+id/etOppLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/etNumVolNeeded"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tvOppAddress"
             android:hint="@string/opportunity_address"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
             android:textSize="15dp"/>
 
+        <TextView
+            android:id="@+id/tvOppStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etOppLocation"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Start Date" />
+
         <EditText
             android:id="@+id/etStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etOppLocation"
+            android:layout_below="@id/tvOppStartDate"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/start_date"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
             android:textSize="15dp"/>
 
+        <TextView
+            android:id="@+id/tvOppStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etStartDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="Start Time" />
+
         <EditText
             android:id="@+id/etStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etStartDate"
+            android:layout_below="@id/tvOppStartTime"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/start_time"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
             android:textSize="15dp"/>
 
+        <TextView
+            android:id="@+id/tvOppEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etStartTime"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="End Date" />
+
         <EditText
             android:id="@+id/etEndDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etStartTime"
+            android:layout_below="@id/tvOppEndDate"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/end_date"
             android:focusable="false"
             android:clickable="true"
             android:inputType="none"
             android:textSize="15dp"/>
 
+        <TextView
+            android:id="@+id/tvOppEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etEndDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="End Time" />
+
         <EditText
             android:id="@+id/etEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etEndDate"
+            android:layout_below="@id/tvOppEndTime"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/end_time"
             android:focusable="false"
             android:clickable="true"
@@ -193,7 +288,6 @@
             android:visibility="gone"
             android:textColor="@color/colorPrimaryDark"
             android:enabled="false"/>
-
 
     </RelativeLayout>
 </ScrollView>

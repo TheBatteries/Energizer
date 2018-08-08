@@ -83,7 +83,7 @@ public class LandingActivity extends AppCompatActivity {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
             startingFragment = opportunityFeedFrag;
         } else {
-            addOppFrag = new AddOpportunityFragment();
+            addOppFrag = new MakeOpp1Fragment();
             profileFragment = new NpoProfileFragment();
             commitFrag = new NpoCommitFragment();
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);

@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.Cause;
@@ -44,17 +43,16 @@ import butterknife.OnClick;
 public abstract class OpportunityFragment extends Fragment{
 
     // the views
-    @BindView (R.id.tvTitle) TextView tvTitle;
     @BindView (R.id.etOppName) EditText etOppName;
     @BindView (R.id.etOppDescription) EditText etOppDescription;
     @BindView (R.id.etStartDate) EditText etStartDate;
     @BindView (R.id.etStartTime) EditText etStartTime;
     @BindView (R.id.etEndDate) EditText etEndDate;
     @BindView (R.id.etEndTime) EditText etEndTime;
-    @BindView (R.id.etOppLocation) EditText etOppLocation;
     @BindView (R.id.actvOppSkill) AutoCompleteTextView actvOppSkill;
-    @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
     @BindView (R.id.actvOppCause) AutoCompleteTextView actvOppCause;
+    @BindView (R.id.etOppLocation) EditText etOppLocation;
+    @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
     @BindView (R.id.btnFinishUpdating) Button btnFinishUpdating;
 
 
