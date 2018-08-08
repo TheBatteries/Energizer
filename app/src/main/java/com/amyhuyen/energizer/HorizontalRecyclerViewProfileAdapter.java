@@ -20,7 +20,6 @@ import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -45,10 +44,11 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers);
     }
 
-    public HorizontalRecyclerViewProfileAdapter(Activity activity, Opportunity opportunity) {
+    public HorizontalRecyclerViewProfileAdapter(Activity activity, Opportunity opportunity, List<Volunteer> committedVolunteers) {
         mActivity = activity;
         mOpportunity = opportunity;
         mOpportunityFetchHandler = new OpportunityFetchHandler();
+        mCommittedVolunteers = committedVolunteers;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -92,7 +92,6 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext()); //was "mActivity";
         View profileImageView = inflater.inflate(R.layout.profile_image_layout, viewGroup, false);
         HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder = new HorizontalRecyclerViewProfileAdapter.ViewHolder(profileImageView);
-//        getmCommittedVolunteersList();
         return viewHolder;
     }
 
@@ -103,15 +102,10 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     } //START HERE - will this iterate through each item in list of volunteers/ match it to a layout
 
 
-    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) { //had volunteer as a param
+    public void drawProfileItem(final ViewHolder viewHolder, Volunteer volunteer) {
         final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
-            @Override
-            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
-//                for (Volunteer volunteer : committedVolunteers) {
-
-                    viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
-                    final Task<Uri> uriTask = storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
+        storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String downloadUrl = new String(uri.toString());
@@ -121,25 +115,35 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
                                     .into(viewHolder.iv_profile_pic_horizontal_rv);
                         }
                     });
-//                }
-            }
-        }, mOpportunity.getOppId());
     }
 
-    public List<Volunteer> getmCommittedVolunteersList() {
-        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
-            @Override
-            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
-                mCommittedVolunteers.addAll(committedVolunteers);
-                notifyDataSetChanged();
-            }
-        }, mOpportunity.getOppId());
-        return mCommittedVolunteers;
-    }
+//    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) { //had volunteer as a param
+//        final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
+//            @Override
+//            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
+////                for (Volunteer volunteer : committedVolunteers) {
+//
+//                    viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
+//                    final Task<Uri> uriTask = storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            String downloadUrl = new String(uri.toString());
+//                            GlideApp.with(mActivity)
+//                                    .load(downloadUrl)
+//                                    .transform(new CircleCrop())
+//                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
+//                        }
+//                    });
+////                }
+//            }
+//        }, mOpportunity.getOppId());
+//    }
+    
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mCommittedVolunteers.size();
     }
 
 ////    // add a list of all elements to the recycler

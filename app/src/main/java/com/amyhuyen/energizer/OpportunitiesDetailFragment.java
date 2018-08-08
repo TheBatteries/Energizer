@@ -83,14 +83,11 @@ public class OpportunitiesDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
 
-        //adapter for recycler view of profile images
         mOpportunityFetchHandler = new OpportunityFetchHandler();
         mCommittedVolunteers = new ArrayList<>();
-        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity);
-        rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
+        setUpAdapter();         //adapter for recycler view of profile images
+
         //TODO - problem: not populating profile image view
-        populateProfileRv();
 
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
@@ -123,13 +120,17 @@ public class OpportunitiesDetailFragment extends Fragment {
         }
     }
 
-    public void populateProfileRv() {
+    public void setUpAdapter() {
 //        horizontalRecyclerViewProfileAdapter.getmCommittedVolunteersList();
 //        horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
         mOpportunityFetchHandler.fetchCommittedVolunteers(new HorizontalRecyclerViewProfileAdapter.CommittedVolunteerFetchListener() {
             @Override
             public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
                 mCommittedVolunteers.addAll(committedVolunteers);
+                horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity, mCommittedVolunteers);
+                rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
+                horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             }
         }, opportunity.getOppId());
 
