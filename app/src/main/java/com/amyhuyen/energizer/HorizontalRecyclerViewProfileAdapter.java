@@ -139,7 +139,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 //            }
 //        }, mOpportunity.getOppId());
 //    }
-    
+
 
     @Override
     public int getItemCount() {

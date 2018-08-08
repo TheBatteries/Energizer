@@ -19,8 +19,8 @@
         android:id="@+id/tv_name_under_profile_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
         android:layout_below="@id/iv_profile_pic_horizontal_rv"
+        android:layout_centerVertical="true"
         android:ellipsize="end"
         android:maxLines="1"
         android:hint="Vol Name"/>
