@@ -51,7 +51,6 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
-                    android:inputType="phone"
                     android:text="Phone" />
 
                 <EditText
@@ -75,8 +74,6 @@
                     android:layout_marginRight="45dp"
                     android:inputType="textPersonName"
                     android:text="Age/Desc." />
-
-
 
             </RelativeLayout>
 

@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.utils.DistanceUtils;
@@ -44,6 +47,8 @@ public class OpportunityFeedFragment extends Fragment {
     OpportunityAdapter oppAdapter;
     DatabaseReference firebaseDataOpp;
     ArrayList<Double> mUserLatLongArray;
+    Spinner spinner;
+    int distanceMiles;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +80,7 @@ public class OpportunityFeedFragment extends Fragment {
 
         // get the opportunities (for on launch)
         mUserLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
+        distanceMiles = 10;
         matchBySkillsAndCauses();
 
         // swipe refresh
@@ -95,7 +101,32 @@ public class OpportunityFeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Opportunity Matches");
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Matches Within");
+        spinner = ((LandingActivity) getActivity()).findViewById(R.id.spinnerRadius);
+        spinner.setVisibility(View.VISIBLE);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String distance = (String) adapterView.getItemAtPosition(i);
+                distance = distance.replace(" miles","");
+                distanceMiles = Integer.parseInt(distance);
+                matchBySkillsAndCauses();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        spinner.setVisibility(View.GONE);
     }
 
 
@@ -305,8 +336,12 @@ public class OpportunityFeedFragment extends Fragment {
     // method that filters opportunities by location
     private void filterByLocation(Opportunity opportunity){
         ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(opportunity.getLatLong());
-        if (DistanceUtils.distanceBetween(mUserLatLongArray, oppLatLongArray) < 40000){
+        if (DistanceUtils.distanceBetween(mUserLatLongArray, oppLatLongArray) < milesToMeters(distanceMiles)){
             newOpportunities.add(opportunity);
         }
+    }
+
+    private double milesToMeters(int miles) {
+        return miles * 1609.34;
     }
 }
