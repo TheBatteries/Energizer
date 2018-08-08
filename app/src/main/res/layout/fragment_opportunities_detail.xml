@@ -50,7 +50,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:transformPivotX="0dp"
-            android:transformPivotY="0dp"/>
+            android:transformPivotY="0dp" />
 
         <TextView
             android:id="@+id/tvOppTime"
