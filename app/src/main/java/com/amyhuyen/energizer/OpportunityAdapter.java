@@ -27,13 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.parceler.Parcels;
-
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static org.parceler.Parcels.wrap;
 
 public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.ViewHolder>{
 
@@ -76,7 +76,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
                 // create a bundle to hold the opportunity for transfer to details fragment
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, Parcels.wrap(opportunity));
+                bundle.putParcelable(DBKeys.KEY_OPPORTUNITY, wrap(opportunity));
                 String myOppSkill = tvSkills.getText().toString().replace("Skill Needed: ", "");
                 String myOppCause = tvCauses.getText().toString().replace("Cause Area: ", "");
                 bundle.putString("Skill Name", myOppSkill);

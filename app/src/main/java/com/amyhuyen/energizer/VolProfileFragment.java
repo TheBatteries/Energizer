@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +36,7 @@ import butterknife.OnClick;
 public class VolProfileFragment extends ProfileFragment {
 
     private Volunteer volunteer;
+    private VolunteerFetchHandler volunteerFetchHandler;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
     private Bundle bundle;
@@ -67,7 +69,8 @@ public class VolProfileFragment extends ProfileFragment {
 
 
     public VolProfileFragment() {
-        bundle = getArguments();
+        bundle = this.getArguments();
+        volunteerFetchHandler = new VolunteerFetchHandler();
         volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
     }
 
@@ -104,7 +107,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawCauseAreas() {
-        volunteer.fetchCauses(new CauseFetchListener() {
+        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
             @Override
             public void onCausesFetched(List<String> causes) {
                 String causeString = causes.toString().replace("[", "").replace("]", "");
@@ -123,7 +126,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
-        volunteer.fetchSkills(new SkillFetchListner() {
+        volunteerFetchHandler.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
@@ -179,7 +182,7 @@ public class VolProfileFragment extends ProfileFragment {
 
         @Override
     public void drawProfileBanner() {
-        volunteer.fetchCauses(new CauseFetchListener() {
+        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
             public void onCausesFetched(List<String> causes) {
             }
             @Override

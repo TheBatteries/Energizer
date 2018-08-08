@@ -51,7 +51,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         mCommittedVolunteers = committedVolunteers;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //had
 
         // the views
         public @BindView(R.id.iv_profile_pic_horizontal_rv)
@@ -67,19 +67,19 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View itemView) {
             Toast.makeText(mActivity, "clicked profile pic!", Toast.LENGTH_LONG).show();
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
+                Volunteer volunteer = mCommittedVolunteers.get(position);
+                Bundle userBundle = new Bundle();
+                userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
 
-                //TODO - start here - how to handle resetting user in UserDataProvider on back press
                 FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 VolProfileFragment volProfileFragment = new VolProfileFragment();
-                Volunteer volunteer = mCommittedVolunteers.get(position);
-                Bundle userBundle = new Bundle();
-                userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
+                volProfileFragment.setArguments(userBundle);
                 fragmentTransaction.replace(R.id.flContainer, volProfileFragment);
                 fragmentTransaction.addToBackStack(null).commit();
             }
@@ -99,7 +99,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     public void onBindViewHolder(@NonNull HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, int i) {
         final Volunteer volunteer = mCommittedVolunteers.get(i);
         drawProfileItem(viewHolder, volunteer);
-    } //START HERE - will this iterate through each item in list of volunteers/ match it to a layout
+    }
 
 
     public void drawProfileItem(final ViewHolder viewHolder, Volunteer volunteer) {
@@ -116,30 +116,6 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
                         }
                     });
     }
-
-//    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder, Volunteer volunteer) { //had volunteer as a param
-//        final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-//        mOpportunityFetchHandler.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
-//            @Override
-//            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
-////                for (Volunteer volunteer : committedVolunteers) {
-//
-//                    viewHolder.tv_name_under_profile_image.setText(volunteer.getName());
-//                    final Task<Uri> uriTask = storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            String downloadUrl = new String(uri.toString());
-//                            GlideApp.with(mActivity)
-//                                    .load(downloadUrl)
-//                                    .transform(new CircleCrop())
-//                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
-//                        }
-//                    });
-////                }
-//            }
-//        }, mOpportunity.getOppId());
-//    }
-
 
     @Override
     public int getItemCount() {
@@ -158,27 +134,3 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 //    }
 
 }
-
-
-//had this before making list of vol separately
-//    public void drawProfileItem(@NonNull final HorizontalRecyclerViewProfileAdapter.ViewHolder viewHolder) {
-//        mOpportunity.fetchCommittedVolunteers(new CommittedVolunteerFetchListener() {
-//            @Override
-//            public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
-//                for (Volunteer committedVolunteer : committedVolunteers) {
-//                    viewHolder.tv_name_under_profile_image.setText(committedVolunteer.getName());
-//
-//                    storageReference.child("profilePictures/users/" + committedVolunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            String downloadUrl = new String(uri.toString());
-//                            GlideApp.with(mActivity)
-//                                    .load(downloadUrl)
-//                                    .transform(new CircleCrop())
-//                                    .into(viewHolder.iv_profile_pic_horizontal_rv);
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//    }
