@@ -7,6 +7,7 @@ import com.amyhuyen.energizer.DBKeys;
 import com.amyhuyen.energizer.VolProfileFragment;
 import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
+import com.amyhuyen.energizer.models.Volunteer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,10 +23,14 @@ public class VolunteerFetchHandler {
     private static final String KEY_SKILLS_PER_USER = "SkillsPerUser";
     private static final String KEY_SKILLS_ID = "SkillID";
     private static final String KEY_SKILLS = "Skill";
+    private Volunteer mVolunteer;
 
     private VolProfileFragment.SkillFetchListner mSkillFetchListner;
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;
 
+    public VolunteerFetchHandler(Volunteer volunteer) {
+        mVolunteer = volunteer;
+    }
 
     // getting skills list
 
@@ -35,7 +40,7 @@ public class VolunteerFetchHandler {
     }
 
     private void fetchSkillIds() {
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String userId = mVolunteer.getUserID();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child(KEY_SKILLS_PER_USER).child(userId).addValueEventListener(new ValueEventListener() {

@@ -69,9 +69,8 @@ public class VolProfileFragment extends ProfileFragment {
 
 
     public VolProfileFragment() {
-        bundle = this.getArguments();
-        volunteerFetchHandler = new VolunteerFetchHandler();
-        volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+
+
     }
 
     @Override
@@ -86,6 +85,11 @@ public class VolProfileFragment extends ProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         storageReference = FirebaseStorage.getInstance().getReference();
         ButterKnife.bind(this, view);
+
+        //was in constructor - but that doesn't work. need to put user in Bundle after fragment created, but need bundle to create frag
+        bundle = this.getArguments();
+        volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
 
         drawContactInfo();
         drawCauseAreas();

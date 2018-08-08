@@ -82,9 +82,10 @@ public class EditProfileActivity extends AppCompatActivity {
         etEditAddress.setText(UserDataProvider.getInstance().getCurrentUserAddress(), TextView.BufferType.EDITABLE);
         etEditPhone.setText(UserDataProvider.getInstance().getCurrentUserPhone(), TextView.BufferType.EDITABLE);
         firebaseData = FirebaseDatabase.getInstance().getReference();
-        volunteerFetchHandler = new VolunteerFetchHandler();
 
         if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            volunteerFetchHandler = new VolunteerFetchHandler(UserDataProvider.getInstance().getCurrentVolunteer());
+
             etEditUniqueField.setText(UserDataProvider.getInstance().getCurrentUserAge(), EditText.BufferType.EDITABLE);
             etEditUniqueField.setInputType(InputType.TYPE_CLASS_NUMBER);
             skills = new ArrayList<>(volunteerFetchHandler.fetchSkillObjects()); //was UserDataProvider.getInstance().getCurrentVolunteer() before volunteerFetchHandler
