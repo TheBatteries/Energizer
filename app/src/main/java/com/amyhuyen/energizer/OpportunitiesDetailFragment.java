@@ -32,6 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.amyhuyen.energizer.R.layout.fragment_opportunities_detail;
+
 public class OpportunitiesDetailFragment extends Fragment {
 
     // the views
@@ -46,11 +48,10 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
     @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
     @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
-
+    @BindView (R.id.horizontal_rv_profile_images) RecyclerView rvHorizontalProfiles;
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
-    RecyclerView rvHorizontalProfiles;
 
     private HorizontalRecyclerViewProfileAdapter horizontalRecyclerViewProfileAdapter;
 
@@ -62,8 +63,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_opportunities_detail, container, false);
+        return inflater.inflate(fragment_opportunities_detail, container, false);
     }
 
     @Override
@@ -76,15 +76,16 @@ public class OpportunitiesDetailFragment extends Fragment {
         // get the bundle from the feed fragment
         Bundle bundle = getArguments();
         opportunity = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_OPPORTUNITY));
+
+        //adapter for recycler view of profile images
+        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity);
+        rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
+
         final String oppId = opportunity.getOppId();
         userPerOppRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP).child(oppId);
         final String userId = UserDataProvider.getInstance().getCurrentUserId();
         oppsPerUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
-
-        //adapter for horizontal recycler view of profile images
-        horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity);
-        rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
-        rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // reformat time
         String time = OppDisplayUtils.formatTime(opportunity);
@@ -110,8 +111,6 @@ public class OpportunitiesDetailFragment extends Fragment {
         } else {
             hideButtons();
         }
-
-
     }
 
     private void linkUserAndOpp(){

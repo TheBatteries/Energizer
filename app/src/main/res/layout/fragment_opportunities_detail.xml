@@ -142,60 +142,12 @@
             android:textAllCaps="false"
             android:visibility="gone" />
 
-
-
-        <!--<HorizontalScrollView-->
-            <!--android:id="@+id/horizontal_scrollview_profile_images"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignStart="@+id/tvOppName"-->
-            <!--android:layout_below="@+id/tvOppDesc"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:layout_marginBottom="5dp">-->
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/horizontal_rv_profile_images"
-                android:layout_height="match_parent"
+                android:layout_height="80dp"
                 android:layout_width="match_parent"
-                android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/full_profile_image_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
-
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <include
-                    layout="@layout/profile_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-            </android.support.v7.widget.RecyclerView>
-        <!--</HorizontalScrollView>-->
+                android:layout_below="@id/tvOppDesc"
+                android:orientation="horizontal"/>
 
         <Button
             android:id="@+id/btnUpdateOpp"
@@ -210,3 +162,38 @@
 
     </RelativeLayout>
 </ScrollView>
+
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/full_profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_gravity="center_horizontal">-->
+
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<include-->
+    <!--layout="@layout/profile_image_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--</LinearLayout>-->
