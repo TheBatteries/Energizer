@@ -50,7 +50,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:transformPivotX="0dp"
-            android:transformPivotY="0dp"/>
+            android:transformPivotY="0dp" />
 
         <TextView
             android:id="@+id/tvOppTime"
@@ -98,6 +98,7 @@
 
         <ImageView
             android:id="@+id/icSkillsCheck"
+            android:src="@drawable/ic_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvSkills"
@@ -125,10 +126,11 @@
             android:layout_toEndOf="@id/tvCausesIntro"
             android:layout_marginBottom="1dp"
             android:layout_marginRight="3dp"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <ImageView
             android:id="@+id/icCausesCheck"
+            android:src="@drawable/ic_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvCauses"

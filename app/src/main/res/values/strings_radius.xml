@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="radius_array">
+        <item>10 miles</item>
+        <item>15 miles</item>
+        <item>20 miles</item>
+        <item>25 miles</item>
+        <item>30 miles</item>
+        <item>40 miles</item>
+        <item>50 miles</item>
+    </string-array>
+</resources>
