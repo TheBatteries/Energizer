@@ -51,10 +51,10 @@ public abstract class OpportunityFragment extends Fragment{
     @BindView (R.id.etStartTime) EditText etStartTime;
     @BindView (R.id.etEndDate) EditText etEndDate;
     @BindView (R.id.etEndTime) EditText etEndTime;
-    @BindView (R.id.etOppLocation) EditText etOppLocation;
     @BindView (R.id.actvOppSkill) AutoCompleteTextView actvOppSkill;
-    @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
     @BindView (R.id.actvOppCause) AutoCompleteTextView actvOppCause;
+    @BindView (R.id.etOppLocation) EditText etOppLocation;
+    @BindView (R.id.etNumVolNeeded) EditText etNumVolNeeded;
     @BindView (R.id.btnFinishUpdating) Button btnFinishUpdating;
 
 
@@ -82,7 +82,7 @@ public abstract class OpportunityFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_opportunity, container, false);
+        return inflater.inflate(R.layout.fragment_edit_opp, container, false);
     }
 
     @Override
