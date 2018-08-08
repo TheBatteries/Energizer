@@ -12,6 +12,12 @@ public class NpoCommitFragment extends CommitFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Company's Opportunities");
+    }
+
+    @Override
     public DatabaseReference setDatabaseReference(){
         dataOppPerUser = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(userId);
         return dataOppPerUser;

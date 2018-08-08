@@ -36,7 +36,8 @@ public class OpportunityFeedFragment extends Fragment {
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
     List<String> mySkillsIdList;
-    List<String> myOppsIdList;
+    List<String> myOppsIdFromSkillsList;
+    List<String> myOppsIdFromCausesList;
     List<String> myCausesIdList;
     List<String> mySkillsNameList;
     List<String> myCausesNameList;
@@ -91,11 +92,18 @@ public class OpportunityFeedFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Opportunity Matches");
+    }
+
 
     // method that filters opportunities displayed to a volunteer based on skills matching
     private void matchBySkillsAndCauses(){
         mySkillsIdList = new ArrayList<>();
-        myOppsIdList = new ArrayList<>();
+        myOppsIdFromSkillsList = new ArrayList<>();
+        myOppsIdFromCausesList = new ArrayList<>();
         myCausesIdList = new ArrayList<>();
         mySkillsNameList = new ArrayList<>();
         myCausesNameList = new ArrayList<>();
@@ -162,7 +170,7 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
 
                         // add those oppIds to the myOppIdList
-                        myOppsIdList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
+                        myOppsIdFromSkillsList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                     }
                 }
 
@@ -235,8 +243,8 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String,String> oppsPerCauseMapping = (HashMap<String,String>) child.getValue();
 
                         // add these oppIds to the myOppIdList if they aren't already in there
-                        if (!myOppsIdList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
-                            myOppsIdList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
+                        if (!myOppsIdFromSkillsList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
+                            myOppsIdFromCausesList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                         }
                     }
                 }
@@ -267,7 +275,7 @@ public class OpportunityFeedFragment extends Fragment {
                     Opportunity newOpp = child.getValue(Opportunity.class);
 
                     // add to newOpportunities only the opportunity's oppId is in the filtered list
-                    if (myOppsIdList.contains(newOpp.getOppId())) {
+                    if (myOppsIdFromSkillsList.contains(newOpp.getOppId()) || myOppsIdFromCausesList.contains(newOpp.getOppId())) {
                         // check if opportunity is within ~25 miles of the user's given city
                         filterByLocation(newOpp);
                     }
@@ -301,5 +309,4 @@ public class OpportunityFeedFragment extends Fragment {
             newOpportunities.add(opportunity);
         }
     }
-
 }

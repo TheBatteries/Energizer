@@ -5,21 +5,18 @@
         android:id="@+id/ic_left"
         android:enabled="true"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/opportunities"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/ic_middle"
         android:enabled="true"
         android:icon="@drawable/ic_add_box_black_24dp"
-        android:title="@string/add_opportunity"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/ic_right"
         android:enabled="true"
         android:icon="@drawable/ic_person_black_filled"
-        android:title="@string/profile"
         app:showAsAction="always" />
 
 </menu>
