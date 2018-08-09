@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MakeOpp1Fragment">
+    tools:context=".MakeOpp1Fragment"
+    android:orientation="vertical">
+
+
 
     <EditText
         android:id="@+id/etOppName"
@@ -15,6 +18,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="50dp"
+        android:layout_weight="0"
         android:hint="@string/opportunity_name"
         android:textSize="15dp"/>
 
@@ -27,6 +31,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_weight="0"
         android:layout_marginTop="30dp"
         android:hint="@string/opportunity_description"
         android:textSize="15dp"/>
@@ -38,9 +43,10 @@
         android:clickable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etOppDescription"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="45dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="15dp"
+        android:layout_weight="0"
         android:layout_marginRight="15dp"
         android:layout_marginTop="40dp"
         android:textAllCaps="false"

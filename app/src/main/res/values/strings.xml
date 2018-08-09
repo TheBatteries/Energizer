@@ -62,8 +62,8 @@
     <string name="cause">Cause</string>
 
     <string-array name="contact_info">
-        <item></item>
-        <item>Call</item>
-        <item>Website</item>
+        <item>Get In Touch</item>
+        <item>Call Us</item>
+        <item>Visit Our Website</item>
     </string-array>
 </resources>
