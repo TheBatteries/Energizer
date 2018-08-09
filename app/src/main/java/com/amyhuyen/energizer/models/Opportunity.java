@@ -17,8 +17,8 @@ public class Opportunity {
     String latLong;
     String numVolNeeded;
 
-
-    public Opportunity(){}
+    public Opportunity() {
+    }
 
     public Opportunity(String name, String description, String oppId, String startDate,
                        String startTime, String endDate, String endTime, String npoId,
@@ -43,26 +43,48 @@ public class Opportunity {
     }
 
     // the accessor for the opportunity description
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
     // the accessor for the opportunity id
-    public String getOppId() { return oppId; }
+    public String getOppId() {
+        return oppId;
+    }
 
-    public String getStartDate() { return startDate; }
+    public String getStartDate() {
+        return startDate;
+    }
 
-    public String getStartTime() { return startTime; }
+    public String getStartTime() {
+        return startTime;
+    }
 
-    public String getEndDate() { return endDate; }
+    public String getEndDate() {
+        return endDate;
+    }
 
-    public String getEndTime() { return endTime; }
+    public String getEndTime() {
+        return endTime;
+    }
 
-    public String getNpoId() { return npoId; }
+    public String getNpoId() {
+        return npoId;
+    }
 
-    public String getNpoName() { return npoName; }
+    public String getNpoName() {
+        return npoName;
+    }
 
-    public String getAddress() { return address; }
+    public String getAddress() {
+        return address;
+    }
 
-    public String getLatLong() { return latLong; }
+    public String getLatLong() {
+        return latLong;
+    }
 
-    public String getNumVolNeeded() { return numVolNeeded; }
+    public String getNumVolNeeded() {
+        return numVolNeeded;
+    }
 }

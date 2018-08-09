@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
+import com.amyhuyen.energizer.models.Nonprofit;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,11 +37,12 @@ import butterknife.OnClick;
 
 public class NpoProfileFragment extends ProfileFragment {
 
-//    Nonprofit nonprofit;
+    private Nonprofit nonprofit;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
     private ArrayList<Integer> volunteersCommitted;
     private Set<Character> vowels;
+    private Bundle bundle;
 
     // views
     @BindView(R.id.tv_skills)
@@ -79,7 +83,16 @@ public class NpoProfileFragment extends ProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         storageReference = FirebaseStorage.getInstance().getReference();
-//        nonprofit = UserDataProvider.getInstance().getCurrentNPO();
+        bundle = new Bundle();
+
+        if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
+            bundle = this.getArguments(); //works when coming from landing
+            nonprofit = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        }
+        else{
+            nonprofit = UserDataProvider.getInstance().getCurrentNPO();
+        }
+//        volunteerFetchHandler = new VolunteerFetchHandler(volunteer); //TODO - will need this line when we have a nonprofit fetch handler
 
         //vowels set for deciding banner image pseudo-randomly
         vowels = new HashSet<>();
@@ -112,7 +125,7 @@ public class NpoProfileFragment extends ProfileFragment {
 
 
     public void getProfilePic() {
-        storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("profilePictures/users/" + nonprofit.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
@@ -126,13 +139,16 @@ public class NpoProfileFragment extends ProfileFragment {
 
     @Override
     public void drawSkills() {
-        tvSkills.setText(UserDataProvider.getInstance().getCurrentNPO().getDescription());
+        tvSkills.setText(nonprofit.getDescription());
     }
 
     @Override
     public void drawContactInfo() {
-        tvContactInfo.setText(UserDataProvider.getInstance().getCurrentNPO().getPhone() + "\n" +
-                UserDataProvider.getInstance().getCurrentNPO().getAddress());
+        tvContactInfo.setText(nonprofit.getPhone() + "\n" +
+                nonprofit.getAddress());
+        tv_name.setText(nonprofit.getName());
+        tv_email.setText(nonprofit.getEmail());
+        //TODO -fix null object reference on nonprofit
     }
 
     @Override
@@ -225,7 +241,7 @@ public class NpoProfileFragment extends ProfileFragment {
     private char getCharFromName() {
         char letter = 'z';
 
-        for (char aLetter : UserDataProvider.getInstance().getCurrentUserName().toCharArray()) {
+        for (char aLetter : nonprofit.getName().toCharArray()) {
             if (vowels.contains(aLetter)) {
                 letter = aLetter;
                 break;

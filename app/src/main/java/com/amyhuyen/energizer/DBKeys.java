@@ -63,6 +63,7 @@ public class DBKeys {
     public static final String KEY_USER_TYPE = "userType";
     public static final String KEY_VOLUNTEER = "Volunteer";
     public static final String KEY_NPO = "NPO";
+    public static final String KEY_RATING = "rating";
 
     // UsersPerCause
     public static final String KEY_USERS_PER_CAUSE = "UsersPerCause";
@@ -73,6 +74,9 @@ public class DBKeys {
 
     // UsersPerSkill
     public static final String KEY_USERS_PER_SKILL = "UsersPerSkill";
+
+    //Storage Paths
+    public  static final String STORAGE_KEY_PROFILE_PICTURES_USERS = "profilePictures/users/";
 
     //causeImageUrls
 //    "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"

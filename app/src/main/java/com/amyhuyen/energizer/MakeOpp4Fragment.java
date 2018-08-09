@@ -18,8 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.parceler.Parcels;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +43,7 @@ public class MakeOpp4Fragment extends Fragment {
     String name;
     String description;
     String address;
+    String latLong;
     String numVolNeeded;
 
 
@@ -79,12 +78,13 @@ public class MakeOpp4Fragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Bundle bundle = getArguments();
-        name = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NAME));
-        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_DESCRIPTION));
-        skill = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_SKILL_INNER));
-        cause = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_CAUSE_NAME));
-        address = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_ADDRESS));
-        numVolNeeded = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NUM_VOL_NEEDED));
+        name = bundle.getString(DBKeys.KEY_NAME);
+        description = bundle.getString(DBKeys.KEY_DESCRIPTION);
+        skill = bundle.getString(DBKeys.KEY_SKILL_INNER);
+        cause = bundle.getString(DBKeys.KEY_CAUSE_NAME);
+        address = bundle.getString(DBKeys.KEY_ADDRESS);
+        numVolNeeded = bundle.getString(DBKeys.KEY_NUM_VOL_NEEDED);
+        latLong = bundle.getString(DBKeys.KEY_LAT_LONG);
 
         etStartDate.addTextChangedListener(mTextWatcher);
         etEndDate.addTextChangedListener(mTextWatcher);
@@ -165,16 +165,17 @@ public class MakeOpp4Fragment extends Fragment {
         } else {
 
             Bundle bundle = new Bundle();
-            bundle.putParcelable(DBKeys.KEY_NAME, Parcels.wrap(name));
-            bundle.putParcelable(DBKeys.KEY_DESCRIPTION, Parcels.wrap(description));
-            bundle.putParcelable(DBKeys.KEY_SKILL_INNER, Parcels.wrap(skill));
-            bundle.putParcelable(DBKeys.KEY_CAUSE_NAME, Parcels.wrap(cause));
-            bundle.putParcelable(DBKeys.KEY_ADDRESS, Parcels.wrap(address));
-            bundle.putParcelable(DBKeys.KEY_NUM_VOL_NEEDED, Parcels.wrap(numVolNeeded));
-            bundle.putParcelable(DBKeys.KEY_START_DATE, Parcels.wrap(startDate));
-            bundle.putParcelable(DBKeys.KEY_START_TIME, Parcels.wrap(startTime));
-            bundle.putParcelable(DBKeys.KEY_END_DATE, Parcels.wrap(endDate));
-            bundle.putParcelable(DBKeys.KEY_END_TIME, Parcels.wrap(endTime));
+            bundle.putString(DBKeys.KEY_NAME, name);
+            bundle.putString(DBKeys.KEY_DESCRIPTION, description);
+            bundle.putString(DBKeys.KEY_SKILL_INNER, skill);
+            bundle.putString(DBKeys.KEY_CAUSE_NAME, cause);
+            bundle.putString(DBKeys.KEY_ADDRESS, address);
+            bundle.putString(DBKeys.KEY_NUM_VOL_NEEDED, numVolNeeded);
+            bundle.putString(DBKeys.KEY_START_DATE, startDate);
+            bundle.putString(DBKeys.KEY_START_TIME, startTime);
+            bundle.putString(DBKeys.KEY_END_DATE, endDate);
+            bundle.putString(DBKeys.KEY_END_TIME, endTime);
+            bundle.putString(DBKeys.KEY_LAT_LONG, latLong);
             etEndDate.setText(null);
             etEndTime.setText(null);
             etStartDate.setText(null);

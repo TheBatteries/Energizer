@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 public class CauseAdapter extends RecyclerView.Adapter<CauseAdapter.ViewHolder> {
 
 
-    private List<Cause> mCauses; //Can I do this? Changed from List<Skill>, but I want it to be able to be a list of Causes
+    private List<Cause> mCauses;
     Context context;
 
     public CauseAdapter(ArrayList<Cause> cause){
