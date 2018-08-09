@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="giveback"
+        android:text="GIVEback"
         android:layout_marginBottom = "15dp"
         android:layout_marginTop="180dp"
         android:textAlignment="center"
-        android:fontFamily="@font/royal_crescent"
+        android:fontFamily="@font/roadway"
+        android:textSize="70sp"
         android:textColor="@color/black"/>
 
     <TextView
