@@ -36,7 +36,7 @@ public class CommitFetchHandler {
     //methods for getting commit count
 
     public DatabaseReference setDatabaseReference(String userId){
-       
+
         return dataOppPerUser;
     }
 
