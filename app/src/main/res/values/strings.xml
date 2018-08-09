@@ -66,4 +66,14 @@
         <item>Call</item>
         <item>Website</item>
     </string-array>
+
+    <string-array name="radius_array">
+        <item>10 miles</item>
+        <item>15 miles</item>
+        <item>20 miles</item>
+        <item>25 miles</item>
+        <item>30 miles</item>
+        <item>40 miles</item>
+        <item>50 miles</item>
+    </string-array>
 </resources>
