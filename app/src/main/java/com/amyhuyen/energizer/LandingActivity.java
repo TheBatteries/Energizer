@@ -90,6 +90,9 @@ public class LandingActivity extends AppCompatActivity {
             startingFragment = commitFrag;
         }
 
+        bottomNavigationView.setPadding(0,50,0,0);
+
+
         // handle the initial fragment transaction
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, startingFragment);
