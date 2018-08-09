@@ -234,7 +234,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
-            android:text="@string/skills"/>
+            android:text="@string/skills_uppercase"/>
 
         <TextView
             android:id="@+id/tv_cause_area"

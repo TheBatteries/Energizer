@@ -71,7 +71,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="@string/skill" />
+            android:text="@string/skill_uppercase" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppSkill"
@@ -93,7 +93,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="@string/cause" />
+            android:text="@string/cause_uppercase" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppCause"
