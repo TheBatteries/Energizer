@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Opportunity;
@@ -48,6 +49,7 @@ public class OpportunitiesDetailFragment extends Fragment {
     @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
     @BindView (R.id.icCausesCheck) ImageView icCausesCheck;
     @BindView (R.id.icSkillsCheck) ImageView icSkillsCheck;
+    @BindView (R.id.ratingBar) RatingBar ratingBar;
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
