@@ -52,35 +52,23 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     // the views
-    @BindView(R.id.tv_skills)
-    TextView tv_skills;
-    @BindView(R.id.tv_cause_area)
-    TextView tv_cause_area;
-    @BindView(R.id.profile_pic)
-    ImageView profilePic;
-    @BindView(R.id.btn_edit_profile)
-    Button btn_edit_profile;
-    @BindView(R.id.tv_contact_info)
-    TextView tv_contact_info;
+    @BindView(R.id.tv_skills) TextView tv_skills;
+    @BindView(R.id.tv_cause_area) TextView tv_cause_area;
+    @BindView (R.id.profile_pic) ImageView profilePic;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
+    @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     // menu views
-    @BindView(R.id.tvLeftNumber)
-    TextView tvLeftNumber;
-    @BindView(R.id.tvLeftDescription)
-    TextView tvLeftDescription;
-    @BindView(R.id.tvMiddleNumber)
-    TextView tvMiddleNumber;
-    @BindView(R.id.tvMiddleDescription)
-    TextView tvMiddleDescription;
-    @BindView(R.id.tvRightNumber)
-    TextView tvRightNumber;
-    @BindView(R.id.tvRightDescription)
-    TextView tvRightDescription;
+    @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
+    @BindView(R.id.tvLeftDescription) TextView tvLeftDescription;
+    @BindView(R.id.tvMiddleNumber) TextView tvMiddleNumber;
+    @BindView(R.id.tvMiddleDescription) TextView tvMiddleDescription;
+    @BindView(R.id.tvRightNumber) TextView tvRightNumber;
+    @BindView(R.id.tvRightDescription) TextView tvRightDescription;
+
 
 
     public VolProfileFragment() {
-
-
     }
 
     @Override
@@ -110,7 +98,9 @@ public class VolProfileFragment extends ProfileFragment {
         drawCauseAreas();
         drawSkills();
         drawMenu();
-        drawProfileBanner();
+        drawProfileBannerAndCauseAreas();
+
+//        drawProfileBanner();
         storageReference.child("profilePictures/users/" + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -120,11 +110,21 @@ public class VolProfileFragment extends ProfileFragment {
                         .transform(new CircleCrop())
                         .into(profilePic);
             }
-        });
+    });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
 
     @Override
+    public void onStop() {
+            super.onStop();
+            ((LandingActivity) getActivity()).getSupportActionBar().show();
+        }
+
     public void drawCauseAreas() {
         volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
             @Override
@@ -205,12 +205,24 @@ public class VolProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void drawProfileBanner() {
-        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
-            public void onCausesFetched(List<String> causes) {
-            }
+//    @Override
+//    public void drawProfileBanner() {
+//        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
 
+    @Override
+    public void drawProfileBannerAndCauseAreas() {
+        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
+            @Override
+            public void onCausesFetched(List<String> causes) {
+                String causeString = causes.toString().replace("[", "").replace("]", "");
+                tv_cause_area.setText("My Causes: " + causeString);
+
+                // set the text in the menu for number of causes
+                tvRightNumber.setText(Integer.toString(causes.size()));
+                if (causes.size() == 1) {
+                    tvRightDescription.setText("Cause");
+                }
+            }
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {
                 if (!causeIds.isEmpty()) {
@@ -241,4 +253,5 @@ public class VolProfileFragment extends ProfileFragment {
             }
         });
     }
+
 }

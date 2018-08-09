@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/theme_grey"
     tools:context=".FacebookUserDetailsActivity">
 
     <EditText
         android:id="@+id/etEmailFB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="30dp"
         android:inputType="textEmailAddress"
         android:hint="Preferred Email"
-        android:layout_margin="30dp"
-        android:layout_alignParentTop="true"/>
+        style="@style/EditTextTheme"/>
 
     <EditText
         android:id="@+id/etPhoneFB"
@@ -23,7 +24,8 @@
         android:hint="Phone"
         android:layout_below="@id/etEmailFB"
         android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        style="@style/EditTextTheme"/>
 
     <EditText
         android:id="@+id/etAgeFB"
@@ -32,7 +34,8 @@
         android:inputType="number"
         android:hint="Age"
         android:layout_below="@id/etPhoneFB"
-        android:layout_margin="30dp"/>
+        android:layout_margin="30dp"
+        style="@style/EditTextTheme"/>
 
     <EditText
         android:id="@+id/etLocationFB"
@@ -46,11 +49,11 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"/>
+        style="@style/EditTextTheme"/>
 
     <Button
         android:id="@+id/btnSetData"
-        android:background="@drawable/button_blue"
+        android:background="@drawable/button_yellow_filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Set Info"
@@ -58,5 +61,5 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_alignParentBottom="true"
-        android:textAllCaps="false"/>
+        style="@style/ButtonTheme"/>
 </RelativeLayout>

@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
 import com.amyhuyen.energizer.models.Volunteer;
@@ -25,7 +27,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import org.parceler.Parcels;
 
 import butterknife.BindView;
@@ -33,8 +34,9 @@ import butterknife.ButterKnife;
 
 public class LandingActivity extends AppCompatActivity {
 
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tvToolbarTitle) TextView tvToolbarTitle;
 
     // handling google autocomplete results in add opp fragment
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -54,7 +56,6 @@ public class LandingActivity extends AppCompatActivity {
 
     public String UserType;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,9 @@ public class LandingActivity extends AppCompatActivity {
 
         // bind the views
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        // remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // get the user type  and name info from the intent
         UserType = UserDataProvider.getInstance().getCurrentUserType();
@@ -84,7 +88,7 @@ public class LandingActivity extends AppCompatActivity {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navegation);
             startingFragment = opportunityFeedFrag;
         } else {
-            addOppFrag = new AddOpportunityFragment();
+            addOppFrag = new MakeOpp1Fragment();
             profileFragment = new NpoProfileFragment();
             commitFrag = new NpoCommitFragment();
             Nonprofit nonprofit = UserDataProvider.getInstance().getCurrentNPO();
@@ -92,6 +96,9 @@ public class LandingActivity extends AppCompatActivity {
             bottomNavigationView.inflateMenu(R.menu.menu_bottom_navigation_npo);
             startingFragment = commitFrag;
         }
+
+        bottomNavigationView.setPadding(0,50,0,0);
+
 
         // handle the initial fragment transaction
         startingFragment.setArguments(userBundle);

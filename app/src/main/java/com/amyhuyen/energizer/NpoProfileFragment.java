@@ -104,13 +104,25 @@ public class NpoProfileFragment extends ProfileFragment {
         vowels.add('y');
 
         drawContactInfo();
-        drawCauseAreas();
         drawSkills();
         drawMenu();
         drawEditCausesBtn();
         getProfilePic();
-        drawProfileBanner();
+        drawProfileBannerAndCauseAreas();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
 
     public void getProfilePic() {
         storageReference.child("profilePictures/users/" + nonprofit.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -123,11 +135,6 @@ public class NpoProfileFragment extends ProfileFragment {
                         .into(profilePic);
             }
         });
-    }
-
-    @Override
-    public void drawCauseAreas() {
-        tvCauseArea.setVisibility(View.GONE);
     }
 
     @Override
@@ -170,7 +177,7 @@ public class NpoProfileFragment extends ProfileFragment {
         }
 
         // TODO - hard code rating
-        tvRightNumber.setText("4.7");
+        tvRightNumber.setText(UserDataProvider.getInstance().getCurrentNPO().getRating());
 
         // set the text for the number of volunteers committed
         setTotalVolunteersCommitted();
@@ -222,7 +229,8 @@ public class NpoProfileFragment extends ProfileFragment {
     }
 
     @Override
-    public void drawProfileBanner() {
+    public void drawProfileBannerAndCauseAreas() {
+        tvCauseArea.setVisibility(View.GONE);
         char letter = getCharFromName();
         drawBanner(getBannerImageUrl(letter)); //assign banner pseudo-randomly based on character in name
 

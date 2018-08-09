@@ -77,14 +77,14 @@
 
     <Button
         android:id="@+id/setSkills"
-        android:background="@drawable/button_yellow"
+        android:background="@drawable/button_yellow_filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="50dp"
         android:text="Continue"
         android:textAllCaps="false" />
 </RelativeLayout>

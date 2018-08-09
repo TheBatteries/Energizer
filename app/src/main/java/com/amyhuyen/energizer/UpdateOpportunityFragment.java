@@ -32,6 +32,18 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
     @BindView(R.id.btnDeleteOpportunity) Button btnDeleteOpportunity;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Update Opportunity");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((LandingActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
     public void updateDatabase(String name, String description, String startDate, String startTime, String endDate, String endTime, String npoId, String npoName, String numVolNeeded) {
         if (checkVolunteerNeededValidity(etNumVolNeeded.getText().toString())) {
             // create an instance of the opportunity class based on this information
@@ -146,14 +158,13 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
         oldSkillName = bundle.getString("Skill Name");
         oldCauseName = bundle.getString("Cause Name");
 
-        tvTitle.setText("Update Opportunity");
         btnFinishUpdating.setText("Finish Updating Opportunity");
         etOppName.setText(opportunity.getName());
         etOppDescription.setText(opportunity.getDescription());
-        etStartDate.setText("Start Date:  " + opportunity.getStartDate());
-        etStartTime.setText("Start Time:  " + opportunity.getStartTime());
-        etEndDate.setText("End Date:  " + opportunity.getEndDate());
-        etEndTime.setText("End Time:  " + opportunity.getEndTime());
+        etStartDate.setText(opportunity.getStartDate());
+        etStartTime.setText(opportunity.getStartTime());
+        etEndDate.setText(opportunity.getEndDate());
+        etEndTime.setText(opportunity.getEndTime());
         etOppLocation.setText(opportunity.getAddress());
         actvOppSkill.setText(oldSkillName);
         actvOppCause.setText(oldCauseName);
@@ -204,11 +215,15 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot user : dataSnapshot.getChildren()) {
-                            signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot user : dataSnapshot.getChildren()) {
+                                signedUpUserIds.add(((HashMap<String, String>) user.getValue()).get(DBKeys.KEY_USER_ID));
+                            }
+                            dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId).removeValue();
+                            removeFromOppsPerUser(oppId, signedUpUserIds, dataRef);
+                        } else {
+                            switchFrag();
                         }
-                        dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId).removeValue();
-                        removeFromOppsPerUser(oppId, signedUpUserIds, dataRef);
                     }
 
                     @Override
@@ -228,10 +243,10 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                         if (usersOppId.equals(oppId)) {
                             String intermediateKey = usersOpportunity.getKey();
                             dataRef.child(DBKeys.KEY_OPPS_PER_USER).child(userId).child(intermediateKey).removeValue();
-
-                            switchFrag();
-                        }
+                            }
                     }
+                    Toast.makeText(landing, "Opportunity Deleted", Toast.LENGTH_SHORT).show();
+                    switchFrag();
                 }
             }
 

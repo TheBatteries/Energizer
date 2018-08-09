@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/median"
+    tools:context=".VolRegContActivity">
+
+    <TextView
+        android:id="@+id/tvSignUpCont"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/volunteer_registration"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="35dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSignUpCont"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="100dp"
+        style="@style/SignUpText"
+        android:textSize="15dp" />
+
+    <EditText
+        android:id="@+id/etLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="70dp"
+        android:layout_below="@id/etPhone"
+        android:hint="@string/enter_city"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
+        android:textSize="15dp"
+        style="@style/SignUpText"/>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:background="@drawable/button_yellow_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

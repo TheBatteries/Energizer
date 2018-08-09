@@ -95,13 +95,6 @@ public class UserDataProvider {
         return userPhone;
     }
 
-    public String getCurrentUserAge() {
-        String userAge = null;
-        if (mUserType.equals("Volunteer")) {
-            userAge = mVolunteer.getAge();
-        }
-        return userAge;
-    }
 
     public String getCurrentUserDescription() {
         String userDescription = null;

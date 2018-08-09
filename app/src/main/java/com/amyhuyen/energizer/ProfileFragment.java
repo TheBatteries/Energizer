@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,18 +40,15 @@ public abstract class ProfileFragment extends Fragment {
     private User user;
     private Context mContext;
 
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
     //views
-    @BindView(R.id.tv_name)
-    TextView tv_name;
-    @BindView(R.id.btn_logout)
-    ImageButton btn_logout;
-    @BindView(R.id.tv_email)
-    TextView tv_email;
-    @BindView(R.id.ivProfileBanner)
-    ImageView ivProfileBanner;
+    @BindView(R.id.tv_name) TextView tv_name;
+    @BindView(R.id.btn_logout) ImageButton btn_logout;
+    @BindView(R.id.tv_email) TextView tv_email;
+    @BindView(R.id.ivProfileBanner) ImageView ivProfileBanner;
+    @BindView(R.id.btn_edit_profile)
+    Button editProfile;
 
 
     FragmentActivity listener;
@@ -74,8 +72,6 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // bind the views
         ButterKnife.bind(this, view);
 
         //moved to respective frag
@@ -108,7 +104,9 @@ public abstract class ProfileFragment extends Fragment {
     public abstract void switchToCommitFragment();
 
     public abstract void drawEditCausesBtn();
-    public abstract void drawProfileBanner();
+//    public abstract void drawProfileBanner();
+    public abstract void drawProfileBannerAndCauseAreas();
+//    public abstract void getBannerImageUrl(String causeId);
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {

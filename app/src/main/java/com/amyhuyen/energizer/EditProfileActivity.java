@@ -49,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @BindView(R.id.rvCurrentCauses)RecyclerView rvCurrentCauses;
     @BindView(R.id.setUserProfileEdits)Button confirmEdits;
     @BindView(R.id.llVolunteerSkillsAndCauses)LinearLayout llVolunteerSkillsAndCauses;
+    @BindView(R.id.tvUniqueField) TextView tvUniqueField;
 
     @BindView(R.id.actvMoreCauses)AutoCompleteTextView actvAddMoreCauses;
     @BindView(R.id.actvMoreSkills) AutoCompleteTextView actvAddMoreSkills;
@@ -83,10 +84,9 @@ public class EditProfileActivity extends AppCompatActivity {
         etEditPhone.setText(UserDataProvider.getInstance().getCurrentUserPhone(), TextView.BufferType.EDITABLE);
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             volunteerFetchHandler = new VolunteerFetchHandler(UserDataProvider.getInstance().getCurrentVolunteer());
 
-            etEditUniqueField.setText(UserDataProvider.getInstance().getCurrentUserAge(), EditText.BufferType.EDITABLE);
             etEditUniqueField.setInputType(InputType.TYPE_CLASS_NUMBER);
             skills = new ArrayList<>(volunteerFetchHandler.fetchSkillObjects()); //was UserDataProvider.getInstance().getCurrentVolunteer() before volunteerFetchHandler
             causes = new ArrayList<>(volunteerFetchHandler.fetchCauseObjects());
@@ -96,6 +96,8 @@ public class EditProfileActivity extends AppCompatActivity {
             rvCurrentSkills.setAdapter(skillAdapter);
             rvCurrentCauses.setLayoutManager(new LinearLayoutManager(this));
             rvCurrentCauses.setAdapter(causeAdapter);
+            tvUniqueField.setVisibility(View.GONE);
+            etEditUniqueField.setVisibility(View.GONE);
         } else {
             llVolunteerSkillsAndCauses.setVisibility(View.GONE);
             etEditUniqueField.setText(UserDataProvider.getInstance().getCurrentUserDescription(), EditText.BufferType.EDITABLE);
@@ -294,12 +296,10 @@ public class EditProfileActivity extends AppCompatActivity {
             firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("phone").setValue(etEditPhone.getText().toString());
         }
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
-            if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentVolunteer().getAge())){
-                firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("age").setValue(etEditUniqueField.getText().toString());
+        if (!UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+            if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentNPO().getDescription())){
+                firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("description").setValue(etEditUniqueField.getText().toString());
             }
-        } else if (!etEditUniqueField.getText().equals(UserDataProvider.getInstance().getCurrentNPO().getDescription())){
-            firebaseData.child("User").child(UserDataProvider.getInstance().getCurrentUserId()).child("description").setValue(etEditUniqueField.getText().toString());
         }
     }
 

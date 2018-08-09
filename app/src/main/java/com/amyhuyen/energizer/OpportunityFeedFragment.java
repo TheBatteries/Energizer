@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.utils.DistanceUtils;
@@ -18,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +31,6 @@ import butterknife.ButterKnife;
 
 public class OpportunityFeedFragment extends Fragment {
 
-    private StorageReference storageReference;
-
-
     // the views
     @BindView (R.id.rvOpps) RecyclerView rvOpps;
     @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
@@ -40,13 +39,16 @@ public class OpportunityFeedFragment extends Fragment {
     List<Opportunity> opportunities;
     List<Opportunity> newOpportunities;
     List<String> mySkillsIdList;
-    List<String> myOppsIdList;
+    List<String> myOppsIdFromSkillsList;
+    List<String> myOppsIdFromCausesList;
     List<String> myCausesIdList;
     List<String> mySkillsNameList;
     List<String> myCausesNameList;
     OpportunityAdapter oppAdapter;
     DatabaseReference firebaseDataOpp;
     ArrayList<Double> mUserLatLongArray;
+    Spinner spinner;
+    int distanceMiles;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +80,7 @@ public class OpportunityFeedFragment extends Fragment {
 
         // get the opportunities (for on launch)
         mUserLatLongArray = DistanceUtils.convertLatLong(UserDataProvider.getInstance().getCurrentVolunteer().getLatLong());
+        distanceMiles = 10;
         matchBySkillsAndCauses();
 
         // swipe refresh
@@ -95,11 +98,43 @@ public class OpportunityFeedFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Matches Within");
+        spinner = ((LandingActivity) getActivity()).findViewById(R.id.spinnerRadius);
+        spinner.setVisibility(View.VISIBLE);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String distance = (String) adapterView.getItemAtPosition(i);
+                distance = distance.replace(" miles","");
+                distanceMiles = Integer.parseInt(distance);
+                matchBySkillsAndCauses();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        spinner.setVisibility(View.GONE);
+    }
+
 
     // method that filters opportunities displayed to a volunteer based on skills matching
     private void matchBySkillsAndCauses(){
         mySkillsIdList = new ArrayList<>();
-        myOppsIdList = new ArrayList<>();
+        myOppsIdFromSkillsList = new ArrayList<>();
+        myOppsIdFromCausesList = new ArrayList<>();
         myCausesIdList = new ArrayList<>();
         mySkillsNameList = new ArrayList<>();
         myCausesNameList = new ArrayList<>();
@@ -166,12 +201,12 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String, String> oppsPerSkillMapping = (HashMap<String, String>) child.getValue();
 
                         // add those oppIds to the myOppIdList
-                        myOppsIdList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
-
-                        // call the filters based on causes
-                        userToCauseId();
+                        myOppsIdFromSkillsList.add(oppsPerSkillMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                     }
                 }
+
+                // call the filters based on causes
+                userToCauseId();
 
             }
 
@@ -239,14 +274,14 @@ public class OpportunityFeedFragment extends Fragment {
                         HashMap<String,String> oppsPerCauseMapping = (HashMap<String,String>) child.getValue();
 
                         // add these oppIds to the myOppIdList if they aren't already in there
-                        if (!myOppsIdList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
-                            myOppsIdList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
+                        if (!myOppsIdFromSkillsList.contains(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO))){
+                            myOppsIdFromCausesList.add(oppsPerCauseMapping.get(DBKeys.KEY_OPP_ID_INNER_TWO));
                         }
-
-                        // call the method that fetches the opportunities with these oppIds
-                        fetchOpportunities();
                     }
                 }
+
+                // call the method that fetches the opportunities with these oppIds
+                fetchOpportunities();
             }
 
             @Override
@@ -271,7 +306,7 @@ public class OpportunityFeedFragment extends Fragment {
                     Opportunity newOpp = child.getValue(Opportunity.class);
 
                     // add to newOpportunities only the opportunity's oppId is in the filtered list
-                    if (myOppsIdList.contains(newOpp.getOppId())) {
+                    if (myOppsIdFromSkillsList.contains(newOpp.getOppId()) || myOppsIdFromCausesList.contains(newOpp.getOppId())) {
                         // check if opportunity is within ~25 miles of the user's given city
                         filterByLocation(newOpp);
                     }
@@ -301,9 +336,12 @@ public class OpportunityFeedFragment extends Fragment {
     // method that filters opportunities by location
     private void filterByLocation(Opportunity opportunity){
         ArrayList<Double> oppLatLongArray = DistanceUtils.convertLatLong(opportunity.getLatLong());
-        if (DistanceUtils.distanceBetween(mUserLatLongArray, oppLatLongArray) < 40000){
+        if (DistanceUtils.distanceBetween(mUserLatLongArray, oppLatLongArray) < milesToMeters(distanceMiles)){
             newOpportunities.add(opportunity);
         }
     }
 
+    private double milesToMeters(int miles) {
+        return miles * 1609.34;
+    }
 }
