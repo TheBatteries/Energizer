@@ -3,13 +3,9 @@ package com.amyhuyen.energizer.network;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.amyhuyen.energizer.CommitFragment;
 import com.amyhuyen.energizer.DBKeys;
-import com.amyhuyen.energizer.OpportunityAdapter;
-import com.amyhuyen.energizer.VolCommitFragment;
 import com.amyhuyen.energizer.VolProfileFragment;
 import com.amyhuyen.energizer.models.Cause;
-import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Skill;
 import com.amyhuyen.energizer.models.Volunteer;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class VolunteerFetchHandler {
@@ -28,13 +23,6 @@ public class VolunteerFetchHandler {
     private static final String KEY_SKILLS_ID = "SkillID";
     private static final String KEY_SKILLS = "Skill";
     private Volunteer mVolunteer;
-    List<Opportunity> opportunities;
-    List<String> oppIdList;
-    public OpportunityAdapter oppAdapter;
-    public int commitCount;
-
-    public DatabaseReference dataOppPerUser;
-    DatabaseReference dataOpp;
 
     private VolProfileFragment.SkillFetchListner mSkillFetchListner;
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;
@@ -211,71 +199,4 @@ public class VolunteerFetchHandler {
         });
     }
 
-    //methods for getting commit count
-
-    public static void fetchMyCommits(){ //was static
-        dataOppPerUser = VolCommitFragment.getDatabaseReference(DBKeys.KEY_OPPS_PER_USER); //this will change depending on whether we use NPO commit frag or Vol commit frag
-
-        // get all the oppIds of opportunities related to current user and add to list
-        dataOppPerUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                oppIdList.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()){
-                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
-                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
-                }
-
-                // find the opportunities associated with those oppIds and add them to newOpportunities
-                oppFromOppId(oppIdList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("fetchMyCommits", databaseError.toString());
-            }
-        });
-    }
-
-    // method that takes all the oppIds in oppIdList, finds the associated Opportunities, and adds them to newOpportunities
-    public void oppFromOppId(final List<String> oppIdList){ //move to VolFetchHandler
-        final ArrayList<Opportunity> newOpportunities = new ArrayList<>();
-        // get the firebase reference
-        dataOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPORTUNITY);
-
-        dataOpp.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                newOpportunities.clear();
-
-                // get all of the children at this level
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                // iterate through children to get each opportunity and add it to newOpportunities
-                for (DataSnapshot child : children) {
-                    Opportunity newOpp = child.getValue(Opportunity.class);
-                    if (oppIdList.contains(newOpp.getOppId())) {
-                        newOpportunities.add(newOpp);
-                    }
-                }
-                CommitFragment.onCommitsFetched(newOpportunities);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("oppFromOppId", databaseError.toString());
-            }
-        });
-    }
-
-
-    // method that returns how many opportunities a volunteer has committed to
-    public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;
-        return commitCount;
-    }
-
-    // method that returns all the list of opportunities to be displayed
-    public List<String> getOppIdList(){
-        return oppIdList;
-    }
 }

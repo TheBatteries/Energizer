@@ -18,7 +18,7 @@ public class NpoCommitFragment extends CommitFragment {
     }
 
     @Override
-    public DatabaseReference setDatabaseReference(){
+    public DatabaseReference setDatabaseReference(String userId){
         dataOppPerUser = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(userId);
         return dataOppPerUser;
     }

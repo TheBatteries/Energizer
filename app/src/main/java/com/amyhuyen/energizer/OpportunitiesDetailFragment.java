@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -183,7 +184,9 @@ public class OpportunitiesDetailFragment extends Fragment {
             public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
                 mCommittedVolunteers.addAll(committedVolunteers);
                 horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity, mCommittedVolunteers);
-                rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                rvHorizontalProfiles.setLayoutManager(linearLayoutManager);
+                linearLayoutManager.setOrientation(LinearLayout.HORIZONTAL);
                 rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
                 horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             }

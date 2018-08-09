@@ -7,22 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.amyhuyen.energizer.models.Opportunity;
-import com.amyhuyen.energizer.network.VolunteerFetchHandler;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +50,8 @@ public abstract class CommitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        final CommitFetchHandler commitFetchHandler = new CommitFetchHandler();
         // bind the views
         ButterKnife.bind(this, view);
 
@@ -76,13 +72,13 @@ public abstract class CommitFragment extends Fragment {
         rvOpps.setAdapter(oppAdapter);
 
         // get the opportunities (for on launch)
-        VolunteerFetchHandler.fetchMyCommits();
+        commitFetchHandler.fetchMyCommits();
 
         // swipe refresh
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                VolunteerFetchHandler.fetchMyCommits();
+                commitFetchHandler.fetchMyCommits();
             }
         });
 
@@ -93,7 +89,7 @@ public abstract class CommitFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    public abstract DatabaseReference setDatabaseReference();
+    public abstract DatabaseReference setDatabaseReference(String userId);
 
     public abstract DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype);
 
@@ -154,7 +150,7 @@ public abstract class CommitFragment extends Fragment {
 //        });
 //    }
 
-    public static void onCommitsFetched(List<Opportunity> opportunities) {
+    public void onCommitsFetched(List<Opportunity> opportunities) {
         // clear the adapter and add newly fetched opportunities
         oppAdapter.clear();
         oppAdapter.addAll(opportunities);
@@ -162,13 +158,10 @@ public abstract class CommitFragment extends Fragment {
         commitCount = opportunities.size();
         stopRefreshing();
     }
-
+//}
     private void stopRefreshing() {
         swipeContainer.setRefreshing(false);
-
     }
-}
-
 
 //    // method that returns how many opportunities a volunteer has committed to
 //    public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;

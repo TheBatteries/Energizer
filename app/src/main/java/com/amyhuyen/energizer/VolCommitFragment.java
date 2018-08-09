@@ -9,6 +9,8 @@ public class VolCommitFragment extends CommitFragment {
         // required empty public constructor
     }
 
+    public static DatabaseReference dataOppPerUser;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -16,13 +18,13 @@ public class VolCommitFragment extends CommitFragment {
     }
 
     @Override
-    public DatabaseReference setDatabaseReference(){
+    public DatabaseReference setDatabaseReference(String userId){
         dataOppPerUser = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(userId);
         return dataOppPerUser;
     }
 
-    @Override
-    public static DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype) {
+//    @Override
+    public DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype) {
         return dataOppPerUser;
     }
 

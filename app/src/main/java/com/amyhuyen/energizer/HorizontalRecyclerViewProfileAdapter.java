@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -68,13 +69,18 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
         @Override
         public void onClick(View itemView) {
+
             Toast.makeText(mActivity, "clicked profile pic!", Toast.LENGTH_LONG).show();
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Volunteer volunteer = mCommittedVolunteers.get(position);
+
+                //give commit fetch handler userId of clicked volunteer so that it can fetch their commits in the visited profile fragment
+                CommitFetchHandler commitFetchHandler = new CommitFetchHandler();
+                commitFetchHandler.setDatabaseReference(volunteer.getUserID());
+
                 Bundle userBundle = new Bundle();
                 userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
-
                 FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
