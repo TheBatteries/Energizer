@@ -96,8 +96,7 @@ public class VolProfileFragment extends ProfileFragment {
         storageReference = FirebaseStorage.getInstance().getReference();
         ButterKnife.bind(this, view);
 
-        //was in constructor - but that doesn't work. need to put user in Bundle after fragment created, but need bundle to create frag
-        if (this.getArguments() != null) {
+        if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
             bundle = this.getArguments(); //works when coming from landing
             volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
         }
@@ -215,8 +214,8 @@ public class VolProfileFragment extends ProfileFragment {
                     drawBanner(defaultImageUrl);
                 }
             }
-    });
-}
+        });
+    }
 
     public void getBannerImageUrl(String causeId) {
         databaseReference.child(DBKeys.KEY_CAUSE).child(causeId).child(DBKeys.KEY_CAUSE_IMAGE_URL).addListenerForSingleValueEvent(new ValueEventListener() {
