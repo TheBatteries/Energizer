@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
@@ -68,7 +67,6 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
 
         @Override
         public void onClick(View itemView) {
-            Toast.makeText(mActivity, "clicked profile pic!", Toast.LENGTH_LONG).show();
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Volunteer volunteer = mCommittedVolunteers.get(position);

@@ -186,7 +186,7 @@
             android:background="@drawable/button_yellow_filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvOppDesc"
+            android:layout_below="@id/horizontal_rv_profile_images"
             android:layout_margin="15dp"
             android:text="@string/sign_up"
             android:textAllCaps="false"
@@ -199,18 +199,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:layout_below="@id/tvOppDesc"
+            android:layout_below="@id/horizontal_rv_profile_images"
             android:text="@string/unregister"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
             android:visibility="gone"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/horizontal_rv_profile_images"
-                android:layout_height="110dp"
-                android:layout_width="match_parent"
-                android:layout_below="@id/tvOppDesc"
-                android:orientation="horizontal"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_rv_profile_images"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/tvOppDesc"
+            android:orientation="horizontal"/>
 
         <Button
             android:id="@+id/btnUpdateOpp"

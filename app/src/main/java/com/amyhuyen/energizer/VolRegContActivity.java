@@ -112,8 +112,10 @@ public class VolRegContActivity extends AppCompatActivity {
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(phone)){
-            Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
-        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_all_required_fields_error), Toast.LENGTH_SHORT).show();
+        } else if (phone.length() != 9){
+            Toast.makeText(getApplicationContext(), getString(R.string.nine_digit_phone_error), Toast.LENGTH_SHORT).show();
+        }else {
         // proceed to registering user if passwords match
 
             // if required fields are not empty, register user
