@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -148,7 +149,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvCauses.setText(causeName);
         drawRatings();
 
-        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
+        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
             drawCheckBoxes();
         } else {
@@ -163,11 +164,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if ((dataSnapshot.getValue(String.class) != null)) {
-                            ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
-                        } else {
-                            ratingBar.setVisibility(View.GONE);
-                        }
+                        ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
                     }
 
                     @Override
@@ -183,7 +180,9 @@ public class OpportunitiesDetailFragment extends Fragment {
             public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {
                 mCommittedVolunteers.addAll(committedVolunteers);
                 horizontalRecyclerViewProfileAdapter = new HorizontalRecyclerViewProfileAdapter(getActivity(), opportunity, mCommittedVolunteers);
-                rvHorizontalProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                rvHorizontalProfiles.setLayoutManager(linearLayoutManager);
+                linearLayoutManager.setOrientation(LinearLayout.HORIZONTAL);
                 rvHorizontalProfiles.setAdapter(horizontalRecyclerViewProfileAdapter);
                 horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             }
@@ -268,6 +267,9 @@ public class OpportunitiesDetailFragment extends Fragment {
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if (signUpForOpp.isEnabled() == true) {
                             oppsPerUserRef.child(dataSnapshot.getKey()).setValue(null);
+                            signUpForOpp.setVisibility(View.VISIBLE);
+                            unregisterForOpp.setEnabled(false);
+                            unregisterForOpp.setVisibility(View.GONE);
                         }
                     }
 
@@ -293,6 +295,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 });
             }
         }
+
 
         @OnClick(R.id.signUpForOpp)
         public void onSignUpForOppButtonClick() {
