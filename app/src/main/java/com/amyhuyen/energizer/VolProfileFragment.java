@@ -85,7 +85,7 @@ public class VolProfileFragment extends ProfileFragment {
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
-        storageReference.child("profilePictures/users/" + UserDataProvider.getInstance().getCurrentUserId() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
@@ -117,12 +117,12 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText("My Skills: " + skillString);
+                tv_skills.setText(getString(R.string.my_skills, skillString));
 
                 // set the text in the menu for number of skills
                 tvMiddleNumber.setText(Integer.toString(skills.size()));
                 if (skills.size() == 1) {
-                    tvMiddleDescription.setText("Skill");
+                    tvMiddleDescription.setText(R.string.skill_uppercase);
                 }
             }
         });
@@ -145,15 +145,15 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void drawMenu() {
         // set the text for the descriptions
-        tvLeftDescription.setText("Commits");
-        tvMiddleDescription.setText("Skills");
-        tvRightDescription.setText("Causes");
+        tvLeftDescription.setText(R.string.commits_uppercase);
+        tvMiddleDescription.setText(R.string.skills_uppercase);
+        tvRightDescription.setText(R.string.causes_uppercase);
 
         // set the text for the number of commits
         int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
         tvLeftNumber.setText(Integer.toString(numCommits));
         if (numCommits == 1) {
-            tvLeftDescription.setText("Commit");
+            tvLeftDescription.setText(R.string.commit_uppercase);
         }
     }
 
@@ -173,12 +173,12 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onCausesFetched(List<String> causes) {
                 String causeString = causes.toString().replace("[", "").replace("]", "");
-                tv_cause_area.setText("My Causes: " + causeString);
+                tv_cause_area.setText(getString(R.string.my_causes, causeString));
 
                 // set the text in the menu for number of causes
                 tvRightNumber.setText(Integer.toString(causes.size()));
                 if (causes.size() == 1) {
-                    tvRightDescription.setText("Cause");
+                    tvRightDescription.setText(R.string.cause_uppercase);
                 }
             }
             @Override
