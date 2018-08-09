@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -97,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user already is logged in (if so, launch landing activity)
         if (firebaseAuth.getCurrentUser() != null){
-            progressDialog.setMessage("Logging you in...");
-            progressDialog.show();
+            setContentView(R.layout.loading_screen);
+//            progressDialog.setMessage("Logging you in...");
+//            progressDialog.show();
             DatabaseReference dataUserRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USER).child(firebaseAuth.getCurrentUser().getUid());
             dataUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
-                    progressDialog.dismiss();
+//                    progressDialog.dismiss();
                 }
 
                 @Override

@@ -20,6 +20,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TitleThemeSmall">
+        <item name="fontFamily">@font/title_font</item>
+        <item name="android:textSize">55sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:titleTextStyle">@style/MyActionBar.TitleTextStyle</item>
@@ -61,6 +67,10 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
 </resources>
