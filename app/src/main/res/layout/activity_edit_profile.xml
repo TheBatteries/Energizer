@@ -26,8 +26,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:text="@string/name"
@@ -39,8 +39,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etEditName"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:inputType="textEmailAddress"
                     android:text="@string/email"
                     style="@style/EditTextTheme"/>
@@ -51,8 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etEditEmail"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:text="@string/phone"
                     style="@style/EditTextTheme"/>
 
@@ -62,8 +62,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etEditPhone"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:text="@string/address"
                     style="@style/EditTextTheme"/>
 
@@ -73,8 +73,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etEditAddress"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:text="@string/age_desc"
                     style="@style/EditTextTheme"/>
 
@@ -198,6 +198,7 @@
                 android:layout_margin="15dp"
                 android:text="@string/confirm_edits"
                 style="@style/ButtonTheme" />
+
         </LinearLayout>
 
     </ScrollView>
