@@ -37,7 +37,8 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="@string/opportunity_name" />
+            android:hint="@string/opportunity_name"
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/tvOppDesc"
