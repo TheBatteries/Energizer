@@ -28,7 +28,6 @@ public abstract class CommitFragment extends Fragment {
     @BindView(R.id.rvOpps)
     RecyclerView rvOpps;
     @BindView(R.id.swipeContainer)
-    static
     SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<String> oppIdList;
@@ -75,19 +74,19 @@ public abstract class CommitFragment extends Fragment {
         // get the opportunities (for on launch)
         commitFetchHandler.fetchMyCommits();
 
-        // swipe refresh
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                commitFetchHandler.fetchMyCommits();
-            }
-        });
+//        // swipe refresh
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                commitFetchHandler.fetchMyCommits();
+//            }
+//        });
 
-        // configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+//        // configure the refreshing colors
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
     }
 
 //    public abstract DatabaseReference setDatabaseReference(String userId);
@@ -157,7 +156,7 @@ public abstract class CommitFragment extends Fragment {
         oppAdapter.addAll(opportunities);
 
 //        commitCount = opportunities.size();
-        swipeContainer.setRefreshing(false);
+//        swipeContainer.setRefreshing(false);
     }
 
 //}

@@ -35,14 +35,12 @@ public class CommitFetchHandler {
 
     //methods for getting commit count
 
-    public DatabaseReference setDatabaseReference(){
-        DatabaseReference dataOppPerUsertype;
+    public void setDatabaseReference(){
         if (mUser.getUserType() == DBKeys.KEY_VOLUNTEER) {
             dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(mUser.getUserID());
         } else {
             dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(mUser.getUserID());
         }
-        return dataOppPerUsertype;
     }
 
     public DatabaseReference getDatabaseReference() {
@@ -98,7 +96,6 @@ public class CommitFetchHandler {
                 }
                 CommitFragment.onCommitsFetched(newOpportunities);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("oppFromOppId", databaseError.toString());
