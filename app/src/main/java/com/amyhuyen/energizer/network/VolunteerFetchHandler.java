@@ -8,7 +8,6 @@ import com.amyhuyen.energizer.VolProfileFragment;
 import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
 import com.amyhuyen.energizer.models.Volunteer;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -103,7 +102,7 @@ public class VolunteerFetchHandler {
     }
 
     public void fetchCauseIds() {
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String userId = mVolunteer.getUserID(); //was using firebase Auth to get Uid
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child(DBKeys.KEY_CAUSES_PER_USER).child(userId).addValueEventListener(new ValueEventListener() {

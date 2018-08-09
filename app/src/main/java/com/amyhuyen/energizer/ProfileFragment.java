@@ -78,9 +78,10 @@ public abstract class ProfileFragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        //set textview text
-        tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
-        tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
+        //moved to respective frag
+//        //set textview text
+//        tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
+//        tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
 
         //attempt to load image from url
 

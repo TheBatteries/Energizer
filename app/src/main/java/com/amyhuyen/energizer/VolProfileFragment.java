@@ -105,7 +105,8 @@ public class VolProfileFragment extends ProfileFragment {
         }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
 
-        drawContactInfo();
+        //TODO - start here. Has volunteer as test9 , the volunteer from opp details, but drawing details for current user
+        drawContactInfo(); //Address is for Amy (current user), but profile image is nota_
         drawCauseAreas();
         drawSkills();
         drawMenu();
@@ -137,7 +138,6 @@ public class VolProfileFragment extends ProfileFragment {
                     tvRightDescription.setText("Cause");
                 }
             }
-
             public void onCauseIdsFetched(List<String> causeIds) {
             }
         });
@@ -150,6 +150,7 @@ public class VolProfileFragment extends ProfileFragment {
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText("My skills: " + skillString);
+                Log.i("VolProfileFragment", "current volunteer: " + volunteer.getName());
 
                 // set the text in the menu for number of skills
                 tvMiddleNumber.setText(Integer.toString(skills.size()));
@@ -166,9 +167,13 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawContactInfo() {
+        //set textview text
+        tv_name.setText(volunteer.getName());
+        tv_email.setText(volunteer.getEmail());
         tv_contact_info.setText(volunteer.getAddress());
     }
 
+    //We don't want to allow this for visiting another user's profile
     @OnClick(R.id.profile_pic)
     public void onProfileImageClick() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -208,7 +213,7 @@ public class VolProfileFragment extends ProfileFragment {
 
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {
-                if (causeIds.get(0) != null) {
+                if (!causeIds.isEmpty()) {
                     getBannerImageUrl(causeIds.get(0));
                 } else {
                     drawBanner(defaultImageUrl);

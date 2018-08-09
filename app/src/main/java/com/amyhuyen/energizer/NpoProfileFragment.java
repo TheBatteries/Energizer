@@ -84,7 +84,15 @@ public class NpoProfileFragment extends ProfileFragment {
         ButterKnife.bind(this, view);
         storageReference = FirebaseStorage.getInstance().getReference();
         bundle = new Bundle();
-        nonprofit = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+
+        if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
+            bundle = this.getArguments(); //works when coming from landing
+            nonprofit = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        }
+        else{
+            nonprofit = UserDataProvider.getInstance().getCurrentNPO();
+        }
+//        volunteerFetchHandler = new VolunteerFetchHandler(volunteer); //TODO - will need this line when we have a nonprofit fetch handler
 
         //vowels set for deciding banner image pseudo-randomly
         vowels = new HashSet<>();
@@ -129,8 +137,10 @@ public class NpoProfileFragment extends ProfileFragment {
 
     @Override
     public void drawContactInfo() {
-//        tvContactInfo.setText(nonprofit.getPhone() + "\n" +
-//                nonprofit.getAddress());
+        tvContactInfo.setText(nonprofit.getPhone() + "\n" +
+                nonprofit.getAddress());
+        tv_name.setText(nonprofit.getName());
+        tv_email.setText(nonprofit.getEmail());
         //TODO -fix null object reference on nonprofit
     }
 
