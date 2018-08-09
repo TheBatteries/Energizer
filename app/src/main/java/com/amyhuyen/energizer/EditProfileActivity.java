@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
+import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.amyhuyen.energizer.utils.AutocompleteUtils;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -67,6 +68,7 @@ public class EditProfileActivity extends AppCompatActivity {
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String latLong;
     private String city;
+    private VolunteerFetchHandler volunteerFetchHandler;
 
 
     @Override
@@ -83,9 +85,11 @@ public class EditProfileActivity extends AppCompatActivity {
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
         if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
+            volunteerFetchHandler = new VolunteerFetchHandler(UserDataProvider.getInstance().getCurrentVolunteer());
+
             etEditUniqueField.setInputType(InputType.TYPE_CLASS_NUMBER);
-            skills = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchSkillObjects());
-            causes = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchCauseObjects());
+            skills = new ArrayList<>(volunteerFetchHandler.fetchSkillObjects()); //was UserDataProvider.getInstance().getCurrentVolunteer() before volunteerFetchHandler
+            causes = new ArrayList<>(volunteerFetchHandler.fetchCauseObjects());
             skillAdapter = new SkillAdapter(skills);
             causeAdapter = new CauseAdapter(causes);
             rvCurrentSkills.setLayoutManager(new LinearLayoutManager(this));

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -32,9 +35,11 @@ import butterknife.OnClick;
 
 public class VolProfileFragment extends ProfileFragment {
 
-    Volunteer volunteer;
+    private Volunteer volunteer;
+    private VolunteerFetchHandler volunteerFetchHandler;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
+    private Bundle bundle;
 
     public interface SkillFetchListner {
         void onSkillsFetched(List<String> skills);
@@ -64,7 +69,6 @@ public class VolProfileFragment extends ProfileFragment {
 
 
     public VolProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -77,11 +81,20 @@ public class VolProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
         storageReference = FirebaseStorage.getInstance().getReference();
         ButterKnife.bind(this, view);
 
+        if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
+            bundle = this.getArguments(); //works when coming from landing
+            volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        }
+        else{
+            volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+        }
+        volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
+
         drawContactInfo();
+        drawCauseAreas();
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
@@ -94,9 +107,7 @@ public class VolProfileFragment extends ProfileFragment {
                         .transform(new CircleCrop())
                         .into(profilePic);
             }
-        });
-
-        volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+    });
     }
 
     @Override
@@ -107,17 +118,36 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void onStop() {
-        super.onStop();
-        ((LandingActivity) getActivity()).getSupportActionBar().show();
+            super.onStop();
+            ((LandingActivity) getActivity()).getSupportActionBar().show();
+        }
+
+    public void drawCauseAreas() {
+        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
+            @Override
+            public void onCausesFetched(List<String> causes) {
+                String causeString = causes.toString().replace("[", "").replace("]", "");
+                tv_cause_area.setText("My causes: " + causeString);
+
+                // set the text in the menu for number of causes
+                tvRightNumber.setText(Integer.toString(causes.size()));
+                if (causes.size() == 1) {
+                    tvRightDescription.setText("Cause");
+                }
+            }
+            public void onCauseIdsFetched(List<String> causeIds) {
+            }
+        });
     }
 
     @Override
     public void drawSkills() {
-        volunteer.fetchSkills(new SkillFetchListner() {
+        volunteerFetchHandler.fetchSkills(new SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText(getString(R.string.my_skills, skillString));
+                Log.i("VolProfileFragment", "current volunteer: " + volunteer.getName());
 
                 // set the text in the menu for number of skills
                 tvMiddleNumber.setText(Integer.toString(skills.size()));
@@ -134,14 +164,19 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawContactInfo() {
-        tv_contact_info.setText(UserDataProvider.getInstance().getCurrentVolunteer().getAddress());
+        //set textview text
+        tv_name.setText(volunteer.getName());
+        tv_email.setText(volunteer.getEmail());
+        tv_contact_info.setText(volunteer.getAddress());
     }
 
+    //We don't want to allow this for visiting another user's profile
     @OnClick(R.id.profile_pic)
     public void onProfileImageClick() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
     }
+
     @Override
     public void drawMenu() {
         // set the text for the descriptions
@@ -149,12 +184,12 @@ public class VolProfileFragment extends ProfileFragment {
         tvMiddleDescription.setText(R.string.skills_uppercase);
         tvRightDescription.setText(R.string.causes_uppercase);
 
-        // set the text for the number of commits
-        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-        tvLeftNumber.setText(Integer.toString(numCommits));
-        if (numCommits == 1) {
-            tvLeftDescription.setText(R.string.commit_uppercase);
-        }
+//        // set the text for the number of commits
+//        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+//        tvLeftNumber.setText(Integer.toString(numCommits));
+//        if (numCommits == 1) {
+//            tvLeftDescription.setText("Commit");
+//        }
     }
 
     @Override
@@ -169,7 +204,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     @Override
     public void drawProfileBannerAndCauseAreas() {
-        volunteer.fetchCauses(new CauseFetchListener() {
+        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
             @Override
             public void onCausesFetched(List<String> causes) {
                 String causeString = causes.toString().replace("[", "").replace("]", "");
@@ -183,7 +218,11 @@ public class VolProfileFragment extends ProfileFragment {
             }
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {
-                getBannerImageUrl(causeIds.get(0));
+                if (!causeIds.isEmpty()) {
+                    getBannerImageUrl(causeIds.get(0));
+                } else {
+                    drawBanner(defaultImageUrl);
+                }
             }
         });
     }
