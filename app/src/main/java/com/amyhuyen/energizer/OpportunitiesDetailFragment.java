@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
-import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -190,16 +190,18 @@ public class OpportunitiesDetailFragment extends Fragment {
                 horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             }
         }, opportunity.getOppId());
+    }
 
         private void drawCheckBoxes () {
             final Volunteer volunteer = userDataProvider.getCurrentVolunteer();
-            volunteer.fetchSkills(new VolProfileFragment.SkillFetchListner() {
+            final VolunteerFetchHandler volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
+            volunteerFetchHandler.fetchSkills(new VolProfileFragment.SkillFetchListner() {
                 @Override
                 public void onSkillsFetched(List<String> skills) {
                     if (skills.contains(skillName)) {
                         icSkillsCheck.setVisibility(View.VISIBLE);
                     }
-                    volunteer.fetchCauses(new VolProfileFragment.CauseFetchListener() {
+                    volunteerFetchHandler.fetchCauses(new VolProfileFragment.CauseFetchListener() {
                         @Override
                         public void onCausesFetched(List<String> causes) {
                             if (causes.contains(causeName)) {
@@ -295,7 +297,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         }
 
         @OnClick(R.id.signUpForOpp)
-        public void onSignUpForOppButtonClick () {
+        public void onSignUpForOppButtonClick() {
             signUpForOpp.setEnabled(false);
             linkUserAndOpp();
             signUpForOpp.setVisibility(View.GONE);
@@ -450,10 +452,6 @@ public class OpportunitiesDetailFragment extends Fragment {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Log.e("showButtonsForVol", databaseError.toString());
                 }
-
-                ;
             });
         }
-
-    }
 }
