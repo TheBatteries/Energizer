@@ -18,8 +18,6 @@ import android.widget.EditText;
 
 import com.amyhuyen.energizer.utils.AutocompleteUtils;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,16 +34,13 @@ public class MakeOpp3Fragment extends Fragment {
     String description;
     String address;
     String numVolNeeded;
+    UserDataProvider userDataProvider;
 
     private OnFragmentInteractionListener mListener;
 
     public MakeOpp3Fragment() {
         // Required empty public constructor
     }
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,13 +69,14 @@ public class MakeOpp3Fragment extends Fragment {
         // bind the views
         ButterKnife.bind(this, view);
 
-        etOppLocation.setText(UserDataProvider.getInstance().getCurrentUserAddress());
+        userDataProvider = UserDataProvider.getInstance();
+        etOppLocation.setText(userDataProvider.getCurrentUserAddress());
 
         Bundle bundle = getArguments();
-        name = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NAME));
-        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_DESCRIPTION));
-        skill = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_SKILL_INNER));
-        cause = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_CAUSE_NAME));
+        name = bundle.getString(DBKeys.KEY_NAME);
+        description = bundle.getString(DBKeys.KEY_DESCRIPTION);
+        skill = bundle.getString(DBKeys.KEY_SKILL_INNER);
+        cause = bundle.getString(DBKeys.KEY_CAUSE_NAME);
 
         etNumVolNeeded.addTextChangedListener(mTextWatcher);
         etOppLocation.addTextChangedListener(mTextWatcher);
@@ -123,12 +119,13 @@ public class MakeOpp3Fragment extends Fragment {
     public void onContinueClick() {
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(DBKeys.KEY_NAME, Parcels.wrap(name));
-        bundle.putParcelable(DBKeys.KEY_DESCRIPTION, Parcels.wrap(description));
-        bundle.putParcelable(DBKeys.KEY_SKILL_INNER, Parcels.wrap(skill));
-        bundle.putParcelable(DBKeys.KEY_CAUSE_NAME, Parcels.wrap(cause));
-        bundle.putParcelable(DBKeys.KEY_ADDRESS, Parcels.wrap(address));
-        bundle.putParcelable(DBKeys.KEY_NUM_VOL_NEEDED, Parcels.wrap(numVolNeeded));
+        bundle.putString(DBKeys.KEY_NAME, name);
+        bundle.putString(DBKeys.KEY_DESCRIPTION, description);
+        bundle.putString(DBKeys.KEY_SKILL_INNER, skill);
+        bundle.putString(DBKeys.KEY_CAUSE_NAME, cause);
+        bundle.putString(DBKeys.KEY_ADDRESS, address);
+        bundle.putString(DBKeys.KEY_NUM_VOL_NEEDED, numVolNeeded);
+        bundle.putString(DBKeys.KEY_LAT_LONG, userDataProvider.getCurrentUserLatLong());
         etNumVolNeeded.setText(null);
         etOppLocation.setText(null);
 

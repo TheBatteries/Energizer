@@ -245,7 +245,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                             dataRef.child(DBKeys.KEY_OPPS_PER_USER).child(userId).child(intermediateKey).removeValue();
                             }
                     }
-                    Log.e("removeFromOppsPerUser", "made it");
+                    Toast.makeText(landing, "Opportunity Deleted", Toast.LENGTH_SHORT).show();
                     switchFrag();
                 }
             }

@@ -7,8 +7,6 @@ import com.amyhuyen.energizer.models.Opportunity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
@@ -24,21 +22,23 @@ public class AddOpportunityFragment extends OpportunityFragment{
     String startTime;
     String endDate;
     String endTime;
+    String latLong;
 
 
     private void unwrapBundle(){
         Bundle bundle = getArguments();
 
-        name = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NAME));
-        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_DESCRIPTION));
-        skill = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_SKILL_INNER));
-        cause = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_CAUSE_NAME));
-        address = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_ADDRESS));
-        numVolNeeded = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NUM_VOL_NEEDED));
-        startDate = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_START_DATE));
-        startTime = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_START_TIME));
-        endDate = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_END_DATE));
-        endTime = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_END_TIME));
+        name = bundle.getString(DBKeys.KEY_NAME);
+        description = bundle.getString(DBKeys.KEY_DESCRIPTION);
+        skill = bundle.getString(DBKeys.KEY_SKILL_INNER);
+        cause = bundle.getString(DBKeys.KEY_CAUSE_NAME);
+        address = bundle.getString(DBKeys.KEY_ADDRESS);
+        numVolNeeded = bundle.getString(DBKeys.KEY_NUM_VOL_NEEDED);
+        startDate = bundle.getString(DBKeys.KEY_START_DATE);
+        startTime = bundle.getString(DBKeys.KEY_START_TIME);
+        endDate = bundle.getString(DBKeys.KEY_END_DATE);
+        endTime = bundle.getString(DBKeys.KEY_END_TIME);
+        latLong = bundle.getString(DBKeys.KEY_LAT_LONG);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
@@ -71,7 +71,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
         landing = (LandingActivity) getActivity();
 
         // add as an opportunity and as opportunitiesPerNpo
-        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, landing.address, landing.latLong, numVolNeeded);
+        Opportunity newOpp = new Opportunity(name, description, oppId, startDate, startTime, endDate, endTime, npoId, npoName, address, latLong, numVolNeeded);
         firebaseDataOpp.child(DBKeys.KEY_OPPORTUNITY).child(oppId).setValue(newOpp);
         HashMap<String, String> oppIdMap = new HashMap<>();
         oppIdMap.put(DBKeys.KEY_OPP_ID, oppId);

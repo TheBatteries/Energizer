@@ -25,8 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -94,8 +92,8 @@ public class MakeOpp2Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = getArguments();
-        name = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_NAME));
-        description = Parcels.unwrap(bundle.getParcelable(DBKeys.KEY_DESCRIPTION));
+        name = bundle.getString(DBKeys.KEY_NAME);
+        description = bundle.getString(DBKeys.KEY_DESCRIPTION);
 
         skillsRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_SKILL_OUTER);
         causeRef = FirebaseDatabase.getInstance().getReference(DBKeys.KEY_CAUSE);
@@ -174,10 +172,10 @@ public class MakeOpp2Fragment extends Fragment {
     @OnClick (R.id.btnFinishUpdating)
     public void onContinueClick() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(DBKeys.KEY_NAME, Parcels.wrap(name));
-        bundle.putParcelable(DBKeys.KEY_DESCRIPTION, Parcels.wrap(description));
-        bundle.putParcelable(DBKeys.KEY_SKILL_INNER, Parcels.wrap(skill));
-        bundle.putParcelable(DBKeys.KEY_CAUSE_NAME, Parcels.wrap(cause));
+        bundle.putString(DBKeys.KEY_NAME, name);
+        bundle.putString(DBKeys.KEY_DESCRIPTION, description);
+        bundle.putString(DBKeys.KEY_SKILL_INNER, skill);
+        bundle.putString(DBKeys.KEY_CAUSE_NAME, cause);
         actvOppCause.setText(null);
         actvOppSkill.setText(null);
         // switch the fragments
