@@ -178,8 +178,6 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     public void setUpAdapter() {
-//        horizontalRecyclerViewProfileAdapter.getmCommittedVolunteersList();
-//        horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
         mOpportunityFetchHandler.fetchCommittedVolunteers(new HorizontalRecyclerViewProfileAdapter.CommittedVolunteerFetchListener() {
             @Override
             public void onCommittedVolunteersFetched(List<Volunteer> committedVolunteers) {

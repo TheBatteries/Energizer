@@ -164,7 +164,7 @@ public class VolunteerFetchHandler {
 
     public ArrayList<Skill> fetchSkillObjects(){
         final ArrayList<Skill> skillsList = new ArrayList<Skill>();
-        this.fetchSkills(new VolProfileFragment.SkillFetchListner() { //"this" was UserDataProvider.getInstance().getCurrentVolunteer()
+        this.fetchSkills(new VolProfileFragment.SkillFetchListner() {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 for (int i = 0; i < skills.size(); i++){

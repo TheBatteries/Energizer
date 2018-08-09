@@ -53,8 +53,8 @@ public class OpportunityFetchHandler {
                 List<Volunteer> committedVolunteers = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     for (String committedVolunteerId : committedVolunteerIds) {
-                        if (committedVolunteerId.equals(snapshot.getKey())) { //never entering If?
-                            Volunteer volunteer = snapshot.getValue(Volunteer.class);                   //error with Parceler because passing back list of Volunteers/Listener doesn't know how to handle this?
+                        if (committedVolunteerId.equals(snapshot.getKey())) {
+                            Volunteer volunteer = snapshot.getValue(Volunteer.class);
                             committedVolunteers.add(volunteer);
                         }
                     }

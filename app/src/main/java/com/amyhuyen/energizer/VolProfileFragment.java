@@ -93,14 +93,12 @@ public class VolProfileFragment extends ProfileFragment {
         }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
 
-        //TODO - start here. Has volunteer as test9 , the volunteer from opp details, but drawing details for current user
-        drawContactInfo(); //Address is for Amy (current user), but profile image is nota_
+        drawContactInfo();
         drawCauseAreas();
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
 
-//        drawProfileBanner();
         storageReference.child("profilePictures/users/" + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -204,10 +202,6 @@ public class VolProfileFragment extends ProfileFragment {
         fragmentTransaction.replace(R.id.flContainer, volCommitFragment);
         fragmentTransaction.commit();
     }
-
-//    @Override
-//    public void drawProfileBanner() {
-//        volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
 
     @Override
     public void drawProfileBannerAndCauseAreas() {

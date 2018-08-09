@@ -15,11 +15,4 @@ public class Cause {
     public String getCause() {
         return cause;
     }
-
-//    public String getCausePicPath() {
-//    String causePicPath;
-//
-//    return causePicPath;
-//    }
-
 }

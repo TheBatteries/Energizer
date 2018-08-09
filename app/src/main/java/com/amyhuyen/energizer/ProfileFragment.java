@@ -64,9 +64,7 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
-
     }
 
     @Override
@@ -74,12 +72,10 @@ public abstract class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        //moved to respective frag
+        //moved to respective frag - TODO - move this back here when user abstracted in NPO profile frag
 //        //set textview text
 //        tv_name.setText(UserDataProvider.getInstance().getCurrentUserName());
 //        tv_email.setText(UserDataProvider.getInstance().getCurrentUserEmail());
-
-        //attempt to load image from url
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -91,11 +87,7 @@ public abstract class ProfileFragment extends Fragment {
         defaultImageUrl = "https://images.unsplash.com/photo-1461532257246-777de18cd58b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22ff39dea3ee983d6725400e16f8fef&auto=format&fit=crop&w=2255&q=80"; //hand extended
     }
 
-    // abstract methods to be implemented by subclasses VolProfileFragment or NpoProfileFragment
-
     public abstract void drawSkills();
-
-//    public abstract void drawCauseAreas();
 
     public abstract void drawContactInfo();
 
@@ -104,9 +96,8 @@ public abstract class ProfileFragment extends Fragment {
     public abstract void switchToCommitFragment();
 
     public abstract void drawEditCausesBtn();
-//    public abstract void drawProfileBanner();
+
     public abstract void drawProfileBannerAndCauseAreas();
-//    public abstract void getBannerImageUrl(String causeId);
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick() {
