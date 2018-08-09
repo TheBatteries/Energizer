@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,64 +8,60 @@
 
     <TextView
         android:id="@+id/tvSignUp"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="GIVEback"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom = "15dp"
-        android:layout_marginTop="180dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textAlignment="center"
-        android:fontFamily="@font/roadway"
-        android:textSize="70sp"
-        android:textColor="@color/black"/>
+        android:text="GIVEback"
+        style="@style/TitleTheme"/>
 
     <TextView
         android:id="@+id/tvMessage"
-        android:layout_below="@id/tvSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register_message"
+        android:layout_below="@id/tvSignUp"
         android:layout_margin="15dp"
         android:textAlignment="center"
+        android:text="@string/register_message"
         style="@style/SignUpText"/>
 
     <Button
         android:id="@+id/btnVolunteer"
-        android:background="@drawable/button_yellow_filled"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvMessage"
+        android:background="@drawable/button_yellow_filled"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="70dp"
+        android:layout_below="@id/tvMessage"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="70dp"
         android:layout_marginBottom="10dp"
         android:text="@string/volunteer"
-        android:textAllCaps="false"
-        style="@style/SignUpText" />
+        style="@style/ButtonTheme" />
 
     <Button
         android:id="@+id/btnNonProfit"
-        android:background="@drawable/button_yellow_filled"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvMessage"
-        android:layout_marginRight="70dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_yellow_filled"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/tvMessage"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/non_profit"
-        android:textAllCaps="false"
-        style="@style/SignUpText" />
+        style="@style/ButtonTheme" />
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login"
         android:layout_below="@id/btnNonProfit"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
+        android:text="@string/login"
         style="@style/SignUpText"/>
 
     <com.facebook.login.widget.LoginButton
@@ -74,10 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvLogin"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="35dp"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
-        android:layout_marginTop="35dp" />
+        android:layout_marginBottom="5dp" />
 
 
 </RelativeLayout>

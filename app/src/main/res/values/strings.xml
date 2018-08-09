@@ -56,6 +56,8 @@
     <string name="update_opportunity">Update Opportunity</string>
     <string name="delete_opportunity">Delete Opportunity</string>
     <string name="positions_available_colon">Positions Available: </string>
+    <string name="age_desc">Age/Desc.</string>
+    <string name="confirm_edits">Confirm Edits</string>
 
     <string-array name="contact_info">
         <item></item>

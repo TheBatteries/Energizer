@@ -22,7 +22,6 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="1dp"
             android:text="@string/opportunity_name"
-            android:fontFamily="@font/royal_crescent_demo"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <TextView
@@ -98,11 +97,11 @@
 
         <ImageView
             android:id="@+id/icSkillsCheck"
-            android:src="@drawable/ic_check"
+            android:src="@drawable/ic_check_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvSkills"
-            android:layout_below="@id/tvOppAddress"
+            android:layout_alignBottom="@id/tvSkills"
             android:layout_marginBottom="1dp"
             android:visibility="gone"/>
 
@@ -130,11 +129,11 @@
 
         <ImageView
             android:id="@+id/icCausesCheck"
-            android:src="@drawable/ic_check"
+            android:src="@drawable/ic_check_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvCauses"
-            android:layout_below="@id/tvSkillsIntro"
+            android:layout_alignBottom="@id/tvCauses"
             android:layout_marginBottom="1dp"
             android:visibility="gone"/>
 

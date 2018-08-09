@@ -45,8 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="1dp"
-            android:fontFamily="@font/royal_crescent_demo"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
