@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,6 +38,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     private Volunteer volunteer;
     private VolunteerFetchHandler volunteerFetchHandler;
+    private CommitFetchHandler commitFetchHandler;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
     private Bundle bundle;
@@ -92,6 +94,7 @@ public class VolProfileFragment extends ProfileFragment {
             volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
         }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
+        commitFetchHandler = new CommitFetchHandler(volunteer);
 
         drawContactInfo();
         drawCauseAreas();
@@ -187,7 +190,7 @@ public class VolProfileFragment extends ProfileFragment {
 
         // set the text for the number of commits
 //        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-        int numCommits = volunteerFetchHandler.getCommitCount();
+        int numCommits = commitFetchHandler.getCommitCount();
         tvLeftNumber.setText(Integer.toString(numCommits));
         if (numCommits == 1) {
             tvLeftDescription.setText("Commit");

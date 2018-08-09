@@ -76,8 +76,7 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
                 Volunteer volunteer = mCommittedVolunteers.get(position);
 
                 //give commit fetch handler userId of clicked volunteer so that it can fetch their commits in the visited profile fragment
-                CommitFetchHandler commitFetchHandler = new CommitFetchHandler();
-                commitFetchHandler.setDatabaseReference(volunteer.getUserID());
+                CommitFetchHandler commitFetchHandler = new CommitFetchHandler(volunteer);
 
                 Bundle userBundle = new Bundle();
                 userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));

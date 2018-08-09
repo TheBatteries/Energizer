@@ -28,6 +28,7 @@ public abstract class CommitFragment extends Fragment {
     @BindView(R.id.rvOpps)
     RecyclerView rvOpps;
     @BindView(R.id.swipeContainer)
+    static
     SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<String> oppIdList;
@@ -51,7 +52,7 @@ public abstract class CommitFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        final CommitFetchHandler commitFetchHandler = new CommitFetchHandler();
+        final CommitFetchHandler commitFetchHandler = new CommitFetchHandler(UserDataProvider.getInstance().getCurrentUser());
         // bind the views
         ButterKnife.bind(this, view);
 
@@ -89,9 +90,9 @@ public abstract class CommitFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    public abstract DatabaseReference setDatabaseReference(String userId);
-
-    public abstract DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype);
+//    public abstract DatabaseReference setDatabaseReference(String userId);
+//
+//    public abstract DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype);
 
 
     // method to get all the opportunities to which the current user is committed
@@ -150,18 +151,16 @@ public abstract class CommitFragment extends Fragment {
 //        });
 //    }
 
-    public void onCommitsFetched(List<Opportunity> opportunities) {
+    public static void onCommitsFetched(List<Opportunity> opportunities) {
         // clear the adapter and add newly fetched opportunities
         oppAdapter.clear();
         oppAdapter.addAll(opportunities);
 
-        commitCount = opportunities.size();
-        stopRefreshing();
-    }
-//}
-    private void stopRefreshing() {
+//        commitCount = opportunities.size();
         swipeContainer.setRefreshing(false);
     }
+
+//}
 
 //    // method that returns how many opportunities a volunteer has committed to
 //    public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;

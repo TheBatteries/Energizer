@@ -4,20 +4,15 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.amyhuyen.energizer.CommitFragment;
-import com.amyhuyen.energizer.Constant;
 import com.amyhuyen.energizer.DBKeys;
-import com.amyhuyen.energizer.HorizontalRecyclerViewProfileAdapter;
 import com.amyhuyen.energizer.OpportunityAdapter;
-import com.amyhuyen.energizer.UserDataProvider;
-import com.amyhuyen.energizer.VolProfileFragment;
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,23 +24,34 @@ public class CommitFetchHandler {
     private List<String> oppIdList;
     public OpportunityAdapter oppAdapter;
     public int commitCount;
-    DatabaseReference dataOpp;
+    private DatabaseReference dataOpp;
+    private User mUser;
 
+    public DatabaseReference dataOppPerUsertype;
 
+    public CommitFetchHandler(User user) {
+        mUser = user;
+    }
 
     //methods for getting commit count
 
-    public DatabaseReference setDatabaseReference(String userId){
-
-        return dataOppPerUser;
+    public DatabaseReference setDatabaseReference(){
+        DatabaseReference dataOppPerUsertype;
+        if (mUser.getUserType() == DBKeys.KEY_VOLUNTEER) {
+            dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(mUser.getUserID());
+        } else {
+            dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(mUser.getUserID());
+        }
+        return dataOppPerUsertype;
     }
 
-    public DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype) {
-        return dataOppPerUser;
+    public DatabaseReference getDatabaseReference() {
+        return dataOppPerUsertype;
     }
 
     public void fetchMyCommits(){ //was static
-        DatabaseReference dataOppPerUser = getDatabaseReference(userId); //this will change depending on whether we use NPO commit frag or Vol commit frag
+        setDatabaseReference();
+        DatabaseReference dataOppPerUser = getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
         oppIdList = new ArrayList<>();
 
         // get all the oppIds of opportunities related to current user and add to list

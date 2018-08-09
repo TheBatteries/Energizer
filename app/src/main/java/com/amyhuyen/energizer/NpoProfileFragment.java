@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +44,7 @@ public class NpoProfileFragment extends ProfileFragment {
     private ArrayList<Integer> volunteersCommitted;
     private Set<Character> vowels;
     private Bundle bundle;
+    private CommitFetchHandler commitFetchHandler;
 
     // views
     @BindView(R.id.tv_skills)
@@ -93,6 +95,7 @@ public class NpoProfileFragment extends ProfileFragment {
             nonprofit = UserDataProvider.getInstance().getCurrentNPO();
         }
 //        volunteerFetchHandler = new VolunteerFetchHandler(volunteer); //TODO - will need this line when we have a nonprofit fetch handler
+        commitFetchHandler = new CommitFetchHandler(nonprofit);
 
         //vowels set for deciding banner image pseudo-randomly
         vowels = new HashSet<>();
@@ -170,7 +173,7 @@ public class NpoProfileFragment extends ProfileFragment {
         tvRightDescription.setText("Rating");
 
         // set the text for the number of opportunities created
-        int numOppsCreated = ((NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+        int numOppsCreated = commitFetchHandler.getCommitCount();
         tvLeftNumber.setText(Integer.toString(numOppsCreated));
         if (numOppsCreated == 1) {
             tvLeftDescription.setText("Opportunity Posted");
@@ -189,7 +192,7 @@ public class NpoProfileFragment extends ProfileFragment {
 
         // get the list of oppId from the commit fragment
         NpoCommitFragment commitFrag = (NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag;
-        final List<String> myOppIds = commitFrag.getOppIdList();
+        final List<String> myOppIds = commitFetchHandler.getOppIdList();
 
         // get the number of volunteer commmitted to the NPO
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP);
