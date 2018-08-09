@@ -21,4 +21,9 @@ public class VolCommitFragment extends CommitFragment {
         return dataOppPerUser;
     }
 
+    @Override
+    public static DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype) {
+        return dataOppPerUser;
+    }
+
 }

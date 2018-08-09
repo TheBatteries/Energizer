@@ -185,12 +185,13 @@ public class VolProfileFragment extends ProfileFragment {
         tvMiddleDescription.setText("Skills");
         tvRightDescription.setText("Causes");
 
-//        // set the text for the number of commits
+        // set the text for the number of commits
 //        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-//        tvLeftNumber.setText(Integer.toString(numCommits));
-//        if (numCommits == 1) {
-//            tvLeftDescription.setText("Commit");
-//        }
+        int numCommits = volunteerFetchHandler.getCommitCount();
+        tvLeftNumber.setText(Integer.toString(numCommits));
+        if (numCommits == 1) {
+            tvLeftDescription.setText("Commit");
+        }
     }
 
     @Override

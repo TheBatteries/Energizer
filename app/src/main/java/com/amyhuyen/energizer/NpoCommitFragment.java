@@ -23,4 +23,8 @@ public class NpoCommitFragment extends CommitFragment {
         return dataOppPerUser;
     }
 
+    @Override
+    public DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype) {
+        return dataOppPerUser;
+    }
 }
