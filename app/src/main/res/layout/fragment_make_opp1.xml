@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MakeOpp1Fragment">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:fillViewport="false">
 
-    <EditText
-        android:id="@+id/etOppName"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="50dp"
-        android:hint="@string/opportunity_name"
-        android:textSize="15dp"/>
+        android:layout_height="match_parent"
+        tools:context=".MakeOpp1Fragment">
 
-    <EditText
-        android:id="@+id/etOppDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etOppName"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
-        android:hint="@string/opportunity_description"
-        android:textSize="15dp"/>
+        <EditText
+            android:id="@+id/etOppName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="50dp"
+            android:hint="@string/opportunity_name"
+            android:textSize="15dp"/>
 
-    <Button
-        android:id="@+id/btnFinishUpdating"
-        android:background="@drawable/button_yellow_selector"
-        android:enabled="false"
-        android:clickable="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etOppDescription"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="40dp"
-        android:textAllCaps="false"
-        android:text="Continue"/>
+        <EditText
+            android:id="@+id/etOppDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etOppName"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:hint="@string/opportunity_description"
+            android:textSize="15dp"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btnFinishUpdating"
+            android:background="@drawable/button_yellow_selector"
+            android:enabled="false"
+            android:clickable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etOppDescription"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="40dp"
+            android:textAllCaps="false"
+            android:text="Continue"/>
+
+    </RelativeLayout>
+</ScrollView>

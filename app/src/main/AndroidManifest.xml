@@ -25,7 +25,8 @@
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity android:name=".LandingActivity" />
+        <activity android:name=".LandingActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".SetSkillsActivity" />
         <activity android:name=".RegistrationActivity" />
 

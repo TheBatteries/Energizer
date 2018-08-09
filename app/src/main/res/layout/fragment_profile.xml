@@ -207,15 +207,13 @@
                     android:layout_below="@id/tvRightNumber"
                     android:maxLines="2"/>
 
-
                 <Spinner
                     android:id="@+id/contactInfoSpinner"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerInParent="true"
-                    style="@style/SpinnerTheme"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
+
             </RelativeLayout>
 
 

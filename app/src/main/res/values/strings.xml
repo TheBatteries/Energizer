@@ -69,8 +69,11 @@
     <string name="opportunity_posted">Opportunity Posted</string>
     <string name="volunteers_committed">Volunteers Committed</string>
     <string name="volunteer_committed">Volunteer Committed</string>
+    <string name="opportunity_uppercase">Opportunity</string>
+    <string name="opportunities_uppercase">Opportunities</string>
     <string name="rating">Rating</string>
     <string name="storage_reference">profilePictures/users/%1$s/</string>
+    <string name="contact_uppercase">Contact</string>
     <string-array name="contact_info">
         <item></item>
         <item>Call</item>
