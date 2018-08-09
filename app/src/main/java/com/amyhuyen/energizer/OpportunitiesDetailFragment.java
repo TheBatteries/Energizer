@@ -37,23 +37,37 @@ import butterknife.OnClick;
 public class OpportunitiesDetailFragment extends Fragment {
 
     // the views
-    @BindView (R.id.tvOppName) TextView tvOppName;
-    @BindView (R.id.tvOppDesc) TextView tvOppDesc;
-    @BindView (R.id.tvNpoName) TextView tvNpoName;
-    @BindView (R.id.tvOppTime) TextView tvOppTime;
-    @BindView (R.id.tvOppAddress) TextView tvOppAddress;
-    @BindView (R.id.tvSkills) TextView tvSkills;
-    @BindView (R.id.tvCauses) TextView tvCauses;
-    @BindView (R.id.signUpForOpp) Button signUpForOpp;
-    @BindView (R.id.unregisterForOpp) Button unregisterForOpp;
-    @BindView (R.id.btnUpdateOpp) Button btnUpdateOpp;
-    @BindView (R.id.icCausesCheck) ImageView icCausesCheck;
-    @BindView (R.id.icSkillsCheck) ImageView icSkillsCheck;
-    @BindView (R.id.ratingBar) RatingBar ratingBar;
+    @BindView(R.id.tvOppName)
+    TextView tvOppName;
+    @BindView(R.id.tvOppDesc)
+    TextView tvOppDesc;
+    @BindView(R.id.tvNpoName)
+    TextView tvNpoName;
+    @BindView(R.id.tvOppTime)
+    TextView tvOppTime;
+    @BindView(R.id.tvOppAddress)
+    TextView tvOppAddress;
+    @BindView(R.id.tvSkills)
+    TextView tvSkills;
+    @BindView(R.id.tvCauses)
+    TextView tvCauses;
+    @BindView(R.id.signUpForOpp)
+    Button signUpForOpp;
+    @BindView(R.id.unregisterForOpp)
+    Button unregisterForOpp;
+    @BindView(R.id.btnUpdateOpp)
+    Button btnUpdateOpp;
+    @BindView(R.id.icCausesCheck)
+    ImageView icCausesCheck;
+    @BindView(R.id.icSkillsCheck)
+    ImageView icSkillsCheck;
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
 
     DatabaseReference userPerOppRef;
     DatabaseReference oppsPerUserRef;
-    @BindView (R.id.tvNumVolNeeded) TextView tvNumVolNeeded;
+    @BindView(R.id.tvNumVolNeeded)
+    TextView tvNumVolNeeded;
 
     public int numVolSignedUp;
     private String npoId;
@@ -115,7 +129,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvCauses.setText(causeName);
         drawRatings();
 
-        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
+        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
             determineButtonsToShowForVol(oppId);
             drawCheckBoxes();
         } else {
@@ -130,7 +144,11 @@ public class OpportunitiesDetailFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
+                        if ((dataSnapshot.getValue(String.class) != null)) {
+                            ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
+                        } else {
+                            ratingBar.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -167,7 +185,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         });
     }
 
-    private void linkUserAndOpp(){
+    private void linkUserAndOpp() {
         final String oppId = userPerOppRef.getKey().toString();
         final HashMap<String, String> userIdDataMap = new HashMap<String, String>();
         final String userId = userDataProvider.getCurrentUserId();
@@ -180,7 +198,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         oppsPerUserRef.push().setValue(oppIdDataMap);
     }
 
-    private void unlinkUserAndOpp(){
+    private void unlinkUserAndOpp() {
         final String oppId = userPerOppRef.getKey().toString();
         final String userId = userDataProvider.getCurrentUserId();
         if (signUpForOpp.isEnabled() == true) {
@@ -262,7 +280,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         unregisterForOpp.setVisibility(View.GONE);
     }
 
-    @OnClick (R.id.btnUpdateOpp)
+    @OnClick(R.id.btnUpdateOpp)
     public void onUpdateOppClick() {
         // create a bundle to hold the opportunity for transfer to edit opportunity fragment
         Bundle updateBundle = new Bundle();
@@ -284,11 +302,11 @@ public class OpportunitiesDetailFragment extends Fragment {
     }
 
     @OnClick(R.id.tvNpoName)
-    public void onNPONameClick(){
+    public void onNPONameClick() {
 
         Bundle bundle = new Bundle();
         bundle.putString(DBKeys.KEY_USER_ID, npoId);
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")) {
             bundle.putString(DBKeys.KEY_USER_TYPE, "NPO");
         } else {
             bundle.putString(DBKeys.KEY_USER_TYPE, "Volunteer");
@@ -388,7 +406,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     showUnregisterButton();
                     checkCapacityForRegisteredUsers(opportunity);
                 } else {
@@ -399,7 +417,9 @@ public class OpportunitiesDetailFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("showButtonsForVol", databaseError.toString());
-            };
+            }
+
+            ;
         });
     }
 
