@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.parceler.Parcels;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -113,8 +111,8 @@ public class MakeOpp1Fragment extends Fragment {
     public void onContinueClick() {
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(DBKeys.KEY_NAME, Parcels.wrap(name));
-        bundle.putParcelable(DBKeys.KEY_DESCRIPTION, Parcels.wrap(description));
+        bundle.putString(DBKeys.KEY_NAME, name);
+        bundle.putString(DBKeys.KEY_DESCRIPTION, description);
         etOppName.setText(null);
         etOppDescription.setText(null);
         // switch the fragments

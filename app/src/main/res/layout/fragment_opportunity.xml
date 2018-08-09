@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         tools:context=".AddOpportunityFragment">
 
-
         <TextView
             android:id="@+id/tvOppName"
             android:layout_width="wrap_content"
@@ -27,7 +26,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Name" />
+            android:text="@string/name" />
 
         <EditText
             android:id="@+id/etOppName"
@@ -49,7 +48,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Description" />
+            android:text="@string/opportunity_description" />
 
         <EditText
             android:id="@+id/etOppDescription"
@@ -72,7 +71,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Skill" />
+            android:text="@string/skill" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppSkill"
@@ -94,7 +93,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Cause" />
+            android:text="@string/cause" />
 
         <AutoCompleteTextView
             android:id="@+id/actvOppCause"
@@ -116,7 +115,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Volunteers Needed" />
+            android:text="@string/number_of_volunteers_needed" />
 
 
         <EditText
@@ -140,7 +139,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Location" />
+            android:text="@string/opportunity_address" />
 
         <EditText
             android:id="@+id/etOppLocation"
@@ -165,7 +164,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Start Date" />
+            android:text="@string/start_date" />
 
         <EditText
             android:id="@+id/etStartDate"
@@ -191,7 +190,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="Start Time" />
+            android:text="@string/start_time" />
 
         <EditText
             android:id="@+id/etStartTime"
@@ -217,7 +216,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="End Date" />
+            android:text="@string/end_date" />
 
         <EditText
             android:id="@+id/etEndDate"
@@ -243,7 +242,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="0dp"
-            android:text="End Time" />
+            android:text="@string/end_time" />
 
         <EditText
             android:id="@+id/etEndTime"

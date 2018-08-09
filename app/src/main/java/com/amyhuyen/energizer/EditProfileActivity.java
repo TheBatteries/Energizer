@@ -48,6 +48,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @BindView(R.id.rvCurrentCauses)RecyclerView rvCurrentCauses;
     @BindView(R.id.setUserProfileEdits)Button confirmEdits;
     @BindView(R.id.llVolunteerSkillsAndCauses)LinearLayout llVolunteerSkillsAndCauses;
+    @BindView(R.id.tvUniqueField) TextView tvUniqueField;
 
     @BindView(R.id.actvMoreCauses)AutoCompleteTextView actvAddMoreCauses;
     @BindView(R.id.actvMoreSkills) AutoCompleteTextView actvAddMoreSkills;
@@ -81,7 +82,7 @@ public class EditProfileActivity extends AppCompatActivity {
         etEditPhone.setText(UserDataProvider.getInstance().getCurrentUserPhone(), TextView.BufferType.EDITABLE);
         firebaseData = FirebaseDatabase.getInstance().getReference();
 
-        if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")){
+        if (UserDataProvider.getInstance().getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             etEditUniqueField.setInputType(InputType.TYPE_CLASS_NUMBER);
             skills = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchSkillObjects());
             causes = new ArrayList<>(UserDataProvider.getInstance().getCurrentVolunteer().fetchCauseObjects());
@@ -91,6 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
             rvCurrentSkills.setAdapter(skillAdapter);
             rvCurrentCauses.setLayoutManager(new LinearLayoutManager(this));
             rvCurrentCauses.setAdapter(causeAdapter);
+            tvUniqueField.setVisibility(View.GONE);
             etEditUniqueField.setVisibility(View.GONE);
         } else {
             llVolunteerSkillsAndCauses.setVisibility(View.GONE);
