@@ -95,7 +95,7 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void drawSkills();
 
-    public abstract void drawCauseAreas();
+//    public abstract void drawCauseAreas();
 
     public abstract void drawContactInfo();
 
