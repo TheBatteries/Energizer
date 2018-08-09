@@ -65,6 +65,11 @@
     <string name="my_skills">My Skills: %1$s</string>
     <string name="commits_uppercase">Commits</string>
     <string name="commit_uppercase">Commit</string>
+    <string name="opportunities_posted">Opportunities Posted</string>
+    <string name="opportunity_posted">Opportunity Posted</string>
+    <string name="volunteers_committed">Volunteers Committed</string>
+    <string name="volunteer_committed">Volunteer Committed</string>
+    <string name="rating">Rating</string>
     <string name="storage_reference">profilePictures/users/%1$s/</string>
     <string-array name="contact_info">
         <item></item>
