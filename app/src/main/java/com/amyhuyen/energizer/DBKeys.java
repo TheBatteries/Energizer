@@ -63,6 +63,7 @@ public class DBKeys {
     public static final String KEY_USER_TYPE = "userType";
     public static final String KEY_VOLUNTEER = "Volunteer";
     public static final String KEY_NPO = "NPO";
+    public static final String KEY_RATING = "rating";
 
     // UsersPerCause
     public static final String KEY_USERS_PER_CAUSE = "UsersPerCause";

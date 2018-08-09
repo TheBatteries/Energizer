@@ -113,6 +113,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         causeName = bundle.getString("Cause Name");
         tvSkills.setText(skillName);
         tvCauses.setText(causeName);
+        drawRatings();
 
         if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
@@ -123,8 +124,24 @@ public class OpportunitiesDetailFragment extends Fragment {
         }
     }
 
+    private void drawRatings() {
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
+        dataRef.child(DBKeys.KEY_USER).child(npoId).child(DBKeys.KEY_RATING)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
+                    }
 
-    private void drawCheckBoxes(){
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("drawRatings", databaseError.toString());
+                    }
+                });
+    }
+
+
+    private void drawCheckBoxes() {
         final Volunteer volunteer = userDataProvider.getCurrentVolunteer();
         volunteer.fetchSkills(new VolProfileFragment.SkillFetchListner() {
             @Override
