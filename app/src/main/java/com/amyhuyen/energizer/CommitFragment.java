@@ -31,8 +31,10 @@ import butterknife.ButterKnife;
 public abstract class CommitFragment extends Fragment {
 
     // the views
-    @BindView(R.id.rvOpps) RecyclerView rvOpps;
-    @BindView (R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvOpps)
+    RecyclerView rvOpps;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
     List<Opportunity> opportunities;
     List<String> oppIdList;
     private static OpportunityAdapter oppAdapter;
@@ -158,10 +160,15 @@ public abstract class CommitFragment extends Fragment {
         oppAdapter.addAll(opportunities);
 
         commitCount = opportunities.size();
-
-        // stop the refreshing
-        swipeContainer.setRefreshing(false);
+        stopRefreshing();
     }
+
+    private void stopRefreshing() {
+        swipeContainer.setRefreshing(false);
+
+    }
+}
+
 
 //    // method that returns how many opportunities a volunteer has committed to
 //    public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;

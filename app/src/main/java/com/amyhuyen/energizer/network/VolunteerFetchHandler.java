@@ -213,7 +213,7 @@ public class VolunteerFetchHandler {
 
     //methods for getting commit count
 
-    public void fetchMyCommits(){ //was static
+    public static void fetchMyCommits(){ //was static
         dataOppPerUser = VolCommitFragment.getDatabaseReference(DBKeys.KEY_OPPS_PER_USER); //this will change depending on whether we use NPO commit frag or Vol commit frag
 
         // get all the oppIds of opportunities related to current user and add to list
