@@ -52,20 +52,30 @@ public class VolProfileFragment extends ProfileFragment {
     }
 
     // the views
-    @BindView(R.id.tv_skills) TextView tv_skills;
-    @BindView(R.id.tv_cause_area) TextView tv_cause_area;
-    @BindView (R.id.profile_pic) ImageView profilePic;
-    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
-    @BindView(R.id.tv_contact_info) TextView tv_contact_info;
+    @BindView(R.id.tv_skills)
+    TextView tv_skills;
+    @BindView(R.id.tv_cause_area)
+    TextView tv_cause_area;
+    @BindView(R.id.profile_pic)
+    ImageView profilePic;
+    @BindView(R.id.btn_edit_profile)
+    Button btn_edit_profile;
+    @BindView(R.id.tv_contact_info)
+    TextView tv_contact_info;
 
     // menu views
-    @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
-    @BindView(R.id.tvLeftDescription) TextView tvLeftDescription;
-    @BindView(R.id.tvMiddleNumber) TextView tvMiddleNumber;
-    @BindView(R.id.tvMiddleDescription) TextView tvMiddleDescription;
-    @BindView(R.id.tvRightNumber) TextView tvRightNumber;
-    @BindView(R.id.tvRightDescription) TextView tvRightDescription;
-
+    @BindView(R.id.tvLeftNumber)
+    TextView tvLeftNumber;
+    @BindView(R.id.tvLeftDescription)
+    TextView tvLeftDescription;
+    @BindView(R.id.tvMiddleNumber)
+    TextView tvMiddleNumber;
+    @BindView(R.id.tvMiddleDescription)
+    TextView tvMiddleDescription;
+    @BindView(R.id.tvRightNumber)
+    TextView tvRightNumber;
+    @BindView(R.id.tvRightDescription)
+    TextView tvRightDescription;
 
 
     public VolProfileFragment() {
@@ -87,8 +97,13 @@ public class VolProfileFragment extends ProfileFragment {
         ButterKnife.bind(this, view);
 
         //was in constructor - but that doesn't work. need to put user in Bundle after fragment created, but need bundle to create frag
-        bundle = this.getArguments();
-        volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        if (this.getArguments() != null) {
+            bundle = this.getArguments(); //works when coming from landing
+            volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+        }
+        else{
+            volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+        }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
 
         drawContactInfo();
@@ -123,6 +138,7 @@ public class VolProfileFragment extends ProfileFragment {
                     tvRightDescription.setText("Cause");
                 }
             }
+
             public void onCauseIdsFetched(List<String> causeIds) {
             }
         });
@@ -159,6 +175,7 @@ public class VolProfileFragment extends ProfileFragment {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         super.startActivityForResult(intent, SELECTED_PIC);
     }
+
     @Override
     public void drawMenu() {
         // set the text for the descriptions
@@ -167,11 +184,11 @@ public class VolProfileFragment extends ProfileFragment {
         tvRightDescription.setText("Causes");
 
         // set the text for the number of commits
-//        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-//        tvLeftNumber.setText(Integer.toString(numCommits));
-//        if (numCommits == 1) {
-//            tvLeftDescription.setText("Commit");
-//        }
+        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+        tvLeftNumber.setText(Integer.toString(numCommits));
+        if (numCommits == 1) {
+            tvLeftDescription.setText("Commit");
+        }
     }
 
     @Override
@@ -184,17 +201,22 @@ public class VolProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
-        @Override
+    @Override
     public void drawProfileBanner() {
         volunteerFetchHandler.fetchCauses(new CauseFetchListener() {
             public void onCausesFetched(List<String> causes) {
             }
+
             @Override
             public void onCauseIdsFetched(List<String> causeIds) {
-//                getBannerImageUrl(causeIds.get(0));
+                if (causeIds.get(0) != null) {
+                    getBannerImageUrl(causeIds.get(0));
+                } else {
+                    drawBanner(defaultImageUrl);
+                }
             }
-        });
-    }
+    });
+}
 
     public void getBannerImageUrl(String causeId) {
         databaseReference.child(DBKeys.KEY_CAUSE).child(causeId).child(DBKeys.KEY_CAUSE_IMAGE_URL).addListenerForSingleValueEvent(new ValueEventListener() {

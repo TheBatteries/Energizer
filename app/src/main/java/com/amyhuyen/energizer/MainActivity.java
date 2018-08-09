@@ -105,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
                     UserDataProvider.getInstance().setCurrentUserType(UserType);
                     if (UserType.equals(DBKeys.KEY_VOLUNTEER)){
                         UserDataProvider.getInstance().setCurrentVolunteer(dataSnapshot.getValue(Volunteer.class));
+//                        Volunteer volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+//                        Bundle userBundle = new Bundle();
+//                        userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
+//
+////                        FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
+////                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//                        VolProfileFragment volProfileFragment = new VolProfileFragment();
+//                        volProfileFragment.setArguments(userBundle);
                     } else{
                         UserDataProvider.getInstance().setCurrentNPO(dataSnapshot.getValue(Nonprofit.class));
                     }

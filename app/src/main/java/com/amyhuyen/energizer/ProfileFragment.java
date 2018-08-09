@@ -22,8 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.parceler.Parcels;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +37,7 @@ public abstract class ProfileFragment extends Fragment {
     public Set<String> imageUrlSet;
     public String defaultImageUrl;
     private User user;
+    private Context mContext;
 
     public ProfileFragment() {
     }
@@ -75,6 +74,7 @@ public abstract class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         // bind the views
         ButterKnife.bind(this, view);
 
@@ -146,7 +146,7 @@ public abstract class ProfileFragment extends Fragment {
     }
 
     public void drawBanner(String bannerImageUrl) {
-        GlideApp.with(getContext())
+        GlideApp.with(listener) //was getContext()
                 .load(bannerImageUrl)
                 .placeholder(R.color.colorAccent)
                 .error(R.color.red_4)
