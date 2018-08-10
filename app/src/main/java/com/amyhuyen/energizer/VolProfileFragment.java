@@ -167,7 +167,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                if (isResumed()) {
+                if (isResumed() && isAdded()) {
                     tv_skills.setText(getString(R.string.my_skills, skillString));
 
                     // set the text in the menu for number of skills

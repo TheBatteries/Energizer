@@ -15,7 +15,7 @@ public class NpoCommitFragment extends CommitFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Company's Opportunities");
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Nonprofit's Opportunities");
         ((LandingActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
     }
 }
