@@ -201,10 +201,12 @@ public class NpoProfileFragment extends ProfileFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (myOppIds.contains(child.getKey())) {
-                        int temp = volunteersCommitted.get(0);
-                        volunteersCommitted.remove(0);
-                        volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                    if (myOppIds != null) {
+                        if (myOppIds.contains(child.getKey())) {
+                            int temp = volunteersCommitted.get(0);
+                            volunteersCommitted.remove(0);
+                            volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                        }
                     }
                 }
 
