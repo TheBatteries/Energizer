@@ -107,7 +107,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
         ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_expandable_list_item_1,
+                R.layout.contact_spinner_item,
                 getResources().getStringArray(R.array.contact_info));
         contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contactInfoSpinner.setAdapter(contactAdapter);
