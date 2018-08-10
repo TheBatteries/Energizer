@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class NpoProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final Context context = getContext();
         ButterKnife.bind(this, view);
         storageReference = FirebaseStorage.getInstance().getReference();
         bundle = new Bundle();
@@ -113,7 +115,7 @@ public class NpoProfileFragment extends ProfileFragment {
         drawContactInfo();
         drawSkills();
         drawMenu();
-        getProfilePic();
+        getProfilePic(context);
         drawProfileBannerAndCauseAreas();
         drawOpportunitiesPosted();
     }
@@ -131,12 +133,12 @@ public class NpoProfileFragment extends ProfileFragment {
     }
 
 
-    public void getProfilePic() {
+    public void getProfilePic(Context context) {
         storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
-                GlideApp.with(getActivity())
+                GlideApp.with(context)
                         .load(downloadUrl)
                         .transform(new CircleCrop())
                         .into(profilePic);
