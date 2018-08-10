@@ -80,6 +80,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
 
@@ -107,6 +108,12 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
+        ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_expandable_list_item_1,
+                getResources().getStringArray(R.array.contact_info));
+        contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contactInfoSpinner.setAdapter(contactAdapter);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -119,11 +126,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tvMiddleNumber.setText(nonprofit.getRating());
                 getOppCount();
 
-                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getContext(),
-                        android.R.layout.simple_expandable_list_item_1,
-                        getResources().getStringArray(R.array.contact_info));
-                contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                contactInfoSpinner.setAdapter(contactAdapter);
 
                 contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

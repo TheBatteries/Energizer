@@ -75,7 +75,7 @@
     <string name="storage_reference">profilePictures/users/%1$s/</string>
     <string name="contact_uppercase">Contact</string>
 
-    <string name="nine_digit_phone_error">Please enter a valid 9-digit phone number</string>
+    <string name="ten_digit_phone_error">Please enter a valid 10-digit phone number</string>
     <string name="enter_all_required_fields_error">"Please enter all required fields"</string>
     <string-array name="contact_info">
         <item>Get In Touch</item>
@@ -91,5 +91,25 @@
         <item>30 miles</item>
         <item>40 miles</item>
         <item>50 miles</item>
+    </string-array>
+
+    <string-array name="cause_adapter">
+        <item>Environmental Engagement</item>
+        <item>Communication</item>
+        <item>Hunger</item>
+        <item>Human Trafficking</item>
+        <item>Social Engagement</item>
+        <item>Teaching</item>
+        <item>Community Outreach</item>
+        <item>Social Activism</item>
+        <item>Schooling</item>
+        <item>Children</item>
+        <item>Homelessness</item>
+        <item>Education</item>
+        <item>Cooking</item>
+        <item>Social Justice</item>
+        <item>World Peace</item>
+        <item>Environmental Sustainability</item>
+        <item>Growth</item>
     </string-array>
 </resources>
