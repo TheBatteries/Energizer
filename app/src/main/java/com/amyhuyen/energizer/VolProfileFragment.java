@@ -63,8 +63,6 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.btn_edit_profile)
     Button btn_edit_profile;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
-//    @BindView(R.id.btn_logout)
-//    Button btn_logout;
 
     // menu views
     @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
