@@ -61,7 +61,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @BindView(R.id.tvRightNumber) TextView tvRightNumber;
     @BindView(R.id.tvRightDescription) TextView tvRightDescription;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
-    @BindView(R.id.btn_edit_profile) Button editProfile;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
     @BindView(R.id.contactInfoSpinner)
     Spinner contactInfoSpinner;
 
@@ -93,8 +93,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        btn_logout.setVisibility(View.GONE);
-        editProfile.setVisibility(View.GONE);
+        hideButtonsForVisitingAnotherProfile();
         Bundle bundle = getArguments();
         final String idOfUserProfile = bundle.getString(DBKeys.KEY_USER_ID);
         final String visitingUserType = bundle.getString(DBKeys.KEY_USER_TYPE);
@@ -266,6 +265,9 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         });
     }
 
-
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
+    }
 
 }

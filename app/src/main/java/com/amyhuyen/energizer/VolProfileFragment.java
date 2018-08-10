@@ -60,8 +60,11 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
     @BindView (R.id.profile_pic) ImageView profilePic;
-    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
+    @BindView(R.id.btn_edit_profile)
+    Button btn_edit_profile;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
+//    @BindView(R.id.btn_logout)
+//    Button btn_logout;
 
     // menu views
     @BindView(R.id.tvLeftNumber) TextView tvLeftNumber;
@@ -92,6 +95,7 @@ public class VolProfileFragment extends ProfileFragment {
         if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
             bundle = this.getArguments(); //works when coming from landing
             volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+            hideButtonsForVisitingAnotherProfile();
         }
         else{
             volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
@@ -277,5 +281,10 @@ public class VolProfileFragment extends ProfileFragment {
                 drawBanner(defaultImageUrl);
             }
         });
+    }
+
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
     }
 }

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class NpoProfileFragment extends ProfileFragment {
     ImageView profilePic;
     @BindView(R.id.tv_contact_info)
     TextView tvContactInfo;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
 
     // menu views
     @BindView(R.id.tvLeftNumber)
@@ -284,5 +286,10 @@ public class NpoProfileFragment extends ProfileFragment {
                 break;
         }
         return profileImageUrl;
+    }
+
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
     }
 }
