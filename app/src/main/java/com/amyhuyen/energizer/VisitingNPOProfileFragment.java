@@ -61,9 +61,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @BindView(R.id.tvRightNumber) TextView tvRightNumber;
     @BindView(R.id.tvRightDescription) TextView tvRightDescription;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
-    @BindView(R.id.btn_edit_profile) Button editProfile;
-    @BindView(R.id.contactInfoSpinner)
-    Spinner contactInfoSpinner;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
+    @BindView(R.id.contactInfoSpinner) Spinner contactInfoSpinner;
 
     Nonprofit nonprofit;
 
@@ -94,8 +93,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        btn_logout.setVisibility(View.GONE);
-        editProfile.setVisibility(View.GONE);
+        hideButtonsForVisitingAnotherProfile();
         Bundle bundle = getArguments();
         final String idOfUserProfile = bundle.getString(DBKeys.KEY_USER_ID);
         final String visitingUserType = bundle.getString(DBKeys.KEY_USER_TYPE);
@@ -114,6 +112,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contactInfoSpinner.setAdapter(contactAdapter);
 
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -124,19 +123,19 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tv_name.setText(nonprofit.getName());
                 tv_email.setText(nonprofit.getEmail());
                 tvMiddleNumber.setText(nonprofit.getRating());
-                getOppCount();
 
+                getOppCount();
 
                 contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (contactInfoSpinner.getSelectedItem().equals("Call")){
+                        if (contactInfoSpinner.getSelectedItem().equals("Call Us")){
                             String phone = new String(nonprofit.getPhone());
                             Uri phoneCallNumber = Uri.parse("tel:"+phone);
                             Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
                             callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(callIntent);
-                        } else if (contactInfoSpinner.getSelectedItem().equals("Website")){
+                        } else if (contactInfoSpinner.getSelectedItem().equals("Visit Our Website")){
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -152,9 +151,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
                     }
                 });
-
-
-
             }
 
             @Override
@@ -268,6 +264,9 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         });
     }
 
-
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
+    }
 
 }

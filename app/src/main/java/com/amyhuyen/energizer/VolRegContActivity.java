@@ -100,7 +100,6 @@ public class VolRegContActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(location)){
             btnRegister.setEnabled(false);
             btnRegister.setClickable(false);
-
         } else {
             btnRegister.setEnabled(true);
             btnRegister.setClickable(true);

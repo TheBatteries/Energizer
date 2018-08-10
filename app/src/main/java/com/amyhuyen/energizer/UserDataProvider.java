@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer;
 
 import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.models.User;
 import com.amyhuyen.energizer.models.Volunteer;
 
 public class UserDataProvider {
@@ -19,6 +20,16 @@ public class UserDataProvider {
             sInstance = new UserDataProvider();
         }
         return sInstance;
+    }
+
+    public User getCurrentUser(){
+        User user;
+        if (mUserType.equals(DBKeys.KEY_VOLUNTEER)){
+            user = this.getCurrentVolunteer();
+        } else {
+            user = this.getCurrentNPO();
+        }
+        return user;
     }
 
     public void setCurrentVolunteer(Volunteer volunteer) {

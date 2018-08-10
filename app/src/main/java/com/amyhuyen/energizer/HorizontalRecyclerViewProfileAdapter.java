@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -70,9 +72,12 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Volunteer volunteer = mCommittedVolunteers.get(position);
+
+                //give commit fetch handler userId of clicked volunteer so that it can fetch their commits in the visited profile fragment
+                CommitFetchHandler commitFetchHandler = new CommitFetchHandler(volunteer);
+
                 Bundle userBundle = new Bundle();
                 userBundle.putParcelable(Constant.KEY_USER_FOR_PROFILE, Parcels.wrap(volunteer));
-
                 FragmentManager fragmentManager = ((LandingActivity) mActivity).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -119,5 +124,16 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
     public int getItemCount() {
         return mCommittedVolunteers.size();
     }
+
+////    // add a list of all elements to the recycler
+//    public void addAll(List<Volunteer> volunteers){
+////        getmCommittedVolunteersList().addAll(volunteers);
+////        notifyDataSetChanged();
+//    }
+//
+//    public void clear(){
+//        mCommittedVolunteers.clear();
+//        notifyDataSetChanged();
+//    }
 
 }
