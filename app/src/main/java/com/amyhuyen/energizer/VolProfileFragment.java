@@ -193,12 +193,6 @@ public class VolProfileFragment extends ProfileFragment {
 
         // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener
         drawMyCommits();
-
-//        int numCommits = commitFetchHandler.getCommitCount();
-//        tvLeftNumber.setText(Integer.toString(numCommits));
-//        if (numCommits == 1) {
-//            tvLeftDescription.setText("Commit");
-//        }
     }
 
     // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener into CommitFetchHandler
@@ -271,7 +265,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (imageUrlSet.contains(dataSnapshot.getValue())) {
-                    String bannerImageUrl = dataSnapshot.getValue().toString(); //could make method to add imageUrls to set from DB, but we are putting them in DB anyways (user can't do this)
+                    String bannerImageUrl = dataSnapshot.getValue().toString();
                     drawBanner(bannerImageUrl);
                 } else {
                     drawBanner(defaultImageUrl);

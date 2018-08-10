@@ -75,6 +75,7 @@ public abstract class CommitFragment extends Fragment {
         // get the opportunities (for on launch)
         commitFetchHandler.fetchMyCommits();
 
+        //TODO - when commit fetch handler is done, uncomment this
 //        // swipe refresh
 //        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 //            @Override
@@ -90,66 +91,7 @@ public abstract class CommitFragment extends Fragment {
 //                android.R.color.holo_red_light);
     }
 
-//    public abstract DatabaseReference setDatabaseReference(String userId);
-//
-//    public abstract DatabaseReference getDatabaseReference(String databaseKeyOppsPerUsertype);
 
-
-    // method to get all the opportunities to which the current user is committed
-//    public void fetchMyCommits(){ //move to VolFetchHandler
-//        dataOppPerUser = setDatabaseReference();
-//
-//        // get all the oppIds of opportunities related to current user and add to list
-//        dataOppPerUser.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                oppIdList.clear();
-//                for (DataSnapshot child : dataSnapshot.getChildren()){
-//                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
-//                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
-//                }
-//
-//                // find the opportunities associated with those oppIds and add them to newOpportunities
-//                oppFromOppId(oppIdList);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("fetchMyCommits", databaseError.toString());
-//            }
-//        });
-//    }
-//
-//    // method that takes all the oppIds in oppIdList, finds the associated Opportunities, and adds them to newOpportunities
-//    public void oppFromOppId(final List<String> oppIdList){ //move to VolFetchHandler
-//        final ArrayList<Opportunity> newOpportunities = new ArrayList<>();
-//        // get the firebase reference
-//        dataOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPORTUNITY);
-//
-//        dataOpp.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                newOpportunities.clear();
-//
-//                // get all of the children at this level
-//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-//
-//                // iterate through children to get each opportunity and add it to newOpportunities
-//                for (DataSnapshot child : children) {
-//                    Opportunity newOpp = child.getValue(Opportunity.class);
-//                    if (oppIdList.contains(newOpp.getOppId())) {
-//                        newOpportunities.add(newOpp);
-//                    }
-//                }
-//                onCommitsFetched(newOpportunities);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("oppFromOppId", databaseError.toString());
-//            }
-//        });
-//    }
 
     public static void onCommitsFetched(List<Opportunity> opportunities) {
         // clear the adapter and add newly fetched opportunities
@@ -158,17 +100,5 @@ public abstract class CommitFragment extends Fragment {
 //        commitCount = opportunities.size();
 //        swipeContainer.setRefreshing(false);
     }
-
-//}
-
-//    // method that returns how many opportunities a volunteer has committed to
-//    public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;
-//        return commitCount;
-//    }
-
-//    // method that returns all the list of opportunities to be displayed
-//    public List<String> getOppIdList(){
-//        return oppIdList;
-//    }
 
 }
