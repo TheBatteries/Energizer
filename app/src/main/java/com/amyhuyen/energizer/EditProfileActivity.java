@@ -339,13 +339,13 @@ public class EditProfileActivity extends AppCompatActivity {
         updateUserData();
         // get intent information from previous activity
 
-        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+//        Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
 
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
-        startActivity(intent);
+//        startActivity(intent);
     }
 
     @Override

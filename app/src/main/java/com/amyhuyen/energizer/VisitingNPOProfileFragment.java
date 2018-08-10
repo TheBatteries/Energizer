@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,8 +63,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @BindView(R.id.tvRightDescription) TextView tvRightDescription;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
-    @BindView(R.id.contactInfoSpinner)
-    Spinner contactInfoSpinner;
+    @BindView(R.id.contactInfoSpinner) Spinner contactInfoSpinner;
 
     Nonprofit nonprofit;
 
@@ -71,6 +71,16 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     public VisitingNPOProfileFragment() {
         // Required empty public constructor
+    }
+
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -82,6 +92,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final Context context = getContext();
         ButterKnife.bind(this, view);
         hideButtonsForVisitingAnotherProfile();
         Bundle bundle = getArguments();
@@ -96,34 +107,45 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
+        ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.contact_spinner_item,
+                getResources().getStringArray(R.array.contact_info));
+        contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contactInfoSpinner.setAdapter(contactAdapter);
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(context)
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(profilePic);
+            }
+        });
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nonprofit =  dataSnapshot.getValue(Nonprofit.class);
-                tvContactInfo.setText(nonprofit.getPhone() + "\n" +
-                        nonprofit.getAddress());
+                tvContactInfo.setText(nonprofit.getPhone() + "\n" + nonprofit.getAddress());
                 tvSkills.setText(nonprofit.getDescription());
                 tv_name.setText(nonprofit.getName());
                 tv_email.setText(nonprofit.getEmail());
                 tvMiddleNumber.setText(nonprofit.getRating());
-                getOppCount();
 
-                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getContext(),
-                        android.R.layout.simple_expandable_list_item_1,
-                        getResources().getStringArray(R.array.contact_info));
-                contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                contactInfoSpinner.setAdapter(contactAdapter);
+                getOppCount();
 
                 contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (contactInfoSpinner.getSelectedItem().equals("Call")){
+                        if (contactInfoSpinner.getSelectedItem().equals("Call Us")){
                             String phone = new String(nonprofit.getPhone());
                             Uri phoneCallNumber = Uri.parse("tel:"+phone);
                             Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
                             callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(callIntent);
-                        } else if (contactInfoSpinner.getSelectedItem().equals("Website")){
+                        } else if (contactInfoSpinner.getSelectedItem().equals("Visit Our Website")){
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -155,6 +177,9 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         vowels.add('o');
         vowels.add('u');
         vowels.add('y');
+
+
+
     }
 
 
@@ -182,6 +207,11 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     @Override
     public void switchToCommitFragment() {
+
+    }
+
+    @Override
+    public void drawEditCausesBtn() {
 
     }
 

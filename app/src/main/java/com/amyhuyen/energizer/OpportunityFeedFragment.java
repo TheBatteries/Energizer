@@ -113,6 +113,7 @@ public class OpportunityFeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((LandingActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
         ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Matches Within");
         spinner = ((LandingActivity) getActivity()).findViewById(R.id.spinnerRadius);
         spinner.setVisibility(View.VISIBLE);

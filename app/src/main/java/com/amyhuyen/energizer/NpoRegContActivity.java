@@ -129,6 +129,8 @@ public class NpoRegContActivity extends AppCompatActivity {
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(description)|| TextUtils.isEmpty(phone)){
             Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
+        } else if (phone.length() != 10) {
+            Toast.makeText(getApplicationContext(), getString(R.string.ten_digit_phone_error), Toast.LENGTH_SHORT).show();
         } else {
             // proceed to registering user if passwords match
 
