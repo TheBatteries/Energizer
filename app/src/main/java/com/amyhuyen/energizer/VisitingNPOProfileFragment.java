@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -91,6 +92,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final Context context = getContext();
         ButterKnife.bind(this, view);
         hideButtonsForVisitingAnotherProfile();
         Bundle bundle = getArguments();
@@ -111,6 +113,16 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contactInfoSpinner.setAdapter(contactAdapter);
 
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(context)
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(profilePic);
+            }
+        });
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

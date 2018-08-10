@@ -116,7 +116,7 @@ public class VolProfileFragment extends ProfileFragment {
                         .transform(new CircleCrop())
                         .into(profilePic);
             }
-    });
+        });
     }
 
     @Override
