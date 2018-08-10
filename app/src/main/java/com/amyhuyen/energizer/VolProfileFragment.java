@@ -155,12 +155,14 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
-                tv_skills.setText(getString(R.string.my_skills, skillString));
+                if (isResumed()) {
+                    tv_skills.setText(getString(R.string.my_skills, skillString));
 
-                // set the text in the menu for number of skills
-                tvMiddleNumber.setText(Integer.toString(skills.size()));
-                if (skills.size() == 1) {
-                    tvMiddleDescription.setText(R.string.skill_uppercase);
+                    // set the text in the menu for number of skills
+                    tvMiddleNumber.setText(Integer.toString(skills.size()));
+                    if (skills.size() == 1) {
+                        tvMiddleDescription.setText(R.string.skill_uppercase);
+                    }
                 }
             }
         });
