@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,9 +113,9 @@ public class NpoProfileFragment extends ProfileFragment {
         drawContactInfo();
         drawSkills();
         drawMenu();
-        drawEditCausesBtn();
         getProfilePic();
         drawProfileBannerAndCauseAreas();
+        drawOpportunitiesPosted();
     }
 
     @Override
@@ -156,10 +158,6 @@ public class NpoProfileFragment extends ProfileFragment {
         //TODO -fix null object reference on nonprofit
     }
 
-    @Override
-    public void drawEditCausesBtn() {
-
-    }
 
     @OnClick(R.id.profile_pic)
     public void onProfileImageClick() {
@@ -234,6 +232,36 @@ public class NpoProfileFragment extends ProfileFragment {
         fragmentTransaction.commit();
     }
 
+
+    public void drawOpportunitiesPosted(){ //was static
+        commitFetchHandler.setDatabaseReference();
+        DatabaseReference dataOppPerUser = commitFetchHandler.getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
+        final ArrayList<String >oppIdList = new ArrayList<>();
+
+        // get all the oppIds of opportunities related to current user and add to list
+        dataOppPerUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                oppIdList.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
+                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
+                    Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
+                }
+                Integer numOpportunitiesPosted = oppIdList.size();
+                tvLeftNumber.setText(Integer.toString(numOpportunitiesPosted));
+                if (numOpportunitiesPosted == 1) {
+                    tvLeftDescription.setText("Commit");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("fetchMyCommits", databaseError.toString());
+            }
+        });
+    }
+
     @Override
     public void drawProfileBannerAndCauseAreas() {
         tvCauseArea.setVisibility(View.GONE);
@@ -290,8 +318,8 @@ public class NpoProfileFragment extends ProfileFragment {
         return profileImageUrl;
     }
 
-    public void hideButtonsForVisitingAnotherProfile() {
-        btn_edit_profile.setVisibility(View.GONE);
-        btn_logout.setVisibility(View.GONE);
-    }
+//    public void hideButtonsForVisitingAnotherProfile() {
+//        btn_edit_profile.setVisibility(View.GONE);
+//        btn_logout.setVisibility(View.GONE);
+//    }
 }

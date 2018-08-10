@@ -73,16 +73,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         // Required empty public constructor
     }
 
-
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -149,9 +139,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
                     }
                 });
-
-
-
             }
 
             @Override
@@ -168,9 +155,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         vowels.add('o');
         vowels.add('u');
         vowels.add('y');
-
-
-
     }
 
 
@@ -198,11 +182,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     @Override
     public void switchToCommitFragment() {
-
-    }
-
-    @Override
-    public void drawEditCausesBtn() {
 
     }
 

@@ -91,8 +91,6 @@ public abstract class ProfileFragment extends Fragment {
 
     public abstract void switchToCommitFragment();
 
-    public abstract void drawEditCausesBtn();
-
     public abstract void drawProfileBannerAndCauseAreas();
 
     @OnClick(R.id.btn_logout)
