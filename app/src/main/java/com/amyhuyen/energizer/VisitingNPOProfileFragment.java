@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
@@ -62,12 +61,9 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @BindView(R.id.tvRightDescription) TextView tvRightDescription;
     @BindView(R.id.btn_logout) ImageButton btn_logout;
     @BindView(R.id.btn_edit_profile) Button editProfile;
-    @BindView(R.id.contactInfoSpinner)
-    Spinner contactInfoSpinner;
+    @BindView(R.id.contactInfoSpinner) Spinner contactInfoSpinner;
 
     Nonprofit nonprofit;
-
-    private OnFragmentInteractionListener mListener;
 
     public VisitingNPOProfileFragment() {
         // Required empty public constructor
@@ -107,6 +103,37 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
+        ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_expandable_list_item_1,
+                getResources().getStringArray(R.array.contact_info));
+        contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contactInfoSpinner.setAdapter(contactAdapter);
+
+
+        contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (contactInfoSpinner.getSelectedItem().equals("Call")){
+                    String phone = new String(nonprofit.getPhone());
+                    Uri phoneCallNumber = Uri.parse("tel:"+phone);
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(callIntent);
+                } else if (contactInfoSpinner.getSelectedItem().equals("Website")){
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,42 +144,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tv_name.setText(nonprofit.getName());
                 tv_email.setText(nonprofit.getEmail());
                 tvMiddleNumber.setText(nonprofit.getRating());
+
                 getOppCount();
-
-                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getContext(),
-                        android.R.layout.simple_expandable_list_item_1,
-                        getResources().getStringArray(R.array.contact_info));
-                contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                contactInfoSpinner.setAdapter(contactAdapter);
-
-                contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (contactInfoSpinner.getSelectedItem().equals("Call")){
-                            String phone = new String(nonprofit.getPhone());
-                            Uri phoneCallNumber = Uri.parse("tel:"+phone);
-                            Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
-                            callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(callIntent);
-                        } else if (contactInfoSpinner.getSelectedItem().equals("Website")){
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                            intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
-
-
             }
 
             @Override

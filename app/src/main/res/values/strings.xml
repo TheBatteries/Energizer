@@ -75,7 +75,7 @@
     <string name="storage_reference">profilePictures/users/%1$s/</string>
     <string name="contact_uppercase">Contact</string>
 
-    <string name="nine_digit_phone_error">Please enter a valid 9-digit phone number</string>
+    <string name="ten_digit_phone_error">Please enter a valid 10-digit phone number</string>
     <string name="enter_all_required_fields_error">"Please enter all required fields"</string>
     <string-array name="contact_info">
         <item>Get In Touch</item>
