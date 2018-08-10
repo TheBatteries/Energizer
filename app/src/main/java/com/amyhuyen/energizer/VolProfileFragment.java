@@ -98,6 +98,7 @@ public class VolProfileFragment extends ProfileFragment {
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
+
         storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -147,7 +148,6 @@ public class VolProfileFragment extends ProfileFragment {
             public void onSkillsFetched(List<String> skills) {
                 String skillString = skills.toString().replace("[", "").replace("]", "");
                 tv_skills.setText(getString(R.string.my_skills, skillString));
-                Log.i("VolProfileFragment", "current volunteer: " + volunteer.getName());
 
                 // set the text in the menu for number of skills
                 tvMiddleNumber.setText(Integer.toString(skills.size()));
@@ -188,7 +188,7 @@ public class VolProfileFragment extends ProfileFragment {
 //        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
 //        tvLeftNumber.setText(Integer.toString(numCommits));
 //        if (numCommits == 1) {
-//            tvLeftDescription.setText("Commit");
+//            tvLeftDescription.setText(R.string.commit_uppercase);
 //        }
     }
 
