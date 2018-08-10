@@ -184,7 +184,6 @@ public class VolProfileFragment extends ProfileFragment {
         tvMiddleDescription.setText(R.string.skills_uppercase);
         tvRightDescription.setText(R.string.causes_uppercase);
 
-
 //        // set the text for the number of commits
 //        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
 //        tvLeftNumber.setText(Integer.toString(numCommits));
@@ -247,5 +246,4 @@ public class VolProfileFragment extends ProfileFragment {
             }
         });
     }
-
 }
