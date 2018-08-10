@@ -37,7 +37,7 @@ public class CommitFetchHandler {
     //methods for getting commit count
 
     public void setDatabaseReference(){
-        if (mUser.getUserType() == DBKeys.KEY_VOLUNTEER) {
+        if (mUser.getUserType().equals(DBKeys.KEY_VOLUNTEER)) {
             dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_USER).child(mUser.getUserID());
         } else {
             dataOppPerUsertype = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(mUser.getUserID());
