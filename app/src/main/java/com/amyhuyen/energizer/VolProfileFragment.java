@@ -87,28 +87,38 @@ public class VolProfileFragment extends ProfileFragment {
         if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
             bundle = this.getArguments(); //works when coming from landing
             volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
+            storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    String downloadUrl = new String(uri.toString());
+                    GlideApp.with(getContext())
+                            .load(downloadUrl)
+                            .transform(new CircleCrop())
+                            .into(profilePic);
+                }
+            });
         }
         else{
             volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
+            storageReference.child(getString(R.string.storage_reference, UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    String downloadUrl = new String(uri.toString());
+                    GlideApp.with(getContext())
+                            .load(downloadUrl)
+                            .transform(new CircleCrop())
+                            .into(profilePic);
+                }
+            });
         }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
+
 
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
-
-        storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                String downloadUrl = new String(uri.toString());
-                GlideApp.with(getContext())
-                        .load(downloadUrl)
-                        .transform(new CircleCrop())
-                        .into(profilePic);
-            }
-    });
     }
 
     @Override
