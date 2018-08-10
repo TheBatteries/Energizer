@@ -112,32 +112,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         contactInfoSpinner.setAdapter(contactAdapter);
 
 
-        contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (contactInfoSpinner.getSelectedItem().equals("Call")){
-                    String phone = new String(nonprofit.getPhone());
-                    Uri phoneCallNumber = Uri.parse("tel:"+phone);
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
-                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(callIntent);
-                } else if (contactInfoSpinner.getSelectedItem().equals("Website")){
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -150,6 +124,32 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tvMiddleNumber.setText(nonprofit.getRating());
 
                 getOppCount();
+
+                contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (contactInfoSpinner.getSelectedItem().equals("Call Us")){
+                            String phone = new String(nonprofit.getPhone());
+                            Uri phoneCallNumber = Uri.parse("tel:"+phone);
+                            Intent callIntent = new Intent(Intent.ACTION_DIAL, phoneCallNumber);
+                            callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(callIntent);
+                        } else if (contactInfoSpinner.getSelectedItem().equals("Visit Our Website")){
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
 
             @Override
