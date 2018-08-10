@@ -120,15 +120,14 @@ public class HorizontalRecyclerViewProfileAdapter extends RecyclerView.Adapter<H
         return mCommittedVolunteers.size();
     }
 
-////    // add a list of all elements to the recycler
-//    public void addAll(List<Volunteer> volunteers){
-////        getmCommittedVolunteersList().addAll(volunteers);
-////        notifyDataSetChanged();
-//    }
-//
-//    public void clear(){
-//        mCommittedVolunteers.clear();
-//        notifyDataSetChanged();
-//    }
+    public void addAll(List<Volunteer> volunteers){
+        mCommittedVolunteers.addAll(volunteers);
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
+        mCommittedVolunteers.clear();
+        notifyDataSetChanged();
+    }
 
 }

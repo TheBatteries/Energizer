@@ -6,8 +6,7 @@
 <item>
     <bitmap
         android:gravity="center"
-        android:src="@drawable/giveback_logo_name"
-        />
+        android:src="@drawable/giveback_logo_name" />
 </item>
 
     </layer-list>

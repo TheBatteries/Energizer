@@ -226,6 +226,8 @@ public class OpportunitiesDetailFragment extends Fragment {
             final HashMap<String, String> oppIdDataMap = new HashMap<String, String>();
             oppIdDataMap.put(DBKeys.KEY_OPP_ID, oppId);
             oppsPerUserRef.push().setValue(oppIdDataMap);
+            mCommittedVolunteers.add(userDataProvider.getCurrentVolunteer());
+            horizontalRecyclerViewProfileAdapter.notifyItemInserted(mCommittedVolunteers.size()-1);
         }
 
         private void unlinkUserAndOpp() {
@@ -269,6 +271,12 @@ public class OpportunitiesDetailFragment extends Fragment {
                                     signUpForOpp.setVisibility(View.VISIBLE);
                                     unregisterForOpp.setEnabled(false);
                                     unregisterForOpp.setVisibility(View.GONE);
+                                    for (int idx=0; idx < mCommittedVolunteers.size(); idx++) {
+                                        if (mCommittedVolunteers.get(idx).getUserID().equals(userDataProvider.getCurrentUserId())) {
+                                            mCommittedVolunteers.remove(idx);
+                                            horizontalRecyclerViewProfileAdapter.notifyItemRemoved(idx);
+                                        }
+                                    }
                                 }
                             });
                         }
@@ -286,7 +294,6 @@ public class OpportunitiesDetailFragment extends Fragment {
         public void onSignUpForOppButtonClick() {
             signUpForOpp.setEnabled(false);
             linkUserAndOpp();
-            horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             signUpForOpp.setVisibility(View.GONE);
             unregisterForOpp.setEnabled(true);
             unregisterForOpp.setVisibility(View.VISIBLE);
