@@ -301,6 +301,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         public void onSignUpForOppButtonClick() {
             signUpForOpp.setEnabled(false);
             linkUserAndOpp();
+            horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
             signUpForOpp.setVisibility(View.GONE);
             unregisterForOpp.setEnabled(true);
             unregisterForOpp.setVisibility(View.VISIBLE);
@@ -313,6 +314,8 @@ public class OpportunitiesDetailFragment extends Fragment {
             signUpForOpp.setVisibility(View.VISIBLE);
             unregisterForOpp.setEnabled(false);
             unregisterForOpp.setVisibility(View.GONE);
+            horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
+
         }
 
         @OnClick(R.id.btnUpdateOpp)
@@ -343,8 +346,21 @@ public class OpportunitiesDetailFragment extends Fragment {
             bundle.putString(DBKeys.KEY_USER_ID, npoId);
             if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")) {
                 bundle.putString(DBKeys.KEY_USER_TYPE, "NPO");
+                // switch the fragments
+                FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                VisitingNPOProfileFragment visitingProfileFrag = new VisitingNPOProfileFragment();
+                visitingProfileFrag.setArguments(bundle);
+                fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+                fragmentTransaction.commit();
             } else {
-                bundle.putString(DBKeys.KEY_USER_TYPE, "Volunteer");
+
+                // switch the fragments
+                FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                NpoProfileFragment visitingProfileFrag = new NpoProfileFragment();
+                fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+                fragmentTransaction.commit();
             }
 
             // switch the fragments

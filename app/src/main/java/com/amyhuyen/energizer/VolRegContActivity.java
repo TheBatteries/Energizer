@@ -100,9 +100,14 @@ public class VolRegContActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(location)){
             btnRegister.setEnabled(false);
             btnRegister.setClickable(false);
+        } else if(phone.length() != 10 && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(location)) {
+            btnRegister.setEnabled(false);
+            btnRegister.setClickable(false);
+            btnRegister.setText("Invalid Phone Number");
         } else {
             btnRegister.setEnabled(true);
             btnRegister.setClickable(true);
+            btnRegister.setText(R.string.register);
         }
     }
 

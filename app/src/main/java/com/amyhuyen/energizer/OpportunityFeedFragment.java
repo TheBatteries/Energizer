@@ -116,7 +116,7 @@ public class OpportunityFeedFragment extends Fragment {
         ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Matches Within");
         spinner = ((LandingActivity) getActivity()).findViewById(R.id.spinnerRadius);
         spinner.setVisibility(View.VISIBLE);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, R.layout.spinner_items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
