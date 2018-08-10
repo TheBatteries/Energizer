@@ -33,6 +33,7 @@ public abstract class CommitFragment extends Fragment {
     List<String> oppIdList;
     private static OpportunityAdapter oppAdapter;
     public int commitCount;
+    private CommitFetchHandler commitFetchHandler;
 
     public DatabaseReference dataOppPerUser;
     DatabaseReference dataOpp;
@@ -51,7 +52,7 @@ public abstract class CommitFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        final CommitFetchHandler commitFetchHandler = new CommitFetchHandler(UserDataProvider.getInstance().getCurrentUser());
+        commitFetchHandler = new CommitFetchHandler(UserDataProvider.getInstance().getCurrentUser());
         // bind the views
         ButterKnife.bind(this, view);
 
@@ -154,7 +155,6 @@ public abstract class CommitFragment extends Fragment {
         // clear the adapter and add newly fetched opportunities
         oppAdapter.clear();
         oppAdapter.addAll(opportunities);
-
 //        commitCount = opportunities.size();
 //        swipeContainer.setRefreshing(false);
     }

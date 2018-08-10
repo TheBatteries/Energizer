@@ -191,7 +191,7 @@ public class NpoProfileFragment extends ProfileFragment {
         volunteersCommitted.add(0);
 
         // get the list of oppId from the commit fragment
-        NpoCommitFragment commitFrag = (NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag;
+//        NpoCommitFragment commitFrag = (NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag;
         final List<String> myOppIds = commitFetchHandler.getOppIdList();
 
         // get the number of volunteer commmitted to the NPO

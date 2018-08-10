@@ -26,6 +26,7 @@ public class CommitFetchHandler {
     public int commitCount;
     private DatabaseReference dataOpp;
     private User mUser;
+    private ArrayList<Opportunity> newOpportunities;
 
     public DatabaseReference dataOppPerUsertype;
 
@@ -60,6 +61,7 @@ public class CommitFetchHandler {
                 for (DataSnapshot child : dataSnapshot.getChildren()){
                     final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
                     oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
+                    Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
                 }
 
                 // find the opportunities associated with those oppIds and add them to newOpportunities
@@ -74,8 +76,8 @@ public class CommitFetchHandler {
     }
 
     // method that takes all the oppIds in oppIdList, finds the associated Opportunities, and adds them to newOpportunities
-    public void oppFromOppId(final List<String> oppIdList){ //move to VolFetchHandler
-        final ArrayList<Opportunity> newOpportunities = new ArrayList<>();
+    public void oppFromOppId(final List<String> oppIdList){
+        newOpportunities = new ArrayList<>();
         // get the firebase reference
         dataOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPORTUNITY);
 
@@ -95,6 +97,7 @@ public class CommitFetchHandler {
                     }
                 }
                 CommitFragment.onCommitsFetched(newOpportunities);
+//                commitCount = newOpportunities.size();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -102,7 +105,6 @@ public class CommitFetchHandler {
             }
         });
     }
-
 
     // method that returns how many opportunities a volunteer has committed to
     public int getCommitCount(){ //commitCount = opportunitites.size(), return commitCount;

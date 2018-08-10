@@ -22,12 +22,15 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -188,13 +191,44 @@ public class VolProfileFragment extends ProfileFragment {
         tvMiddleDescription.setText("Skills");
         tvRightDescription.setText("Causes");
 
-        // set the text for the number of commits
-//        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-        int numCommits = commitFetchHandler.getCommitCount();
-        tvLeftNumber.setText(Integer.toString(numCommits));
-        if (numCommits == 1) {
-            tvLeftDescription.setText("Commit");
-        }
+        // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener
+        drawMyCommits();
+
+//        int numCommits = commitFetchHandler.getCommitCount();
+//        tvLeftNumber.setText(Integer.toString(numCommits));
+//        if (numCommits == 1) {
+//            tvLeftDescription.setText("Commit");
+//        }
+    }
+
+    // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener into CommitFetchHandler
+    public void drawMyCommits(){ //was static
+        commitFetchHandler.setDatabaseReference();
+        DatabaseReference dataOppPerUser = commitFetchHandler.getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
+        final ArrayList<String >oppIdList = new ArrayList<>();
+
+        // get all the oppIds of opportunities related to current user and add to list
+        dataOppPerUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                oppIdList.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
+                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
+                    Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
+                }
+                Integer numCommits = oppIdList.size();
+                tvLeftNumber.setText(Integer.toString(numCommits));
+                if (numCommits == 1) {
+                    tvLeftDescription.setText("Commit");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("fetchMyCommits", databaseError.toString());
+            }
+        });
     }
 
     @Override
