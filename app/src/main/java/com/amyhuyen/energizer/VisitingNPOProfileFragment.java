@@ -82,6 +82,12 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,9 +107,9 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         storageReference = FirebaseStorage.getInstance().getReference().child("profilePictures/users/" + idOfUserProfile + "/");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(idOfUserProfile);
         oppsPerNPORef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(idOfUserProfile);
-        tvMiddleDescription.setText("Rating");
-        tvLeftDescription.setText("Opportunities");
-        tvRightDescription.setText("Contact Us");
+        tvMiddleDescription.setText(R.string.rating);
+        tvLeftDescription.setText(R.string.opportunities);
+        tvRightDescription.setVisibility(View.GONE);
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
@@ -234,7 +240,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String oppCount = String.valueOf(dataSnapshot.getChildrenCount());
                 if (dataSnapshot.getChildrenCount() == 1){
-                    tvLeftDescription.setText("Opportunity");
+                    tvLeftDescription.setText(R.string.opportunity_uppercase);
                 }
                 tvLeftNumber.setText(oppCount);
             }

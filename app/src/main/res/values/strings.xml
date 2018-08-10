@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Energizer</string>
+    <string name="app_name">giveback</string>
     <string name="user_registration">User Registration</string>
     <string name="register_message">I am a...</string>
     <string name="volunteer">Volunteer</string>
@@ -43,7 +43,6 @@
     <string name="address">Address</string>
     <string name="non_profit_name">Non-profit Name</string>
     <string name="set_causes_message">Select causes you care about.</string>
-    <string name="skills">Skills</string>
     <string name="cause_areas">Cause Area</string>
     <string name="cause_areas_vol_prof">Your Cause Areas: </string>
     <string name="contact_information">Contact Information</string>
@@ -58,12 +57,39 @@
     <string name="positions_available_colon">Positions Available: </string>
     <string name="age_desc">Age/Desc.</string>
     <string name="confirm_edits">Confirm Edits</string>
-    <string name="skill">Skill</string>
-    <string name="cause">Cause</string>
+    <string name="skills_uppercase">Skills</string>
+    <string name="causes_uppercase">Causes</string>
+    <string name="skill_uppercase">Skill</string>
+    <string name="cause_uppercase">Cause</string>
+    <string name="my_causes">My Causes: %1$s</string>
+    <string name="my_skills">My Skills: %1$s</string>
+    <string name="commits_uppercase">Commits</string>
+    <string name="commit_uppercase">Commit</string>
+    <string name="opportunities_posted">Opportunities Posted</string>
+    <string name="opportunity_posted">Opportunity Posted</string>
+    <string name="volunteers_committed">Volunteers Committed</string>
+    <string name="volunteer_committed">Volunteer Committed</string>
+    <string name="opportunity_uppercase">Opportunity</string>
+    <string name="opportunities_uppercase">Opportunities</string>
+    <string name="rating">Rating</string>
+    <string name="storage_reference">profilePictures/users/%1$s/</string>
+    <string name="contact_uppercase">Contact</string>
 
+    <string name="nine_digit_phone_error">Please enter a valid 9-digit phone number</string>
+    <string name="enter_all_required_fields_error">"Please enter all required fields"</string>
     <string-array name="contact_info">
         <item>Get In Touch</item>
         <item>Call Us</item>
         <item>Visit Our Website</item>
+    </string-array>
+
+    <string-array name="radius_array">
+        <item>10 miles</item>
+        <item>15 miles</item>
+        <item>20 miles</item>
+        <item>25 miles</item>
+        <item>30 miles</item>
+        <item>40 miles</item>
+        <item>50 miles</item>
     </string-array>
 </resources>

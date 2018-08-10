@@ -78,7 +78,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
             firebaseDataRef.child(DBKeys.KEY_OPPORTUNITY).child(oppId).setValue(newOpp);
 
             // alert user of success and then go to the feed displaying the npo's opportunities
-            Toast.makeText(getActivity(), "Opportunity updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Opportunity Updated", Toast.LENGTH_SHORT).show();
             switchFrag();
         } else {
             Toast.makeText(getActivity(), "You cannot require fewer volunteers than the amount currently registered", Toast.LENGTH_SHORT).show();
@@ -222,6 +222,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                             dataRef.child(DBKeys.KEY_USERS_PER_OPP).child(oppId).removeValue();
                             removeFromOppsPerUser(oppId, signedUpUserIds, dataRef);
                         } else {
+                            Toast.makeText((LandingActivity)getActivity(), "Opportunity Deleted", Toast.LENGTH_SHORT).show();
                             switchFrag();
                         }
                     }
@@ -245,7 +246,7 @@ public class UpdateOpportunityFragment extends OpportunityFragment {
                             dataRef.child(DBKeys.KEY_OPPS_PER_USER).child(userId).child(intermediateKey).removeValue();
                             }
                     }
-                    Toast.makeText(landing, "Opportunity Deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((LandingActivity)getActivity(), "Opportunity Deleted", Toast.LENGTH_SHORT).show();
                     switchFrag();
                 }
             }

@@ -80,7 +80,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
 
 
         // alert user of success
-        Toast.makeText(getActivity(), "Opportunity created", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Opportunity Created", Toast.LENGTH_SHORT).show();
         switchFrag();
     }
 
