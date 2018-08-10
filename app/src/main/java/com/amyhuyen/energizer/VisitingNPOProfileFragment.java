@@ -128,8 +128,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nonprofit =  dataSnapshot.getValue(Nonprofit.class);
-                tvContactInfo.setText(nonprofit.getPhone() + "\n" +
-                        nonprofit.getAddress());
+                tvContactInfo.setText(nonprofit.getPhone() + "\n" + nonprofit.getAddress());
                 tvSkills.setText(nonprofit.getDescription());
                 tv_name.setText(nonprofit.getName());
                 tv_email.setText(nonprofit.getEmail());

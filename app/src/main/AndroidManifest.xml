@@ -27,7 +27,8 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".LandingActivity"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".SetSkillsActivity" />
+        <activity android:name=".SetSkillsActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".RegistrationActivity" />
 
         <meta-data
@@ -71,10 +72,14 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".FacebookUserDetailsActivity" />
-        <activity android:name=".SetCausesActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".VolRegContActivity" />
-        <activity android:name=".NpoRegContActivity"></activity>
+        <activity android:name=".SetCausesActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".EditProfileActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".VolRegContActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".NpoRegContActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" ></activity>
     </application>
 
 </manifest>
