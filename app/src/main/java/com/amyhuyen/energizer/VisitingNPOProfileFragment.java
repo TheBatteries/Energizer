@@ -81,12 +81,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((LandingActivity) getActivity()).getSupportActionBar().hide();
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
