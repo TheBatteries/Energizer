@@ -23,7 +23,6 @@ import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -229,71 +228,57 @@ public class OpportunitiesDetailFragment extends Fragment {
             oppsPerUserRef.push().setValue(oppIdDataMap);
         }
 
-        private void unlinkUserAndOpp () {
-            final String oppId = userPerOppRef.getKey().toString();
-            final String userId = userDataProvider.getCurrentUserId();
-            if (signUpForOpp.isEnabled() == true) {
-                userPerOppRef.orderByChild(DBKeys.KEY_USER_ID).equalTo(userId).addChildEventListener(new ChildEventListener() {
+        private void unlinkUserAndOpp() {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(DBKeys.KEY_OPPS_PER_USER).child(userDataProvider.getCurrentUserId())
+                .orderByChild(DBKeys.KEY_OPP_ID).equalTo(opportunity.getOppId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (signUpForOpp.isEnabled() == true) {
-                            userPerOppRef.child(dataSnapshot.getKey()).setValue(null);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child: dataSnapshot.getChildren()) {
+                            databaseReference.child(DBKeys.KEY_OPPS_PER_USER).child(userDataProvider.getCurrentUserId())
+                                    .child(child.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    removeFromUsersPerOpp();
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.e("unlinkUserAndOpp", databaseError.toString());
                     }
                 });
+        }
 
-                oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addChildEventListener(new ChildEventListener() {
+        private void removeFromUsersPerOpp() {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId())
+                .orderByChild(DBKeys.KEY_USER_ID).equalTo(userDataProvider.getCurrentUserId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (signUpForOpp.isEnabled() == true) {
-                            oppsPerUserRef.child(dataSnapshot.getKey()).setValue(null);
-                            signUpForOpp.setVisibility(View.VISIBLE);
-                            unregisterForOpp.setEnabled(false);
-                            unregisterForOpp.setVisibility(View.GONE);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            databaseReference.child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId())
+                                    .child(child.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    signUpForOpp.setEnabled(true);
+                                    signUpForOpp.setVisibility(View.VISIBLE);
+                                    unregisterForOpp.setEnabled(false);
+                                    unregisterForOpp.setVisibility(View.GONE);
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.e("removeFromUsersPerOpp", databaseError.toString());
                     }
                 });
-            }
         }
 
 
@@ -309,11 +294,7 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         @OnClick(R.id.unregisterForOpp)
         public void onUnregisterForOppClick () {
-            signUpForOpp.setEnabled(true);
             unlinkUserAndOpp();
-            signUpForOpp.setVisibility(View.VISIBLE);
-            unregisterForOpp.setEnabled(false);
-            unregisterForOpp.setVisibility(View.GONE);
             horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
 
         }
