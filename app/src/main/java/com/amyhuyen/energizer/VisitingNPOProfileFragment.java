@@ -82,7 +82,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
