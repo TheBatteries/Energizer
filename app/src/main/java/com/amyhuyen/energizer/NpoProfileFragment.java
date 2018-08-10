@@ -9,11 +9,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +45,7 @@ public class NpoProfileFragment extends ProfileFragment {
     private ArrayList<Integer> volunteersCommitted;
     private Set<Character> vowels;
     private Bundle bundle;
+    private CommitFetchHandler commitFetchHandler;
 
     // views
     @BindView(R.id.tv_skills)
@@ -53,6 +56,7 @@ public class NpoProfileFragment extends ProfileFragment {
     ImageView profilePic;
     @BindView(R.id.tv_contact_info)
     TextView tvContactInfo;
+    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
 
     // menu views
     @BindView(R.id.tvLeftNumber)
@@ -93,6 +97,7 @@ public class NpoProfileFragment extends ProfileFragment {
             nonprofit = UserDataProvider.getInstance().getCurrentNPO();
         }
 //        volunteerFetchHandler = new VolunteerFetchHandler(volunteer); //TODO - will need this line when we have a nonprofit fetch handler
+        commitFetchHandler = new CommitFetchHandler(nonprofit);
 
         //vowels set for deciding banner image pseudo-randomly
         vowels = new HashSet<>();
@@ -170,7 +175,7 @@ public class NpoProfileFragment extends ProfileFragment {
         tvRightDescription.setText(R.string.rating);
 
         // set the text for the number of opportunities created
-        int numOppsCreated = ((NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
+        int numOppsCreated = commitFetchHandler.getCommitCount();
         tvLeftNumber.setText(Integer.toString(numOppsCreated));
         if (numOppsCreated == 1) {
             tvLeftDescription.setText(R.string.opportunity_posted);
@@ -188,8 +193,7 @@ public class NpoProfileFragment extends ProfileFragment {
         volunteersCommitted.add(0);
 
         // get the list of oppId from the commit fragment
-        NpoCommitFragment commitFrag = (NpoCommitFragment) ((LandingActivity) getActivity()).commitFrag;
-        final List<String> myOppIds = commitFrag.getOppIdList();
+        final List<String> myOppIds = commitFetchHandler.getOppIdList();
 
         // get the number of volunteer committed to the NPO
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP);
@@ -197,10 +201,12 @@ public class NpoProfileFragment extends ProfileFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (myOppIds.contains(child.getKey())) {
-                        int temp = volunteersCommitted.get(0);
-                        volunteersCommitted.remove(0);
-                        volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                    if (myOppIds != null) {
+                        if (myOppIds.contains(child.getKey())) {
+                            int temp = volunteersCommitted.get(0);
+                            volunteersCommitted.remove(0);
+                            volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                        }
                     }
                 }
 
@@ -282,5 +288,10 @@ public class NpoProfileFragment extends ProfileFragment {
                 break;
         }
         return profileImageUrl;
+    }
+
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
     }
 }

@@ -16,17 +16,21 @@ import android.widget.TextView;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Volunteer;
+import com.amyhuyen.energizer.network.CommitFetchHandler;
 import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,6 +41,7 @@ public class VolProfileFragment extends ProfileFragment {
 
     private Volunteer volunteer;
     private VolunteerFetchHandler volunteerFetchHandler;
+    private CommitFetchHandler commitFetchHandler;
     private static final int SELECTED_PIC = 2;
     private StorageReference storageReference;
     private Bundle bundle;
@@ -55,7 +60,8 @@ public class VolProfileFragment extends ProfileFragment {
     @BindView(R.id.tv_skills) TextView tv_skills;
     @BindView(R.id.tv_cause_area) TextView tv_cause_area;
     @BindView (R.id.profile_pic) ImageView profilePic;
-    @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
+    @BindView(R.id.btn_edit_profile)
+    Button btn_edit_profile;
     @BindView(R.id.tv_contact_info) TextView tv_contact_info;
 
     // menu views
@@ -87,38 +93,30 @@ public class VolProfileFragment extends ProfileFragment {
         if (this.getArguments() != null) { //this.getArguments() shouldn't be null if coming to VolProfileFrag through OppDetails
             bundle = this.getArguments(); //works when coming from landing
             volunteer = Parcels.unwrap(bundle.getParcelable(Constant.KEY_USER_FOR_PROFILE));
-            storageReference.child(DBKeys.STORAGE_KEY_PROFILE_PICTURES_USERS + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    String downloadUrl = new String(uri.toString());
-                    GlideApp.with(getContext())
-                            .load(downloadUrl)
-                            .transform(new CircleCrop())
-                            .into(profilePic);
-                }
-            });
+            hideButtonsForVisitingAnotherProfile();
         }
         else{
             volunteer = UserDataProvider.getInstance().getCurrentVolunteer();
-            storageReference.child(getString(R.string.storage_reference, UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    String downloadUrl = new String(uri.toString());
-                    GlideApp.with(getContext())
-                            .load(downloadUrl)
-                            .transform(new CircleCrop())
-                            .into(profilePic);
-                }
-            });
         }
         volunteerFetchHandler = new VolunteerFetchHandler(volunteer);
-
+        commitFetchHandler = new CommitFetchHandler(volunteer);
 
         drawContactInfo();
         drawCauseAreas();
         drawSkills();
         drawMenu();
         drawProfileBannerAndCauseAreas();
+
+        storageReference.child("profilePictures/users/" + volunteer.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String downloadUrl = new String(uri.toString());
+                GlideApp.with(getContext())
+                        .load(downloadUrl)
+                        .transform(new CircleCrop())
+                        .into(profilePic);
+            }
+    });
     }
 
     @Override
@@ -194,12 +192,38 @@ public class VolProfileFragment extends ProfileFragment {
         tvMiddleDescription.setText(R.string.skills_uppercase);
         tvRightDescription.setText(R.string.causes_uppercase);
 
-//        // set the text for the number of commits
-//        int numCommits = ((VolCommitFragment) ((LandingActivity) getActivity()).commitFrag).getCommitCount();
-//        tvLeftNumber.setText(Integer.toString(numCommits));
-//        if (numCommits == 1) {
-//            tvLeftDescription.setText(R.string.commit_uppercase);
-//        }
+        // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener
+        drawMyCommits();
+    }
+
+    // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener into CommitFetchHandler
+    public void drawMyCommits(){ //was static
+        commitFetchHandler.setDatabaseReference();
+        DatabaseReference dataOppPerUser = commitFetchHandler.getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
+        final ArrayList<String >oppIdList = new ArrayList<>();
+
+        // get all the oppIds of opportunities related to current user and add to list
+        dataOppPerUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                oppIdList.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
+                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
+                    Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
+                }
+                Integer numCommits = oppIdList.size();
+                tvLeftNumber.setText(Integer.toString(numCommits));
+                if (numCommits == 1) {
+                    tvLeftDescription.setText("Commit");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("fetchMyCommits", databaseError.toString());
+            }
+        });
     }
 
     @Override
@@ -242,7 +266,7 @@ public class VolProfileFragment extends ProfileFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (imageUrlSet.contains(dataSnapshot.getValue())) {
-                    String bannerImageUrl = dataSnapshot.getValue().toString(); //could make method to add imageUrls to set from DB, but we are putting them in DB anyways (user can't do this)
+                    String bannerImageUrl = dataSnapshot.getValue().toString();
                     drawBanner(bannerImageUrl);
                 } else {
                     drawBanner(defaultImageUrl);
@@ -255,5 +279,10 @@ public class VolProfileFragment extends ProfileFragment {
                 drawBanner(defaultImageUrl);
             }
         });
+    }
+
+    public void hideButtonsForVisitingAnotherProfile() {
+        btn_edit_profile.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.GONE);
     }
 }
