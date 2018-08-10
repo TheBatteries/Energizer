@@ -49,11 +49,11 @@ public class SetCausesActivity extends AppCompatActivity {
     private String UserName;
     private String UserType;
 
-    String item[]={
-            "Environmental Engagement", "Communication", "Hunger", "Human Trafficking",
-            "Social Engagement", "Teaching", "Community Outreach", "Social Activism",
-            "Schooling", "Children", "Homelessness", "Education","Cooking", "Social Justice", "World Peace", "Growth"
-    };
+//    String item[]={
+//            "Environmental Engagement", "Communication", "Hunger", "Human Trafficking",
+//            "Social Engagement", "Teaching", "Community Outreach", "Social Activism",
+//            "Schooling", "Children", "Homelessness", "Education","Cooking", "Social Justice", "World Peace", "Growth"
+//    };
 
     private ArrayList<Cause> causes;
     private CauseAdapter causeAdapter;
@@ -74,6 +74,7 @@ public class SetCausesActivity extends AppCompatActivity {
         // recyclerview setup
         rvCauses.setLayoutManager(new LinearLayoutManager(this));
         rvCauses.setAdapter(causeAdapter);
+        tvUserCause.setThreshold(1);
 
         if (tvUserCause.getText() == null) {
             addCause.setEnabled(false);
@@ -87,8 +88,10 @@ public class SetCausesActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // create an ArrayList to hold the skills -- and add the skills to it through "collectSkillName"
                 ArrayList<String> causes = (ArrayList<String>) collectCauseName((Map<String, Object>) dataSnapshot.getValue());
+                final ArrayAdapter<String> afAdapter = new ArrayAdapter<>(
+                        SetCausesActivity.this, android.R.layout.simple_dropdown_item_1line, causes);
                 // connect the TextView to ArrayAdapter that holds the list of skills
-                tvUserCause.setAdapter(newAdapter());
+                tvUserCause.setAdapter(afAdapter);
             }
 
             @Override
@@ -96,12 +99,6 @@ public class SetCausesActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    // makes an ArrayAdapter -- made so that ArrayAdapters can be made within onDataChange() methods
-    private ArrayAdapter<String> newAdapter() {
-        final ArrayAdapter<String> afAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, item);
-        return afAdapter;
     }
 
     // retrieve cause name when in a "Cause" DataSnapShot

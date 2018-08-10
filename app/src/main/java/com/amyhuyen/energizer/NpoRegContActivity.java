@@ -88,7 +88,14 @@ public class NpoRegContActivity extends AppCompatActivity {
         Random rand = new Random();
 
         randomInt1 = rand.nextInt(4) + 3;
+        if (randomInt1 > 4) {
+            randomInt1 = 4;
+        }
         randomInt2 = rand.nextInt(9) + 0;
+
+        if (randomInt1 > 4){
+            randomInt1 = 4;
+        }
 
         name = getIntent().getStringExtra(DBKeys.KEY_NAME);
         email = getIntent().getStringExtra(DBKeys.KEY_EMAIL);
