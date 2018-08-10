@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_grey"
+    android:background="@drawable/median"
     android:orientation="vertical"
     tools:context=".SetCausesActivity">
 
@@ -15,23 +15,31 @@
 
         <TextView
             android:id="@+id/tvCauseMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:textAlignment="center"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
-            android:text="@string/set_causes_message"/>
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/set_causes_message"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal">
 
             <AutoCompleteTextView
                 android:id="@+id/actvCause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -54,7 +62,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView

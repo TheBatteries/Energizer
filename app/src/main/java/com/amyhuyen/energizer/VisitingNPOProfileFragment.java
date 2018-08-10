@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
@@ -81,6 +82,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         oppsPerNPORef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(idOfUserProfile);
         tvMiddleDescription.setText("Rating");
         tvLeftDescription.setText("Opportunities");
-        tvRightDescription.setVisibility(View.GONE);
+        tvRightDescription.setText("Contact Us");
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
 
@@ -117,7 +119,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tvMiddleNumber.setText(nonprofit.getRating());
                 getOppCount();
 
-                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
+                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getContext(),
                         android.R.layout.simple_expandable_list_item_1,
                         getResources().getStringArray(R.array.contact_info));
                 contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,6 +140,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
                             intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
                             startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
                         }
                     }
 
