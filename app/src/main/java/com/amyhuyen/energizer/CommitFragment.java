@@ -51,7 +51,6 @@ public abstract class CommitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         commitFetchHandler = new CommitFetchHandler(UserDataProvider.getInstance().getCurrentUser());
         // bind the views
         ButterKnife.bind(this, view);

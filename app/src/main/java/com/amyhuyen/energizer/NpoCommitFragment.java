@@ -1,5 +1,7 @@
 package com.amyhuyen.energizer;
 
+import android.view.View;
+
 import com.google.firebase.database.DatabaseReference;
 
 public class NpoCommitFragment extends CommitFragment {
@@ -14,5 +16,6 @@ public class NpoCommitFragment extends CommitFragment {
     public void onResume() {
         super.onResume();
         ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Company's Opportunities");
+        ((LandingActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
     }
 }
