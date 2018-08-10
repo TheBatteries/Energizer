@@ -211,11 +211,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     }
 
     @Override
-    public void drawEditCausesBtn() {
-
-    }
-
-    @Override
     public void drawProfileBannerAndCauseAreas() {
 
     }
