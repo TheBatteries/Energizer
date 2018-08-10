@@ -100,9 +100,14 @@ public class VolRegContActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(location)){
             btnRegister.setEnabled(false);
             btnRegister.setClickable(false);
+        } else if(phone.length() != 10 && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(location)) {
+            btnRegister.setEnabled(false);
+            btnRegister.setClickable(false);
+            btnRegister.setText("Invalid Phone Number");
         } else {
             btnRegister.setEnabled(true);
             btnRegister.setClickable(true);
+            btnRegister.setText(R.string.register);
         }
     }
 
@@ -112,8 +117,10 @@ public class VolRegContActivity extends AppCompatActivity {
 
         // make toast if fields are not all populated
         if (TextUtils.isEmpty(phone)){
-            Toast.makeText(getApplicationContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
-        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_all_required_fields_error), Toast.LENGTH_SHORT).show();
+        } else if (phone.length() != 9){
+            Toast.makeText(getApplicationContext(), getString(R.string.nine_digit_phone_error), Toast.LENGTH_SHORT).show();
+        }else {
         // proceed to registering user if passwords match
 
             // if required fields are not empty, register user

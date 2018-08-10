@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amyhuyen.energizer.models.GlideApp;
 import com.amyhuyen.energizer.models.Nonprofit;
@@ -81,6 +82,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,8 +101,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
         storageReference = FirebaseStorage.getInstance().getReference().child("profilePictures/users/" + idOfUserProfile + "/");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(idOfUserProfile);
         oppsPerNPORef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_OPPS_PER_NPO).child(idOfUserProfile);
-        tvMiddleDescription.setText("Rating");
-        tvLeftDescription.setText("Opportunities");
+        tvMiddleDescription.setText(R.string.rating);
+        tvLeftDescription.setText(R.string.opportunities);
         tvRightDescription.setVisibility(View.GONE);
         tvRightNumber.setVisibility(View.GONE);
         contactInfoSpinner.setVisibility(View.VISIBLE);
@@ -117,7 +119,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tvMiddleNumber.setText(nonprofit.getRating());
                 getOppCount();
 
-                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getActivity(),
+                ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(getContext(),
                         android.R.layout.simple_expandable_list_item_1,
                         getResources().getStringArray(R.array.contact_info));
                 contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,6 +140,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
                             intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
                             startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -176,6 +180,11 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LandingActivity) getActivity()).getSupportActionBar().hide();
+    }
 
 
     @Override
@@ -230,7 +239,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String oppCount = String.valueOf(dataSnapshot.getChildrenCount());
                 if (dataSnapshot.getChildrenCount() == 1){
-                    tvLeftDescription.setText("Opportunity");
+                    tvLeftDescription.setText(R.string.opportunity_uppercase);
                 }
                 tvLeftNumber.setText(oppCount);
             }

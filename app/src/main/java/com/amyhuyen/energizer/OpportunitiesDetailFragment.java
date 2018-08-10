@@ -23,7 +23,6 @@ import com.amyhuyen.energizer.models.Volunteer;
 import com.amyhuyen.energizer.network.OpportunityFetchHandler;
 import com.amyhuyen.energizer.network.VolunteerFetchHandler;
 import com.amyhuyen.energizer.utils.OppDisplayUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -149,7 +148,7 @@ public class OpportunitiesDetailFragment extends Fragment {
         tvCauses.setText(causeName);
         drawRatings();
 
-        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)) {
+        if (userDataProvider.getCurrentUserType().equals(DBKeys.KEY_VOLUNTEER)){
             determineButtonsToShowForVol(oppId);
             drawCheckBoxes();
         } else {
@@ -164,11 +163,7 @@ public class OpportunitiesDetailFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if ((dataSnapshot.getValue(String.class) != null)) {
-                            ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
-                        } else {
-                            ratingBar.setVisibility(View.GONE);
-                        }
+                        ratingBar.setRating(Float.parseFloat(dataSnapshot.getValue(String.class)));
                     }
 
                     @Override
@@ -231,71 +226,69 @@ public class OpportunitiesDetailFragment extends Fragment {
             final HashMap<String, String> oppIdDataMap = new HashMap<String, String>();
             oppIdDataMap.put(DBKeys.KEY_OPP_ID, oppId);
             oppsPerUserRef.push().setValue(oppIdDataMap);
+            mCommittedVolunteers.add(userDataProvider.getCurrentVolunteer());
+            horizontalRecyclerViewProfileAdapter.notifyItemInserted(mCommittedVolunteers.size()-1);
         }
 
-        private void unlinkUserAndOpp () {
-            final String oppId = userPerOppRef.getKey().toString();
-            final String userId = userDataProvider.getCurrentUserId();
-            if (signUpForOpp.isEnabled() == true) {
-                userPerOppRef.orderByChild(DBKeys.KEY_USER_ID).equalTo(userId).addChildEventListener(new ChildEventListener() {
+        private void unlinkUserAndOpp() {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(DBKeys.KEY_OPPS_PER_USER).child(userDataProvider.getCurrentUserId())
+                .orderByChild(DBKeys.KEY_OPP_ID).equalTo(opportunity.getOppId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (signUpForOpp.isEnabled() == true) {
-                            userPerOppRef.child(dataSnapshot.getKey()).setValue(null);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child: dataSnapshot.getChildren()) {
+                            databaseReference.child(DBKeys.KEY_OPPS_PER_USER).child(userDataProvider.getCurrentUserId())
+                                    .child(child.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    removeFromUsersPerOpp();
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.e("unlinkUserAndOpp", databaseError.toString());
                     }
                 });
+        }
 
-                oppsPerUserRef.orderByChild(DBKeys.KEY_OPP_ID).equalTo(oppId).addChildEventListener(new ChildEventListener() {
+        private void removeFromUsersPerOpp() {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId())
+                .orderByChild(DBKeys.KEY_USER_ID).equalTo(userDataProvider.getCurrentUserId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (signUpForOpp.isEnabled() == true) {
-                            oppsPerUserRef.child(dataSnapshot.getKey()).setValue(null);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            databaseReference.child(DBKeys.KEY_USERS_PER_OPP).child(opportunity.getOppId())
+                                    .child(child.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    signUpForOpp.setEnabled(true);
+                                    signUpForOpp.setVisibility(View.VISIBLE);
+                                    unregisterForOpp.setEnabled(false);
+                                    unregisterForOpp.setVisibility(View.GONE);
+                                    for (int idx=0; idx < mCommittedVolunteers.size(); idx++) {
+                                        if (mCommittedVolunteers.get(idx).getUserID().equals(userDataProvider.getCurrentUserId())) {
+                                            mCommittedVolunteers.remove(idx);
+                                            horizontalRecyclerViewProfileAdapter.notifyItemRemoved(idx);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.e("removeFromUsersPerOpp", databaseError.toString());
                     }
                 });
-            }
         }
+
 
         @OnClick(R.id.signUpForOpp)
         public void onSignUpForOppButtonClick() {
@@ -308,11 +301,9 @@ public class OpportunitiesDetailFragment extends Fragment {
 
         @OnClick(R.id.unregisterForOpp)
         public void onUnregisterForOppClick () {
-            signUpForOpp.setEnabled(true);
             unlinkUserAndOpp();
-            signUpForOpp.setVisibility(View.VISIBLE);
-            unregisterForOpp.setEnabled(false);
-            unregisterForOpp.setVisibility(View.GONE);
+            horizontalRecyclerViewProfileAdapter.notifyDataSetChanged();
+
         }
 
         @OnClick(R.id.btnUpdateOpp)
@@ -343,8 +334,21 @@ public class OpportunitiesDetailFragment extends Fragment {
             bundle.putString(DBKeys.KEY_USER_ID, npoId);
             if (UserDataProvider.getInstance().getCurrentUserType().equals("Volunteer")) {
                 bundle.putString(DBKeys.KEY_USER_TYPE, "NPO");
+                // switch the fragments
+                FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                VisitingNPOProfileFragment visitingProfileFrag = new VisitingNPOProfileFragment();
+                visitingProfileFrag.setArguments(bundle);
+                fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+                fragmentTransaction.commit();
             } else {
-                bundle.putString(DBKeys.KEY_USER_TYPE, "Volunteer");
+
+                // switch the fragments
+                FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                NpoProfileFragment visitingProfileFrag = new NpoProfileFragment();
+                fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+                fragmentTransaction.commit();
             }
 
             // switch the fragments

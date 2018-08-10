@@ -128,7 +128,7 @@ public class NpoProfileFragment extends ProfileFragment {
 
 
     public void getProfilePic() {
-        storageReference.child("profilePictures/users/" + nonprofit.getUserID() + "/").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
@@ -168,15 +168,15 @@ public class NpoProfileFragment extends ProfileFragment {
     @Override
     public void drawMenu() {
         // set the text for the descriptions
-        tvLeftDescription.setText("Opportunities Posted");
-        tvMiddleDescription.setText("Volunteers Committed");
-        tvRightDescription.setText("Rating");
+        tvLeftDescription.setText(R.string.opportunities_posted);
+        tvMiddleDescription.setText(R.string.volunteers_committed);
+        tvRightDescription.setText(R.string.rating);
 
         // set the text for the number of opportunities created
         int numOppsCreated = commitFetchHandler.getCommitCount();
         tvLeftNumber.setText(Integer.toString(numOppsCreated));
         if (numOppsCreated == 1) {
-            tvLeftDescription.setText("Opportunity Posted");
+            tvLeftDescription.setText(R.string.opportunity_posted);
         }
 
         // TODO - hard code rating
@@ -193,7 +193,7 @@ public class NpoProfileFragment extends ProfileFragment {
         // get the list of oppId from the commit fragment
         final List<String> myOppIds = commitFetchHandler.getOppIdList();
 
-        // get the number of volunteer commmitted to the NPO
+        // get the number of volunteer committed to the NPO
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP);
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -209,7 +209,7 @@ public class NpoProfileFragment extends ProfileFragment {
                 // set the text for the tvMiddleNumber
                 tvMiddleNumber.setText(Integer.toString(volunteersCommitted.get(0)));
                 if (volunteersCommitted.get(0) == 1) {
-                    tvMiddleDescription.setText("Volunteer Committed");
+                    tvMiddleDescription.setText(R.string.volunteer_committed);
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -315,6 +317,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final Cause userSetCause = new Cause(causeName);
         causes.add(userSetCause);
         actvAddMoreCauses.setText(null);
+        hideKeyboard(this);
     }
 
     @OnClick(R.id.addMoreSkills)
@@ -323,6 +326,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final Skill userSetSkill = new Skill(skillName);
         skills.add(userSetSkill);
         actvAddMoreSkills.setText(null);
+        hideKeyboard(this);
     }
 
     @OnClick(R.id.setUserProfileEdits)
@@ -377,5 +381,16 @@ public class EditProfileActivity extends AppCompatActivity {
                 Log.e("Location Cancelled", "The user has cancelled the operation");
             }
         }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

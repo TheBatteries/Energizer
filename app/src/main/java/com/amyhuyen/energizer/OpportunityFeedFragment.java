@@ -2,6 +2,7 @@ package com.amyhuyen.energizer;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,17 @@ public class OpportunityFeedFragment extends Fragment {
     ArrayList<Double> mUserLatLongArray;
     Spinner spinner;
     int distanceMiles;
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("radius", spinner.getSelectedItemPosition());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +116,7 @@ public class OpportunityFeedFragment extends Fragment {
         ((LandingActivity) getActivity()).tvToolbarTitle.setText("My Matches Within");
         spinner = ((LandingActivity) getActivity()).findViewById(R.id.spinnerRadius);
         spinner.setVisibility(View.VISIBLE);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.radius_array, R.layout.spinner_items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
