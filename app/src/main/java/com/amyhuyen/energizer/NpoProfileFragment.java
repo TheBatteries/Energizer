@@ -134,7 +134,7 @@ public class NpoProfileFragment extends ProfileFragment {
     }
 
 
-    public void getProfilePic(Context context) {
+    public void getProfilePic(final Context context) {
         storageReference.child(getString(R.string.storage_reference,UserDataProvider.getInstance().getCurrentUserId())).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
