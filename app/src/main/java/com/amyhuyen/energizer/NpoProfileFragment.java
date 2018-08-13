@@ -203,21 +203,22 @@ public class NpoProfileFragment extends ProfileFragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 oppIdList = new ArrayList<>();
                 oppIdList.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()){
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
                     final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
                     oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
                     Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
-
+                }
 
                     dataUsersPerOpp.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) { //going through this too many times - going through 1x per opp listed?
                                 if (oppIdList != null) {
                                     if (oppIdList.contains(child.getKey())) {
                                         int temp = volunteersCommitted.get(0);
                                         volunteersCommitted.remove(0);
                                         volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                                        Log.i("NpoProfileFragment", "volunteersCOmmitted: " + volunteersCommitted.toString());
                                     }
                                 }
                             }
@@ -234,8 +235,6 @@ public class NpoProfileFragment extends ProfileFragment {
 
                         }
                     });
-
-                }
             }
 
             @Override
