@@ -48,6 +48,7 @@ public class NpoProfileFragment extends ProfileFragment {
     private Set<Character> vowels;
     private Bundle bundle;
     private CommitFetchHandler commitFetchHandler;
+    private List<String> oppIdList;
 
     // views
     @BindView(R.id.tv_skills)
@@ -187,39 +188,62 @@ public class NpoProfileFragment extends ProfileFragment {
     }
 
     public void setTotalVolunteersCommitted() {
+
         volunteersCommitted = new ArrayList<>();
         volunteersCommitted.add(0);
 
-        // get the list of oppId from the commit fragment
-        final List<String> myOppIds = commitFetchHandler.getOppIdList();
+        commitFetchHandler.setDatabaseReference();
+        DatabaseReference dataOppPerUser = commitFetchHandler.getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
+        final DatabaseReference dataUsersPerOpp = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP);
 
-        // get the number of volunteer committed to the NPO
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference().child(DBKeys.KEY_USERS_PER_OPP);
-        dataRef.addValueEventListener(new ValueEventListener() {
+
+        // get all the oppIds of opportunities related to current user and add to list
+        dataOppPerUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (myOppIds != null) {
-                        if (myOppIds.contains(child.getKey())) {
-                            int temp = volunteersCommitted.get(0);
-                            volunteersCommitted.remove(0);
-                            volunteersCommitted.add(temp + (int) child.getChildrenCount());
-                        }
-                    }
-                }
+                oppIdList = new ArrayList<>();
+                oppIdList.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    final HashMap<String, String> myOppMapping = (HashMap<String, String>) child.getValue();
+                    oppIdList.add(myOppMapping.get(DBKeys.KEY_OPP_ID));
+                    Log.i("CommitFetchHandler", "oppIdList: " + oppIdList.toString());
 
-                // set the text for the tvMiddleNumber
-                tvMiddleNumber.setText(Integer.toString(volunteersCommitted.get(0)));
-                if (volunteersCommitted.get(0) == 1) {
-                    tvMiddleDescription.setText(R.string.volunteer_committed);
+
+                    dataUsersPerOpp.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                if (oppIdList != null) {
+                                    if (oppIdList.contains(child.getKey())) {
+                                        int temp = volunteersCommitted.get(0);
+                                        volunteersCommitted.remove(0);
+                                        volunteersCommitted.add(temp + (int) child.getChildrenCount());
+                                    }
+                                }
+                            }
+
+                            // set the text for the tvMiddleNumber
+                            tvMiddleNumber.setText(Integer.toString(volunteersCommitted.get(0)));
+                            if (volunteersCommitted.get(0) == 1) {
+                                tvMiddleDescription.setText(R.string.volunteer_committed);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("fetchMyCommits", databaseError.toString());
             }
         });
+
     }
 
     @Override

@@ -209,9 +209,10 @@ public class VolProfileFragment extends ProfileFragment {
 
     // set the text for the number of commits //TODO - move this out of VolProfileFragment with Listener into CommitFetchHandler
     public void drawMyCommits(){ //was static
+
         commitFetchHandler.setDatabaseReference();
         DatabaseReference dataOppPerUser = commitFetchHandler.getDatabaseReference(); //this will change depending on whether we use NPO commit frag or Vol commit frag
-        final ArrayList<String >oppIdList = new ArrayList<>();
+        final ArrayList<String> oppIdList = new ArrayList<>();
 
         // get all the oppIds of opportunities related to current user and add to list
         dataOppPerUser.addValueEventListener(new ValueEventListener() {
