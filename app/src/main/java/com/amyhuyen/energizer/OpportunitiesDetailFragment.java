@@ -348,16 +348,9 @@ public class OpportunitiesDetailFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 NpoProfileFragment visitingProfileFrag = new NpoProfileFragment();
                 fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
+                ((LandingActivity) getActivity()).bottomNavigationView.setSelectedItemId(R.id.ic_right);
                 fragmentTransaction.commit();
             }
-
-            // switch the fragments
-            FragmentManager fragmentManager = ((LandingActivity) getActivity()).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            VisitingNPOProfileFragment visitingProfileFrag = new VisitingNPOProfileFragment();
-            visitingProfileFrag.setArguments(bundle);
-            fragmentTransaction.replace(R.id.flContainer, visitingProfileFrag);
-            fragmentTransaction.commit();
         }
 
         // method that checks how many volunteers are currently signed up for this activity
