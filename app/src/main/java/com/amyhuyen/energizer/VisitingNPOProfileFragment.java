@@ -65,7 +65,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
     @BindView(R.id.btn_edit_profile) Button btn_edit_profile;
     @BindView(R.id.contactInfoSpinner) Spinner contactInfoSpinner;
 
-    Nonprofit nonprofit;
+    private Nonprofit nonprofit;
 
     private OnFragmentInteractionListener mListener;
 
@@ -135,6 +135,8 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                 tvMiddleNumber.setText(nonprofit.getRating());
 
                 getOppCount();
+                getProfilePic();
+                drawProfileBannerAndCauseAreas();
 
                 contactInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -169,17 +171,6 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
             }
         });
 
-        //vowels set for deciding banner image pseudo-randomly
-        vowels = new HashSet<>();
-        vowels.add('a');
-        vowels.add('e');
-        vowels.add('i');
-        vowels.add('o');
-        vowels.add('u');
-        vowels.add('y');
-
-
-
     }
 
 
@@ -212,8 +203,65 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
 
     @Override
     public void drawProfileBannerAndCauseAreas() {
-
+        tvCauseArea.setVisibility(View.GONE);
+        char letter = getCharFromName();
+        drawBanner(getBannerImageUrl(letter)); //assign banner pseudo-randomly based on character in name
     }
+
+    private char getCharFromName() {
+        char letter = 'z';
+
+        //vowels set for deciding banner image pseudo-randomly
+        vowels = new HashSet<>();
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('y');
+
+        for (char aLetter : nonprofit.getName().toCharArray()) {
+            if (vowels.contains(aLetter)) {
+                letter = aLetter;
+                break;
+            }
+        }
+        return letter;
+    }
+
+    private String getBannerImageUrl(char letter) {
+
+        String profileImageUrl;
+
+        switch (letter) {
+            case 'a':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'e':
+                profileImageUrl = "https://images.unsplash.com/photo-1487149506474-cbf9196c4f9f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=541883e5cca156202955c073d1f60eef&auto=format&fit=crop&w=2220&q=80";
+                break;
+            case 'i':
+                profileImageUrl = "https://images.unsplash.com/photo-1491439833076-514a03b24a15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f3c879af5a49ef5e1e1b2f2fad7c195f&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'o':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'u':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80";
+                break;
+            case 'y':
+                profileImageUrl = "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cff09f2f43f557ad6a0642b25cc9c9e4&auto=format&fit=crop&w=2100&q=80"; //guy with arms crossed
+                break;
+            case 'z':
+                profileImageUrl = "https://images.unsplash.com/photo-1525422847952-7f91db09a364?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ce6622924dae3b9be067e1778a6b8707&auto=format&fit=crop&w=2130&q=80";
+                break;
+            default:
+                profileImageUrl = "https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4b5fcc53abd6158286dc86a9be4bee&auto=format&fit=crop&w=2100&q=80"; //books
+                break;
+        }
+        return profileImageUrl;
+    }
+
 
 
     public void getProfilePic() {
@@ -221,10 +269,13 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = new String(uri.toString());
-                GlideApp.with(getActivity())
-                        .load(downloadUrl)
-                        .transform(new CircleCrop())
-                        .into(profilePic);
+
+                if (isAdded()) {
+                    GlideApp.with(getActivity())
+                            .load(downloadUrl)
+                            .transform(new CircleCrop())
+                            .into(profilePic);
+                }
             }
         });
     }
