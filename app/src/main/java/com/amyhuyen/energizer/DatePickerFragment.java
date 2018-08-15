@@ -35,7 +35,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         if (getTag().equals("Start Date Picker")){
             EditText etStartDate = getActivity().findViewById(R.id.etStartDate);
-            etStartDate.setText("Start Date:  " + strDate);
+            etStartDate.setText(R.string.start_date_colon + strDate); //
         } else if (getTag().equals("End Date Picker")){
             EditText etEndDate = getActivity().findViewById(R.id.etEndDate);
             etEndDate.setText("End Date:  " + strDate);

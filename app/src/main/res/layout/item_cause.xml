@@ -21,7 +21,7 @@
             android:layout_marginLeft="25dp"
             android:layout_toLeftOf="@id/deleteSkill"
             android:text="TextView"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:layout_centerVertical="true"/>
 

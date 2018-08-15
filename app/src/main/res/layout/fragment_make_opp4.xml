@@ -19,7 +19,7 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"/>
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/etStartTime"
@@ -35,7 +35,7 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"/>
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/etEndDate"
@@ -51,7 +51,7 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"/>
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/etEndTime"
@@ -67,7 +67,7 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"/>
+        android:textSize="15sp"/>
 
     <Button
         android:id="@+id/btnFinishUpdating"

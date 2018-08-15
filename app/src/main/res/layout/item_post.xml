@@ -45,7 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="1dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -58,7 +58,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textStyle="italic"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvSkillsIntro"
@@ -71,7 +71,7 @@
             android:layout_toRightOf="@id/profile_pic_holder"
             android:text="@string/skill_needed_colon"
             android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvSkills"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNpoName"
             android:layout_toEndOf="@id/tvSkillsIntro"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvCausesIntro"
@@ -92,7 +92,7 @@
             android:layout_toRightOf="@id/profile_pic_holder"
             android:text="@string/cause_area_colon"
             android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvCauses"
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSkillsIntro"
             android:layout_toEndOf="@id/tvCausesIntro"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvOppDesc"
@@ -112,7 +112,7 @@
             android:layout_marginBottom="5dp"
             android:ellipsize="end"
             android:maxLines="3"
-            android:textSize="14dp"/>
+            android:textSize="14sp"/>
 
         <ImageView
             android:id="@+id/ivExpandMore"

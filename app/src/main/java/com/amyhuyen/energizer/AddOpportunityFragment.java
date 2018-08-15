@@ -49,7 +49,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
     @Override
     public void onResume() {
         super.onResume();
-        ((LandingActivity) getActivity()).tvToolbarTitle.setText("Confirm Opportunity");
+        ((LandingActivity) getActivity()).tvToolbarTitle.setText(R.string.confirm_opportunity);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AddOpportunityFragment extends OpportunityFragment{
     @Override
     public void setInitialText() {
         unwrapBundle();
-        btnFinishUpdating.setText("Add Opportunity");
+        btnFinishUpdating.setText(R.string.add_opportunity);
         etOppName.setText(name);
         etOppDescription.setText(description);
         etStartDate.setText(startDate);
