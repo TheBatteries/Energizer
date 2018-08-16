@@ -32,7 +32,7 @@
         android:layout_marginRight="45dp"
         android:layout_marginTop="100dp"
         style="@style/SignUpText"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/etLocation"
@@ -47,7 +47,7 @@
         android:focusable="false"
         android:clickable="true"
         android:inputType="none"
-        android:textSize="15dp"
+        android:textSize="15sp"
         style="@style/SignUpText"/>
 
     <Button

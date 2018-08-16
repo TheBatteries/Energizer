@@ -34,7 +34,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/non_profit_name"
             android:textStyle="italic"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -61,7 +61,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/time"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvOppAddress"
@@ -72,7 +72,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="1dp"
             android:text="@string/address"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvSkillsIntro"
@@ -84,7 +84,7 @@
             android:layout_marginRight="5dp"
             android:text="@string/skill_needed_colon"
             android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvSkills"
@@ -93,8 +93,8 @@
             android:layout_below="@id/tvOppAddress"
             android:layout_toEndOf="@id/tvSkillsIntro"
             android:layout_marginBottom="1dp"
-            android:layout_marginEnd="3dp"
-            android:textSize="12dp"/>
+            android:textSize="12sp"
+            android:layout_marginEnd="3dp" />
 
         <ImageView
             android:id="@+id/icSkillsCheck"
@@ -116,7 +116,7 @@
             android:layout_marginEnd="5dp"
             android:text="@string/cause_area_colon"
             android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvCauses"
@@ -125,8 +125,8 @@
             android:layout_below="@id/tvSkillsIntro"
             android:layout_toEndOf="@id/tvCausesIntro"
             android:layout_marginBottom="1dp"
-            android:layout_marginEnd="3dp"
-            android:textSize="12dp" />
+            android:textSize="12sp"
+            android:layout_marginEnd="3dp" />
 
         <ImageView
             android:id="@+id/icCausesCheck"
@@ -148,7 +148,7 @@
             android:layout_marginRight="5dp"
             android:text="@string/positions_available_colon"
             android:textStyle="bold"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvNumVolNeeded"
@@ -157,7 +157,7 @@
             android:layout_below="@id/tvCauses"
             android:layout_toEndOf="@id/tvPositionsAvailable"
             android:layout_marginBottom="1dp"
-            android:textSize="12dp"/>
+            android:textSize="12sp"/>
 
         <View
             android:id="@+id/vDivider"
@@ -179,7 +179,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:text="@string/opportunity_description"
-            android:textSize="15dp"/>
+            android:textSize="15sp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/horizontal_rv_profile_images"
