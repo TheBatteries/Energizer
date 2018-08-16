@@ -32,4 +32,4 @@ giveback has the following functionalities:
 * [x] Users can see an overview of their account from the profile page
   * [x] Volunteer users can see the number of commits, skills, and causes they currently have
   * [x] Nonprofit users can see the number of opportunities they have, the number of volunteers committed to their opportunities, and their rating
-* [x] Volunteers visiting a nonprofit's profile have the option of contacting the nonprofit, either by phone or by visitng their website
+* [x] Volunteers visiting a nonprofit's profile have the option of contacting the nonprofit, either by phone or by visiting their website
