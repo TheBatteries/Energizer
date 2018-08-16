@@ -1,4 +1,4 @@
-#*giveback*
+## *giveback*
 
 **giveback** is an android app that matches volunteers to non-profit opportunities based on volunteer skill set, cause area interests, and location. The app utilizes [Firebase Realtime Database](https://firebase.google.com/docs/database/)
 and the [Google Places SDK for Android](https://developers.google.com/places/android-sdk/intro).
