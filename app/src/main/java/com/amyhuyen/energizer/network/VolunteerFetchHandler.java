@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer.network;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -24,8 +25,9 @@ public class VolunteerFetchHandler {
     private static final String KEY_SKILLS = "Skill";
     private Volunteer mVolunteer;
 
-    private VolProfileFragment.SkillFetchListner mSkillFetchListner;
+    //    private VolProfileFragment.SkillFetchListner mSkillFetchListner;
     private VolProfileFragment.CauseFetchListener mCauseFetchListener;
+    private DataFetchListener mDataFetchListener;
 
     public VolunteerFetchHandler(Volunteer volunteer) {
         mVolunteer = volunteer;
@@ -33,8 +35,8 @@ public class VolunteerFetchHandler {
 
     // getting skills list
 
-    public void fetchSkills(VolProfileFragment.SkillFetchListner skillFetchListner) {
-        mSkillFetchListner = skillFetchListner;
+    public void fetchSkills(DataFetchListener dataFetchListener) {
+        mDataFetchListener = dataFetchListener;
         fetchSkillIds();
     }
 
@@ -91,13 +93,13 @@ public class VolunteerFetchHandler {
 
     private void onSkillsFetched(List<String> skillNames) {
         Log.i("SKILL_TEST", skillNames.toString());
-        mSkillFetchListner.onSkillsFetched(skillNames);
+        mDataFetchListener.onFetchCompleted(skillNames);
     }
 
     // getting causes list
 
-    public void fetchCauses(VolProfileFragment.CauseFetchListener causeFetchListener) {
-        mCauseFetchListener = causeFetchListener;
+    public void fetchCauses(DataFetchListener dataFetchListener) {
+        mDataFetchListener = dataFetchListener;
         fetchCauseIds();
     }
 
@@ -162,41 +164,48 @@ public class VolunteerFetchHandler {
         mCauseFetchListener.onCauseIdsFetched(causeIds);
     }
 
-    public ArrayList<Skill> fetchSkillObjects(){
+    public ArrayList<Skill> fetchSkillObjects() {
         final ArrayList<Skill> skillsList = new ArrayList<Skill>();
-        this.fetchSkills(new VolProfileFragment.SkillFetchListner() {
+        this.fetchSkills(new DataFetchListener<List<Skill>>() {
             @Override
-            public void onSkillsFetched(List<String> skills) {
-                for (int i = 0; i < skills.size(); i++){
+            public void onFetchCompleted(List<Skill> skills) {
+                for (int i = 0; i < skills.size(); i++) {
                     Skill skill = new Skill(skills.get(i));
                     skillsList.add(skill);
                 }
             }
+
+            @Override
+            public void onFailure(Exception exception) {
+                exception.printStackTrace();
+                Log.e("VolunteerFetchHandler", "Failed to ge skillsList");
+            }
         });
         return skillsList;
+
     }
 
 
-    public ArrayList<Cause> fetchCauseObjects(){
-        final ArrayList<Cause> causesList = new ArrayList<Cause>();
-        addCausesToList(causesList);
-        return causesList;
-    }
+        public ArrayList<Cause> fetchCauseObjects () {
+            final ArrayList<Cause> causesList = new ArrayList<Cause>();
+            addCausesToList(causesList);
+            return causesList;
+        }
 
-    public void addCausesToList(final ArrayList<Cause> list){
-        this.fetchCauses(new VolProfileFragment.CauseFetchListener() { //"this" was UserDataProvider.getInstance().getCurrentVolunteer()
-            @Override
-            public void onCausesFetched(List<String> causes) {
-                for (int i = 0; i < causes.size(); i ++){
-                    Cause cause = new Cause(causes.get(i));
-                    list.add(cause);
+        public void addCausesToList ( final ArrayList<Cause> list){
+            this.fetchCauses(new VolProfileFragment.CauseFetchListener() { //"this" was UserDataProvider.getInstance().getCurrentVolunteer()
+                @Override
+                public void onCausesFetched(List<String> causes) {
+                    for (int i = 0; i < causes.size(); i++) {
+                        Cause cause = new Cause(causes.get(i));
+                        list.add(cause);
+                    }
                 }
-            }
 
-            @Override
-            public void onCauseIdsFetched(List<String> causeIds) {
-            }
-        });
+                @Override
+                public void onCauseIdsFetched(List<String> causeIds) {
+                }
+            });
+        }
+
     }
-
-}
