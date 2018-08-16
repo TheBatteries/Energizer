@@ -40,8 +40,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             etStartDate.setText(startDateString); //
         } else if (getTag().equals("End Date Picker")){
             EditText etEndDate = getActivity().findViewById(R.id.etEndDate);
-            String endDateString = getContext().getString(R.string.end_date_colon, strDate);
-            etEndDate.setText(endDateString);
+            etEndDate.setText("End Date:  " + strDate);
         }
     }
 }

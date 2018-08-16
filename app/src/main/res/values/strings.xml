@@ -71,7 +71,6 @@
     <string name="confirm_opportunity">Confirm Opportunity</string>
     <string name="add_opportuntiy">Add Opportunity</string>
     <string name="start_date_colon">Start date: %1$s</string>
-    <string name="end_date_colon">End date: %1$s</string>
     <string name="my_commitments">My Commitments</string>
     <string name="profile">Profile</string>
 
