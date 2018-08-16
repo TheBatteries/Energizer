@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -340,6 +341,7 @@ public class OpportunityFeedFragment extends Fragment {
 
         // clear the adapter and add newly fetched opportunities
         oppAdapter.clear();
+        Collections.reverse(newOpportunities);
         oppAdapter.addAll(newOpportunities);
 
         // stop the refreshing

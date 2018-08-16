@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -95,6 +96,7 @@ public abstract class CommitFragment extends Fragment {
     public static void onCommitsFetched(List<Opportunity> opportunities) {
         // clear the adapter and add newly fetched opportunities
         oppAdapter.clear();
+        Collections.reverse(opportunities);
         oppAdapter.addAll(opportunities);
 //        commitCount = opportunities.size();
 //        swipeContainer.setRefreshing(false);

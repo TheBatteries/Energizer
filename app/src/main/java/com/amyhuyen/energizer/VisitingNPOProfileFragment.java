@@ -151,7 +151,7 @@ public class VisitingNPOProfileFragment extends ProfileFragment {
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                            intent.setData(Uri.parse("https://www.cityofhope.org/homepage"));
+                            intent.setData(Uri.parse("https://www.lafoodbank.org/"));
                             startActivity(intent);
                         } else {
                             Toast.makeText(getActivity(), nonprofit.getName()+"'s profile", Toast.LENGTH_SHORT).show();
