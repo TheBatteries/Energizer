@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">giveback</string>
-    <string name="user_registration">User Registration</string>
     <string name="register_message">I am a...</string>
     <string name="volunteer">Volunteer</string>
     <string name="non_profit">Non-profit</string>
@@ -12,21 +11,15 @@
     <string name="volunteer_registration">Volunteer Registration</string>
     <string name="non_profit_registration">Nonprofit Registration</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="age">Age</string>
     <string name="phone">Phone</string>
-    <string name="your_profile">Your user profile</string>
     <string name="opportunities">Opportunities</string>
-    <string name="my_commitments">My Commits</string>
-    <string name="profile">Profile</string>
     <string name="facebook_app_id">1830237923699201</string>
     <string name="fb_login_protocol_scheme">fb1830237923699201</string>
     <string name="skills_message">Enter your skills below</string>
     <string name="enter_skill">Enter Skill</string>
     <string name="enter_cause">Enter Cause</string>
-    <string name="location_message">Enter Your Preferred Volunteer City Below</string>
     <string name="go_to_feed">Go To Feed</string>
     <string name="enter_city">Enter Preferred Volunteer City</string>
-    <string name="add_opportunity">Add Opportunity</string>
     <string name="opportunity_name">Opportunity Name</string>
     <string name="organization_name">Organization Name</string>
     <string name="organization_email">Organization Email</string>
@@ -43,8 +36,6 @@
     <string name="address">Address</string>
     <string name="non_profit_name">Non-profit Name</string>
     <string name="set_causes_message">Select causes you care about.</string>
-    <string name="cause_areas">Cause Area</string>
-    <string name="cause_areas_vol_prof">Your Cause Areas: </string>
     <string name="contact_information">Contact Information</string>
     <string name="skill_needed">Skill Needed</string>
     <string name="skill_needed_colon">Skill Needed: </string>
@@ -73,7 +64,6 @@
     <string name="opportunities_uppercase">Opportunities</string>
     <string name="rating">Rating</string>
     <string name="storage_reference">profilePictures/users/%1$s/</string>
-    <string name="contact_uppercase">Contact</string>
 
     <string name="ten_digit_phone_error">Please enter a valid 10-digit phone number</string>
     <string name="enter_all_required_fields_error">"Please enter all required fields"</string>
@@ -91,25 +81,5 @@
         <item>30 miles</item>
         <item>40 miles</item>
         <item>50 miles</item>
-    </string-array>
-
-    <string-array name="cause_adapter">
-        <item>Environmental Engagement</item>
-        <item>Communication</item>
-        <item>Hunger</item>
-        <item>Human Trafficking</item>
-        <item>Social Engagement</item>
-        <item>Teaching</item>
-        <item>Community Outreach</item>
-        <item>Social Activism</item>
-        <item>Schooling</item>
-        <item>Children</item>
-        <item>Homelessness</item>
-        <item>Education</item>
-        <item>Cooking</item>
-        <item>Social Justice</item>
-        <item>World Peace</item>
-        <item>Environmental Sustainability</item>
-        <item>Growth</item>
     </string-array>
 </resources>
