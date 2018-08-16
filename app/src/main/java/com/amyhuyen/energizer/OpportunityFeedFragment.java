@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer;
 
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.amyhuyen.energizer.models.Opportunity;
+import com.amyhuyen.energizer.models.Skill;
+import com.amyhuyen.energizer.network.DataProvider;
 import com.amyhuyen.energizer.utils.DistanceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +54,7 @@ public class OpportunityFeedFragment extends Fragment {
     ArrayList<Double> mUserLatLongArray;
     Spinner spinner;
     int distanceMiles;
+    DataProvider dataProvider;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -77,6 +81,9 @@ public class OpportunityFeedFragment extends Fragment {
 
         // set up firebase database
         firebaseDataOpp = FirebaseDatabase.getInstance().getReference();
+
+        dataProvider = new DataProvider();
+
 
         // initialize the lists to hold the data
         opportunities = new ArrayList<>();
@@ -306,34 +313,48 @@ public class OpportunityFeedFragment extends Fragment {
     }
 
     // method to get data from firebase
-    private void fetchOpportunities(){
-        firebaseDataOpp.child(DBKeys.KEY_OPPORTUNITY).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                newOpportunities.clear();
+    private void fetchOpportunities() {
+        newOpportunities.clear();
+        dataProvider.getAllOpportunities()
+//        firebaseDataOpp.child(DBKeys.KEY_OPPORTUNITY).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                newOpportunities.clear();
+//
+//                // get all of the children at this level
+//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//
+//                // iterate through children to get each opportunity and add it to newOpportunities
+//                for (DataSnapshot child : children) {
+//                    Opportunity newOpp = child.getValue(Opportunity.class);
+//
+//                    // add to newOpportunities only the opportunity's oppId is in the filtered list
+//                    if (myOppsIdFromSkillsList.contains(newOpp.getOppId()) || myOppsIdFromCausesList.contains(newOpp.getOppId())) {
+//                        // check if opportunity is within ~25 miles of the user's given city
+//                        filterByLocation(newOpp);
+//                    }
+//                }
+//
+//                updateAdapter();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.e("fetchOpportunities", databaseError.toString());
+//            }
+//        });
+    }
 
-                // get all of the children at this level
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+    private void onOpportunitiesFetched(List<Opportunity> opportunities) {
 
-                // iterate through children to get each opportunity and add it to newOpportunities
-                for (DataSnapshot child : children) {
-                    Opportunity newOpp = child.getValue(Opportunity.class);
+    }
 
-                    // add to newOpportunities only the opportunity's oppId is in the filtered list
-                    if (myOppsIdFromSkillsList.contains(newOpp.getOppId()) || myOppsIdFromCausesList.contains(newOpp.getOppId())) {
-                        // check if opportunity is within ~25 miles of the user's given city
-                        filterByLocation(newOpp);
-                    }
-                }
+    private List<Opportunity> filterBySkillAndCause(List<Opportunity> opportunities) {
+        for (Opportunity opportunity : opportunities) {
+            if (myOppsIdFromCausesList.contains(opportunity.getOppId()) || myOppsIdFromCausesList.contains(opportunity.getOppId())) {
 
-                updateAdapter();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("fetchOpportunities", databaseError.toString());
-            }
-        });
+        }
     }
 
     // method that updates the adapter

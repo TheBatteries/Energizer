@@ -1,9 +1,12 @@
 package com.amyhuyen.energizer.network;
 
+import android.graphics.Path;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
 import com.amyhuyen.energizer.DBKeys;
 import com.amyhuyen.energizer.UserDataProvider;
+import com.amyhuyen.energizer.models.Opportunity;
 import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
 import com.google.firebase.database.DataSnapshot;
@@ -63,6 +66,21 @@ public class NetworkHandler {
     }
 
     private static DatabaseReference getFirebaseDatabaseReference(String reference) {
-        return FirebaseDatabase.getInstance().getReference(reference);
+        return FirebaseDatabase.getInstance().getReference().child(reference);
+    }
+
+    protected void fetchAllOpportunities(final DataFetchListener<List<Opportunity>> listener) {
+        final DatabaseReference opportunitiesReference = getFirebaseDatabaseReference(DBKeys.KEY_OPPORTUNITY);
+        opportunitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Opportunity> opportunities = DataSnapshotParser
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
