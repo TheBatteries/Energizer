@@ -49,6 +49,7 @@ public class VolProfileFragment extends ProfileFragment {
     private StorageReference storageReference;
     private Bundle bundle;
 
+
     public interface SkillFetchListner {
         void onSkillsFetched(List<String> skills);
     }
