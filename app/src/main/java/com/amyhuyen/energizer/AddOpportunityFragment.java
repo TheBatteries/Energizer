@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AddOpportunityFragment extends OpportunityFragment{
 
@@ -40,8 +41,8 @@ public class AddOpportunityFragment extends OpportunityFragment{
         endTime = bundle.getString(DBKeys.KEY_END_TIME);
         latLong = bundle.getString(DBKeys.KEY_LAT_LONG);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.US);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma", Locale.US);
 
     }
 
