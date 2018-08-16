@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -214,8 +215,8 @@ public abstract class OpportunityFragment extends Fragment{
         startTime = startTime.replace("Start Time:  ", "");
         endTime = endTime.replace("End Time:  ", "");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.US);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma", Locale.US);
 
         // convert strings to dates
         try {
