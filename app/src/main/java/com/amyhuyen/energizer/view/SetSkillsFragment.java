@@ -13,6 +13,8 @@ import java.util.List;
 
 public class SetSkillsFragment extends Fragment {
 
+    //example of how to use mDataProvider patter in fragment
+
     private DataProvider mDataProvider;
 
 

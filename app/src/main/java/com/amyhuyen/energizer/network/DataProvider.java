@@ -33,6 +33,15 @@ public class DataProvider {
         }
     }
 
+    public void getSkillsPerUser(final DataFetchListener<List<Skill>> listener) {
+        if (shouldFetchFromNetwork()) {
+            mNetworkHandler.fetchSkillsPerUser(new DataFetchListener<List<Skill>>()) {
+                @Override
+                        public void onFetchCompleted ()
+            }
+        }
+    }
+
     private boolean shouldFetchFromNetwork() {
         return !mSkillCache.isCacheValid();
     }
