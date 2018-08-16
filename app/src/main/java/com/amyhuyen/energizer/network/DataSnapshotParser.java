@@ -1,6 +1,7 @@
 package com.amyhuyen.energizer.network;
 
 import com.amyhuyen.energizer.DBKeys;
+import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
 import com.google.firebase.database.DataSnapshot;
 
@@ -20,5 +21,17 @@ public class DataSnapshotParser {
             skills.add(skill);
         }
         return skills;
+    }
+
+    protected static List<Cause> parseUserCauses(DataSnapshot dataSnapshot){
+        Map<String, Object> causesPerUserMap = (Map<String, Object>) dataSnapshot.getValue();
+        ArrayList<Cause> userCauses = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : causesPerUserMap.entrySet()) {
+            Map causePerUserMap = (Map) entry.getValue();
+            Cause cause = new Cause( (String) causePerUserMap.get(DBKeys.KEY_SKILL_ID));
+            userCauses.add(cause);
+        }
+        return userCauses;
     }
 }

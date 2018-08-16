@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.amyhuyen.energizer.DBKeys;
 import com.amyhuyen.energizer.UserDataProvider;
+import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +39,21 @@ public class NetworkHandler {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> skillPushIdsPerUser = getSkillsIds(dataSnapshot);
                 }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    protected void fetchCausesPerUSer(final DataFetchListener<List<Cause>> listener){
+        final DatabaseReference causesPerUserReference = getFirebaseDatabaseReference(DBKeys.KEY_CAUSES_PER_USER).child(UserDataProvider.getInstance().getCurrentUserId());
+        causesPerUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> causePushIdsPerUSer = getCauseIds(dataSnapshot);
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

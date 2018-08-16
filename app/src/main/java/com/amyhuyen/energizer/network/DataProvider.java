@@ -1,5 +1,6 @@
 package com.amyhuyen.energizer.network;
 
+import com.amyhuyen.energizer.models.Cause;
 import com.amyhuyen.energizer.models.Skill;
 import com.google.firebase.database.DatabaseError;
 
@@ -9,6 +10,7 @@ public class DataProvider {
 
     private NetworkHandler mNetworkHandler;
     private SkillsCache mSkillCache;
+
 
     public DataProvider() {
         mNetworkHandler = new NetworkHandler();
@@ -39,6 +41,23 @@ public class DataProvider {
                 @Override
                         public void onFetchCompleted ()
             }
+        }
+    }
+
+    public void getCausesPerUser(final DataFetchListener<List<Cause>> listener){
+        if (shouldFetchFromNetwork()){
+            mNetworkHandler.fetchCausesPerUSer(new DataFetchListener<List<Cause>>() {
+                @Override
+                public void onFetchCompleted(List<Cause> objectList) {
+                   //TODO come back to this after amy's push
+
+                }
+
+                @Override
+                public void onFailure(DatabaseError error) {
+
+                }
+            });
         }
     }
 
